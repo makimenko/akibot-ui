@@ -3,8 +3,7 @@
 AkiBot Web-based User Interface project was generated with [Angular CLI](https://github.com/angular/angular-cli) and added [Three.js WebGL](https://github.com/mrdoob/three.js/) functionality.
 
 ## Demo
-will follow later
-
+https://makimenko.github.io/akibot-ui
 
 ## Pre-Installation
 1. Install [Git](https://git-scm.com)

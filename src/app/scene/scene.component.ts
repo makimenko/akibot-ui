@@ -40,7 +40,7 @@ export class SceneComponent implements AfterViewInit {
     public radius: number = 500;
 
     @Input()
-    public texture: string = '/assets/textures/2294472375_24a3b8ef46_o.jpg';
+    public texture: string = 'assets/textures/2294472375_24a3b8ef46_o.jpg';
 
 
 
