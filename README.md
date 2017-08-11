@@ -1,6 +1,6 @@
 # AkiBot UI
 
-AkiBot Web-based User Interface project was generated with [Angular CLI](https://github.com/angular/angular-cli) and merged [ng2-three-demo](https://github.com/amcdnl/ng2-three-demo) ideas into it.
+AkiBot Web-based User Interface project was generated with [Angular CLI](https://github.com/angular/angular-cli) and added [Three.js WebGL](https://github.com/mrdoob/three.js/) functionality.
 
 ## Demo
 will follow later
