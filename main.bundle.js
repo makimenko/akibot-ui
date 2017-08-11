@@ -224,7 +224,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/scene/scene.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<canvas #canvas\r\n        (window:resize)=\"onResize($event)\"\r\n        (dragenter)=\"onDragEnter($event)\"\r\n        (dragleave)=\"onDragLeave($event)\"\r\n        (dragover)=\"onDragOver($event)\"\r\n        (drop)=\"onDrop($event)\"\r\n        (mousedown)=\"onMouseDown($event)\"\r\n        (mousemove)=\"onMouseMove($event)\"\r\n        (mouseup)=\"onMouseUp($event)\"\r\n        (wheel)=\"onWheel($event)\">\r\n</canvas>"
+module.exports = "<canvas #canvas\r\n        (mousedown)=\"onMouseDown($event)\"\r\n        (mousemove)=\"onMouseMove($event)\"\r\n        (mouseup)=\"onMouseUp($event)\"\r\n        (wheel)=\"onWheel($event)\">\r\n</canvas>"
 
 /***/ }),
 
@@ -310,16 +310,6 @@ var SceneComponent = (function () {
         this.renderer.render(this.scene, this.camera);
     };
     /* EVENTS */
-    SceneComponent.prototype.onDragEnter = function (event) {
-        this.canvas.style.opacity = 0.5.toString();
-    };
-    SceneComponent.prototype.onDragLeave = function (event) {
-        this.canvas.style.opacity = 1.0.toString();
-    };
-    SceneComponent.prototype.onDragOver = function (event) {
-        event.preventDefault();
-        event.dataTransfer.dropEffect = 'copy';
-    };
     SceneComponent.prototype.onMouseDown = function (event) {
         console.log("onMouseDown");
         event.preventDefault();
@@ -344,13 +334,16 @@ var SceneComponent = (function () {
     };
     SceneComponent.prototype.onKeyPress = function (event) {
         console.log("onKeyPress: " + event.key);
-        if (event.key == "g") {
-            this.gridHelper.visible = !this.gridHelper.visible;
-            this.render();
-        }
-        else if (event.key == "a") {
-            this.axisHelper.visible = !this.axisHelper.visible;
-            this.render();
+        switch (event.key) {
+            case "g":
+                this.gridHelper.visible = !this.gridHelper.visible;
+                this.render();
+                break;
+            case "a":
+                this.axisHelper.visible = !this.axisHelper.visible;
+                this.render();
+            default:
+                break;
         }
     };
     /* LIFECYCLE */
@@ -365,6 +358,12 @@ __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_5" /* ViewChild */])('canvas'),
     __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["M" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["M" /* ElementRef */]) === "function" && _a || Object)
 ], SceneComponent.prototype, "canvasRef", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_6" /* HostListener */])('window:resize', ['$event']),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], SceneComponent.prototype, "onResize", null);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_6" /* HostListener */])('document:keypress', ['$event']),
     __metadata("design:type", Function),
