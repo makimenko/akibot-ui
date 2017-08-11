@@ -117,6 +117,92 @@ AppModule = __decorate([
 
 /***/ }),
 
+/***/ "../../../../../src/app/scene/helpers/AxisHelperObject.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_three__ = __webpack_require__("../../../../three/build/three.module.js");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AxisHelperObject; });
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+
+var AxisHelperObject = (function (_super) {
+    __extends(AxisHelperObject, _super);
+    function AxisHelperObject(size) {
+        var _this = _super.call(this, size) || this;
+        _this.name = _this.constructor.name;
+        _this.renderOrder = 999;
+        return _this;
+    }
+    return AxisHelperObject;
+}(__WEBPACK_IMPORTED_MODULE_0_three__["h" /* AxisHelper */]));
+
+//# sourceMappingURL=AxisHelperObject.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/scene/helpers/GridHelperObject.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_three__ = __webpack_require__("../../../../three/build/three.module.js");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return GridHelperObject; });
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+
+var GridHelperObject = (function (_super) {
+    __extends(GridHelperObject, _super);
+    function GridHelperObject(size, divisions) {
+        var _this = _super.call(this) || this;
+        _this.name = _this.constructor.name;
+        var gridHelper1 = new __WEBPACK_IMPORTED_MODULE_0_three__["f" /* GridHelper */](size, divisions);
+        _this.add(gridHelper1);
+        var gridHelper2 = new __WEBPACK_IMPORTED_MODULE_0_three__["f" /* GridHelper */](size, divisions);
+        gridHelper2.rotation.x = Math.PI / 2;
+        _this.add(gridHelper2);
+        var gridHelper3 = new __WEBPACK_IMPORTED_MODULE_0_three__["f" /* GridHelper */](size, divisions);
+        gridHelper3.rotation.x = Math.PI / 2;
+        gridHelper3.rotation.z = Math.PI / 2;
+        _this.add(gridHelper3);
+        return _this;
+    }
+    return GridHelperObject;
+}(__WEBPACK_IMPORTED_MODULE_0_three__["g" /* Object3D */]));
+
+//# sourceMappingURL=GridHelperObject.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/scene/helpers/index.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__AxisHelperObject__ = __webpack_require__("../../../../../src/app/scene/helpers/AxisHelperObject.ts");
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_0__AxisHelperObject__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__GridHelperObject__ = __webpack_require__("../../../../../src/app/scene/helpers/GridHelperObject.ts");
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_1__GridHelperObject__["a"]; });
+
+
+//# sourceMappingURL=index.js.map
+
+/***/ }),
+
 /***/ "../../../../../src/app/scene/scene.component.css":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -147,7 +233,8 @@ module.exports = "<canvas #canvas\r\n        (window:resize)=\"onResize($event)\
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_three__ = __webpack_require__("../../../../three/build/three.module.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__helpers__ = __webpack_require__("../../../../../src/app/scene/helpers/index.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_three__ = __webpack_require__("../../../../three/build/three.module.js");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SceneComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -160,62 +247,39 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 
 
+
 var SceneComponent = (function () {
-    /* DEPENDENCY INJECTION (CONSTRUCTOR) */
     function SceneComponent() {
-        this.fieldOfView = 75;
+        this.fieldOfView = 60;
         this.nearClippingPane = 1;
         this.farClippingPane = 1100;
-        this.widthSegments = 60;
-        this.heightSegments = 40;
-        this.radius = 500;
-        this.texture = 'assets/textures/2294472375_24a3b8ef46_o.jpg';
-        /* USER INTERACTION PROPERTIES */
-        this.isUserInteracting = false;
-        this.latitude = 0;
-        this.longitude = 0;
-        this.onPointerDownPointerX = 0;
-        this.onPointerDownPointerY = 0;
-        this.onPointerDownLongitude = 0;
-        this.onPointerDownLatitude = 0;
-        this.phi = 0;
-        this.theta = 0;
+        console.log("SceneComponent.constructor");
     }
     Object.defineProperty(SceneComponent.prototype, "canvas", {
-        /* RENDERING PROPERTIES */
         get: function () {
             return this.canvasRef.nativeElement;
         },
         enumerable: true,
         configurable: true
     });
-    /* STAGING, ANIMATION, AND RENDERING */
-    /**
-     * Create the scene.
-     */
     SceneComponent.prototype.createScene = function () {
-        this.scene = new __WEBPACK_IMPORTED_MODULE_1_three__["a" /* Scene */]();
+        this.scene = new __WEBPACK_IMPORTED_MODULE_2_three__["a" /* Scene */]();
+        this.gridHelper = new __WEBPACK_IMPORTED_MODULE_1__helpers__["a" /* GridHelperObject */](300, 10);
+        this.scene.add(this.gridHelper);
+        this.axisHelper = new __WEBPACK_IMPORTED_MODULE_1__helpers__["b" /* AxisHelperObject */](800);
+        this.scene.add(this.axisHelper);
     };
-    /**
-     * Create the camera.
-     */
     SceneComponent.prototype.createCamera = function () {
         var aspectRatio = this.getAspectRatio();
-        this.camera = new __WEBPACK_IMPORTED_MODULE_1_three__["b" /* PerspectiveCamera */](this.fieldOfView, aspectRatio, this.nearClippingPane, this.farClippingPane);
-        this.cameraTarget = new __WEBPACK_IMPORTED_MODULE_1_three__["c" /* Vector3 */](0, 0, 0);
+        this.camera = new __WEBPACK_IMPORTED_MODULE_2_three__["b" /* PerspectiveCamera */](this.fieldOfView, aspectRatio, this.nearClippingPane, this.farClippingPane);
+        // Set position and look at
+        this.camera.position.x = -50;
+        this.camera.position.y = -200;
+        this.camera.position.z = 200;
+        this.camera.up = new __WEBPACK_IMPORTED_MODULE_2_three__["c" /* Vector3 */](0, 0, 1);
+        this.cameraTarget = new __WEBPACK_IMPORTED_MODULE_2_three__["c" /* Vector3 */](0, 0, 0);
+        this.camera.lookAt(this.cameraTarget);
     };
-    SceneComponent.prototype.createPanorama = function () {
-        var geometry = new __WEBPACK_IMPORTED_MODULE_1_three__["d" /* SphereGeometry */](this.radius, this.widthSegments, this.heightSegments);
-        geometry.scale(-1, 1, 1);
-        var map = new __WEBPACK_IMPORTED_MODULE_1_three__["e" /* TextureLoader */]()
-            .load(this.texture);
-        this.material = new __WEBPACK_IMPORTED_MODULE_1_three__["f" /* MeshBasicMaterial */]({ map: map });
-        var mesh = new __WEBPACK_IMPORTED_MODULE_1_three__["g" /* Mesh */](geometry, this.material);
-        this.scene.add(mesh);
-    };
-    /**
-     * Get aspect ratio of the view.
-     */
     SceneComponent.prototype.getAspectRatio = function () {
         var height = this.canvas.clientHeight;
         if (height === 0) {
@@ -223,32 +287,20 @@ var SceneComponent = (function () {
         }
         return this.canvas.clientWidth / this.canvas.clientHeight;
     };
-    /**
-     * Rotate the camera.
-     */
-    SceneComponent.prototype.rotateCamera = function () {
-        if (this.isUserInteracting === false) {
-            this.longitude += 0.1;
-        }
-        this.latitude = Math.max(-85, Math.min(85, this.latitude));
-        this.phi = __WEBPACK_IMPORTED_MODULE_1_three__["h" /* Math */].degToRad(90 - this.latitude);
-        this.theta = __WEBPACK_IMPORTED_MODULE_1_three__["h" /* Math */].degToRad(this.longitude);
-        this.cameraTarget.x = 500 * Math.sin(this.phi) * Math.cos(this.theta);
-        this.cameraTarget.y = 500 * Math.cos(this.phi);
-        this.cameraTarget.z = 500 * Math.sin(this.phi) * Math.sin(this.theta);
-        this.camera.lookAt(this.cameraTarget);
-    };
-    /**
-     * Start the rendering loop.
-     */
     SceneComponent.prototype.startRendering = function () {
-        this.renderer = new __WEBPACK_IMPORTED_MODULE_1_three__["i" /* WebGLRenderer */]({ canvas: this.canvas });
+        this.renderer = new __WEBPACK_IMPORTED_MODULE_2_three__["d" /* WebGLRenderer */]({
+            canvas: this.canvas,
+            antialias: true
+        });
         this.renderer.setPixelRatio(devicePixelRatio);
         this.renderer.setSize(this.canvas.clientWidth, this.canvas.clientHeight);
+        this.renderer.shadowMap.enabled = true;
+        this.renderer.shadowMap.type = __WEBPACK_IMPORTED_MODULE_2_three__["e" /* PCFSoftShadowMap */];
+        this.renderer.setClearColor(0xffffff, 1);
+        this.renderer.autoClear = true;
         var component = this;
         (function render() {
             requestAnimationFrame(render);
-            component.rotateCamera();
             component.renderer.render(component.scene, component.camera);
         }());
     };
@@ -263,40 +315,18 @@ var SceneComponent = (function () {
         event.preventDefault();
         event.dataTransfer.dropEffect = 'copy';
     };
-    SceneComponent.prototype.onDrop = function (event) {
-        event.preventDefault();
-        var component = this;
-        var reader = new FileReader();
-        reader.addEventListener('load', function onDroppedFileLoad() {
-            component.material.map.image.src = reader.result;
-            component.material.map.needsUpdate = true;
-        });
-        reader.readAsDataURL(event.dataTransfer.files[0]);
-        this.canvas.style.opacity = 1.0.toString();
-    };
     SceneComponent.prototype.onMouseDown = function (event) {
         console.log("onMouseDown");
         event.preventDefault();
-        this.isUserInteracting = true;
-        this.onPointerDownPointerX = event.clientX;
-        this.onPointerDownPointerY = event.clientY;
-        this.onPointerDownLatitude = this.latitude;
-        this.onPointerDownLongitude = this.longitude;
     };
     SceneComponent.prototype.onMouseMove = function (event) {
-        if (this.isUserInteracting !== true) {
-            // Propagate event
-            return true;
-        }
-        this.latitude = (event.clientY - this.onPointerDownPointerY) * 0.1 + this.onPointerDownLatitude;
-        this.longitude = (this.onPointerDownPointerX - event.clientX) * 0.1 + this.onPointerDownLongitude;
+        //console.log("onMouseMove");
     };
     SceneComponent.prototype.onMouseUp = function (event) {
-        this.isUserInteracting = false;
+        console.log("onMouseUp");
     };
     SceneComponent.prototype.onWheel = function (event) {
-        this.camera.fov += event.deltaY * 0.05;
-        this.camera.updateProjectionMatrix();
+        console.log("onWheel");
     };
     SceneComponent.prototype.onResize = function (event) {
         this.camera.aspect = this.getAspectRatio();
@@ -307,39 +337,10 @@ var SceneComponent = (function () {
     SceneComponent.prototype.ngAfterViewInit = function () {
         this.createScene();
         this.createCamera();
-        this.createPanorama();
         this.startRendering();
     };
     return SceneComponent;
 }());
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["O" /* Input */])(),
-    __metadata("design:type", Number)
-], SceneComponent.prototype, "fieldOfView", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["O" /* Input */])('nearClipping'),
-    __metadata("design:type", Number)
-], SceneComponent.prototype, "nearClippingPane", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["O" /* Input */])('farClipping'),
-    __metadata("design:type", Number)
-], SceneComponent.prototype, "farClippingPane", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["O" /* Input */])(),
-    __metadata("design:type", Number)
-], SceneComponent.prototype, "widthSegments", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["O" /* Input */])(),
-    __metadata("design:type", Number)
-], SceneComponent.prototype, "heightSegments", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["O" /* Input */])(),
-    __metadata("design:type", Number)
-], SceneComponent.prototype, "radius", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["O" /* Input */])(),
-    __metadata("design:type", String)
-], SceneComponent.prototype, "texture", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_5" /* ViewChild */])('canvas'),
     __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["M" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["M" /* ElementRef */]) === "function" && _a || Object)
