@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, ViewChild, HostListener } from '@angular/core';
 import * as HELPERS from './helpers';
 import * as THREE from 'three';
 
@@ -36,9 +36,11 @@ export class SceneComponent implements AfterViewInit {
         this.scene = new THREE.Scene();
 
         this.gridHelper = new HELPERS.GridHelperObject(300, 10);
+        this.gridHelper.visible = false;
         this.scene.add(this.gridHelper);
 
         this.axisHelper = new HELPERS.AxisHelperObject(800);
+        this.axisHelper.visible = false;
         this.scene.add(this.axisHelper);
     }
 
@@ -85,7 +87,7 @@ export class SceneComponent implements AfterViewInit {
         let component: SceneComponent = this;
 
         (function render() {
-            requestAnimationFrame(render);
+            //requestAnimationFrame(render);
             component.render();
         }());
     }
@@ -130,13 +132,27 @@ export class SceneComponent implements AfterViewInit {
     public onResize(event: Event) {
         this.canvas.style.width = "100%";
         this.canvas.style.height = "100%";
-        console.log("onResize: " + this.canvas.clientWidth + ", " + this.canvas.clientHeight);        
+        console.log("onResize: " + this.canvas.clientWidth + ", " + this.canvas.clientHeight);
 
         this.camera.aspect = this.getAspectRatio();
         this.camera.updateProjectionMatrix();
         this.renderer.setSize(this.canvas.clientWidth, this.canvas.clientHeight);
         this.render();
     }
+
+    @HostListener('document:keypress', ['$event'])
+    public onKeyPress(event: KeyboardEvent) {
+        console.log("onKeyPress: " + event.key);
+
+        if (event.key == "g") {
+            this.gridHelper.visible = !this.gridHelper.visible;
+            this.render();
+        } else if (event.key == "a") {
+            this.axisHelper.visible = !this.axisHelper.visible;
+            this.render();
+        }
+    }
+
 
     /* LIFECYCLE */
     ngAfterViewInit() {
