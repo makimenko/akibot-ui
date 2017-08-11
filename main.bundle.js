@@ -169,7 +169,7 @@ var SceneComponent = (function () {
         this.widthSegments = 60;
         this.heightSegments = 40;
         this.radius = 500;
-        this.texture = '/assets/textures/2294472375_24a3b8ef46_o.jpg';
+        this.texture = 'assets/textures/2294472375_24a3b8ef46_o.jpg';
         /* USER INTERACTION PROPERTIES */
         this.isUserInteracting = false;
         this.latitude = 0;
