@@ -98,20 +98,6 @@ export class SceneComponent implements AfterViewInit {
 
     /* EVENTS */
 
-    public onDragEnter(event: DragEvent) {
-        this.canvas.style.opacity = 0.5.toString();
-    }
-
-    public onDragLeave(event: DragEvent) {
-        this.canvas.style.opacity = 1.0.toString();
-    }
-
-    public onDragOver(event: DragEvent) {
-        event.preventDefault();
-        event.dataTransfer.dropEffect = 'copy';
-    }
-
-
     public onMouseDown(event: MouseEvent) {
         console.log("onMouseDown");
         event.preventDefault();
@@ -129,6 +115,7 @@ export class SceneComponent implements AfterViewInit {
         console.log("onWheel");
     }
 
+    @HostListener('window:resize', ['$event'])
     public onResize(event: Event) {
         this.canvas.style.width = "100%";
         this.canvas.style.height = "100%";
@@ -143,16 +130,18 @@ export class SceneComponent implements AfterViewInit {
     @HostListener('document:keypress', ['$event'])
     public onKeyPress(event: KeyboardEvent) {
         console.log("onKeyPress: " + event.key);
-
-        if (event.key == "g") {
-            this.gridHelper.visible = !this.gridHelper.visible;
-            this.render();
-        } else if (event.key == "a") {
-            this.axisHelper.visible = !this.axisHelper.visible;
-            this.render();
+        switch (event.key) {
+            case "g":
+                this.gridHelper.visible = !this.gridHelper.visible;
+                this.render();
+                break;
+            case "a":
+                this.axisHelper.visible = !this.axisHelper.visible;
+                this.render();
+            default:
+                break;
         }
     }
-
 
     /* LIFECYCLE */
     ngAfterViewInit() {
