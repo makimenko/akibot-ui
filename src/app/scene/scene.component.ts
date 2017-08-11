@@ -86,11 +86,13 @@ export class SceneComponent implements AfterViewInit {
 
         (function render() {
             requestAnimationFrame(render);
-            component.renderer.render(component.scene, component.camera);
+            component.render();
         }());
     }
 
-
+    private render() {
+        this.renderer.render(this.scene, this.camera);
+    }
 
     /* EVENTS */
 
@@ -126,9 +128,14 @@ export class SceneComponent implements AfterViewInit {
     }
 
     public onResize(event: Event) {
+        this.canvas.style.width = "100%";
+        this.canvas.style.height = "100%";
+        console.log("onResize: " + this.canvas.clientWidth + ", " + this.canvas.clientHeight);        
+
         this.camera.aspect = this.getAspectRatio();
         this.camera.updateProjectionMatrix();
         this.renderer.setSize(this.canvas.clientWidth, this.canvas.clientHeight);
+        this.render();
     }
 
     /* LIFECYCLE */
