@@ -58,7 +58,7 @@ var AppComponent = (function () {
     return AppComponent;
 }());
 AppComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_6" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_7" /* Component */])({
         selector: 'app-root',
         template: __webpack_require__("../../../../../src/app/app.component.html"),
         styles: [__webpack_require__("../../../../../src/app/app.component.css")]
@@ -211,7 +211,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "a {\r\n    color: #ffffff;\r\n}\r\n\r\ncanvas {\r\n    width: 100%;\r\n    height: 100%;\r\n}\r\n\r\n#info {\r\n    position: abslute;\r\n    top: 0;\r\n    \r\n    width: 100%;\r\n    padding: 5px;\r\n\r\n    color: #ffffff;\r\n    font-family: monospace;\r\n    font-size: 13px;\r\n    font-weight: 700;\r\n    text-align: center;\r\n}\r\n", ""]);
+exports.push([module.i, "canvas {\r\n    width: 100%;\r\n    height: 100%;\r\n}", ""]);
 
 // exports
 
@@ -265,8 +265,10 @@ var SceneComponent = (function () {
     SceneComponent.prototype.createScene = function () {
         this.scene = new __WEBPACK_IMPORTED_MODULE_2_three__["a" /* Scene */]();
         this.gridHelper = new __WEBPACK_IMPORTED_MODULE_1__helpers__["a" /* GridHelperObject */](300, 10);
+        this.gridHelper.visible = false;
         this.scene.add(this.gridHelper);
         this.axisHelper = new __WEBPACK_IMPORTED_MODULE_1__helpers__["b" /* AxisHelperObject */](800);
+        this.axisHelper.visible = false;
         this.scene.add(this.axisHelper);
     };
     SceneComponent.prototype.createCamera = function () {
@@ -300,9 +302,12 @@ var SceneComponent = (function () {
         this.renderer.autoClear = true;
         var component = this;
         (function render() {
-            requestAnimationFrame(render);
-            component.renderer.render(component.scene, component.camera);
+            //requestAnimationFrame(render);
+            component.render();
         }());
+    };
+    SceneComponent.prototype.render = function () {
+        this.renderer.render(this.scene, this.camera);
     };
     /* EVENTS */
     SceneComponent.prototype.onDragEnter = function (event) {
@@ -329,9 +334,24 @@ var SceneComponent = (function () {
         console.log("onWheel");
     };
     SceneComponent.prototype.onResize = function (event) {
+        this.canvas.style.width = "100%";
+        this.canvas.style.height = "100%";
+        console.log("onResize: " + this.canvas.clientWidth + ", " + this.canvas.clientHeight);
         this.camera.aspect = this.getAspectRatio();
         this.camera.updateProjectionMatrix();
         this.renderer.setSize(this.canvas.clientWidth, this.canvas.clientHeight);
+        this.render();
+    };
+    SceneComponent.prototype.onKeyPress = function (event) {
+        console.log("onKeyPress: " + event.key);
+        if (event.key == "g") {
+            this.gridHelper.visible = !this.gridHelper.visible;
+            this.render();
+        }
+        else if (event.key == "a") {
+            this.axisHelper.visible = !this.axisHelper.visible;
+            this.render();
+        }
     };
     /* LIFECYCLE */
     SceneComponent.prototype.ngAfterViewInit = function () {
@@ -345,8 +365,14 @@ __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_5" /* ViewChild */])('canvas'),
     __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["M" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["M" /* ElementRef */]) === "function" && _a || Object)
 ], SceneComponent.prototype, "canvasRef", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_6" /* HostListener */])('document:keypress', ['$event']),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], SceneComponent.prototype, "onKeyPress", null);
 SceneComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_6" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_7" /* Component */])({
         selector: 'scene',
         template: __webpack_require__("../../../../../src/app/scene/scene.component.html"),
         styles: [__webpack_require__("../../../../../src/app/scene/scene.component.css")]
