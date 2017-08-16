@@ -22,7 +22,7 @@ export class WebSocketService {
 
     public onOpen(event: Event): any {
         console.log("onopen");
-        this.ws.send("hi");
+        this.ws.send('OrientationRequest;100;10000');
     }
 
     public onMessage(msg: MessageEvent) {
