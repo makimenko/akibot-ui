@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, ElementRef, Input, ViewChild, HostListener } from '@angular/core';
 import * as HELPERS from './helpers';
 import * as THREE from 'three';
+import { WebSocketService } from "./serices/web-socket.service";
 
 @Component({
     selector: 'scene',
@@ -24,7 +25,7 @@ export class SceneComponent implements AfterViewInit {
     @ViewChild('canvas')
     private canvasRef: ElementRef;
 
-    constructor() {
+    constructor(private webSocketService: WebSocketService) {
         console.log("SceneComponent.constructor");
     }
 
@@ -36,11 +37,11 @@ export class SceneComponent implements AfterViewInit {
         this.scene = new THREE.Scene();
 
         this.gridHelper = new HELPERS.GridHelperObject(300, 10);
-        this.gridHelper.visible = false;
+        this.gridHelper.visible = true;
         this.scene.add(this.gridHelper);
 
         this.axisHelper = new HELPERS.AxisHelperObject(800);
-        this.axisHelper.visible = false;
+        this.axisHelper.visible = true;
         this.scene.add(this.axisHelper);
     }
 
