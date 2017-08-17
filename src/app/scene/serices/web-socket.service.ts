@@ -22,7 +22,7 @@ export class WebSocketService {
 
     public onOpen(event: Event): any {
         console.log("onopen");
-        this.ws.send('OrientationRequest;100;10000');
+        this.ws.send('{"$name":"OrientationRequest","targetAngle":{"radians":1.7453292519943295,"$name":"Angle"},"tolerance":{"radians":0.17453292519943295,"$name":"Angle"},"timeout":1000}');
     }
 
     public onMessage(msg: MessageEvent) {
