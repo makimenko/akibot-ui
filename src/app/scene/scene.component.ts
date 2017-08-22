@@ -47,6 +47,16 @@ export class SceneComponent implements AfterViewInit {
         this.scene.add(this.axisHelper);
     }
 
+    private createLight() {
+        var light = new THREE.PointLight(0xffffff, 1, 1000);
+		light.position.set(0, 0, 100);
+		this.scene.add(light);
+
+		var light = new THREE.PointLight(0xffffff, 1, 1000);
+		light.position.set(0, 0, -100);
+		this.scene.add(light);
+    }
+
     private createCamera() {
         let aspectRatio = this.getAspectRatio();
         this.camera = new THREE.PerspectiveCamera(
@@ -153,6 +163,7 @@ export class SceneComponent implements AfterViewInit {
     /* LIFECYCLE */
     ngAfterViewInit() {
         this.createScene();
+        this.createLight();
         this.createCamera();
         this.startRendering();
         this.createWorldHandler();        

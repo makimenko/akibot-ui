@@ -4,6 +4,8 @@ import { logFactory } from "../log-config";
 import * as common from "akibot-common/dist";
 import { WebSocketService } from "./serices/web-socket.service";
 import { SceneComponent } from "./scene.component";
+import { ColladaLoaderUtils } from "./colladata-loader-utils";
+
 
 export class WorldHandler {
 
@@ -18,6 +20,7 @@ export class WorldHandler {
         this.onOpen = this.onOpen.bind(this);
         this.onError = this.onError.bind(this);
         this.onWorldContentResponse = this.onWorldContentResponse.bind(this);
+        this.onModelLoaded = this.onModelLoaded.bind(this);
 
         this.sceneComponent.webSocketService.events.addListener("onopen", this.onOpen);
         this.sceneComponent.webSocketService.events.addListener("onerror", this.onError);
@@ -50,24 +53,24 @@ export class WorldHandler {
         var gridConfig = worldContentResponse.worldNode.gridConfiguration;
         this.gridObject3d = new THREE.GridHelper(gridConfig.cellCountX * gridConfig.cellSizeMm, gridConfig.cellCountX);
         this.gridObject3d.rotateX(common.AngleUtils.degreesToRadians(90));
-        this.worldObject3d.add(this.gridObject3d);
+        //this.worldObject3d.add(this.gridObject3d);
 
         this.logger.trace("Creating robotNode");
         this.robotObject3d = new THREE.Object3D();
 
-        var loader = new THREE.ColladaLoader();
-
-        /*
-        loader.load(worldContentResponse.worldNode.robotNode.modelFileName, function (model: THREE.ColladaModel) {
-            //this.robotObject3d = model.scene;
-            //this.sceneComponent.render();
-        });
-        */
-
-        
+        ColladaLoaderUtils.load(worldContentResponse.worldNode.robotNode.modelFileName, this.onModelLoaded);
         this.sceneComponent.render();
-
     }
 
+    public onModelLoaded(model: THREE.ColladaModel) {
+        this.logger.trace("Adding loaded model");
+        this.robotObject3d.add(model.scene);
+        //this.robotObject3d.rotateX(common.AngleUtils.degreesToRadians(-90));        
+        this.robotObject3d.translateZ(10);
+       
+        this.robotObject3d.updateMatrix();
+        this.worldObject3d.add(this.robotObject3d);
+        this.sceneComponent.render();
+    }
 
 }
