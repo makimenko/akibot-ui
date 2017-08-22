@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-
+import * as common from 'akibot-common/dist';
 
 @Injectable()
 export class WebSocketService {
@@ -22,11 +22,17 @@ export class WebSocketService {
 
     public onOpen(event: Event): any {
         console.log("onopen");
-        this.ws.send('{"$name":"OrientationRequest","targetAngle":{"radians":1.7453292519943295,"$name":"Angle"},"tolerance":{"radians":0.17453292519943295,"$name":"Angle"},"timeout":1000}');
+        let orientationRequest = new common.OrientationRequest(common.AngleUtils.createAngleFromDegrees(100), common.AngleUtils.createAngleFromDegrees(10), 5000);
+        let msg: string = common.SerializationUtils.jsonStringify(orientationRequest);
+        this.ws.send(msg);
     }
 
     public onMessage(msg: MessageEvent) {
         console.log("WebSocketService.onMessage: " + msg.data);
+        
+        let orientationResponse: common.OrientationResponse = common.SerializationUtils.deserialize(common.SerializationUtils.jsonParse(msg.data), common);
+        console.log("Deserialized final Angle: " + orientationResponse.finalAngle.getDegrees() + " degrees");
+
     }
 
 

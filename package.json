@@ -25,7 +25,8 @@
     "core-js": "^2.4.1",
     "rxjs": "^5.1.0",
     "three": "^0.86.0",
-    "zone.js": "^0.8.4"
+    "zone.js": "^0.8.4",
+    "akibot-common": "github:makimenko/akibot-common"
   },
   "devDependencies": {
     "@angular/cli": "1.2.1",
