@@ -22,11 +22,12 @@
     "@angular/platform-browser": "^4.0.0",
     "@angular/platform-browser-dynamic": "^4.0.0",
     "@angular/router": "^4.0.0",
+    "akibot-common": "github:makimenko/akibot-common",
+    "akibot-log": "github:makimenko/akibot-log",
     "core-js": "^2.4.1",
     "rxjs": "^5.1.0",
     "three": "^0.86.0",
-    "zone.js": "^0.8.4",
-    "akibot-common": "github:makimenko/akibot-common"
+    "zone.js": "^0.8.4"
   },
   "devDependencies": {
     "@angular/cli": "1.2.1",

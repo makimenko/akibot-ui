@@ -2,6 +2,7 @@ import { AfterViewInit, Component, ElementRef, Input, ViewChild, HostListener } 
 import * as HELPERS from './helpers';
 import * as THREE from 'three';
 import { WebSocketService } from "./serices/web-socket.service";
+import { WorldHandler } from "./world-handler";
 
 @Component({
     selector: 'scene',
@@ -10,6 +11,7 @@ import { WebSocketService } from "./serices/web-socket.service";
 })
 export class SceneComponent implements AfterViewInit {
 
+    private worldHandler : WorldHandler;
     private renderer: THREE.WebGLRenderer;
     private camera: THREE.PerspectiveCamera;
     private cameraTarget: THREE.Vector3;
@@ -37,7 +39,7 @@ export class SceneComponent implements AfterViewInit {
         this.scene = new THREE.Scene();
 
         this.gridHelper = new HELPERS.GridHelperObject(300, 10);
-        this.gridHelper.visible = true;
+        this.gridHelper.visible = false;
         this.scene.add(this.gridHelper);
 
         this.axisHelper = new HELPERS.AxisHelperObject(800);
@@ -91,6 +93,10 @@ export class SceneComponent implements AfterViewInit {
             //requestAnimationFrame(render);
             component.render();
         }());
+    }
+
+    private createWorldHandler() {
+        this.worldHandler = new WorldHandler(this.scene, this.webSocketService);
     }
 
     private render() {
@@ -149,6 +155,7 @@ export class SceneComponent implements AfterViewInit {
         this.createScene();
         this.createCamera();
         this.startRendering();
+        this.createWorldHandler();        
     }
 
 }

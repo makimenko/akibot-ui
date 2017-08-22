@@ -1,39 +1,56 @@
 import { Injectable } from '@angular/core';
 import * as common from 'akibot-common/dist';
+import { EventEmitter } from "events";
+import { logFactory } from "../../log-config";
 
 @Injectable()
 export class WebSocketService {
+
+    private logger = logFactory.getLogger(this.constructor.name);
+
     private ws: WebSocket;
+    public events: EventEmitter;
+
+    // TODO: Mage connectionString configurable
+    private connectionString: string = "ws://localhost:3000";
 
     constructor() {
-        console.log("WebSocketService.constructor");
-        this.onOpen.bind(this);
-        this.onMessage.bind(this);
+        this.logger.info("constructor");
 
-        //TODO: Configure URL
-        this.ws = new WebSocket("ws://localhost:3000");
+        this.events = new EventEmitter();
 
-        this.onMessage = this.onMessage.bind(this);
+        this.logger.debug("Connecting to: " + this.connectionString);
+        this.ws = new WebSocket(this.connectionString);
+
         this.onOpen = this.onOpen.bind(this);
+        this.onMessage = this.onMessage.bind(this);
+        this.onError = this.onError.bind(this);
 
         this.ws.onopen = this.onOpen;
         this.ws.onmessage = this.onMessage;
+        this.ws.onerror = this.onError;
+    }
+
+    public onError(event: Event): any {
+        this.logger.debug("onError");
+        this.events.emit("onerror", event);
     }
 
     public onOpen(event: Event): any {
-        console.log("onopen");
-        let orientationRequest = new common.OrientationRequest(common.AngleUtils.createAngleFromDegrees(100), common.AngleUtils.createAngleFromDegrees(10), 5000);
-        let msg: string = common.SerializationUtils.jsonStringify(orientationRequest);
-        this.ws.send(msg);
+        this.logger.debug("onOpen");
+        this.events.emit("onopen", event);
     }
 
     public onMessage(msg: MessageEvent) {
-        console.log("WebSocketService.onMessage: " + msg.data);
-        
-        let orientationResponse: common.OrientationResponse = common.SerializationUtils.deserialize(common.SerializationUtils.jsonParse(msg.data), common);
-        console.log("Deserialized final Angle: " + orientationResponse.finalAngle.getDegrees() + " degrees");
-
+        this.logger.debug("onMessage: " + msg.data);
+        var message: common.Message = common.SerializationUtils.deserialize(common.SerializationUtils.jsonParse(msg.data), common);
+        this.events.emit(message.$name, message);
     }
 
+    public send(message: common.Message) {
+        var jsonString = common.SerializationUtils.jsonStringify(message);
+        this.logger.trace("send: " + jsonString);
+        this.ws.send(jsonString);
+    }
 
 }
