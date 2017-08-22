@@ -7,6 +7,7 @@ import { WebSocketService } from "./serices/web-socket.service";
 export class WorldHandler {
 
     private logger = logFactory.getLogger(this.constructor.name);
+    private worldNodeObject3d: THREE.Object3D;
 
     constructor(private scene: THREE.Scene, private webSocketService: WebSocketService) {
         this.logger.info("constructor");
@@ -25,7 +26,7 @@ export class WorldHandler {
 
     public onOpen(event: Event): any {
         this.logger.debug("onOpen");
-        this.logger.trace("Connected to server, as a first step - requesting World Content");
+        this.logger.trace("Connected to server. Requesting World Content");
         this.webSocketService.send(new common.WorldContentRequest());
 
         this.webSocketService.events.once(common.WorldContentResponse.name, this.onWorldContentResponse);
@@ -33,6 +34,13 @@ export class WorldHandler {
 
     public onWorldContentResponse(worldContentResponse: common.WorldContentResponse) {
         this.logger.debug("onWorldContentResponse");
+        
+        if (this.worldNodeObject3d == undefined) {
+            this.logger.trace("Creating worldNodeObject3d first time")
+            this.worldNodeObject3d = new THREE.Object3D();
+            this.worldNodeObject3d.name = worldContentResponse.worldNode.name;
+            this.scene.add(this.worldNodeObject3d);
+        }
 
     }
 
