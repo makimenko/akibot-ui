@@ -15,7 +15,7 @@ export class SceneComponent implements AfterViewInit {
     private renderer: THREE.WebGLRenderer;
     private camera: THREE.PerspectiveCamera;
     private cameraTarget: THREE.Vector3;
-    private scene: THREE.Scene;
+    public scene: THREE.Scene;
 
     public fieldOfView: number = 60;
     public nearClippingPane: number = 1;
@@ -27,7 +27,7 @@ export class SceneComponent implements AfterViewInit {
     @ViewChild('canvas')
     private canvasRef: ElementRef;
 
-    constructor(private webSocketService: WebSocketService) {
+    constructor(public webSocketService: WebSocketService) {
         console.log("SceneComponent.constructor");
     }
 
@@ -96,10 +96,10 @@ export class SceneComponent implements AfterViewInit {
     }
 
     private createWorldHandler() {
-        this.worldHandler = new WorldHandler(this.scene, this.webSocketService);
+        this.worldHandler = new WorldHandler(this);
     }
 
-    private render() {
+    public render() {
         this.renderer.render(this.scene, this.camera);
     }
 
