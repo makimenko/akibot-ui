@@ -3,8 +3,8 @@ import * as HELPERS from './helpers';
 import * as THREE from 'three';
 import { WebSocketService } from "./serices/web-socket.service";
 import { WorldHandler } from "./world-handler";
-import "./js/ActivateThree";
-import "./js/OrbitControls";
+import "three/examples/js/controls/OrbitControls";
+
 
 @Component({
     selector: 'scene',

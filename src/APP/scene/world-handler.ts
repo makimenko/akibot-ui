@@ -4,8 +4,7 @@ import { logFactory } from "../log-config";
 import * as common from "akibot-common/dist";
 import { WebSocketService } from "./serices/web-socket.service";
 import { SceneComponent } from "./scene.component";
-import "./js/ActivateThree";
-import "./js/ColladaLoader";
+import "three/examples/js/loaders/ColladaLoader";
 
 
 export class WorldHandler {

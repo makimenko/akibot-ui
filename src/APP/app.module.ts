@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 import { SceneComponent } from "./scene/scene.component";
 import { WebSocketService } from "./scene/serices/web-socket.service";
 
+
 @NgModule({
   declarations: [
     AppComponent,
