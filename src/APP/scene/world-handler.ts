@@ -4,15 +4,19 @@ import { logFactory } from "../log-config";
 import * as common from "akibot-common/dist";
 import { WebSocketService } from "./serices/web-socket.service";
 import { SceneComponent } from "./scene.component";
-import { ColladaLoaderUtils } from "./colladata-loader-utils";
+import "./js/ActivateThree";
+import "./js/ColladaLoader";
 
 
 export class WorldHandler {
 
     private logger = logFactory.getLogger(this.constructor.name);
+
     private worldObject3d: THREE.Object3D;
     private robotObject3d: THREE.Object3D;
     private gridObject3d: THREE.Object3D;
+
+    private loader: THREE.ColladaLoader;
 
     constructor(protected sceneComponent: SceneComponent) {
         this.logger.info("constructor");
@@ -58,7 +62,10 @@ export class WorldHandler {
         this.logger.trace("Creating robotNode");
         this.robotObject3d = new THREE.Object3D();
 
-        ColladaLoaderUtils.load(worldContentResponse.worldNode.robotNode.modelFileName, this.onModelLoaded);
+        if (this.loader == undefined) {
+            this.loader = new THREE.ColladaLoader();
+        }
+        this.loader.load(worldContentResponse.worldNode.robotNode.modelFileName, this.onModelLoaded);
         this.sceneComponent.render();
     }
 
@@ -67,7 +74,7 @@ export class WorldHandler {
         this.robotObject3d.add(model.scene);
         //this.robotObject3d.rotateX(common.AngleUtils.degreesToRadians(-90));        
         this.robotObject3d.translateZ(10);
-       
+
         this.robotObject3d.updateMatrix();
         this.worldObject3d.add(this.robotObject3d);
         this.sceneComponent.render();

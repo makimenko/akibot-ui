@@ -22,8 +22,6 @@
         "styles.css"
       ],
       "scripts": [
-        "../node_modules/three/build/three.js",
-        "../node_modules/three/examples/js/loaders/ColladaLoader.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {

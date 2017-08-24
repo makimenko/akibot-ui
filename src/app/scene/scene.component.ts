@@ -3,6 +3,8 @@ import * as HELPERS from './helpers';
 import * as THREE from 'three';
 import { WebSocketService } from "./serices/web-socket.service";
 import { WorldHandler } from "./world-handler";
+import "./js/ActivateThree";
+import "./js/OrbitControls";
 
 @Component({
     selector: 'scene',
@@ -11,7 +13,7 @@ import { WorldHandler } from "./world-handler";
 })
 export class SceneComponent implements AfterViewInit {
 
-    private worldHandler : WorldHandler;
+    private worldHandler: WorldHandler;
     private renderer: THREE.WebGLRenderer;
     private camera: THREE.PerspectiveCamera;
     private cameraTarget: THREE.Vector3;
@@ -24,11 +26,14 @@ export class SceneComponent implements AfterViewInit {
     public gridHelper: HELPERS.GridHelperObject;
     public axisHelper: HELPERS.AxisHelperObject;
 
+    private controls: THREE.OrbitControls;
+
     @ViewChild('canvas')
     private canvasRef: ElementRef;
 
     constructor(public webSocketService: WebSocketService) {
         console.log("SceneComponent.constructor");
+        this.render = this.render.bind(this);
     }
 
     private get canvas(): HTMLCanvasElement {
@@ -49,12 +54,12 @@ export class SceneComponent implements AfterViewInit {
 
     private createLight() {
         var light = new THREE.PointLight(0xffffff, 1, 1000);
-		light.position.set(0, 0, 100);
-		this.scene.add(light);
+        light.position.set(0, 0, 100);
+        this.scene.add(light);
 
-		var light = new THREE.PointLight(0xffffff, 1, 1000);
-		light.position.set(0, 0, -100);
-		this.scene.add(light);
+        var light = new THREE.PointLight(0xffffff, 1, 1000);
+        light.position.set(0, 0, -100);
+        this.scene.add(light);
     }
 
     private createCamera() {
@@ -107,6 +112,13 @@ export class SceneComponent implements AfterViewInit {
 
     private createWorldHandler() {
         this.worldHandler = new WorldHandler(this);
+    }
+
+    private createControls() {
+        this.controls = new THREE.OrbitControls(this.camera);
+        this.controls.rotateSpeed = 1.0;
+        this.controls.zoomSpeed = 1.2;
+        this.controls.addEventListener('change', this.render);
     }
 
     public render() {
@@ -166,7 +178,8 @@ export class SceneComponent implements AfterViewInit {
         this.createLight();
         this.createCamera();
         this.startRendering();
-        this.createWorldHandler();        
+        this.createWorldHandler();
+        this.createControls();
     }
 
 }
