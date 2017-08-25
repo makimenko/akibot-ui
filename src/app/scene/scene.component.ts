@@ -1,10 +1,10 @@
 import { AfterViewInit, Component, ElementRef, Input, ViewChild, HostListener } from '@angular/core';
+import { logFactory } from "../log-config";
 import * as HELPERS from './helpers';
 import * as THREE from 'three';
 import { WebSocketService } from "./serices/web-socket.service";
-import { WorldHandler } from "./world-handler";
 import "three/examples/js/controls/OrbitControls";
-
+import { WorldHandler } from "./handlers/world-handler";
 
 @Component({
     selector: 'scene',
@@ -12,6 +12,8 @@ import "three/examples/js/controls/OrbitControls";
     styleUrls: ['./scene.component.css']
 })
 export class SceneComponent implements AfterViewInit {
+
+    private logger = logFactory.getLogger(this.constructor.name);
 
     private worldHandler: WorldHandler;
     private renderer: THREE.WebGLRenderer;
@@ -32,7 +34,7 @@ export class SceneComponent implements AfterViewInit {
     private canvasRef: ElementRef;
 
     constructor(public webSocketService: WebSocketService) {
-        console.log("SceneComponent.constructor");
+        this.logger.debug("SceneComponent.constructor");
         this.render = this.render.bind(this);
     }
 
@@ -128,20 +130,19 @@ export class SceneComponent implements AfterViewInit {
     /* EVENTS */
 
     public onMouseDown(event: MouseEvent) {
-        console.log("onMouseDown");
         event.preventDefault();
     }
 
     public onMouseMove(event: MouseEvent) {
-        //console.log("onMouseMove");
+
     }
 
     public onMouseUp(event: MouseEvent) {
-        console.log("onMouseUp");
+
     }
 
     public onWheel(event: MouseWheelEvent) {
-        console.log("onWheel");
+
     }
 
     @HostListener('window:resize', ['$event'])
@@ -177,9 +178,10 @@ export class SceneComponent implements AfterViewInit {
         this.createScene();
         this.createLight();
         this.createCamera();
-        this.startRendering();
         this.createWorldHandler();
         this.createControls();
+
+        this.startRendering();
     }
 
 }
