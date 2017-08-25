@@ -19,14 +19,15 @@ export class SceneComponent implements AfterViewInit {
     private renderer: THREE.WebGLRenderer;
     private camera: THREE.PerspectiveCamera;
     private cameraTarget: THREE.Vector3;
+
     public scene: THREE.Scene;
 
-    public fieldOfView: number = 60;
-    public nearClippingPane: number = 1;
-    public farClippingPane: number = 1100;
+    private fieldOfView: number = 60;
+    private nearClippingPane: number = 1;
+    private farClippingPane: number = 1100;
 
-    public gridHelper: HELPERS.GridHelperObject;
-    public axisHelper: HELPERS.AxisHelperObject;
+    private gridHelper: HELPERS.GridHelperObject;
+    private axisHelper: HELPERS.AxisHelperObject;
 
     private controls: THREE.OrbitControls;
 
@@ -34,7 +35,7 @@ export class SceneComponent implements AfterViewInit {
     private canvasRef: ElementRef;
 
     constructor(public webSocketService: WebSocketService) {
-        this.logger.debug("SceneComponent.constructor");
+        this.logger.debug("constructor");
         this.render = this.render.bind(this);
     }
 
@@ -43,6 +44,8 @@ export class SceneComponent implements AfterViewInit {
     }
 
     private createScene() {
+        this.logger.debug("createScene");
+
         this.scene = new THREE.Scene();
 
         this.gridHelper = new HELPERS.GridHelperObject(300, 10);
@@ -55,6 +58,8 @@ export class SceneComponent implements AfterViewInit {
     }
 
     private createLight() {
+        this.logger.debug("createLight");
+
         var light = new THREE.PointLight(0xffffff, 1, 1000);
         light.position.set(0, 0, 100);
         this.scene.add(light);
@@ -65,6 +70,8 @@ export class SceneComponent implements AfterViewInit {
     }
 
     private createCamera() {
+        this.logger.debug("createCamera");
+
         let aspectRatio = this.getAspectRatio();
         this.camera = new THREE.PerspectiveCamera(
             this.fieldOfView,
@@ -92,6 +99,7 @@ export class SceneComponent implements AfterViewInit {
     }
 
     private startRendering() {
+        this.logger.debug("startRendering");
         this.renderer = new THREE.WebGLRenderer({
             canvas: this.canvas,
             antialias: true
@@ -117,6 +125,7 @@ export class SceneComponent implements AfterViewInit {
     }
 
     private createControls() {
+        this.logger.debug("createControls");
         this.controls = new THREE.OrbitControls(this.camera);
         this.controls.rotateSpeed = 1.0;
         this.controls.zoomSpeed = 1.2;
@@ -149,7 +158,7 @@ export class SceneComponent implements AfterViewInit {
     public onResize(event: Event) {
         this.canvas.style.width = "100%";
         this.canvas.style.height = "100%";
-        console.log("onResize: " + this.canvas.clientWidth + ", " + this.canvas.clientHeight);
+        this.logger.debug("onResize: " + this.canvas.clientWidth + ", " + this.canvas.clientHeight);
 
         this.camera.aspect = this.getAspectRatio();
         this.camera.updateProjectionMatrix();
@@ -159,7 +168,7 @@ export class SceneComponent implements AfterViewInit {
 
     @HostListener('document:keypress', ['$event'])
     public onKeyPress(event: KeyboardEvent) {
-        console.log("onKeyPress: " + event.key);
+        this.logger.debug("onKeyPress: " + event.key);
         switch (event.key) {
             case "g":
                 this.gridHelper.visible = !this.gridHelper.visible;
