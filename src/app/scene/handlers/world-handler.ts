@@ -57,6 +57,8 @@ export class WorldHandler {
         this.sceneComponent.render();
     }
 
+    
+
     private addWorldNode(worldNode: common.WorldNode) {
         this.logger.debug("addWorldNode");
         if (this.worldNode != undefined) {

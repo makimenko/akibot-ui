@@ -4,6 +4,7 @@ import * as common from "akibot-common/dist";
 import * as THREE from 'three';
 import "three/examples/js/loaders/ColladaLoader";
 import { WorldHandler } from "./world-handler";
+import { CommonUtils } from "./common-utils";
 
 
 export class RobotHandler {
@@ -16,6 +17,8 @@ export class RobotHandler {
     constructor(private worldHandler: WorldHandler) {
         this.logger.debug("constructor");
         this.onModelLoaded = this.onModelLoaded.bind(this);
+        this.onRobotTransformationEvent = this.onRobotTransformationEvent.bind(this);
+        this.worldHandler.sceneComponent.webSocketService.events.on(common.RobotTransformationEvent.name, this.onRobotTransformationEvent);
     }
 
     public addRobot(robotNode: common.RobotNode) {
@@ -37,6 +40,14 @@ export class RobotHandler {
         this.robotObject3d.updateMatrix();
         this.worldHandler.worldObject3d.add(this.robotObject3d);
         this.worldHandler.sceneComponent.render();
+    }
+
+    public onRobotTransformationEvent(robotTransformationEvent: common.RobotTransformationEvent) {
+        this.logger.trace("onRobotTransformationEvent");
+        if (this.robotObject3d != undefined && robotTransformationEvent != undefined) {
+            CommonUtils.applyTransformation(this.robotObject3d, robotTransformationEvent.transformation);
+            this.worldHandler.sceneComponent.render();
+        }
     }
 
 
