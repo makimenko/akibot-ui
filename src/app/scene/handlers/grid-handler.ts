@@ -14,6 +14,7 @@ export class GridHandler {
     private gridObject3d: THREE.Object3D;
 
     // TODO: Put into config
+    private globalScale: number = 0.1;
     private gap = 0.0; // distance between cells
 
     private xyzCoordinatesCount = 3;
@@ -50,12 +51,9 @@ export class GridHandler {
 
         this.gridConfiguration = gridConfiguration;
         this.gridObject3d = new THREE.Object3D;
-        this.gridObject3d.scale.set(0.1, 0.1, 0.1);
-        //this.gridObject3d = new THREE.GridHelper(gridConfiguration.cellCount * gridConfiguration.cellSizeMm, gridConfiguration.cellCount);
-        //this.gridObject3d.rotateX(common.AngleUtils.degreesToRadians(90));
+        this.gridObject3d.scale.set(this.globalScale, this.globalScale, this.globalScale);
         this.worldHandler.worldObject3d.add(this.gridObject3d);
-
-
+        
     }
 
 
