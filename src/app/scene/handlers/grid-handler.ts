@@ -14,7 +14,6 @@ export class GridHandler {
     private gridObject3d: THREE.Object3D;
 
     // TODO: Put into config
-    private cellScale: number = 0.1; // scale grid
     private gap = 0.0; // distance between cells
 
     private xyzCoordinatesCount = 3;
@@ -51,6 +50,7 @@ export class GridHandler {
 
         this.gridConfiguration = gridConfiguration;
         this.gridObject3d = new THREE.Object3D;
+        this.gridObject3d.scale.set(0.1, 0.1, 0.1);
         //this.gridObject3d = new THREE.GridHelper(gridConfiguration.cellCount * gridConfiguration.cellSizeMm, gridConfiguration.cellCount);
         //this.gridObject3d.rotateX(common.AngleUtils.degreesToRadians(90));
         this.worldHandler.worldObject3d.add(this.gridObject3d);
@@ -68,7 +68,7 @@ export class GridHandler {
         var arraySize = cellsCount * this.xyzCoordinatesCount * this.cellPointCount;
         var positions = new Float32Array(arraySize);
         var colors = new Float32Array(arraySize);
-        var color : THREE.Color;
+        var color: THREE.Color;
 
         var ip = 0;
         var ic = 0;
@@ -82,61 +82,57 @@ export class GridHandler {
                 // Triangle 1:
                 positions[ip++] = x
                     * this.gridConfiguration.cellSizeMm
-                    * this.cellScale
                     + this.gap;
                 positions[ip++] = y
                     * this.gridConfiguration.cellSizeMm
-                    * this.cellScale + this.gap;
+                    + this.gap;
                 positions[ip++] = z;
 
                 positions[ip++] = x
-                    * this.gridConfiguration.cellSizeMm * this.cellScale
+                    * this.gridConfiguration.cellSizeMm
                     + this.gap;
                 positions[ip++] = y
                     * this.gridConfiguration.cellSizeMm
-                    * this.cellScale
-                    + (this.gridConfiguration.cellSizeMm * this.cellScale)
+                    + this.gridConfiguration.cellSizeMm
                     - this.gap;
                 positions[ip++] = z;
 
                 positions[ip++] = x
                     * this.gridConfiguration.cellSizeMm
-                    * this.cellScale
-                    + (this.gridConfiguration.cellSizeMm * this.cellScale)
+                    + this.gridConfiguration.cellSizeMm
                     - this.gap;
                 positions[ip++] = y
                     * this.gridConfiguration.cellSizeMm
-                    * this.cellScale
-                    + (this.gridConfiguration.cellSizeMm * this.cellScale)
+                    + this.gridConfiguration.cellSizeMm
                     - this.gap;
                 positions[ip++] = z;
 
                 // Triangle 2:
                 positions[ip++] = x
                     * this.gridConfiguration.cellSizeMm
-                    * this.cellScale
-                    + (this.gridConfiguration.cellSizeMm * this.cellScale)
+                    + this.gridConfiguration.cellSizeMm
                     - this.gap;
                 positions[ip++] = y
                     * this.gridConfiguration.cellSizeMm
-                    * this.cellScale
-                    + (this.gridConfiguration.cellSizeMm * this.cellScale)
+                    + (this.gridConfiguration.cellSizeMm)
                     - this.gap;
                 positions[ip++] = z;
 
                 positions[ip++] = x
                     * this.gridConfiguration.cellSizeMm
-                    * this.cellScale
-                    + (this.gridConfiguration.cellSizeMm * this.cellScale)
+                    + this.gridConfiguration.cellSizeMm
                     - this.gap;
-                positions[ip++] = y * this.gridConfiguration.cellSizeMm
-                    * this.cellScale + this.gap;
+                positions[ip++] = y
+                    * this.gridConfiguration.cellSizeMm
+                    + this.gap;
                 positions[ip++] = z;
 
-                positions[ip++] = x * this.gridConfiguration.cellSizeMm
-                    * this.cellScale + this.gap;
-                positions[ip++] = y * this.gridConfiguration.cellSizeMm
-                    * this.cellScale + this.gap;
+                positions[ip++] = x
+                    * this.gridConfiguration.cellSizeMm
+                    + this.gap;
+                positions[ip++] = y
+                    * this.gridConfiguration.cellSizeMm
+                    + this.gap;
                 positions[ip++] = z;
 
                 // Set color
@@ -168,9 +164,9 @@ export class GridHandler {
 
         var offsetVector = this.gridConfiguration.offsetVector;
         dataGroup.position.set(
-            offsetVector.x * this.cellScale,
-            offsetVector.y * this.cellScale,
-            offsetVector.z * this.cellScale
+            offsetVector.x,
+            offsetVector.y,
+            offsetVector.z
         );
 
         this.logger.trace("Adding to scene");
