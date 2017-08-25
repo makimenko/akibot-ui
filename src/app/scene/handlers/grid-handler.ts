@@ -9,116 +9,146 @@ export class GridHandler {
 
     private logger = logFactory.getLogger(this.constructor.name);
 
+    private gridNode: common.GridNode;
     private gridConfiguration: common.GridConfiguration;
     private gridObject3d: THREE.Object3D;
+
+    // TODO: Put into config
+    private cellScale: number = 0.1; // scale grid
+    private gap = 0.0; // distance between cells
+
+    private xyzCoordinatesCount = 3;
+    private cellPointCount = 2 * 3;
+    private obstacleColor = new THREE.Color(200 / 255, 0 / 255, 0 / 255);
+    private emptyColor = new THREE.Color(0 / 255, 200 / 255, 0 / 255);
+    private unknownColor = new THREE.Color(250 / 255, 250 / 255, 250 / 255);
+
+    private material = new THREE.MeshBasicMaterial({
+        side: THREE.DoubleSide,
+        vertexColors: THREE.VertexColors,
+        transparent: true,
+        opacity: 0.5,
+        shading: THREE.FlatShading
+    });
 
     constructor(private worldHandler: WorldHandler) {
         this.logger.debug("constructor");
     }
 
     public addGrid(gridNode: common.GridNode) {
+        this.logger.trace("addGrid");
+
+        this.gridNode = gridNode;
         this.addLocationAreaGrid(gridNode.gridConfiguration);
+        if (this.gridNode.data != undefined) {
+            this.addMatrix(gridNode.data);
+        }
+
     }
 
     public addLocationAreaGrid(gridConfiguration: common.GridConfiguration) {
         this.logger.trace("addLocationAreaGrid");
+
         this.gridConfiguration = gridConfiguration;
-        this.gridObject3d = new THREE.GridHelper(gridConfiguration.cellCount * gridConfiguration.cellSizeMm, gridConfiguration.cellCount);
-        this.gridObject3d.rotateX(common.AngleUtils.degreesToRadians(90));
+        this.gridObject3d = new THREE.Object3D;
+        //this.gridObject3d = new THREE.GridHelper(gridConfiguration.cellCount * gridConfiguration.cellSizeMm, gridConfiguration.cellCount);
+        //this.gridObject3d.rotateX(common.AngleUtils.degreesToRadians(90));
         this.worldHandler.worldObject3d.add(this.gridObject3d);
+
+
     }
 
 
-    private addMatrix() {
+    private addMatrix(data: number[][]): void {
+        this.logger.trace("addMatrix");
 
-        /*
-        this.gridConfiguration.cellSizeMm
-        this.gridDetail.cellSizeMm = node.geometry.gridConfiguration.cellSizeMm;
-        cellsCount = this.gridDetail.grid.length
-            * this.gridDetail.grid[0].length;
+        var cellsCount = this.gridNode.data.length * data[0].length;
 
-        var gap = 0.0; // distance between cells
-        this.gridDetail.gridGeometry = new THREE.BufferGeometry();
-        var arraySize = cellsCount * this.gridDetail.xyzCoordinatesCount
-            * this.gridDetail.cellPointCount;
+        var dataGeometry = new THREE.BufferGeometry();
+        var arraySize = cellsCount * this.xyzCoordinatesCount * this.cellPointCount;
         var positions = new Float32Array(arraySize);
         var colors = new Float32Array(arraySize);
-        var color;
+        var color : THREE.Color;
 
         var ip = 0;
         var ic = 0;
         var z = 0;
         var r, g, b;
 
-        for (var x = 0; x < this.gridDetail.grid.length; x++) {
-            for (var y = 0; y < this.gridDetail.grid[x].length; y++) {
+        this.logger.trace("Loop - Number of cells: " + cellsCount);
+        for (var x = 0; x < data.length; x++) {
+            for (var y = 0; y < data[x].length; y++) {
                 // Square has 2 triangles:
                 // Triangle 1:
-                positions[ip++] = x * this.gridDetail.cellSizeMm
-                    * this.gridDetail.cellScale + gap;
-                positions[ip++] = y * this.gridDetail.cellSizeMm
-                    * this.gridDetail.cellScale + gap;
-                positions[ip++] = z;
-
-                positions[ip++] = x * this.gridDetail.cellSizeMm
-                    * this.gridDetail.cellScale + gap;
+                positions[ip++] = x
+                    * this.gridConfiguration.cellSizeMm
+                    * this.cellScale
+                    + this.gap;
                 positions[ip++] = y
-                    * this.gridDetail.cellSizeMm
-                    * this.gridDetail.cellScale
-                    + (this.gridDetail.cellSizeMm * this.gridDetail.cellScale)
-                    - gap;
+                    * this.gridConfiguration.cellSizeMm
+                    * this.cellScale + this.gap;
                 positions[ip++] = z;
 
                 positions[ip++] = x
-                    * this.gridDetail.cellSizeMm
-                    * this.gridDetail.cellScale
-                    + (this.gridDetail.cellSizeMm * this.gridDetail.cellScale)
-                    - gap;
+                    * this.gridConfiguration.cellSizeMm * this.cellScale
+                    + this.gap;
                 positions[ip++] = y
-                    * this.gridDetail.cellSizeMm
-                    * this.gridDetail.cellScale
-                    + (this.gridDetail.cellSizeMm * this.gridDetail.cellScale)
-                    - gap;
+                    * this.gridConfiguration.cellSizeMm
+                    * this.cellScale
+                    + (this.gridConfiguration.cellSizeMm * this.cellScale)
+                    - this.gap;
+                positions[ip++] = z;
+
+                positions[ip++] = x
+                    * this.gridConfiguration.cellSizeMm
+                    * this.cellScale
+                    + (this.gridConfiguration.cellSizeMm * this.cellScale)
+                    - this.gap;
+                positions[ip++] = y
+                    * this.gridConfiguration.cellSizeMm
+                    * this.cellScale
+                    + (this.gridConfiguration.cellSizeMm * this.cellScale)
+                    - this.gap;
                 positions[ip++] = z;
 
                 // Triangle 2:
                 positions[ip++] = x
-                    * this.gridDetail.cellSizeMm
-                    * this.gridDetail.cellScale
-                    + (this.gridDetail.cellSizeMm * this.gridDetail.cellScale)
-                    - gap;
+                    * this.gridConfiguration.cellSizeMm
+                    * this.cellScale
+                    + (this.gridConfiguration.cellSizeMm * this.cellScale)
+                    - this.gap;
                 positions[ip++] = y
-                    * this.gridDetail.cellSizeMm
-                    * this.gridDetail.cellScale
-                    + (this.gridDetail.cellSizeMm * this.gridDetail.cellScale)
-                    - gap;
+                    * this.gridConfiguration.cellSizeMm
+                    * this.cellScale
+                    + (this.gridConfiguration.cellSizeMm * this.cellScale)
+                    - this.gap;
                 positions[ip++] = z;
 
                 positions[ip++] = x
-                    * this.gridDetail.cellSizeMm
-                    * this.gridDetail.cellScale
-                    + (this.gridDetail.cellSizeMm * this.gridDetail.cellScale)
-                    - gap;
-                positions[ip++] = y * this.gridDetail.cellSizeMm
-                    * this.gridDetail.cellScale + gap;
+                    * this.gridConfiguration.cellSizeMm
+                    * this.cellScale
+                    + (this.gridConfiguration.cellSizeMm * this.cellScale)
+                    - this.gap;
+                positions[ip++] = y * this.gridConfiguration.cellSizeMm
+                    * this.cellScale + this.gap;
                 positions[ip++] = z;
 
-                positions[ip++] = x * this.gridDetail.cellSizeMm
-                    * this.gridDetail.cellScale + gap;
-                positions[ip++] = y * this.gridDetail.cellSizeMm
-                    * this.gridDetail.cellScale + gap;
+                positions[ip++] = x * this.gridConfiguration.cellSizeMm
+                    * this.cellScale + this.gap;
+                positions[ip++] = y * this.gridConfiguration.cellSizeMm
+                    * this.cellScale + this.gap;
                 positions[ip++] = z;
 
                 // Set color
-                if (this.gridDetail.grid[x][y] > 0) {
-                    color = this.gridDetail.obstacleColor;
-                } else if (this.gridDetail.grid[x][y] == 0) {
-                    color = this.gridDetail.emptyColor;
+                if (data[x][y] > 0) {
+                    color = this.obstacleColor;
+                } else if (data[x][y] == 0) {
+                    color = this.emptyColor;
                 } else {
-                    color = this.gridDetail.unknownColor;
+                    color = this.unknownColor;
                 }
 
-                for (var d = 0; d < this.gridDetail.cellPointCount; d++) {
+                for (var d = 0; d < this.cellPointCount; d++) {
                     colors[ic++] = color.r;
                     colors[ic++] = color.g;
                     colors[ic++] = color.b;
@@ -126,36 +156,26 @@ export class GridHandler {
             }
         }
 
-        this.gridDetail.gridGeometry.addAttribute('position',
-            new THREE.BufferAttribute(positions, 3));
-        this.gridDetail.gridGeometry.addAttribute('color',
-            new THREE.BufferAttribute(colors, 3));
+        this.logger.trace("Setting attributes");
+        dataGeometry.addAttribute('position', new THREE.BufferAttribute(positions, 3));
+        dataGeometry.addAttribute('color', new THREE.BufferAttribute(colors, 3));
 
         // Creating Mesh and adding to Scene:
-        this.gridDetail.gridGroup = new THREE.Mesh(
-            this.gridDetail.gridGeometry, this.gridDetail.material);
-        this.gridDetail.gridGroup.name = node.name;
+        var dataGroup = new THREE.Mesh(dataGeometry, this.material);
 
-        this.gridDetail.gridGeometry.computeBoundingBox();
-        this.gridDetail.gridGeometry.computeVertexNormals();
+        dataGeometry.computeBoundingBox();
+        dataGeometry.computeVertexNormals();
 
-        offsetVector = node.geometry.gridConfiguration.offsetVector;
-        transformation = node.transformation;
-        if (transformation == null) {
-            transformation = {
-                position: offsetVector
-            }
-        } else {
-            transformation.position.x += offsetVector.x;
-            transformation.position.y += offsetVector.y;
-        }
-        AkiScene.applyTransformation(this.gridDetail.gridGroup, transformation);
+        var offsetVector = this.gridConfiguration.offsetVector;
+        dataGroup.position.set(
+            offsetVector.x * this.cellScale,
+            offsetVector.y * this.cellScale,
+            offsetVector.z * this.cellScale
+        );
 
-        parentSceneNode.add(this.gridDetail.gridGroup);
-        this.render();
-
-        */
-
+        this.logger.trace("Adding to scene");
+        this.gridObject3d.add(dataGroup);
+        this.worldHandler.sceneComponent.render();
     }
 
 }
