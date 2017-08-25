@@ -51,7 +51,7 @@ export class WorldHandler {
         this.logger.debug("onWorldContentResponse");
 
         this.addWorldNode(worldContentResponse.worldNode);
-        this.gridHandler.addLocationAreaGrid(worldContentResponse.worldNode.gridConfiguration);
+        this.gridHandler.addGrid(worldContentResponse.worldNode.gridNode);
         this.robotHandler.addRobot(worldContentResponse.worldNode.robotNode);
 
         this.sceneComponent.render();

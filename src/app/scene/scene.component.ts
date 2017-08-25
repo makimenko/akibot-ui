@@ -24,7 +24,7 @@ export class SceneComponent implements AfterViewInit {
 
     private fieldOfView: number = 60;
     private nearClippingPane: number = 1;
-    private farClippingPane: number = 1100;
+    private farClippingPane: number = 2000;
 
     private gridHelper: HELPERS.GridHelperObject;
     private axisHelper: HELPERS.AxisHelperObject;
@@ -115,7 +115,6 @@ export class SceneComponent implements AfterViewInit {
         let component: SceneComponent = this;
 
         (function render() {
-            //requestAnimationFrame(render);
             component.render();
         }());
     }
