@@ -1,4 +1,1161 @@
-webpackJsonp([3],{
+webpackJsonp(["vendor"],{
+
+/***/ "../../../../akibot-common/dist/element/Angle.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const index_1 = __webpack_require__("../../../../akibot-common/dist/index.js");
+class Angle extends index_1.Element {
+    constructor(radians) {
+        super();
+        this.radians = radians;
+    }
+    getDegrees() {
+        return index_1.AngleUtils.radiansToDegrees(this.radians);
+    }
+    setDegrees(degrees) {
+        this.radians = index_1.AngleUtils.degreesToRadians(degrees);
+    }
+    add(angle) {
+        var value = this.radians + angle.radians;
+        value = index_1.AngleUtils.normalizeRadian(value);
+        this.radians = value;
+    }
+    fuzzyEqual(b, toleranceDegrees) {
+        var res = index_1.AngleUtils.modularDistanceDegrees(this.getDegrees(), b.getDegrees());
+        return res < toleranceDegrees;
+    }
+    toString() {
+        return "Angle(" + this.getDegrees() + " deg)";
+    }
+}
+exports.Angle = Angle;
+//# sourceMappingURL=Angle.js.map
+
+/***/ }),
+
+/***/ "../../../../akibot-common/dist/element/Dimension2D.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const __1 = __webpack_require__("../../../../akibot-common/dist/index.js");
+class Dimension2D extends __1.Element {
+    constructor(x, y) {
+        super();
+        this.x = x;
+        this.y = y;
+    }
+    add(dimension2d) {
+        if (dimension2d != null) {
+            this.x += dimension2d.x;
+            this.y += dimension2d.y;
+        }
+    }
+    toString() {
+        return "(" + this.x + "," + this.y + ")";
+    }
+}
+exports.Dimension2D = Dimension2D;
+//# sourceMappingURL=Dimension2D.js.map
+
+/***/ }),
+
+/***/ "../../../../akibot-common/dist/element/Dimension3D.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const __1 = __webpack_require__("../../../../akibot-common/dist/index.js");
+class Dimension3D extends __1.Dimension2D {
+    constructor(x, y, z) {
+        super(x, y);
+        this.z = z;
+    }
+    add(dimension3d) {
+        if (dimension3d != null) {
+            this.x += dimension3d.x;
+            this.y += dimension3d.y;
+            this.z += dimension3d.z;
+        }
+    }
+    subtract(dimension3d) {
+        if (dimension3d != null) {
+            this.x -= dimension3d.x;
+            this.y -= dimension3d.y;
+            this.z -= dimension3d.z;
+        }
+    }
+    toString() {
+        return "(" + this.x + "," + this.y + "," + this.x + ")";
+    }
+    equals(dimension3d, tolerance) {
+        return dimension3d != null
+            && Math.abs(dimension3d.x - this.x) < tolerance
+            && Math.abs(dimension3d.y - this.y) < tolerance
+            && Math.abs(dimension3d.z - this.z) < tolerance;
+    }
+}
+exports.Dimension3D = Dimension3D;
+//# sourceMappingURL=Dimension3D.js.map
+
+/***/ }),
+
+/***/ "../../../../akibot-common/dist/element/Distance.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const __1 = __webpack_require__("../../../../akibot-common/dist/index.js");
+class Distance extends __1.Element {
+    constructor(distanceMm, errorAngle, endObstacle) {
+        super();
+        this.distanceMm = distanceMm;
+        this.errorAngle = errorAngle;
+        this.endObstacle = endObstacle;
+    }
+}
+exports.Distance = Distance;
+//# sourceMappingURL=Distance.js.map
+
+/***/ }),
+
+/***/ "../../../../akibot-common/dist/element/Element.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+class Element {
+    constructor() {
+        this.$name = this.constructor.name;
+    }
+}
+exports.Element = Element;
+//# sourceMappingURL=Element.js.map
+
+/***/ }),
+
+/***/ "../../../../akibot-common/dist/element/Line2D.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const __1 = __webpack_require__("../../../../akibot-common/dist/index.js");
+class Line2D extends __1.Element {
+    constructor(from, to) {
+        super();
+        this.from = from;
+        this.to = to;
+    }
+    getVector() {
+        var x = this.to.x - this.from.x;
+        var y = this.to.y - this.from.y;
+        return new __1.Vector2D(x, y);
+    }
+    toString() {
+        return "Line(" + this.from + " - " + this.to + ")";
+    }
+}
+exports.Line2D = Line2D;
+//# sourceMappingURL=Line2D.js.map
+
+/***/ }),
+
+/***/ "../../../../akibot-common/dist/element/Line3D.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const __1 = __webpack_require__("../../../../akibot-common/dist/index.js");
+class Line3D extends __1.Element {
+    constructor(from, to) {
+        super();
+        this.from = from;
+        this.to = to;
+    }
+    getVector() {
+        var x = this.to.x - this.from.x;
+        var y = this.to.y - this.from.y;
+        var z = this.to.z - this.from.z;
+        return new __1.Vector3D(x, y, z);
+    }
+    toString() {
+        return "Line(" + this.from + ", " + this.to + ")";
+    }
+}
+exports.Line3D = Line3D;
+//# sourceMappingURL=Line3D.js.map
+
+/***/ }),
+
+/***/ "../../../../akibot-common/dist/element/Point2D.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const __1 = __webpack_require__("../../../../akibot-common/dist/index.js");
+class Point2D extends __1.Dimension2D {
+    constructor(x, y) {
+        super(x, y);
+    }
+    toString() {
+        return "Point2D" + super.toString();
+    }
+}
+exports.Point2D = Point2D;
+//# sourceMappingURL=Point2D.js.map
+
+/***/ }),
+
+/***/ "../../../../akibot-common/dist/element/Point3D.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const __1 = __webpack_require__("../../../../akibot-common/dist/index.js");
+class Point3D extends __1.Dimension3D {
+    constructor(x, y, z) {
+        super(x, y, z);
+    }
+    toString() {
+        return "Point3D" + super.toString();
+    }
+}
+exports.Point3D = Point3D;
+//# sourceMappingURL=Point3D.js.map
+
+/***/ }),
+
+/***/ "../../../../akibot-common/dist/element/Vector2D.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const __1 = __webpack_require__("../../../../akibot-common/dist/index.js");
+class Vector2D extends __1.Dimension2D {
+    constructor(x, y) {
+        super(x, y);
+    }
+    toString() {
+        return "Vector2D" + super.toString();
+    }
+}
+exports.Vector2D = Vector2D;
+//# sourceMappingURL=Vector2D.js.map
+
+/***/ }),
+
+/***/ "../../../../akibot-common/dist/element/Vector3D.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const __1 = __webpack_require__("../../../../akibot-common/dist/index.js");
+class Vector3D extends __1.Dimension3D {
+    constructor(x, y, z) {
+        super(x, y, z);
+    }
+    toString() {
+        return "Vector3D" + super.toString();
+    }
+    clone() {
+        return new Vector3D(this.x, this.y, this.z);
+    }
+}
+exports.Vector3D = Vector3D;
+//# sourceMappingURL=Vector3D.js.map
+
+/***/ }),
+
+/***/ "../../../../akibot-common/dist/index.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
+Object.defineProperty(exports, "__esModule", { value: true });
+__export(__webpack_require__("../../../../akibot-common/dist/element/Element.js"));
+__export(__webpack_require__("../../../../akibot-common/dist/element/Angle.js"));
+__export(__webpack_require__("../../../../akibot-common/dist/element/Distance.js"));
+__export(__webpack_require__("../../../../akibot-common/dist/element/Dimension2D.js"));
+__export(__webpack_require__("../../../../akibot-common/dist/element/Dimension3D.js"));
+__export(__webpack_require__("../../../../akibot-common/dist/element/Vector2D.js"));
+__export(__webpack_require__("../../../../akibot-common/dist/element/Vector3D.js"));
+__export(__webpack_require__("../../../../akibot-common/dist/element/Point2D.js"));
+__export(__webpack_require__("../../../../akibot-common/dist/element/Point3D.js"));
+__export(__webpack_require__("../../../../akibot-common/dist/element/Line2D.js"));
+__export(__webpack_require__("../../../../akibot-common/dist/element/Line3D.js"));
+__export(__webpack_require__("../../../../akibot-common/dist/utils/AngleUtils.js"));
+__export(__webpack_require__("../../../../akibot-common/dist/utils/VectorUtils.js"));
+__export(__webpack_require__("../../../../akibot-common/dist/utils/SerializationUtils.js"));
+__export(__webpack_require__("../../../../akibot-common/dist/message/Message.js"));
+__export(__webpack_require__("../../../../akibot-common/dist/message/ValueResponse.js"));
+__export(__webpack_require__("../../../../akibot-common/dist/message/Command.js"));
+__export(__webpack_require__("../../../../akibot-common/dist/message/AutoIntervalCommand.js"));
+__export(__webpack_require__("../../../../akibot-common/dist/message/orientation/OrientationRequest.js"));
+__export(__webpack_require__("../../../../akibot-common/dist/message/orientation/OrientationResponse.js"));
+__export(__webpack_require__("../../../../akibot-common/dist/message/gyroscope/GyroscopeAutoIntervalCommand.js"));
+__export(__webpack_require__("../../../../akibot-common/dist/message/gyroscope/GyroscopeValueResponse.js"));
+__export(__webpack_require__("../../../../akibot-common/dist/message/wheel/WheelCommand.js"));
+__export(__webpack_require__("../../../../akibot-common/dist/message/world/WorldContentResponse.js"));
+__export(__webpack_require__("../../../../akibot-common/dist/message/world/WorldContentRequest.js"));
+__export(__webpack_require__("../../../../akibot-common/dist/message/robot/RobotTransformationEvent.js"));
+__export(__webpack_require__("../../../../akibot-common/dist/message/distance/DistanceAutoIntervalCommand.js"));
+__export(__webpack_require__("../../../../akibot-common/dist/message/distance/DistanceValueResponse.js"));
+__export(__webpack_require__("../../../../akibot-common/dist/message/grid/GridUpdateEvent.js"));
+__export(__webpack_require__("../../../../akibot-common/dist/world/WorldElement.js"));
+__export(__webpack_require__("../../../../akibot-common/dist/world/Material.js"));
+__export(__webpack_require__("../../../../akibot-common/dist/world/NodeTransformation3D.js"));
+__export(__webpack_require__("../../../../akibot-common/dist/world/GridConfiguration.js"));
+__export(__webpack_require__("../../../../akibot-common/dist/world/GridNode.js"));
+__export(__webpack_require__("../../../../akibot-common/dist/world/WorldNode.js"));
+__export(__webpack_require__("../../../../akibot-common/dist/world/RobotNode.js"));
+__export(__webpack_require__("../../../../akibot-common/dist/world/DeviceNode.js"));
+//# sourceMappingURL=index.js.map
+
+/***/ }),
+
+/***/ "../../../../akibot-common/dist/message/AutoIntervalCommand.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const __1 = __webpack_require__("../../../../akibot-common/dist/index.js");
+class AutoIntervalCommand extends __1.Command {
+    constructor(interval) {
+        super();
+        this.interval = interval;
+    }
+}
+exports.AutoIntervalCommand = AutoIntervalCommand;
+//# sourceMappingURL=AutoIntervalCommand.js.map
+
+/***/ }),
+
+/***/ "../../../../akibot-common/dist/message/Command.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const __1 = __webpack_require__("../../../../akibot-common/dist/index.js");
+class Command extends __1.Message {
+}
+exports.Command = Command;
+//# sourceMappingURL=Command.js.map
+
+/***/ }),
+
+/***/ "../../../../akibot-common/dist/message/Message.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+class Message {
+    constructor() {
+        this.$name = this.constructor.name;
+    }
+}
+exports.Message = Message;
+//# sourceMappingURL=Message.js.map
+
+/***/ }),
+
+/***/ "../../../../akibot-common/dist/message/ValueResponse.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const __1 = __webpack_require__("../../../../akibot-common/dist/index.js");
+class ValueResponse extends __1.Message {
+}
+exports.ValueResponse = ValueResponse;
+//# sourceMappingURL=ValueResponse.js.map
+
+/***/ }),
+
+/***/ "../../../../akibot-common/dist/message/distance/DistanceAutoIntervalCommand.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const AutoIntervalCommand_1 = __webpack_require__("../../../../akibot-common/dist/message/AutoIntervalCommand.js");
+class DistanceAutoIntervalCommand extends AutoIntervalCommand_1.AutoIntervalCommand {
+}
+exports.DistanceAutoIntervalCommand = DistanceAutoIntervalCommand;
+//# sourceMappingURL=DistanceAutoIntervalCommand.js.map
+
+/***/ }),
+
+/***/ "../../../../akibot-common/dist/message/distance/DistanceValueResponse.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const __1 = __webpack_require__("../../../../akibot-common/dist/index.js");
+class DistanceValueResponse extends __1.ValueResponse {
+    constructor(distance) {
+        super();
+        this.distance = distance;
+    }
+}
+exports.DistanceValueResponse = DistanceValueResponse;
+//# sourceMappingURL=DistanceValueResponse.js.map
+
+/***/ }),
+
+/***/ "../../../../akibot-common/dist/message/grid/GridUpdateEvent.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const __1 = __webpack_require__("../../../../akibot-common/dist/index.js");
+class GridUpdateEvent extends __1.Message {
+    constructor(data) {
+        super();
+        this.data = data;
+    }
+}
+exports.GridUpdateEvent = GridUpdateEvent;
+//# sourceMappingURL=GridUpdateEvent.js.map
+
+/***/ }),
+
+/***/ "../../../../akibot-common/dist/message/gyroscope/GyroscopeAutoIntervalCommand.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const AutoIntervalCommand_1 = __webpack_require__("../../../../akibot-common/dist/message/AutoIntervalCommand.js");
+class GyroscopeAutoIntervalCommand extends AutoIntervalCommand_1.AutoIntervalCommand {
+}
+exports.GyroscopeAutoIntervalCommand = GyroscopeAutoIntervalCommand;
+//# sourceMappingURL=GyroscopeAutoIntervalCommand.js.map
+
+/***/ }),
+
+/***/ "../../../../akibot-common/dist/message/gyroscope/GyroscopeValueResponse.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const __1 = __webpack_require__("../../../../akibot-common/dist/index.js");
+class GyroscopeValueResponse extends __1.ValueResponse {
+    constructor(angle) {
+        super();
+        this.angle = angle;
+    }
+}
+exports.GyroscopeValueResponse = GyroscopeValueResponse;
+//# sourceMappingURL=GyroscopeValueResponse.js.map
+
+/***/ }),
+
+/***/ "../../../../akibot-common/dist/message/orientation/OrientationRequest.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const __1 = __webpack_require__("../../../../akibot-common/dist/index.js");
+class OrientationRequest extends __1.Message {
+    constructor(targetAngle, tolerance, timeout) {
+        super();
+        this.targetAngle = targetAngle;
+        this.tolerance = tolerance;
+        this.timeout = timeout;
+    }
+}
+exports.OrientationRequest = OrientationRequest;
+//# sourceMappingURL=OrientationRequest.js.map
+
+/***/ }),
+
+/***/ "../../../../akibot-common/dist/message/orientation/OrientationResponse.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const __1 = __webpack_require__("../../../../akibot-common/dist/index.js");
+class OrientationResponse extends __1.Message {
+    constructor(success, finalAngle) {
+        super();
+        this.success = success;
+        this.finalAngle = finalAngle;
+    }
+}
+exports.OrientationResponse = OrientationResponse;
+//# sourceMappingURL=OrientationResponse.js.map
+
+/***/ }),
+
+/***/ "../../../../akibot-common/dist/message/robot/RobotTransformationEvent.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const __1 = __webpack_require__("../../../../akibot-common/dist/index.js");
+class RobotTransformationEvent extends __1.Message {
+    constructor(transformation) {
+        super();
+        this.transformation = transformation;
+    }
+}
+exports.RobotTransformationEvent = RobotTransformationEvent;
+//# sourceMappingURL=RobotTransformationEvent.js.map
+
+/***/ }),
+
+/***/ "../../../../akibot-common/dist/message/wheel/WheelCommand.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const __1 = __webpack_require__("../../../../akibot-common/dist/index.js");
+var WHEEL_DIRECTION;
+(function (WHEEL_DIRECTION) {
+    WHEEL_DIRECTION[WHEEL_DIRECTION["Stop"] = 0] = "Stop";
+    WHEEL_DIRECTION[WHEEL_DIRECTION["Left"] = 1] = "Left";
+    WHEEL_DIRECTION[WHEEL_DIRECTION["Right"] = 2] = "Right";
+    WHEEL_DIRECTION[WHEEL_DIRECTION["Forward"] = 3] = "Forward";
+    WHEEL_DIRECTION[WHEEL_DIRECTION["Backward"] = 4] = "Backward";
+})(WHEEL_DIRECTION = exports.WHEEL_DIRECTION || (exports.WHEEL_DIRECTION = {}));
+;
+class WheelCommand extends __1.Message {
+    constructor(direction) {
+        super();
+        this.direction = direction;
+    }
+}
+exports.WheelCommand = WheelCommand;
+//# sourceMappingURL=WheelCommand.js.map
+
+/***/ }),
+
+/***/ "../../../../akibot-common/dist/message/world/WorldContentRequest.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const __1 = __webpack_require__("../../../../akibot-common/dist/index.js");
+class WorldContentRequest extends __1.Message {
+}
+exports.WorldContentRequest = WorldContentRequest;
+//# sourceMappingURL=WorldContentRequest.js.map
+
+/***/ }),
+
+/***/ "../../../../akibot-common/dist/message/world/WorldContentResponse.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const __1 = __webpack_require__("../../../../akibot-common/dist/index.js");
+class WorldContentResponse extends __1.Message {
+    constructor(worldNode) {
+        super();
+        this.worldNode = worldNode;
+    }
+}
+exports.WorldContentResponse = WorldContentResponse;
+//# sourceMappingURL=WorldContentResponse.js.map
+
+/***/ }),
+
+/***/ "../../../../akibot-common/dist/utils/AngleUtils.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const __1 = __webpack_require__("../../../../akibot-common/dist/index.js");
+var AngleUtils;
+(function (AngleUtils) {
+    function radiansToDegrees(radians) {
+        return radians * 180 / Math.PI;
+    }
+    AngleUtils.radiansToDegrees = radiansToDegrees;
+    function degreesToRadians(degrees) {
+        return degrees * Math.PI / 180;
+    }
+    AngleUtils.degreesToRadians = degreesToRadians;
+    function normalizeRadian(radians) {
+        var circle = Math.PI * 2;
+        var a = radians % circle;
+        if (a < 0) {
+            a += circle;
+        }
+        return a;
+    }
+    AngleUtils.normalizeRadian = normalizeRadian;
+    function createNegativeAngle(angle) {
+        return new __1.Angle(-angle.radians);
+        ;
+    }
+    AngleUtils.createNegativeAngle = createNegativeAngle;
+    function createAngleFromDegrees(degrees) {
+        return new __1.Angle(degreesToRadians(degrees));
+    }
+    AngleUtils.createAngleFromDegrees = createAngleFromDegrees;
+    function addDegrees(a, b) {
+        var x = a + b;
+        var rounds = Math.floor(x / 360);
+        if (rounds != 0) {
+            x = x - (360 * rounds);
+        }
+        if (x < 0) {
+            x = 360 - x;
+        }
+        return x;
+    }
+    AngleUtils.addDegrees = addDegrees;
+    function leftDistanceDegrees(from, to) {
+        return addDegrees(from, -to);
+    }
+    AngleUtils.leftDistanceDegrees = leftDistanceDegrees;
+    function rightDistanceDegrees(from, to) {
+        return addDegrees(to, -from);
+    }
+    AngleUtils.rightDistanceDegrees = rightDistanceDegrees;
+    function modularDistanceDegrees(from, to) {
+        return Math.min(leftDistanceDegrees(from, to), rightDistanceDegrees(from, to));
+    }
+    AngleUtils.modularDistanceDegrees = modularDistanceDegrees;
+})(AngleUtils = exports.AngleUtils || (exports.AngleUtils = {}));
+//# sourceMappingURL=AngleUtils.js.map
+
+/***/ }),
+
+/***/ "../../../../akibot-common/dist/utils/SerializationUtils.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var SerializationUtils;
+(function (SerializationUtils) {
+    function deserialize(json, environment) {
+        //console.log("deserialize: " + json.$name);
+        try {
+            var instance = new environment[json.$name]();
+            for (var prop in json) {
+                if (!json.hasOwnProperty(prop)) {
+                    continue;
+                }
+                if (Array.isArray(json[prop])) {
+                    var arr = [];
+                    Array.from(json[prop]).forEach((i) => {
+                        if (Array.isArray(i)) {
+                            var arr2 = [];
+                            Array.from(i).forEach((k) => arr2.push(k));
+                            arr.push(arr2);
+                        }
+                        else {
+                            arr.push(deserialize(i, environment));
+                        }
+                    });
+                    instance[prop] = arr;
+                }
+                else if (typeof json[prop] === 'object') {
+                    instance[prop] = deserialize(json[prop], environment);
+                }
+                else {
+                    instance[prop] = json[prop];
+                }
+            }
+            return instance;
+        }
+        catch (err) {
+            //console.error("Failed to deserialize:");
+            //console.error(json);
+            throw err;
+        }
+    }
+    SerializationUtils.deserialize = deserialize;
+    function jsonStringify(obj) {
+        var cache = [];
+        return JSON.stringify(obj, function (key, value) {
+            if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+                if (cache.indexOf(value) !== -1) {
+                    // Circular reference found, discard key
+                    console.log("CIRCULAR");
+                    console.log(value);
+                    return;
+                }
+                // Store value in our collection
+                cache.push(value);
+            }
+            return value;
+        });
+    }
+    SerializationUtils.jsonStringify = jsonStringify;
+    function jsonParse(jsonString) {
+        return JSON.parse(jsonString);
+    }
+    SerializationUtils.jsonParse = jsonParse;
+})(SerializationUtils = exports.SerializationUtils || (exports.SerializationUtils = {}));
+//# sourceMappingURL=SerializationUtils.js.map
+
+/***/ }),
+
+/***/ "../../../../akibot-common/dist/utils/VectorUtils.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const __1 = __webpack_require__("../../../../akibot-common/dist/index.js");
+var VectorUtils;
+(function (VectorUtils) {
+    function rotate2DVector(vector2D, angle) {
+        if (angle == null || angle.radians == undefined) {
+            return vector2D;
+        }
+        else {
+            var x1 = vector2D.x;
+            var y1 = vector2D.y;
+            var angleRadians = angle.radians;
+            var x2 = x1 * Math.cos(angleRadians) - y1 * Math.sin(angleRadians);
+            var y2 = y1 * Math.cos(angleRadians) + x1 * Math.sin(angleRadians);
+            return new __1.Vector2D(x2, y2);
+        }
+    }
+    VectorUtils.rotate2DVector = rotate2DVector;
+    function rotateEndOfLine2D(line2D, angle) {
+        var vector = rotate2DVector(line2D.getVector(), angle);
+        var resultPoint2D = new __1.Point2D(0, 0);
+        resultPoint2D.x = vector.x + line2D.from.x;
+        resultPoint2D.y = vector.y + line2D.from.y;
+        return resultPoint2D;
+    }
+    VectorUtils.rotateEndOfLine2D = rotateEndOfLine2D;
+    function rotateLine2D(line2D, angle) {
+        return new __1.Line2D(line2D.from, rotateEndOfLine2D(line2D, angle));
+    }
+    VectorUtils.rotateLine2D = rotateLine2D;
+    function getNorthAngle(vector3d, offsetNorthAngle) {
+        var radians = Math.atan2(vector3d.y, vector3d.x);
+        var angle = new __1.Angle(radians);
+        angle.add(offsetNorthAngle);
+        return angle;
+    }
+    VectorUtils.getNorthAngle = getNorthAngle;
+    function calculateRelativeTransformation(transA, transB) {
+        if (transA == undefined || transB == undefined) {
+            throw new Error("undefined parameters");
+        }
+        var cumulativeTransformation = transA.clone();
+        var posVector = transB.position;
+        if (transA.rotation.z != 0) {
+            var angle = new __1.Angle(transA.rotation.z);
+            var rotatedVector = VectorUtils.rotate2DVector(posVector, angle);
+            posVector.x = rotatedVector.x;
+            posVector.y = rotatedVector.y;
+            // z axis not supported
+        }
+        cumulativeTransformation.position.add(posVector);
+        cumulativeTransformation.rotation.add(transB.rotation);
+        return cumulativeTransformation;
+    }
+    VectorUtils.calculateRelativeTransformation = calculateRelativeTransformation;
+})(VectorUtils = exports.VectorUtils || (exports.VectorUtils = {}));
+//# sourceMappingURL=VectorUtils.js.map
+
+/***/ }),
+
+/***/ "../../../../akibot-common/dist/world/DeviceNode.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const __1 = __webpack_require__("../../../../akibot-common/dist/index.js");
+class DeviceNode extends __1.WorldElement {
+    constructor(transformation) {
+        super();
+        this.transformation = transformation;
+    }
+}
+exports.DeviceNode = DeviceNode;
+//# sourceMappingURL=DeviceNode.js.map
+
+/***/ }),
+
+/***/ "../../../../akibot-common/dist/world/GridConfiguration.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const __1 = __webpack_require__("../../../../akibot-common/dist/index.js");
+class GridConfiguration extends __1.WorldElement {
+    constructor(cellCount, cellSizeMm, maxObstacleCount, offsetVector) {
+        super();
+        this.cellCount = cellCount;
+        this.cellSizeMm = cellSizeMm;
+        this.maxObstacleCount = maxObstacleCount;
+        this.offsetVector = offsetVector;
+        this.unknownValue = -1;
+        this.emptyValue = 0;
+    }
+}
+exports.GridConfiguration = GridConfiguration;
+//# sourceMappingURL=GridConfiguration.js.map
+
+/***/ }),
+
+/***/ "../../../../akibot-common/dist/world/GridNode.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const __1 = __webpack_require__("../../../../akibot-common/dist/index.js");
+class GridNode extends __1.WorldElement {
+    constructor(gridConfiguration) {
+        super();
+        this.gridConfiguration = gridConfiguration;
+    }
+}
+exports.GridNode = GridNode;
+//# sourceMappingURL=GridNode.js.map
+
+/***/ }),
+
+/***/ "../../../../akibot-common/dist/world/Material.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const WorldElement_1 = __webpack_require__("../../../../akibot-common/dist/world/WorldElement.js");
+var ThreeMaterialConstants;
+(function (ThreeMaterialConstants) {
+    ThreeMaterialConstants[ThreeMaterialConstants["THREE_NO_SHADING"] = 0] = "THREE_NO_SHADING";
+    ThreeMaterialConstants[ThreeMaterialConstants["THREE_FLAT_SHADING"] = 1] = "THREE_FLAT_SHADING";
+    ThreeMaterialConstants[ThreeMaterialConstants["THREE_SMOOTH_SHADING"] = 2] = "THREE_SMOOTH_SHADING";
+})(ThreeMaterialConstants = exports.ThreeMaterialConstants || (exports.ThreeMaterialConstants = {}));
+class Material extends WorldElement_1.WorldElement {
+    constructor() {
+        super(...arguments);
+        this.color = "#0F0F0F";
+        this.shading = ThreeMaterialConstants.THREE_FLAT_SHADING;
+        this.opacity = 1;
+        this.transparent = false;
+        this.wireframe = false;
+    }
+}
+exports.Material = Material;
+//# sourceMappingURL=Material.js.map
+
+/***/ }),
+
+/***/ "../../../../akibot-common/dist/world/NodeTransformation3D.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const __1 = __webpack_require__("../../../../akibot-common/dist/index.js");
+class NodeTransformation3D extends __1.WorldElement {
+    constructor(_position, _scale, _rotation) {
+        super();
+        this.position = (_position != undefined ? _position : new __1.Vector3D(0, 0, 0));
+        this.rotation = (_rotation != undefined ? _rotation : new __1.Vector3D(0, 0, 0));
+        ;
+        this.scale = (_scale != undefined ? _scale : new __1.Vector3D(1, 1, 1));
+    }
+    add(nodeTransformation) {
+        this.position.add(nodeTransformation.position);
+        this.rotation.add(nodeTransformation.rotation);
+        this.scale.add(nodeTransformation.scale);
+    }
+    clone() {
+        return new NodeTransformation3D(this.position.clone(), this.scale.clone(), this.rotation.clone());
+    }
+}
+exports.NodeTransformation3D = NodeTransformation3D;
+//# sourceMappingURL=NodeTransformation3D.js.map
+
+/***/ }),
+
+/***/ "../../../../akibot-common/dist/world/RobotNode.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const __1 = __webpack_require__("../../../../akibot-common/dist/index.js");
+class RobotNode extends __1.WorldElement {
+    constructor(modelFileName, transformation) {
+        super();
+        this.modelFileName = modelFileName;
+        this.transformation = transformation;
+        this.devices = [];
+    }
+}
+exports.RobotNode = RobotNode;
+//# sourceMappingURL=RobotNode.js.map
+
+/***/ }),
+
+/***/ "../../../../akibot-common/dist/world/WorldElement.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const __1 = __webpack_require__("../../../../akibot-common/dist/index.js");
+class WorldElement extends __1.Element {
+}
+exports.WorldElement = WorldElement;
+//# sourceMappingURL=WorldElement.js.map
+
+/***/ }),
+
+/***/ "../../../../akibot-common/dist/world/WorldNode.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const __1 = __webpack_require__("../../../../akibot-common/dist/index.js");
+class WorldNode extends __1.WorldElement {
+    constructor(gridNode, robotNode) {
+        super();
+        this.gridNode = gridNode;
+        this.robotNode = robotNode;
+    }
+}
+exports.WorldNode = WorldNode;
+//# sourceMappingURL=WorldNode.js.map
+
+/***/ }),
+
+/***/ "../../../../akibot-log/dist/ChromeLogAppender.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const LogLevel_1 = __webpack_require__("../../../../akibot-log/dist/LogLevel.js");
+class ChromeLogAppender {
+    constructor() {
+        this.FgRed = 'color: white; background:#ffcccc';
+        this.FgYellow = 'color: #cccc00;';
+        this.Default = 'color: #663300;';
+    }
+    append(logLevel, name, msg) {
+        // TODO: make it configurable
+        var now = new Date();
+        var consoleMessage = "%c"
+            + ("  " + now.toLocaleString()).slice(-19)
+            + ": "
+            + ("     " + LogLevel_1.LogLevel[logLevel]).slice(-5)
+            + ": "
+            + (name + "                                  ").substring(0, 25)
+            + ": "
+            + "%c"
+            + msg;
+        console.log(consoleMessage, (logLevel >= LogLevel_1.LogLevel.Error ? this.FgRed : this.FgYellow), (logLevel >= LogLevel_1.LogLevel.Error ? this.FgRed : this.Default));
+    }
+}
+exports.ChromeLogAppender = ChromeLogAppender;
+//# sourceMappingURL=ChromeLogAppender.js.map
+
+/***/ }),
+
+/***/ "../../../../akibot-log/dist/ConsoleLogAppender.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const LogLevel_1 = __webpack_require__("../../../../akibot-log/dist/LogLevel.js");
+class ConsoleLogAppender {
+    constructor() {
+        this.Reset = "\x1b[0m";
+        this.Bright = "\x1b[1m";
+        this.Dim = "\x1b[2m";
+        this.Underscore = "\x1b[4m";
+        this.Blink = "\x1b[5m";
+        this.Reverse = "\x1b[7m";
+        this.Hidden = "\x1b[8m";
+        this.FgBlack = "\x1b[30m";
+        this.FgRed = "\x1b[31m";
+        this.FgGreen = "\x1b[32m";
+        this.FgYellow = "\x1b[33m";
+        this.FgBlue = "\x1b[34m";
+        this.FgMagenta = "\x1b[35m";
+        this.FgCyan = "\x1b[36m";
+        this.FgWhite = "\x1b[37m";
+        this.BgBlack = "\x1b[40m";
+        this.BgRed = "\x1b[41m";
+        this.BgGreen = "\x1b[42m";
+        this.BgYellow = "\x1b[43m";
+        this.BgBlue = "\x1b[44m";
+        this.BgMagenta = "\x1b[45m";
+        this.BgCyan = "\x1b[46m";
+        this.BgWhite = "\x1b[47m";
+    }
+    append(logLevel, name, msg) {
+        // TODO: make it configurable
+        var now = new Date();
+        console.log((logLevel >= LogLevel_1.LogLevel.Error ? this.FgRed : this.FgYellow)
+            + ("  " + now.toLocaleString()).slice(-19)
+            + ": "
+            + ("     " + LogLevel_1.LogLevel[logLevel]).slice(-5)
+            + ": "
+            + (name + "                                  ").substring(0, 25)
+            + ": "
+            + this.Reset
+            + (logLevel >= LogLevel_1.LogLevel.Error ? this.FgRed : "")
+            + msg
+            + (logLevel >= LogLevel_1.LogLevel.Error ? this.Reset : ""));
+    }
+}
+exports.ConsoleLogAppender = ConsoleLogAppender;
+//# sourceMappingURL=ConsoleLogAppender.js.map
+
+/***/ }),
+
+/***/ "../../../../akibot-log/dist/LogFactory.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const LogLevel_1 = __webpack_require__("../../../../akibot-log/dist/LogLevel.js");
+const Logger_1 = __webpack_require__("../../../../akibot-log/dist/Logger.js");
+class LogFactory {
+    constructor(logAppender, logRules) {
+        this.logAppender = logAppender;
+        this.logRules = logRules;
+    }
+    getLoglevel(name) {
+        var result = LogLevel_1.LogLevel.Error;
+        this.logRules.forEach(i => {
+            if (i.pattern.test(name)) {
+                result = i.logLevel;
+            }
+        });
+        return result;
+    }
+    getLogger(name) {
+        var level = this.getLoglevel(name);
+        return new Logger_1.Logger(name, level, this.logAppender);
+    }
+}
+exports.LogFactory = LogFactory;
+//# sourceMappingURL=LogFactory.js.map
+
+/***/ }),
+
+/***/ "../../../../akibot-log/dist/LogLevel.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var LogLevel;
+(function (LogLevel) {
+    LogLevel[LogLevel["Trace"] = 0] = "Trace";
+    LogLevel[LogLevel["Debug"] = 1] = "Debug";
+    LogLevel[LogLevel["Info"] = 2] = "Info";
+    LogLevel[LogLevel["Warn"] = 3] = "Warn";
+    LogLevel[LogLevel["Error"] = 4] = "Error";
+    LogLevel[LogLevel["Fatal"] = 5] = "Fatal";
+})(LogLevel = exports.LogLevel || (exports.LogLevel = {}));
+//# sourceMappingURL=LogLevel.js.map
+
+/***/ }),
+
+/***/ "../../../../akibot-log/dist/Logger.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const LogLevel_1 = __webpack_require__("../../../../akibot-log/dist/LogLevel.js");
+class Logger {
+    constructor(name, logLevel, logAppender) {
+        this.name = name;
+        this.logLevel = logLevel;
+        this.logAppender = logAppender;
+    }
+    print(logLevel, msg) {
+        if (logLevel >= this.logLevel) {
+            this.logAppender.append(logLevel, this.name, msg);
+        }
+    }
+    trace(msg) {
+        this.print(LogLevel_1.LogLevel.Trace, msg);
+    }
+    debug(msg) {
+        this.print(LogLevel_1.LogLevel.Debug, msg);
+    }
+    info(msg) {
+        this.print(LogLevel_1.LogLevel.Info, msg);
+    }
+    warn(msg) {
+        this.print(LogLevel_1.LogLevel.Warn, msg);
+    }
+    error(msg) {
+        this.print(LogLevel_1.LogLevel.Error, msg);
+    }
+    fatal(msg) {
+        this.print(LogLevel_1.LogLevel.Fatal, msg);
+    }
+}
+exports.Logger = Logger;
+//# sourceMappingURL=Logger.js.map
+
+/***/ }),
+
+/***/ "../../../../akibot-log/dist/index.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
+Object.defineProperty(exports, "__esModule", { value: true });
+__export(__webpack_require__("../../../../akibot-log/dist/LogFactory.js"));
+__export(__webpack_require__("../../../../akibot-log/dist/Logger.js"));
+__export(__webpack_require__("../../../../akibot-log/dist/LogLevel.js"));
+__export(__webpack_require__("../../../../akibot-log/dist/ConsoleLogAppender.js"));
+__export(__webpack_require__("../../../../akibot-log/dist/ChromeLogAppender.js"));
+//# sourceMappingURL=index.js.map
+
+/***/ }),
 
 /***/ "../../../../css-loader/lib/css-base.js":
 /***/ (function(module, exports) {
@@ -78,6 +1235,315 @@ function toComment(sourceMap) {
 	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
 
 	return '/*# ' + data + ' */';
+}
+
+
+/***/ }),
+
+/***/ "../../../../events/events.js":
+/***/ (function(module, exports) {
+
+// Copyright Joyent, Inc. and other Node contributors.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to permit
+// persons to whom the Software is furnished to do so, subject to the
+// following conditions:
+//
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+// USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+function EventEmitter() {
+  this._events = this._events || {};
+  this._maxListeners = this._maxListeners || undefined;
+}
+module.exports = EventEmitter;
+
+// Backwards-compat with node 0.10.x
+EventEmitter.EventEmitter = EventEmitter;
+
+EventEmitter.prototype._events = undefined;
+EventEmitter.prototype._maxListeners = undefined;
+
+// By default EventEmitters will print a warning if more than 10 listeners are
+// added to it. This is a useful default which helps finding memory leaks.
+EventEmitter.defaultMaxListeners = 10;
+
+// Obviously not all Emitters should be limited to 10. This function allows
+// that to be increased. Set to zero for unlimited.
+EventEmitter.prototype.setMaxListeners = function(n) {
+  if (!isNumber(n) || n < 0 || isNaN(n))
+    throw TypeError('n must be a positive number');
+  this._maxListeners = n;
+  return this;
+};
+
+EventEmitter.prototype.emit = function(type) {
+  var er, handler, len, args, i, listeners;
+
+  if (!this._events)
+    this._events = {};
+
+  // If there is no 'error' event listener then throw.
+  if (type === 'error') {
+    if (!this._events.error ||
+        (isObject(this._events.error) && !this._events.error.length)) {
+      er = arguments[1];
+      if (er instanceof Error) {
+        throw er; // Unhandled 'error' event
+      } else {
+        // At least give some kind of context to the user
+        var err = new Error('Uncaught, unspecified "error" event. (' + er + ')');
+        err.context = er;
+        throw err;
+      }
+    }
+  }
+
+  handler = this._events[type];
+
+  if (isUndefined(handler))
+    return false;
+
+  if (isFunction(handler)) {
+    switch (arguments.length) {
+      // fast cases
+      case 1:
+        handler.call(this);
+        break;
+      case 2:
+        handler.call(this, arguments[1]);
+        break;
+      case 3:
+        handler.call(this, arguments[1], arguments[2]);
+        break;
+      // slower
+      default:
+        args = Array.prototype.slice.call(arguments, 1);
+        handler.apply(this, args);
+    }
+  } else if (isObject(handler)) {
+    args = Array.prototype.slice.call(arguments, 1);
+    listeners = handler.slice();
+    len = listeners.length;
+    for (i = 0; i < len; i++)
+      listeners[i].apply(this, args);
+  }
+
+  return true;
+};
+
+EventEmitter.prototype.addListener = function(type, listener) {
+  var m;
+
+  if (!isFunction(listener))
+    throw TypeError('listener must be a function');
+
+  if (!this._events)
+    this._events = {};
+
+  // To avoid recursion in the case that type === "newListener"! Before
+  // adding it to the listeners, first emit "newListener".
+  if (this._events.newListener)
+    this.emit('newListener', type,
+              isFunction(listener.listener) ?
+              listener.listener : listener);
+
+  if (!this._events[type])
+    // Optimize the case of one listener. Don't need the extra array object.
+    this._events[type] = listener;
+  else if (isObject(this._events[type]))
+    // If we've already got an array, just append.
+    this._events[type].push(listener);
+  else
+    // Adding the second element, need to change to array.
+    this._events[type] = [this._events[type], listener];
+
+  // Check for listener leak
+  if (isObject(this._events[type]) && !this._events[type].warned) {
+    if (!isUndefined(this._maxListeners)) {
+      m = this._maxListeners;
+    } else {
+      m = EventEmitter.defaultMaxListeners;
+    }
+
+    if (m && m > 0 && this._events[type].length > m) {
+      this._events[type].warned = true;
+      console.error('(node) warning: possible EventEmitter memory ' +
+                    'leak detected. %d listeners added. ' +
+                    'Use emitter.setMaxListeners() to increase limit.',
+                    this._events[type].length);
+      if (typeof console.trace === 'function') {
+        // not supported in IE 10
+        console.trace();
+      }
+    }
+  }
+
+  return this;
+};
+
+EventEmitter.prototype.on = EventEmitter.prototype.addListener;
+
+EventEmitter.prototype.once = function(type, listener) {
+  if (!isFunction(listener))
+    throw TypeError('listener must be a function');
+
+  var fired = false;
+
+  function g() {
+    this.removeListener(type, g);
+
+    if (!fired) {
+      fired = true;
+      listener.apply(this, arguments);
+    }
+  }
+
+  g.listener = listener;
+  this.on(type, g);
+
+  return this;
+};
+
+// emits a 'removeListener' event iff the listener was removed
+EventEmitter.prototype.removeListener = function(type, listener) {
+  var list, position, length, i;
+
+  if (!isFunction(listener))
+    throw TypeError('listener must be a function');
+
+  if (!this._events || !this._events[type])
+    return this;
+
+  list = this._events[type];
+  length = list.length;
+  position = -1;
+
+  if (list === listener ||
+      (isFunction(list.listener) && list.listener === listener)) {
+    delete this._events[type];
+    if (this._events.removeListener)
+      this.emit('removeListener', type, listener);
+
+  } else if (isObject(list)) {
+    for (i = length; i-- > 0;) {
+      if (list[i] === listener ||
+          (list[i].listener && list[i].listener === listener)) {
+        position = i;
+        break;
+      }
+    }
+
+    if (position < 0)
+      return this;
+
+    if (list.length === 1) {
+      list.length = 0;
+      delete this._events[type];
+    } else {
+      list.splice(position, 1);
+    }
+
+    if (this._events.removeListener)
+      this.emit('removeListener', type, listener);
+  }
+
+  return this;
+};
+
+EventEmitter.prototype.removeAllListeners = function(type) {
+  var key, listeners;
+
+  if (!this._events)
+    return this;
+
+  // not listening for removeListener, no need to emit
+  if (!this._events.removeListener) {
+    if (arguments.length === 0)
+      this._events = {};
+    else if (this._events[type])
+      delete this._events[type];
+    return this;
+  }
+
+  // emit removeListener for all listeners on all events
+  if (arguments.length === 0) {
+    for (key in this._events) {
+      if (key === 'removeListener') continue;
+      this.removeAllListeners(key);
+    }
+    this.removeAllListeners('removeListener');
+    this._events = {};
+    return this;
+  }
+
+  listeners = this._events[type];
+
+  if (isFunction(listeners)) {
+    this.removeListener(type, listeners);
+  } else if (listeners) {
+    // LIFO order
+    while (listeners.length)
+      this.removeListener(type, listeners[listeners.length - 1]);
+  }
+  delete this._events[type];
+
+  return this;
+};
+
+EventEmitter.prototype.listeners = function(type) {
+  var ret;
+  if (!this._events || !this._events[type])
+    ret = [];
+  else if (isFunction(this._events[type]))
+    ret = [this._events[type]];
+  else
+    ret = this._events[type].slice();
+  return ret;
+};
+
+EventEmitter.prototype.listenerCount = function(type) {
+  if (this._events) {
+    var evlistener = this._events[type];
+
+    if (isFunction(evlistener))
+      return 1;
+    else if (evlistener)
+      return evlistener.length;
+  }
+  return 0;
+};
+
+EventEmitter.listenerCount = function(emitter, type) {
+  return emitter.listenerCount(type);
+};
+
+function isFunction(arg) {
+  return typeof arg === 'function';
+}
+
+function isNumber(arg) {
+  return typeof arg === 'number';
+}
+
+function isObject(arg) {
+  return typeof arg === 'object' && arg !== null;
+}
+
+function isUndefined(arg) {
+  return arg === void 0;
 }
 
 
@@ -2744,386 +4210,390 @@ exports.tryCatch = tryCatch;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* unused harmony export WebGLRenderTargetCube */
-/* unused harmony export WebGLRenderTarget */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return WebGLRenderer; });
-/* unused harmony export ShaderLib */
-/* unused harmony export UniformsLib */
-/* unused harmony export UniformsUtils */
-/* unused harmony export ShaderChunk */
-/* unused harmony export FogExp2 */
-/* unused harmony export Fog */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Scene; });
-/* unused harmony export LensFlare */
-/* unused harmony export Sprite */
-/* unused harmony export LOD */
-/* unused harmony export SkinnedMesh */
-/* unused harmony export Skeleton */
-/* unused harmony export Bone */
-/* unused harmony export Mesh */
-/* unused harmony export LineSegments */
-/* unused harmony export LineLoop */
-/* unused harmony export Line */
-/* unused harmony export Points */
-/* unused harmony export Group */
-/* unused harmony export VideoTexture */
-/* unused harmony export DataTexture */
-/* unused harmony export CompressedTexture */
-/* unused harmony export CubeTexture */
-/* unused harmony export CanvasTexture */
-/* unused harmony export DepthTexture */
-/* unused harmony export Texture */
-/* unused harmony export CompressedTextureLoader */
-/* unused harmony export DataTextureLoader */
-/* unused harmony export CubeTextureLoader */
-/* unused harmony export TextureLoader */
-/* unused harmony export ObjectLoader */
-/* unused harmony export MaterialLoader */
-/* unused harmony export BufferGeometryLoader */
-/* unused harmony export DefaultLoadingManager */
-/* unused harmony export LoadingManager */
-/* unused harmony export JSONLoader */
-/* unused harmony export ImageLoader */
-/* unused harmony export FontLoader */
-/* unused harmony export FileLoader */
-/* unused harmony export Loader */
-/* unused harmony export Cache */
-/* unused harmony export AudioLoader */
-/* unused harmony export SpotLightShadow */
-/* unused harmony export SpotLight */
-/* unused harmony export PointLight */
-/* unused harmony export RectAreaLight */
-/* unused harmony export HemisphereLight */
-/* unused harmony export DirectionalLightShadow */
-/* unused harmony export DirectionalLight */
-/* unused harmony export AmbientLight */
-/* unused harmony export LightShadow */
-/* unused harmony export Light */
-/* unused harmony export StereoCamera */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return PerspectiveCamera; });
-/* unused harmony export OrthographicCamera */
-/* unused harmony export CubeCamera */
-/* unused harmony export ArrayCamera */
-/* unused harmony export Camera */
-/* unused harmony export AudioListener */
-/* unused harmony export PositionalAudio */
-/* unused harmony export AudioContext */
-/* unused harmony export AudioAnalyser */
-/* unused harmony export Audio */
-/* unused harmony export VectorKeyframeTrack */
-/* unused harmony export StringKeyframeTrack */
-/* unused harmony export QuaternionKeyframeTrack */
-/* unused harmony export NumberKeyframeTrack */
-/* unused harmony export ColorKeyframeTrack */
-/* unused harmony export BooleanKeyframeTrack */
-/* unused harmony export PropertyMixer */
-/* unused harmony export PropertyBinding */
-/* unused harmony export KeyframeTrack */
-/* unused harmony export AnimationUtils */
-/* unused harmony export AnimationObjectGroup */
-/* unused harmony export AnimationMixer */
-/* unused harmony export AnimationClip */
-/* unused harmony export Uniform */
-/* unused harmony export InstancedBufferGeometry */
-/* unused harmony export BufferGeometry */
-/* unused harmony export GeometryIdCount */
-/* unused harmony export Geometry */
-/* unused harmony export InterleavedBufferAttribute */
-/* unused harmony export InstancedInterleavedBuffer */
-/* unused harmony export InterleavedBuffer */
-/* unused harmony export InstancedBufferAttribute */
-/* unused harmony export Face3 */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return Object3D; });
-/* unused harmony export Raycaster */
-/* unused harmony export Layers */
-/* unused harmony export EventDispatcher */
-/* unused harmony export Clock */
-/* unused harmony export QuaternionLinearInterpolant */
-/* unused harmony export LinearInterpolant */
-/* unused harmony export DiscreteInterpolant */
-/* unused harmony export CubicInterpolant */
-/* unused harmony export Interpolant */
-/* unused harmony export Triangle */
-/* unused harmony export Math */
-/* unused harmony export Spherical */
-/* unused harmony export Cylindrical */
-/* unused harmony export Plane */
-/* unused harmony export Frustum */
-/* unused harmony export Sphere */
-/* unused harmony export Ray */
-/* unused harmony export Matrix4 */
-/* unused harmony export Matrix3 */
-/* unused harmony export Box3 */
-/* unused harmony export Box2 */
-/* unused harmony export Line3 */
-/* unused harmony export Euler */
-/* unused harmony export Vector4 */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return Vector3; });
-/* unused harmony export Vector2 */
-/* unused harmony export Quaternion */
-/* unused harmony export Color */
-/* unused harmony export MorphBlendMesh */
-/* unused harmony export ImmediateRenderObject */
-/* unused harmony export VertexNormalsHelper */
-/* unused harmony export SpotLightHelper */
-/* unused harmony export SkeletonHelper */
-/* unused harmony export PointLightHelper */
-/* unused harmony export RectAreaLightHelper */
-/* unused harmony export HemisphereLightHelper */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return GridHelper; });
-/* unused harmony export PolarGridHelper */
-/* unused harmony export FaceNormalsHelper */
-/* unused harmony export DirectionalLightHelper */
-/* unused harmony export CameraHelper */
-/* unused harmony export BoxHelper */
-/* unused harmony export ArrowHelper */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return AxisHelper; });
-/* unused harmony export CatmullRomCurve3 */
-/* unused harmony export CubicBezierCurve3 */
-/* unused harmony export QuadraticBezierCurve3 */
-/* unused harmony export LineCurve3 */
-/* unused harmony export ArcCurve */
-/* unused harmony export EllipseCurve */
-/* unused harmony export SplineCurve */
-/* unused harmony export CubicBezierCurve */
-/* unused harmony export QuadraticBezierCurve */
-/* unused harmony export LineCurve */
-/* unused harmony export Shape */
-/* unused harmony export Path */
-/* unused harmony export ShapePath */
-/* unused harmony export Font */
-/* unused harmony export CurvePath */
-/* unused harmony export Curve */
-/* unused harmony export ShapeUtils */
-/* unused harmony export SceneUtils */
-/* unused harmony export WireframeGeometry */
-/* unused harmony export ParametricGeometry */
-/* unused harmony export ParametricBufferGeometry */
-/* unused harmony export TetrahedronGeometry */
-/* unused harmony export TetrahedronBufferGeometry */
-/* unused harmony export OctahedronGeometry */
-/* unused harmony export OctahedronBufferGeometry */
-/* unused harmony export IcosahedronGeometry */
-/* unused harmony export IcosahedronBufferGeometry */
-/* unused harmony export DodecahedronGeometry */
-/* unused harmony export DodecahedronBufferGeometry */
-/* unused harmony export PolyhedronGeometry */
-/* unused harmony export PolyhedronBufferGeometry */
-/* unused harmony export TubeGeometry */
-/* unused harmony export TubeBufferGeometry */
-/* unused harmony export TorusKnotGeometry */
-/* unused harmony export TorusKnotBufferGeometry */
-/* unused harmony export TorusGeometry */
-/* unused harmony export TorusBufferGeometry */
-/* unused harmony export TextGeometry */
-/* unused harmony export TextBufferGeometry */
-/* unused harmony export SphereGeometry */
-/* unused harmony export SphereBufferGeometry */
-/* unused harmony export RingGeometry */
-/* unused harmony export RingBufferGeometry */
-/* unused harmony export PlaneGeometry */
-/* unused harmony export PlaneBufferGeometry */
-/* unused harmony export LatheGeometry */
-/* unused harmony export LatheBufferGeometry */
-/* unused harmony export ShapeGeometry */
-/* unused harmony export ShapeBufferGeometry */
-/* unused harmony export ExtrudeGeometry */
-/* unused harmony export ExtrudeBufferGeometry */
-/* unused harmony export EdgesGeometry */
-/* unused harmony export ConeGeometry */
-/* unused harmony export ConeBufferGeometry */
-/* unused harmony export CylinderGeometry */
-/* unused harmony export CylinderBufferGeometry */
-/* unused harmony export CircleGeometry */
-/* unused harmony export CircleBufferGeometry */
-/* unused harmony export BoxGeometry */
-/* unused harmony export BoxBufferGeometry */
-/* unused harmony export ShadowMaterial */
-/* unused harmony export SpriteMaterial */
-/* unused harmony export RawShaderMaterial */
-/* unused harmony export ShaderMaterial */
-/* unused harmony export PointsMaterial */
-/* unused harmony export MeshPhysicalMaterial */
-/* unused harmony export MeshStandardMaterial */
-/* unused harmony export MeshPhongMaterial */
-/* unused harmony export MeshToonMaterial */
-/* unused harmony export MeshNormalMaterial */
-/* unused harmony export MeshLambertMaterial */
-/* unused harmony export MeshDepthMaterial */
-/* unused harmony export MeshBasicMaterial */
-/* unused harmony export LineDashedMaterial */
-/* unused harmony export LineBasicMaterial */
-/* unused harmony export Material */
-/* unused harmony export Float64BufferAttribute */
-/* unused harmony export Float32BufferAttribute */
-/* unused harmony export Uint32BufferAttribute */
-/* unused harmony export Int32BufferAttribute */
-/* unused harmony export Uint16BufferAttribute */
-/* unused harmony export Int16BufferAttribute */
-/* unused harmony export Uint8ClampedBufferAttribute */
-/* unused harmony export Uint8BufferAttribute */
-/* unused harmony export Int8BufferAttribute */
-/* unused harmony export BufferAttribute */
-/* unused harmony export REVISION */
-/* unused harmony export MOUSE */
-/* unused harmony export CullFaceNone */
-/* unused harmony export CullFaceBack */
-/* unused harmony export CullFaceFront */
-/* unused harmony export CullFaceFrontBack */
-/* unused harmony export FrontFaceDirectionCW */
-/* unused harmony export FrontFaceDirectionCCW */
-/* unused harmony export BasicShadowMap */
-/* unused harmony export PCFShadowMap */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return PCFSoftShadowMap; });
-/* unused harmony export FrontSide */
-/* unused harmony export BackSide */
-/* unused harmony export DoubleSide */
-/* unused harmony export FlatShading */
-/* unused harmony export SmoothShading */
-/* unused harmony export NoColors */
-/* unused harmony export FaceColors */
-/* unused harmony export VertexColors */
-/* unused harmony export NoBlending */
-/* unused harmony export NormalBlending */
-/* unused harmony export AdditiveBlending */
-/* unused harmony export SubtractiveBlending */
-/* unused harmony export MultiplyBlending */
-/* unused harmony export CustomBlending */
-/* unused harmony export AddEquation */
-/* unused harmony export SubtractEquation */
-/* unused harmony export ReverseSubtractEquation */
-/* unused harmony export MinEquation */
-/* unused harmony export MaxEquation */
-/* unused harmony export ZeroFactor */
-/* unused harmony export OneFactor */
-/* unused harmony export SrcColorFactor */
-/* unused harmony export OneMinusSrcColorFactor */
-/* unused harmony export SrcAlphaFactor */
-/* unused harmony export OneMinusSrcAlphaFactor */
-/* unused harmony export DstAlphaFactor */
-/* unused harmony export OneMinusDstAlphaFactor */
-/* unused harmony export DstColorFactor */
-/* unused harmony export OneMinusDstColorFactor */
-/* unused harmony export SrcAlphaSaturateFactor */
-/* unused harmony export NeverDepth */
-/* unused harmony export AlwaysDepth */
-/* unused harmony export LessDepth */
-/* unused harmony export LessEqualDepth */
-/* unused harmony export EqualDepth */
-/* unused harmony export GreaterEqualDepth */
-/* unused harmony export GreaterDepth */
-/* unused harmony export NotEqualDepth */
-/* unused harmony export MultiplyOperation */
-/* unused harmony export MixOperation */
-/* unused harmony export AddOperation */
-/* unused harmony export NoToneMapping */
-/* unused harmony export LinearToneMapping */
-/* unused harmony export ReinhardToneMapping */
-/* unused harmony export Uncharted2ToneMapping */
-/* unused harmony export CineonToneMapping */
-/* unused harmony export UVMapping */
-/* unused harmony export CubeReflectionMapping */
-/* unused harmony export CubeRefractionMapping */
-/* unused harmony export EquirectangularReflectionMapping */
-/* unused harmony export EquirectangularRefractionMapping */
-/* unused harmony export SphericalReflectionMapping */
-/* unused harmony export CubeUVReflectionMapping */
-/* unused harmony export CubeUVRefractionMapping */
-/* unused harmony export RepeatWrapping */
-/* unused harmony export ClampToEdgeWrapping */
-/* unused harmony export MirroredRepeatWrapping */
-/* unused harmony export NearestFilter */
-/* unused harmony export NearestMipMapNearestFilter */
-/* unused harmony export NearestMipMapLinearFilter */
-/* unused harmony export LinearFilter */
-/* unused harmony export LinearMipMapNearestFilter */
-/* unused harmony export LinearMipMapLinearFilter */
-/* unused harmony export UnsignedByteType */
-/* unused harmony export ByteType */
-/* unused harmony export ShortType */
-/* unused harmony export UnsignedShortType */
-/* unused harmony export IntType */
-/* unused harmony export UnsignedIntType */
-/* unused harmony export FloatType */
-/* unused harmony export HalfFloatType */
-/* unused harmony export UnsignedShort4444Type */
-/* unused harmony export UnsignedShort5551Type */
-/* unused harmony export UnsignedShort565Type */
-/* unused harmony export UnsignedInt248Type */
-/* unused harmony export AlphaFormat */
-/* unused harmony export RGBFormat */
-/* unused harmony export RGBAFormat */
-/* unused harmony export LuminanceFormat */
-/* unused harmony export LuminanceAlphaFormat */
-/* unused harmony export RGBEFormat */
-/* unused harmony export DepthFormat */
-/* unused harmony export DepthStencilFormat */
-/* unused harmony export RGB_S3TC_DXT1_Format */
-/* unused harmony export RGBA_S3TC_DXT1_Format */
-/* unused harmony export RGBA_S3TC_DXT3_Format */
-/* unused harmony export RGBA_S3TC_DXT5_Format */
-/* unused harmony export RGB_PVRTC_4BPPV1_Format */
-/* unused harmony export RGB_PVRTC_2BPPV1_Format */
-/* unused harmony export RGBA_PVRTC_4BPPV1_Format */
-/* unused harmony export RGBA_PVRTC_2BPPV1_Format */
-/* unused harmony export RGB_ETC1_Format */
-/* unused harmony export LoopOnce */
-/* unused harmony export LoopRepeat */
-/* unused harmony export LoopPingPong */
-/* unused harmony export InterpolateDiscrete */
-/* unused harmony export InterpolateLinear */
-/* unused harmony export InterpolateSmooth */
-/* unused harmony export ZeroCurvatureEnding */
-/* unused harmony export ZeroSlopeEnding */
-/* unused harmony export WrapAroundEnding */
-/* unused harmony export TrianglesDrawMode */
-/* unused harmony export TriangleStripDrawMode */
-/* unused harmony export TriangleFanDrawMode */
-/* unused harmony export LinearEncoding */
-/* unused harmony export sRGBEncoding */
-/* unused harmony export GammaEncoding */
-/* unused harmony export RGBEEncoding */
-/* unused harmony export LogLuvEncoding */
-/* unused harmony export RGBM7Encoding */
-/* unused harmony export RGBM16Encoding */
-/* unused harmony export RGBDEncoding */
-/* unused harmony export BasicDepthPacking */
-/* unused harmony export RGBADepthPacking */
-/* unused harmony export CubeGeometry */
-/* unused harmony export Face4 */
-/* unused harmony export LineStrip */
-/* unused harmony export LinePieces */
-/* unused harmony export MeshFaceMaterial */
-/* unused harmony export MultiMaterial */
-/* unused harmony export PointCloud */
-/* unused harmony export Particle */
-/* unused harmony export ParticleSystem */
-/* unused harmony export PointCloudMaterial */
-/* unused harmony export ParticleBasicMaterial */
-/* unused harmony export ParticleSystemMaterial */
-/* unused harmony export Vertex */
-/* unused harmony export DynamicBufferAttribute */
-/* unused harmony export Int8Attribute */
-/* unused harmony export Uint8Attribute */
-/* unused harmony export Uint8ClampedAttribute */
-/* unused harmony export Int16Attribute */
-/* unused harmony export Uint16Attribute */
-/* unused harmony export Int32Attribute */
-/* unused harmony export Uint32Attribute */
-/* unused harmony export Float32Attribute */
-/* unused harmony export Float64Attribute */
-/* unused harmony export ClosedSplineCurve3 */
-/* unused harmony export SplineCurve3 */
-/* unused harmony export Spline */
-/* unused harmony export BoundingBoxHelper */
-/* unused harmony export EdgesHelper */
-/* unused harmony export WireframeHelper */
-/* unused harmony export XHRLoader */
-/* unused harmony export BinaryTextureLoader */
-/* unused harmony export GeometryUtils */
-/* unused harmony export ImageUtils */
-/* unused harmony export Projector */
-/* unused harmony export CanvasRenderer */
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "WebGLRenderTargetCube", function() { return WebGLRenderTargetCube; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "WebGLRenderTarget", function() { return WebGLRenderTarget; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "WebGLRenderer", function() { return WebGLRenderer; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ShaderLib", function() { return ShaderLib; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UniformsLib", function() { return UniformsLib; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UniformsUtils", function() { return UniformsUtils; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ShaderChunk", function() { return ShaderChunk; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FogExp2", function() { return FogExp2; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Fog", function() { return Fog; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Scene", function() { return Scene; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LensFlare", function() { return LensFlare; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Sprite", function() { return Sprite; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOD", function() { return LOD; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SkinnedMesh", function() { return SkinnedMesh; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Skeleton", function() { return Skeleton; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Bone", function() { return Bone; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Mesh", function() { return Mesh; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LineSegments", function() { return LineSegments; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LineLoop", function() { return LineLoop; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Line", function() { return Line; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Points", function() { return Points; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Group", function() { return Group; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "VideoTexture", function() { return VideoTexture; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DataTexture", function() { return DataTexture; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CompressedTexture", function() { return CompressedTexture; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CubeTexture", function() { return CubeTexture; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CanvasTexture", function() { return CanvasTexture; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DepthTexture", function() { return DepthTexture; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Texture", function() { return Texture; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CompressedTextureLoader", function() { return CompressedTextureLoader; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DataTextureLoader", function() { return DataTextureLoader; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CubeTextureLoader", function() { return CubeTextureLoader; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TextureLoader", function() { return TextureLoader; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ObjectLoader", function() { return ObjectLoader; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MaterialLoader", function() { return MaterialLoader; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BufferGeometryLoader", function() { return BufferGeometryLoader; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DefaultLoadingManager", function() { return DefaultLoadingManager; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LoadingManager", function() { return LoadingManager; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "JSONLoader", function() { return JSONLoader; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ImageLoader", function() { return ImageLoader; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FontLoader", function() { return FontLoader; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FileLoader", function() { return FileLoader; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Loader", function() { return Loader; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Cache", function() { return Cache; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AudioLoader", function() { return AudioLoader; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SpotLightShadow", function() { return SpotLightShadow; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SpotLight", function() { return SpotLight; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PointLight", function() { return PointLight; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RectAreaLight", function() { return RectAreaLight; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "HemisphereLight", function() { return HemisphereLight; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DirectionalLightShadow", function() { return DirectionalLightShadow; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DirectionalLight", function() { return DirectionalLight; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AmbientLight", function() { return AmbientLight; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LightShadow", function() { return LightShadow; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Light", function() { return Light; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "StereoCamera", function() { return StereoCamera; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PerspectiveCamera", function() { return PerspectiveCamera; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OrthographicCamera", function() { return OrthographicCamera; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CubeCamera", function() { return CubeCamera; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ArrayCamera", function() { return ArrayCamera; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Camera", function() { return Camera; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AudioListener", function() { return AudioListener; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PositionalAudio", function() { return PositionalAudio; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AudioContext", function() { return AudioContext; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AudioAnalyser", function() { return AudioAnalyser; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Audio", function() { return Audio; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "VectorKeyframeTrack", function() { return VectorKeyframeTrack; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "StringKeyframeTrack", function() { return StringKeyframeTrack; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "QuaternionKeyframeTrack", function() { return QuaternionKeyframeTrack; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NumberKeyframeTrack", function() { return NumberKeyframeTrack; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ColorKeyframeTrack", function() { return ColorKeyframeTrack; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BooleanKeyframeTrack", function() { return BooleanKeyframeTrack; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PropertyMixer", function() { return PropertyMixer; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PropertyBinding", function() { return PropertyBinding; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "KeyframeTrack", function() { return KeyframeTrack; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AnimationUtils", function() { return AnimationUtils; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AnimationObjectGroup", function() { return AnimationObjectGroup; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AnimationMixer", function() { return AnimationMixer; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AnimationClip", function() { return AnimationClip; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Uniform", function() { return Uniform; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "InstancedBufferGeometry", function() { return InstancedBufferGeometry; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BufferGeometry", function() { return BufferGeometry; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GeometryIdCount", function() { return GeometryIdCount; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Geometry", function() { return Geometry; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "InterleavedBufferAttribute", function() { return InterleavedBufferAttribute; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "InstancedInterleavedBuffer", function() { return InstancedInterleavedBuffer; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "InterleavedBuffer", function() { return InterleavedBuffer; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "InstancedBufferAttribute", function() { return InstancedBufferAttribute; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Face3", function() { return Face3; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Object3D", function() { return Object3D; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Raycaster", function() { return Raycaster; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Layers", function() { return Layers; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EventDispatcher", function() { return EventDispatcher; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Clock", function() { return Clock; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "QuaternionLinearInterpolant", function() { return QuaternionLinearInterpolant; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LinearInterpolant", function() { return LinearInterpolant; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DiscreteInterpolant", function() { return DiscreteInterpolant; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CubicInterpolant", function() { return CubicInterpolant; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Interpolant", function() { return Interpolant; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Triangle", function() { return Triangle; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Math", function() { return _Math; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Spherical", function() { return Spherical; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Cylindrical", function() { return Cylindrical; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Plane", function() { return Plane; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Frustum", function() { return Frustum; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Sphere", function() { return Sphere; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Ray", function() { return Ray; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Matrix4", function() { return Matrix4; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Matrix3", function() { return Matrix3; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Box3", function() { return Box3; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Box2", function() { return Box2; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Line3", function() { return Line3; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Euler", function() { return Euler; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Vector4", function() { return Vector4; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Vector3", function() { return Vector3; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Vector2", function() { return Vector2; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Quaternion", function() { return Quaternion; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Color", function() { return Color; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ImmediateRenderObject", function() { return ImmediateRenderObject; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "VertexNormalsHelper", function() { return VertexNormalsHelper; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SpotLightHelper", function() { return SpotLightHelper; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SkeletonHelper", function() { return SkeletonHelper; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PointLightHelper", function() { return PointLightHelper; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RectAreaLightHelper", function() { return RectAreaLightHelper; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "HemisphereLightHelper", function() { return HemisphereLightHelper; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GridHelper", function() { return GridHelper; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PolarGridHelper", function() { return PolarGridHelper; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FaceNormalsHelper", function() { return FaceNormalsHelper; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DirectionalLightHelper", function() { return DirectionalLightHelper; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CameraHelper", function() { return CameraHelper; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BoxHelper", function() { return BoxHelper; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Box3Helper", function() { return Box3Helper; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PlaneHelper", function() { return PlaneHelper; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ArrowHelper", function() { return ArrowHelper; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AxisHelper", function() { return AxisHelper; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CatmullRomCurve3", function() { return CatmullRomCurve3; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CubicBezierCurve3", function() { return CubicBezierCurve3; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "QuadraticBezierCurve3", function() { return QuadraticBezierCurve3; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LineCurve3", function() { return LineCurve3; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ArcCurve", function() { return ArcCurve; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EllipseCurve", function() { return EllipseCurve; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SplineCurve", function() { return SplineCurve; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CubicBezierCurve", function() { return CubicBezierCurve; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "QuadraticBezierCurve", function() { return QuadraticBezierCurve; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LineCurve", function() { return LineCurve; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Shape", function() { return Shape; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Path", function() { return Path; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ShapePath", function() { return ShapePath; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Font", function() { return Font; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CurvePath", function() { return CurvePath; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Curve", function() { return Curve; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ShapeUtils", function() { return ShapeUtils; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SceneUtils", function() { return SceneUtils; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "WebGLUtils", function() { return WebGLUtils; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "WireframeGeometry", function() { return WireframeGeometry; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ParametricGeometry", function() { return ParametricGeometry; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ParametricBufferGeometry", function() { return ParametricBufferGeometry; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TetrahedronGeometry", function() { return TetrahedronGeometry; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TetrahedronBufferGeometry", function() { return TetrahedronBufferGeometry; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OctahedronGeometry", function() { return OctahedronGeometry; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OctahedronBufferGeometry", function() { return OctahedronBufferGeometry; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "IcosahedronGeometry", function() { return IcosahedronGeometry; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "IcosahedronBufferGeometry", function() { return IcosahedronBufferGeometry; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DodecahedronGeometry", function() { return DodecahedronGeometry; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DodecahedronBufferGeometry", function() { return DodecahedronBufferGeometry; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PolyhedronGeometry", function() { return PolyhedronGeometry; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PolyhedronBufferGeometry", function() { return PolyhedronBufferGeometry; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TubeGeometry", function() { return TubeGeometry; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TubeBufferGeometry", function() { return TubeBufferGeometry; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TorusKnotGeometry", function() { return TorusKnotGeometry; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TorusKnotBufferGeometry", function() { return TorusKnotBufferGeometry; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TorusGeometry", function() { return TorusGeometry; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TorusBufferGeometry", function() { return TorusBufferGeometry; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TextGeometry", function() { return TextGeometry; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TextBufferGeometry", function() { return TextBufferGeometry; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SphereGeometry", function() { return SphereGeometry; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SphereBufferGeometry", function() { return SphereBufferGeometry; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RingGeometry", function() { return RingGeometry; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RingBufferGeometry", function() { return RingBufferGeometry; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PlaneGeometry", function() { return PlaneGeometry; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PlaneBufferGeometry", function() { return PlaneBufferGeometry; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LatheGeometry", function() { return LatheGeometry; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LatheBufferGeometry", function() { return LatheBufferGeometry; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ShapeGeometry", function() { return ShapeGeometry; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ShapeBufferGeometry", function() { return ShapeBufferGeometry; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ExtrudeGeometry", function() { return ExtrudeGeometry; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ExtrudeBufferGeometry", function() { return ExtrudeBufferGeometry; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EdgesGeometry", function() { return EdgesGeometry; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ConeGeometry", function() { return ConeGeometry; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ConeBufferGeometry", function() { return ConeBufferGeometry; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CylinderGeometry", function() { return CylinderGeometry; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CylinderBufferGeometry", function() { return CylinderBufferGeometry; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CircleGeometry", function() { return CircleGeometry; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CircleBufferGeometry", function() { return CircleBufferGeometry; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BoxGeometry", function() { return BoxGeometry; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BoxBufferGeometry", function() { return BoxBufferGeometry; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ShadowMaterial", function() { return ShadowMaterial; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SpriteMaterial", function() { return SpriteMaterial; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RawShaderMaterial", function() { return RawShaderMaterial; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ShaderMaterial", function() { return ShaderMaterial; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PointsMaterial", function() { return PointsMaterial; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MeshPhysicalMaterial", function() { return MeshPhysicalMaterial; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MeshStandardMaterial", function() { return MeshStandardMaterial; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MeshPhongMaterial", function() { return MeshPhongMaterial; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MeshToonMaterial", function() { return MeshToonMaterial; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MeshNormalMaterial", function() { return MeshNormalMaterial; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MeshLambertMaterial", function() { return MeshLambertMaterial; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MeshDepthMaterial", function() { return MeshDepthMaterial; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MeshDistanceMaterial", function() { return MeshDistanceMaterial; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MeshBasicMaterial", function() { return MeshBasicMaterial; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LineDashedMaterial", function() { return LineDashedMaterial; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LineBasicMaterial", function() { return LineBasicMaterial; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Material", function() { return Material; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Float64BufferAttribute", function() { return Float64BufferAttribute; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Float32BufferAttribute", function() { return Float32BufferAttribute; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Uint32BufferAttribute", function() { return Uint32BufferAttribute; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Int32BufferAttribute", function() { return Int32BufferAttribute; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Uint16BufferAttribute", function() { return Uint16BufferAttribute; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Int16BufferAttribute", function() { return Int16BufferAttribute; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Uint8ClampedBufferAttribute", function() { return Uint8ClampedBufferAttribute; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Uint8BufferAttribute", function() { return Uint8BufferAttribute; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Int8BufferAttribute", function() { return Int8BufferAttribute; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BufferAttribute", function() { return BufferAttribute; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "REVISION", function() { return REVISION; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MOUSE", function() { return MOUSE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CullFaceNone", function() { return CullFaceNone; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CullFaceBack", function() { return CullFaceBack; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CullFaceFront", function() { return CullFaceFront; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CullFaceFrontBack", function() { return CullFaceFrontBack; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FrontFaceDirectionCW", function() { return FrontFaceDirectionCW; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FrontFaceDirectionCCW", function() { return FrontFaceDirectionCCW; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BasicShadowMap", function() { return BasicShadowMap; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PCFShadowMap", function() { return PCFShadowMap; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PCFSoftShadowMap", function() { return PCFSoftShadowMap; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FrontSide", function() { return FrontSide; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BackSide", function() { return BackSide; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DoubleSide", function() { return DoubleSide; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FlatShading", function() { return FlatShading; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SmoothShading", function() { return SmoothShading; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NoColors", function() { return NoColors; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FaceColors", function() { return FaceColors; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "VertexColors", function() { return VertexColors; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NoBlending", function() { return NoBlending; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NormalBlending", function() { return NormalBlending; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AdditiveBlending", function() { return AdditiveBlending; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SubtractiveBlending", function() { return SubtractiveBlending; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MultiplyBlending", function() { return MultiplyBlending; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CustomBlending", function() { return CustomBlending; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AddEquation", function() { return AddEquation; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SubtractEquation", function() { return SubtractEquation; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ReverseSubtractEquation", function() { return ReverseSubtractEquation; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MinEquation", function() { return MinEquation; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MaxEquation", function() { return MaxEquation; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ZeroFactor", function() { return ZeroFactor; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OneFactor", function() { return OneFactor; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SrcColorFactor", function() { return SrcColorFactor; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OneMinusSrcColorFactor", function() { return OneMinusSrcColorFactor; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SrcAlphaFactor", function() { return SrcAlphaFactor; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OneMinusSrcAlphaFactor", function() { return OneMinusSrcAlphaFactor; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DstAlphaFactor", function() { return DstAlphaFactor; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OneMinusDstAlphaFactor", function() { return OneMinusDstAlphaFactor; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DstColorFactor", function() { return DstColorFactor; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OneMinusDstColorFactor", function() { return OneMinusDstColorFactor; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SrcAlphaSaturateFactor", function() { return SrcAlphaSaturateFactor; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NeverDepth", function() { return NeverDepth; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AlwaysDepth", function() { return AlwaysDepth; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LessDepth", function() { return LessDepth; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LessEqualDepth", function() { return LessEqualDepth; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EqualDepth", function() { return EqualDepth; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GreaterEqualDepth", function() { return GreaterEqualDepth; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GreaterDepth", function() { return GreaterDepth; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NotEqualDepth", function() { return NotEqualDepth; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MultiplyOperation", function() { return MultiplyOperation; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MixOperation", function() { return MixOperation; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AddOperation", function() { return AddOperation; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NoToneMapping", function() { return NoToneMapping; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LinearToneMapping", function() { return LinearToneMapping; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ReinhardToneMapping", function() { return ReinhardToneMapping; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Uncharted2ToneMapping", function() { return Uncharted2ToneMapping; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CineonToneMapping", function() { return CineonToneMapping; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UVMapping", function() { return UVMapping; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CubeReflectionMapping", function() { return CubeReflectionMapping; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CubeRefractionMapping", function() { return CubeRefractionMapping; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EquirectangularReflectionMapping", function() { return EquirectangularReflectionMapping; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EquirectangularRefractionMapping", function() { return EquirectangularRefractionMapping; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SphericalReflectionMapping", function() { return SphericalReflectionMapping; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CubeUVReflectionMapping", function() { return CubeUVReflectionMapping; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CubeUVRefractionMapping", function() { return CubeUVRefractionMapping; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RepeatWrapping", function() { return RepeatWrapping; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ClampToEdgeWrapping", function() { return ClampToEdgeWrapping; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MirroredRepeatWrapping", function() { return MirroredRepeatWrapping; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NearestFilter", function() { return NearestFilter; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NearestMipMapNearestFilter", function() { return NearestMipMapNearestFilter; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NearestMipMapLinearFilter", function() { return NearestMipMapLinearFilter; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LinearFilter", function() { return LinearFilter; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LinearMipMapNearestFilter", function() { return LinearMipMapNearestFilter; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LinearMipMapLinearFilter", function() { return LinearMipMapLinearFilter; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UnsignedByteType", function() { return UnsignedByteType; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ByteType", function() { return ByteType; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ShortType", function() { return ShortType; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UnsignedShortType", function() { return UnsignedShortType; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "IntType", function() { return IntType; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UnsignedIntType", function() { return UnsignedIntType; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FloatType", function() { return FloatType; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "HalfFloatType", function() { return HalfFloatType; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UnsignedShort4444Type", function() { return UnsignedShort4444Type; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UnsignedShort5551Type", function() { return UnsignedShort5551Type; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UnsignedShort565Type", function() { return UnsignedShort565Type; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UnsignedInt248Type", function() { return UnsignedInt248Type; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AlphaFormat", function() { return AlphaFormat; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RGBFormat", function() { return RGBFormat; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RGBAFormat", function() { return RGBAFormat; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LuminanceFormat", function() { return LuminanceFormat; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LuminanceAlphaFormat", function() { return LuminanceAlphaFormat; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RGBEFormat", function() { return RGBEFormat; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DepthFormat", function() { return DepthFormat; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DepthStencilFormat", function() { return DepthStencilFormat; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RGB_S3TC_DXT1_Format", function() { return RGB_S3TC_DXT1_Format; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RGBA_S3TC_DXT1_Format", function() { return RGBA_S3TC_DXT1_Format; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RGBA_S3TC_DXT3_Format", function() { return RGBA_S3TC_DXT3_Format; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RGBA_S3TC_DXT5_Format", function() { return RGBA_S3TC_DXT5_Format; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RGB_PVRTC_4BPPV1_Format", function() { return RGB_PVRTC_4BPPV1_Format; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RGB_PVRTC_2BPPV1_Format", function() { return RGB_PVRTC_2BPPV1_Format; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RGBA_PVRTC_4BPPV1_Format", function() { return RGBA_PVRTC_4BPPV1_Format; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RGBA_PVRTC_2BPPV1_Format", function() { return RGBA_PVRTC_2BPPV1_Format; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RGB_ETC1_Format", function() { return RGB_ETC1_Format; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LoopOnce", function() { return LoopOnce; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LoopRepeat", function() { return LoopRepeat; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LoopPingPong", function() { return LoopPingPong; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "InterpolateDiscrete", function() { return InterpolateDiscrete; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "InterpolateLinear", function() { return InterpolateLinear; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "InterpolateSmooth", function() { return InterpolateSmooth; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ZeroCurvatureEnding", function() { return ZeroCurvatureEnding; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ZeroSlopeEnding", function() { return ZeroSlopeEnding; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "WrapAroundEnding", function() { return WrapAroundEnding; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TrianglesDrawMode", function() { return TrianglesDrawMode; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TriangleStripDrawMode", function() { return TriangleStripDrawMode; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TriangleFanDrawMode", function() { return TriangleFanDrawMode; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LinearEncoding", function() { return LinearEncoding; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "sRGBEncoding", function() { return sRGBEncoding; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GammaEncoding", function() { return GammaEncoding; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RGBEEncoding", function() { return RGBEEncoding; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LogLuvEncoding", function() { return LogLuvEncoding; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RGBM7Encoding", function() { return RGBM7Encoding; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RGBM16Encoding", function() { return RGBM16Encoding; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RGBDEncoding", function() { return RGBDEncoding; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BasicDepthPacking", function() { return BasicDepthPacking; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RGBADepthPacking", function() { return RGBADepthPacking; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CubeGeometry", function() { return BoxGeometry; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Face4", function() { return Face4; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LineStrip", function() { return LineStrip; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LinePieces", function() { return LinePieces; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MeshFaceMaterial", function() { return MeshFaceMaterial; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MultiMaterial", function() { return MultiMaterial; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PointCloud", function() { return PointCloud; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Particle", function() { return Particle; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ParticleSystem", function() { return ParticleSystem; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PointCloudMaterial", function() { return PointCloudMaterial; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ParticleBasicMaterial", function() { return ParticleBasicMaterial; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ParticleSystemMaterial", function() { return ParticleSystemMaterial; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Vertex", function() { return Vertex; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DynamicBufferAttribute", function() { return DynamicBufferAttribute; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Int8Attribute", function() { return Int8Attribute; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Uint8Attribute", function() { return Uint8Attribute; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Uint8ClampedAttribute", function() { return Uint8ClampedAttribute; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Int16Attribute", function() { return Int16Attribute; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Uint16Attribute", function() { return Uint16Attribute; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Int32Attribute", function() { return Int32Attribute; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Uint32Attribute", function() { return Uint32Attribute; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Float32Attribute", function() { return Float32Attribute; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Float64Attribute", function() { return Float64Attribute; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ClosedSplineCurve3", function() { return ClosedSplineCurve3; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SplineCurve3", function() { return SplineCurve3; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Spline", function() { return Spline; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BoundingBoxHelper", function() { return BoundingBoxHelper; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EdgesHelper", function() { return EdgesHelper; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "WireframeHelper", function() { return WireframeHelper; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "XHRLoader", function() { return XHRLoader; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BinaryTextureLoader", function() { return BinaryTextureLoader; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GeometryUtils", function() { return GeometryUtils; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ImageUtils", function() { return ImageUtils; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Projector", function() { return Projector; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CanvasRenderer", function() { return CanvasRenderer; });
 // Polyfills
 
 if ( Number.EPSILON === undefined ) {
@@ -3307,7 +4777,7 @@ Object.assign( EventDispatcher.prototype, {
 
 } );
 
-var REVISION = '86';
+var REVISION = '87';
 var MOUSE = { LEFT: 0, MIDDLE: 1, RIGHT: 2 };
 var CullFaceNone = 0;
 var CullFaceBack = 1;
@@ -4199,7 +5669,7 @@ Object.assign( Texture.prototype, EventDispatcher.prototype, {
 
 			var canvas;
 
-			if ( image.toDataURL !== undefined ) {
+			if ( image instanceof HTMLCanvasElement ) {
 
 				canvas = image;
 
@@ -4209,7 +5679,17 @@ Object.assign( Texture.prototype, EventDispatcher.prototype, {
 				canvas.width = image.width;
 				canvas.height = image.height;
 
-				canvas.getContext( '2d' ).drawImage( image, 0, 0, image.width, image.height );
+				var context = canvas.getContext( '2d' );
+
+				if ( image instanceof ImageData ) {
+
+					context.putImageData( image, 0, 0 );
+
+				} else {
+
+					context.drawImage( image, 0, 0, image.width, image.height );
+
+				}
 
 			}
 
@@ -6585,7 +8065,7 @@ Object.assign( Matrix4.prototype, {
 
 		if ( ! ( euler && euler.isEuler ) ) {
 
-			console.error( 'THREE.Matrix: .makeRotationFromEuler() now expects a Euler rotation rather than a Vector3 and order.' );
+			console.error( 'THREE.Matrix4: .makeRotationFromEuler() now expects a Euler rotation rather than a Vector3 and order.' );
 
 		}
 
@@ -6996,7 +8476,7 @@ Object.assign( Matrix4.prototype, {
 
 		if ( det === 0 ) {
 
-			var msg = "THREE.Matrix4.getInverse(): can't invert matrix, determinant is 0";
+			var msg = "THREE.Matrix4: .getInverse() can't invert matrix, determinant is 0";
 
 			if ( throwOnDegenerate === true ) {
 
@@ -7989,7 +9469,7 @@ var ColorKeywords = { 'aliceblue': 0xF0F8FF, 'antiquewhite': 0xFAEBD7, 'aqua': 0
 	'mediumvioletred': 0xC71585, 'midnightblue': 0x191970, 'mintcream': 0xF5FFFA, 'mistyrose': 0xFFE4E1, 'moccasin': 0xFFE4B5, 'navajowhite': 0xFFDEAD,
 	'navy': 0x000080, 'oldlace': 0xFDF5E6, 'olive': 0x808000, 'olivedrab': 0x6B8E23, 'orange': 0xFFA500, 'orangered': 0xFF4500, 'orchid': 0xDA70D6,
 	'palegoldenrod': 0xEEE8AA, 'palegreen': 0x98FB98, 'paleturquoise': 0xAFEEEE, 'palevioletred': 0xDB7093, 'papayawhip': 0xFFEFD5, 'peachpuff': 0xFFDAB9,
-	'peru': 0xCD853F, 'pink': 0xFFC0CB, 'plum': 0xDDA0DD, 'powderblue': 0xB0E0E6, 'purple': 0x800080, 'red': 0xFF0000, 'rosybrown': 0xBC8F8F,
+	'peru': 0xCD853F, 'pink': 0xFFC0CB, 'plum': 0xDDA0DD, 'powderblue': 0xB0E0E6, 'purple': 0x800080, 'rebeccapurple': 0x663399, 'red': 0xFF0000, 'rosybrown': 0xBC8F8F,
 	'royalblue': 0x4169E1, 'saddlebrown': 0x8B4513, 'salmon': 0xFA8072, 'sandybrown': 0xF4A460, 'seagreen': 0x2E8B57, 'seashell': 0xFFF5EE,
 	'sienna': 0xA0522D, 'silver': 0xC0C0C0, 'skyblue': 0x87CEEB, 'slateblue': 0x6A5ACD, 'slategray': 0x708090, 'slategrey': 0x708090, 'snow': 0xFFFAFA,
 	'springgreen': 0x00FF7F, 'steelblue': 0x4682B4, 'tan': 0xD2B48C, 'teal': 0x008080, 'thistle': 0xD8BFD8, 'tomato': 0xFF6347, 'turquoise': 0x40E0D0,
@@ -8499,8 +9979,17 @@ var UniformsLib = {
 		map: { value: null },
 		offsetRepeat: { value: new Vector4( 0, 0, 1, 1 ) },
 
-		specularMap: { value: null },
 		alphaMap: { value: null },
+
+	},
+
+	specularmap: {
+
+		specularMap: { value: null },
+
+	},
+
+	envmap: {
 
 		envMap: { value: null },
 		flipEnvMap: { value: - 1 },
@@ -8622,7 +10111,9 @@ var UniformsLib = {
 			shadow: {},
 			shadowBias: {},
 			shadowRadius: {},
-			shadowMapSize: {}
+			shadowMapSize: {},
+			shadowCameraNear: {},
+			shadowCameraFar: {}
 		} },
 
 		pointShadowMap: { value: [] },
@@ -8774,7 +10265,7 @@ var encodings_fragment = "  gl_FragColor = linearToOutputTexel( gl_FragColor );\
 
 var encodings_pars_fragment = "\nvec4 LinearToLinear( in vec4 value ) {\n\treturn value;\n}\nvec4 GammaToLinear( in vec4 value, in float gammaFactor ) {\n\treturn vec4( pow( value.xyz, vec3( gammaFactor ) ), value.w );\n}\nvec4 LinearToGamma( in vec4 value, in float gammaFactor ) {\n\treturn vec4( pow( value.xyz, vec3( 1.0 / gammaFactor ) ), value.w );\n}\nvec4 sRGBToLinear( in vec4 value ) {\n\treturn vec4( mix( pow( value.rgb * 0.9478672986 + vec3( 0.0521327014 ), vec3( 2.4 ) ), value.rgb * 0.0773993808, vec3( lessThanEqual( value.rgb, vec3( 0.04045 ) ) ) ), value.w );\n}\nvec4 LinearTosRGB( in vec4 value ) {\n\treturn vec4( mix( pow( value.rgb, vec3( 0.41666 ) ) * 1.055 - vec3( 0.055 ), value.rgb * 12.92, vec3( lessThanEqual( value.rgb, vec3( 0.0031308 ) ) ) ), value.w );\n}\nvec4 RGBEToLinear( in vec4 value ) {\n\treturn vec4( value.rgb * exp2( value.a * 255.0 - 128.0 ), 1.0 );\n}\nvec4 LinearToRGBE( in vec4 value ) {\n\tfloat maxComponent = max( max( value.r, value.g ), value.b );\n\tfloat fExp = clamp( ceil( log2( maxComponent ) ), -128.0, 127.0 );\n\treturn vec4( value.rgb / exp2( fExp ), ( fExp + 128.0 ) / 255.0 );\n}\nvec4 RGBMToLinear( in vec4 value, in float maxRange ) {\n\treturn vec4( value.xyz * value.w * maxRange, 1.0 );\n}\nvec4 LinearToRGBM( in vec4 value, in float maxRange ) {\n\tfloat maxRGB = max( value.x, max( value.g, value.b ) );\n\tfloat M      = clamp( maxRGB / maxRange, 0.0, 1.0 );\n\tM            = ceil( M * 255.0 ) / 255.0;\n\treturn vec4( value.rgb / ( M * maxRange ), M );\n}\nvec4 RGBDToLinear( in vec4 value, in float maxRange ) {\n\treturn vec4( value.rgb * ( ( maxRange / 255.0 ) / value.a ), 1.0 );\n}\nvec4 LinearToRGBD( in vec4 value, in float maxRange ) {\n\tfloat maxRGB = max( value.x, max( value.g, value.b ) );\n\tfloat D      = max( maxRange / maxRGB, 1.0 );\n\tD            = min( floor( D ) / 255.0, 1.0 );\n\treturn vec4( value.rgb * ( D * ( 255.0 / maxRange ) ), D );\n}\nconst mat3 cLogLuvM = mat3( 0.2209, 0.3390, 0.4184, 0.1138, 0.6780, 0.7319, 0.0102, 0.1130, 0.2969 );\nvec4 LinearToLogLuv( in vec4 value )  {\n\tvec3 Xp_Y_XYZp = value.rgb * cLogLuvM;\n\tXp_Y_XYZp = max(Xp_Y_XYZp, vec3(1e-6, 1e-6, 1e-6));\n\tvec4 vResult;\n\tvResult.xy = Xp_Y_XYZp.xy / Xp_Y_XYZp.z;\n\tfloat Le = 2.0 * log2(Xp_Y_XYZp.y) + 127.0;\n\tvResult.w = fract(Le);\n\tvResult.z = (Le - (floor(vResult.w*255.0))/255.0)/255.0;\n\treturn vResult;\n}\nconst mat3 cLogLuvInverseM = mat3( 6.0014, -2.7008, -1.7996, -1.3320, 3.1029, -5.7721, 0.3008, -1.0882, 5.6268 );\nvec4 LogLuvToLinear( in vec4 value ) {\n\tfloat Le = value.z * 255.0 + value.w;\n\tvec3 Xp_Y_XYZp;\n\tXp_Y_XYZp.y = exp2((Le - 127.0) / 2.0);\n\tXp_Y_XYZp.z = Xp_Y_XYZp.y / value.y;\n\tXp_Y_XYZp.x = value.x * Xp_Y_XYZp.z;\n\tvec3 vRGB = Xp_Y_XYZp.rgb * cLogLuvInverseM;\n\treturn vec4( max(vRGB, 0.0), 1.0 );\n}\n";
 
-var envmap_fragment = "#ifdef USE_ENVMAP\n\t#if defined( USE_BUMPMAP ) || defined( USE_NORMALMAP ) || defined( PHONG )\n\t\tvec3 cameraToVertex = normalize( vWorldPosition - cameraPosition );\n\t\tvec3 worldNormal = inverseTransformDirection( normal, viewMatrix );\n\t\t#ifdef ENVMAP_MODE_REFLECTION\n\t\t\tvec3 reflectVec = reflect( cameraToVertex, worldNormal );\n\t\t#else\n\t\t\tvec3 reflectVec = refract( cameraToVertex, worldNormal, refractionRatio );\n\t\t#endif\n\t#else\n\t\tvec3 reflectVec = vReflect;\n\t#endif\n\t#ifdef ENVMAP_TYPE_CUBE\n\t\tvec4 envColor = textureCube( envMap, flipNormal * vec3( flipEnvMap * reflectVec.x, reflectVec.yz ) );\n\t#elif defined( ENVMAP_TYPE_EQUIREC )\n\t\tvec2 sampleUV;\n\t\tsampleUV.y = asin( flipNormal * reflectVec.y ) * RECIPROCAL_PI + 0.5;\n\t\tsampleUV.x = atan( flipNormal * reflectVec.z, flipNormal * reflectVec.x ) * RECIPROCAL_PI2 + 0.5;\n\t\tvec4 envColor = texture2D( envMap, sampleUV );\n\t#elif defined( ENVMAP_TYPE_SPHERE )\n\t\tvec3 reflectView = flipNormal * normalize( ( viewMatrix * vec4( reflectVec, 0.0 ) ).xyz + vec3( 0.0, 0.0, 1.0 ) );\n\t\tvec4 envColor = texture2D( envMap, reflectView.xy * 0.5 + 0.5 );\n\t#else\n\t\tvec4 envColor = vec4( 0.0 );\n\t#endif\n\tenvColor = envMapTexelToLinear( envColor );\n\t#ifdef ENVMAP_BLENDING_MULTIPLY\n\t\toutgoingLight = mix( outgoingLight, outgoingLight * envColor.xyz, specularStrength * reflectivity );\n\t#elif defined( ENVMAP_BLENDING_MIX )\n\t\toutgoingLight = mix( outgoingLight, envColor.xyz, specularStrength * reflectivity );\n\t#elif defined( ENVMAP_BLENDING_ADD )\n\t\toutgoingLight += envColor.xyz * specularStrength * reflectivity;\n\t#endif\n#endif\n";
+var envmap_fragment = "#ifdef USE_ENVMAP\n\t#if defined( USE_BUMPMAP ) || defined( USE_NORMALMAP ) || defined( PHONG )\n\t\tvec3 cameraToVertex = normalize( vWorldPosition - cameraPosition );\n\t\tvec3 worldNormal = inverseTransformDirection( normal, viewMatrix );\n\t\t#ifdef ENVMAP_MODE_REFLECTION\n\t\t\tvec3 reflectVec = reflect( cameraToVertex, worldNormal );\n\t\t#else\n\t\t\tvec3 reflectVec = refract( cameraToVertex, worldNormal, refractionRatio );\n\t\t#endif\n\t#else\n\t\tvec3 reflectVec = vReflect;\n\t#endif\n\t#ifdef ENVMAP_TYPE_CUBE\n\t\tvec4 envColor = textureCube( envMap, vec3( flipEnvMap * reflectVec.x, reflectVec.yz ) );\n\t#elif defined( ENVMAP_TYPE_EQUIREC )\n\t\tvec2 sampleUV;\n\t\treflectVec = normalize( reflectVec );\n\t\tsampleUV.y = asin( clamp( reflectVec.y, - 1.0, 1.0 ) ) * RECIPROCAL_PI + 0.5;\n\t\tsampleUV.x = atan( reflectVec.z, reflectVec.x ) * RECIPROCAL_PI2 + 0.5;\n\t\tvec4 envColor = texture2D( envMap, sampleUV );\n\t#elif defined( ENVMAP_TYPE_SPHERE )\n\t\treflectVec = normalize( reflectVec );\n\t\tvec3 reflectView = normalize( ( viewMatrix * vec4( reflectVec, 0.0 ) ).xyz + vec3( 0.0, 0.0, 1.0 ) );\n\t\tvec4 envColor = texture2D( envMap, reflectView.xy * 0.5 + 0.5 );\n\t#else\n\t\tvec4 envColor = vec4( 0.0 );\n\t#endif\n\tenvColor = envMapTexelToLinear( envColor );\n\t#ifdef ENVMAP_BLENDING_MULTIPLY\n\t\toutgoingLight = mix( outgoingLight, outgoingLight * envColor.xyz, specularStrength * reflectivity );\n\t#elif defined( ENVMAP_BLENDING_MIX )\n\t\toutgoingLight = mix( outgoingLight, envColor.xyz, specularStrength * reflectivity );\n\t#elif defined( ENVMAP_BLENDING_ADD )\n\t\toutgoingLight += envColor.xyz * specularStrength * reflectivity;\n\t#endif\n#endif\n";
 
 var envmap_pars_fragment = "#if defined( USE_ENVMAP ) || defined( PHYSICAL )\n\tuniform float reflectivity;\n\tuniform float envMapIntensity;\n#endif\n#ifdef USE_ENVMAP\n\t#if ! defined( PHYSICAL ) && ( defined( USE_BUMPMAP ) || defined( USE_NORMALMAP ) || defined( PHONG ) )\n\t\tvarying vec3 vWorldPosition;\n\t#endif\n\t#ifdef ENVMAP_TYPE_CUBE\n\t\tuniform samplerCube envMap;\n\t#else\n\t\tuniform sampler2D envMap;\n\t#endif\n\tuniform float flipEnvMap;\n\t#if defined( USE_BUMPMAP ) || defined( USE_NORMALMAP ) || defined( PHONG ) || defined( PHYSICAL )\n\t\tuniform float refractionRatio;\n\t#else\n\t\tvarying vec3 vReflect;\n\t#endif\n#endif\n";
 
@@ -8798,7 +10289,7 @@ var lightmap_pars_fragment = "#ifdef USE_LIGHTMAP\n\tuniform sampler2D lightMap;
 
 var lights_lambert_vertex = "vec3 diffuse = vec3( 1.0 );\nGeometricContext geometry;\ngeometry.position = mvPosition.xyz;\ngeometry.normal = normalize( transformedNormal );\ngeometry.viewDir = normalize( -mvPosition.xyz );\nGeometricContext backGeometry;\nbackGeometry.position = geometry.position;\nbackGeometry.normal = -geometry.normal;\nbackGeometry.viewDir = geometry.viewDir;\nvLightFront = vec3( 0.0 );\n#ifdef DOUBLE_SIDED\n\tvLightBack = vec3( 0.0 );\n#endif\nIncidentLight directLight;\nfloat dotNL;\nvec3 directLightColor_Diffuse;\n#if NUM_POINT_LIGHTS > 0\n\tfor ( int i = 0; i < NUM_POINT_LIGHTS; i ++ ) {\n\t\tgetPointDirectLightIrradiance( pointLights[ i ], geometry, directLight );\n\t\tdotNL = dot( geometry.normal, directLight.direction );\n\t\tdirectLightColor_Diffuse = PI * directLight.color;\n\t\tvLightFront += saturate( dotNL ) * directLightColor_Diffuse;\n\t\t#ifdef DOUBLE_SIDED\n\t\t\tvLightBack += saturate( -dotNL ) * directLightColor_Diffuse;\n\t\t#endif\n\t}\n#endif\n#if NUM_SPOT_LIGHTS > 0\n\tfor ( int i = 0; i < NUM_SPOT_LIGHTS; i ++ ) {\n\t\tgetSpotDirectLightIrradiance( spotLights[ i ], geometry, directLight );\n\t\tdotNL = dot( geometry.normal, directLight.direction );\n\t\tdirectLightColor_Diffuse = PI * directLight.color;\n\t\tvLightFront += saturate( dotNL ) * directLightColor_Diffuse;\n\t\t#ifdef DOUBLE_SIDED\n\t\t\tvLightBack += saturate( -dotNL ) * directLightColor_Diffuse;\n\t\t#endif\n\t}\n#endif\n#if NUM_DIR_LIGHTS > 0\n\tfor ( int i = 0; i < NUM_DIR_LIGHTS; i ++ ) {\n\t\tgetDirectionalDirectLightIrradiance( directionalLights[ i ], geometry, directLight );\n\t\tdotNL = dot( geometry.normal, directLight.direction );\n\t\tdirectLightColor_Diffuse = PI * directLight.color;\n\t\tvLightFront += saturate( dotNL ) * directLightColor_Diffuse;\n\t\t#ifdef DOUBLE_SIDED\n\t\t\tvLightBack += saturate( -dotNL ) * directLightColor_Diffuse;\n\t\t#endif\n\t}\n#endif\n#if NUM_HEMI_LIGHTS > 0\n\tfor ( int i = 0; i < NUM_HEMI_LIGHTS; i ++ ) {\n\t\tvLightFront += getHemisphereLightIrradiance( hemisphereLights[ i ], geometry );\n\t\t#ifdef DOUBLE_SIDED\n\t\t\tvLightBack += getHemisphereLightIrradiance( hemisphereLights[ i ], backGeometry );\n\t\t#endif\n\t}\n#endif\n";
 
-var lights_pars = "uniform vec3 ambientLightColor;\nvec3 getAmbientLightIrradiance( const in vec3 ambientLightColor ) {\n\tvec3 irradiance = ambientLightColor;\n\t#ifndef PHYSICALLY_CORRECT_LIGHTS\n\t\tirradiance *= PI;\n\t#endif\n\treturn irradiance;\n}\n#if NUM_DIR_LIGHTS > 0\n\tstruct DirectionalLight {\n\t\tvec3 direction;\n\t\tvec3 color;\n\t\tint shadow;\n\t\tfloat shadowBias;\n\t\tfloat shadowRadius;\n\t\tvec2 shadowMapSize;\n\t};\n\tuniform DirectionalLight directionalLights[ NUM_DIR_LIGHTS ];\n\tvoid getDirectionalDirectLightIrradiance( const in DirectionalLight directionalLight, const in GeometricContext geometry, out IncidentLight directLight ) {\n\t\tdirectLight.color = directionalLight.color;\n\t\tdirectLight.direction = directionalLight.direction;\n\t\tdirectLight.visible = true;\n\t}\n#endif\n#if NUM_POINT_LIGHTS > 0\n\tstruct PointLight {\n\t\tvec3 position;\n\t\tvec3 color;\n\t\tfloat distance;\n\t\tfloat decay;\n\t\tint shadow;\n\t\tfloat shadowBias;\n\t\tfloat shadowRadius;\n\t\tvec2 shadowMapSize;\n\t};\n\tuniform PointLight pointLights[ NUM_POINT_LIGHTS ];\n\tvoid getPointDirectLightIrradiance( const in PointLight pointLight, const in GeometricContext geometry, out IncidentLight directLight ) {\n\t\tvec3 lVector = pointLight.position - geometry.position;\n\t\tdirectLight.direction = normalize( lVector );\n\t\tfloat lightDistance = length( lVector );\n\t\tdirectLight.color = pointLight.color;\n\t\tdirectLight.color *= punctualLightIntensityToIrradianceFactor( lightDistance, pointLight.distance, pointLight.decay );\n\t\tdirectLight.visible = ( directLight.color != vec3( 0.0 ) );\n\t}\n#endif\n#if NUM_SPOT_LIGHTS > 0\n\tstruct SpotLight {\n\t\tvec3 position;\n\t\tvec3 direction;\n\t\tvec3 color;\n\t\tfloat distance;\n\t\tfloat decay;\n\t\tfloat coneCos;\n\t\tfloat penumbraCos;\n\t\tint shadow;\n\t\tfloat shadowBias;\n\t\tfloat shadowRadius;\n\t\tvec2 shadowMapSize;\n\t};\n\tuniform SpotLight spotLights[ NUM_SPOT_LIGHTS ];\n\tvoid getSpotDirectLightIrradiance( const in SpotLight spotLight, const in GeometricContext geometry, out IncidentLight directLight  ) {\n\t\tvec3 lVector = spotLight.position - geometry.position;\n\t\tdirectLight.direction = normalize( lVector );\n\t\tfloat lightDistance = length( lVector );\n\t\tfloat angleCos = dot( directLight.direction, spotLight.direction );\n\t\tif ( angleCos > spotLight.coneCos ) {\n\t\t\tfloat spotEffect = smoothstep( spotLight.coneCos, spotLight.penumbraCos, angleCos );\n\t\t\tdirectLight.color = spotLight.color;\n\t\t\tdirectLight.color *= spotEffect * punctualLightIntensityToIrradianceFactor( lightDistance, spotLight.distance, spotLight.decay );\n\t\t\tdirectLight.visible = true;\n\t\t} else {\n\t\t\tdirectLight.color = vec3( 0.0 );\n\t\t\tdirectLight.visible = false;\n\t\t}\n\t}\n#endif\n#if NUM_RECT_AREA_LIGHTS > 0\n\tstruct RectAreaLight {\n\t\tvec3 color;\n\t\tvec3 position;\n\t\tvec3 halfWidth;\n\t\tvec3 halfHeight;\n\t};\n\tuniform sampler2D ltcMat;\tuniform sampler2D ltcMag;\n\tuniform RectAreaLight rectAreaLights[ NUM_RECT_AREA_LIGHTS ];\n#endif\n#if NUM_HEMI_LIGHTS > 0\n\tstruct HemisphereLight {\n\t\tvec3 direction;\n\t\tvec3 skyColor;\n\t\tvec3 groundColor;\n\t};\n\tuniform HemisphereLight hemisphereLights[ NUM_HEMI_LIGHTS ];\n\tvec3 getHemisphereLightIrradiance( const in HemisphereLight hemiLight, const in GeometricContext geometry ) {\n\t\tfloat dotNL = dot( geometry.normal, hemiLight.direction );\n\t\tfloat hemiDiffuseWeight = 0.5 * dotNL + 0.5;\n\t\tvec3 irradiance = mix( hemiLight.groundColor, hemiLight.skyColor, hemiDiffuseWeight );\n\t\t#ifndef PHYSICALLY_CORRECT_LIGHTS\n\t\t\tirradiance *= PI;\n\t\t#endif\n\t\treturn irradiance;\n\t}\n#endif\n#if defined( USE_ENVMAP ) && defined( PHYSICAL )\n\tvec3 getLightProbeIndirectIrradiance( const in GeometricContext geometry, const in int maxMIPLevel ) {\n\t\tvec3 worldNormal = inverseTransformDirection( geometry.normal, viewMatrix );\n\t\t#ifdef ENVMAP_TYPE_CUBE\n\t\t\tvec3 queryVec = vec3( flipEnvMap * worldNormal.x, worldNormal.yz );\n\t\t\t#ifdef TEXTURE_LOD_EXT\n\t\t\t\tvec4 envMapColor = textureCubeLodEXT( envMap, queryVec, float( maxMIPLevel ) );\n\t\t\t#else\n\t\t\t\tvec4 envMapColor = textureCube( envMap, queryVec, float( maxMIPLevel ) );\n\t\t\t#endif\n\t\t\tenvMapColor.rgb = envMapTexelToLinear( envMapColor ).rgb;\n\t\t#elif defined( ENVMAP_TYPE_CUBE_UV )\n\t\t\tvec3 queryVec = vec3( flipEnvMap * worldNormal.x, worldNormal.yz );\n\t\t\tvec4 envMapColor = textureCubeUV( queryVec, 1.0 );\n\t\t#else\n\t\t\tvec4 envMapColor = vec4( 0.0 );\n\t\t#endif\n\t\treturn PI * envMapColor.rgb * envMapIntensity;\n\t}\n\tfloat getSpecularMIPLevel( const in float blinnShininessExponent, const in int maxMIPLevel ) {\n\t\tfloat maxMIPLevelScalar = float( maxMIPLevel );\n\t\tfloat desiredMIPLevel = maxMIPLevelScalar - 0.79248 - 0.5 * log2( pow2( blinnShininessExponent ) + 1.0 );\n\t\treturn clamp( desiredMIPLevel, 0.0, maxMIPLevelScalar );\n\t}\n\tvec3 getLightProbeIndirectRadiance( const in GeometricContext geometry, const in float blinnShininessExponent, const in int maxMIPLevel ) {\n\t\t#ifdef ENVMAP_MODE_REFLECTION\n\t\t\tvec3 reflectVec = reflect( -geometry.viewDir, geometry.normal );\n\t\t#else\n\t\t\tvec3 reflectVec = refract( -geometry.viewDir, geometry.normal, refractionRatio );\n\t\t#endif\n\t\treflectVec = inverseTransformDirection( reflectVec, viewMatrix );\n\t\tfloat specularMIPLevel = getSpecularMIPLevel( blinnShininessExponent, maxMIPLevel );\n\t\t#ifdef ENVMAP_TYPE_CUBE\n\t\t\tvec3 queryReflectVec = vec3( flipEnvMap * reflectVec.x, reflectVec.yz );\n\t\t\t#ifdef TEXTURE_LOD_EXT\n\t\t\t\tvec4 envMapColor = textureCubeLodEXT( envMap, queryReflectVec, specularMIPLevel );\n\t\t\t#else\n\t\t\t\tvec4 envMapColor = textureCube( envMap, queryReflectVec, specularMIPLevel );\n\t\t\t#endif\n\t\t\tenvMapColor.rgb = envMapTexelToLinear( envMapColor ).rgb;\n\t\t#elif defined( ENVMAP_TYPE_CUBE_UV )\n\t\t\tvec3 queryReflectVec = vec3( flipEnvMap * reflectVec.x, reflectVec.yz );\n\t\t\tvec4 envMapColor = textureCubeUV(queryReflectVec, BlinnExponentToGGXRoughness(blinnShininessExponent));\n\t\t#elif defined( ENVMAP_TYPE_EQUIREC )\n\t\t\tvec2 sampleUV;\n\t\t\tsampleUV.y = saturate( reflectVec.y * 0.5 + 0.5 );\n\t\t\tsampleUV.x = atan( reflectVec.z, reflectVec.x ) * RECIPROCAL_PI2 + 0.5;\n\t\t\t#ifdef TEXTURE_LOD_EXT\n\t\t\t\tvec4 envMapColor = texture2DLodEXT( envMap, sampleUV, specularMIPLevel );\n\t\t\t#else\n\t\t\t\tvec4 envMapColor = texture2D( envMap, sampleUV, specularMIPLevel );\n\t\t\t#endif\n\t\t\tenvMapColor.rgb = envMapTexelToLinear( envMapColor ).rgb;\n\t\t#elif defined( ENVMAP_TYPE_SPHERE )\n\t\t\tvec3 reflectView = normalize( ( viewMatrix * vec4( reflectVec, 0.0 ) ).xyz + vec3( 0.0,0.0,1.0 ) );\n\t\t\t#ifdef TEXTURE_LOD_EXT\n\t\t\t\tvec4 envMapColor = texture2DLodEXT( envMap, reflectView.xy * 0.5 + 0.5, specularMIPLevel );\n\t\t\t#else\n\t\t\t\tvec4 envMapColor = texture2D( envMap, reflectView.xy * 0.5 + 0.5, specularMIPLevel );\n\t\t\t#endif\n\t\t\tenvMapColor.rgb = envMapTexelToLinear( envMapColor ).rgb;\n\t\t#endif\n\t\treturn envMapColor.rgb * envMapIntensity;\n\t}\n#endif\n";
+var lights_pars = "uniform vec3 ambientLightColor;\nvec3 getAmbientLightIrradiance( const in vec3 ambientLightColor ) {\n\tvec3 irradiance = ambientLightColor;\n\t#ifndef PHYSICALLY_CORRECT_LIGHTS\n\t\tirradiance *= PI;\n\t#endif\n\treturn irradiance;\n}\n#if NUM_DIR_LIGHTS > 0\n\tstruct DirectionalLight {\n\t\tvec3 direction;\n\t\tvec3 color;\n\t\tint shadow;\n\t\tfloat shadowBias;\n\t\tfloat shadowRadius;\n\t\tvec2 shadowMapSize;\n\t};\n\tuniform DirectionalLight directionalLights[ NUM_DIR_LIGHTS ];\n\tvoid getDirectionalDirectLightIrradiance( const in DirectionalLight directionalLight, const in GeometricContext geometry, out IncidentLight directLight ) {\n\t\tdirectLight.color = directionalLight.color;\n\t\tdirectLight.direction = directionalLight.direction;\n\t\tdirectLight.visible = true;\n\t}\n#endif\n#if NUM_POINT_LIGHTS > 0\n\tstruct PointLight {\n\t\tvec3 position;\n\t\tvec3 color;\n\t\tfloat distance;\n\t\tfloat decay;\n\t\tint shadow;\n\t\tfloat shadowBias;\n\t\tfloat shadowRadius;\n\t\tvec2 shadowMapSize;\n\t\tfloat shadowCameraNear;\n\t\tfloat shadowCameraFar;\n\t};\n\tuniform PointLight pointLights[ NUM_POINT_LIGHTS ];\n\tvoid getPointDirectLightIrradiance( const in PointLight pointLight, const in GeometricContext geometry, out IncidentLight directLight ) {\n\t\tvec3 lVector = pointLight.position - geometry.position;\n\t\tdirectLight.direction = normalize( lVector );\n\t\tfloat lightDistance = length( lVector );\n\t\tdirectLight.color = pointLight.color;\n\t\tdirectLight.color *= punctualLightIntensityToIrradianceFactor( lightDistance, pointLight.distance, pointLight.decay );\n\t\tdirectLight.visible = ( directLight.color != vec3( 0.0 ) );\n\t}\n#endif\n#if NUM_SPOT_LIGHTS > 0\n\tstruct SpotLight {\n\t\tvec3 position;\n\t\tvec3 direction;\n\t\tvec3 color;\n\t\tfloat distance;\n\t\tfloat decay;\n\t\tfloat coneCos;\n\t\tfloat penumbraCos;\n\t\tint shadow;\n\t\tfloat shadowBias;\n\t\tfloat shadowRadius;\n\t\tvec2 shadowMapSize;\n\t};\n\tuniform SpotLight spotLights[ NUM_SPOT_LIGHTS ];\n\tvoid getSpotDirectLightIrradiance( const in SpotLight spotLight, const in GeometricContext geometry, out IncidentLight directLight  ) {\n\t\tvec3 lVector = spotLight.position - geometry.position;\n\t\tdirectLight.direction = normalize( lVector );\n\t\tfloat lightDistance = length( lVector );\n\t\tfloat angleCos = dot( directLight.direction, spotLight.direction );\n\t\tif ( angleCos > spotLight.coneCos ) {\n\t\t\tfloat spotEffect = smoothstep( spotLight.coneCos, spotLight.penumbraCos, angleCos );\n\t\t\tdirectLight.color = spotLight.color;\n\t\t\tdirectLight.color *= spotEffect * punctualLightIntensityToIrradianceFactor( lightDistance, spotLight.distance, spotLight.decay );\n\t\t\tdirectLight.visible = true;\n\t\t} else {\n\t\t\tdirectLight.color = vec3( 0.0 );\n\t\t\tdirectLight.visible = false;\n\t\t}\n\t}\n#endif\n#if NUM_RECT_AREA_LIGHTS > 0\n\tstruct RectAreaLight {\n\t\tvec3 color;\n\t\tvec3 position;\n\t\tvec3 halfWidth;\n\t\tvec3 halfHeight;\n\t};\n\tuniform sampler2D ltcMat;\tuniform sampler2D ltcMag;\n\tuniform RectAreaLight rectAreaLights[ NUM_RECT_AREA_LIGHTS ];\n#endif\n#if NUM_HEMI_LIGHTS > 0\n\tstruct HemisphereLight {\n\t\tvec3 direction;\n\t\tvec3 skyColor;\n\t\tvec3 groundColor;\n\t};\n\tuniform HemisphereLight hemisphereLights[ NUM_HEMI_LIGHTS ];\n\tvec3 getHemisphereLightIrradiance( const in HemisphereLight hemiLight, const in GeometricContext geometry ) {\n\t\tfloat dotNL = dot( geometry.normal, hemiLight.direction );\n\t\tfloat hemiDiffuseWeight = 0.5 * dotNL + 0.5;\n\t\tvec3 irradiance = mix( hemiLight.groundColor, hemiLight.skyColor, hemiDiffuseWeight );\n\t\t#ifndef PHYSICALLY_CORRECT_LIGHTS\n\t\t\tirradiance *= PI;\n\t\t#endif\n\t\treturn irradiance;\n\t}\n#endif\n#if defined( USE_ENVMAP ) && defined( PHYSICAL )\n\tvec3 getLightProbeIndirectIrradiance( const in GeometricContext geometry, const in int maxMIPLevel ) {\n\t\tvec3 worldNormal = inverseTransformDirection( geometry.normal, viewMatrix );\n\t\t#ifdef ENVMAP_TYPE_CUBE\n\t\t\tvec3 queryVec = vec3( flipEnvMap * worldNormal.x, worldNormal.yz );\n\t\t\t#ifdef TEXTURE_LOD_EXT\n\t\t\t\tvec4 envMapColor = textureCubeLodEXT( envMap, queryVec, float( maxMIPLevel ) );\n\t\t\t#else\n\t\t\t\tvec4 envMapColor = textureCube( envMap, queryVec, float( maxMIPLevel ) );\n\t\t\t#endif\n\t\t\tenvMapColor.rgb = envMapTexelToLinear( envMapColor ).rgb;\n\t\t#elif defined( ENVMAP_TYPE_CUBE_UV )\n\t\t\tvec3 queryVec = vec3( flipEnvMap * worldNormal.x, worldNormal.yz );\n\t\t\tvec4 envMapColor = textureCubeUV( queryVec, 1.0 );\n\t\t#else\n\t\t\tvec4 envMapColor = vec4( 0.0 );\n\t\t#endif\n\t\treturn PI * envMapColor.rgb * envMapIntensity;\n\t}\n\tfloat getSpecularMIPLevel( const in float blinnShininessExponent, const in int maxMIPLevel ) {\n\t\tfloat maxMIPLevelScalar = float( maxMIPLevel );\n\t\tfloat desiredMIPLevel = maxMIPLevelScalar - 0.79248 - 0.5 * log2( pow2( blinnShininessExponent ) + 1.0 );\n\t\treturn clamp( desiredMIPLevel, 0.0, maxMIPLevelScalar );\n\t}\n\tvec3 getLightProbeIndirectRadiance( const in GeometricContext geometry, const in float blinnShininessExponent, const in int maxMIPLevel ) {\n\t\t#ifdef ENVMAP_MODE_REFLECTION\n\t\t\tvec3 reflectVec = reflect( -geometry.viewDir, geometry.normal );\n\t\t#else\n\t\t\tvec3 reflectVec = refract( -geometry.viewDir, geometry.normal, refractionRatio );\n\t\t#endif\n\t\treflectVec = inverseTransformDirection( reflectVec, viewMatrix );\n\t\tfloat specularMIPLevel = getSpecularMIPLevel( blinnShininessExponent, maxMIPLevel );\n\t\t#ifdef ENVMAP_TYPE_CUBE\n\t\t\tvec3 queryReflectVec = vec3( flipEnvMap * reflectVec.x, reflectVec.yz );\n\t\t\t#ifdef TEXTURE_LOD_EXT\n\t\t\t\tvec4 envMapColor = textureCubeLodEXT( envMap, queryReflectVec, specularMIPLevel );\n\t\t\t#else\n\t\t\t\tvec4 envMapColor = textureCube( envMap, queryReflectVec, specularMIPLevel );\n\t\t\t#endif\n\t\t\tenvMapColor.rgb = envMapTexelToLinear( envMapColor ).rgb;\n\t\t#elif defined( ENVMAP_TYPE_CUBE_UV )\n\t\t\tvec3 queryReflectVec = vec3( flipEnvMap * reflectVec.x, reflectVec.yz );\n\t\t\tvec4 envMapColor = textureCubeUV(queryReflectVec, BlinnExponentToGGXRoughness(blinnShininessExponent));\n\t\t#elif defined( ENVMAP_TYPE_EQUIREC )\n\t\t\tvec2 sampleUV;\n\t\t\tsampleUV.y = asin( clamp( reflectVec.y, - 1.0, 1.0 ) ) * RECIPROCAL_PI + 0.5;\n\t\t\tsampleUV.x = atan( reflectVec.z, reflectVec.x ) * RECIPROCAL_PI2 + 0.5;\n\t\t\t#ifdef TEXTURE_LOD_EXT\n\t\t\t\tvec4 envMapColor = texture2DLodEXT( envMap, sampleUV, specularMIPLevel );\n\t\t\t#else\n\t\t\t\tvec4 envMapColor = texture2D( envMap, sampleUV, specularMIPLevel );\n\t\t\t#endif\n\t\t\tenvMapColor.rgb = envMapTexelToLinear( envMapColor ).rgb;\n\t\t#elif defined( ENVMAP_TYPE_SPHERE )\n\t\t\tvec3 reflectView = normalize( ( viewMatrix * vec4( reflectVec, 0.0 ) ).xyz + vec3( 0.0,0.0,1.0 ) );\n\t\t\t#ifdef TEXTURE_LOD_EXT\n\t\t\t\tvec4 envMapColor = texture2DLodEXT( envMap, reflectView.xy * 0.5 + 0.5, specularMIPLevel );\n\t\t\t#else\n\t\t\t\tvec4 envMapColor = texture2D( envMap, reflectView.xy * 0.5 + 0.5, specularMIPLevel );\n\t\t\t#endif\n\t\t\tenvMapColor.rgb = envMapTexelToLinear( envMapColor ).rgb;\n\t\t#endif\n\t\treturn envMapColor.rgb * envMapIntensity;\n\t}\n#endif\n";
 
 var lights_phong_fragment = "BlinnPhongMaterial material;\nmaterial.diffuseColor = diffuseColor.rgb;\nmaterial.specularColor = specular;\nmaterial.specularShininess = shininess;\nmaterial.specularStrength = specularStrength;\n";
 
@@ -8808,7 +10299,7 @@ var lights_physical_fragment = "PhysicalMaterial material;\nmaterial.diffuseColo
 
 var lights_physical_pars_fragment = "struct PhysicalMaterial {\n\tvec3\tdiffuseColor;\n\tfloat\tspecularRoughness;\n\tvec3\tspecularColor;\n\t#ifndef STANDARD\n\t\tfloat clearCoat;\n\t\tfloat clearCoatRoughness;\n\t#endif\n};\n#define MAXIMUM_SPECULAR_COEFFICIENT 0.16\n#define DEFAULT_SPECULAR_COEFFICIENT 0.04\nfloat clearCoatDHRApprox( const in float roughness, const in float dotNL ) {\n\treturn DEFAULT_SPECULAR_COEFFICIENT + ( 1.0 - DEFAULT_SPECULAR_COEFFICIENT ) * ( pow( 1.0 - dotNL, 5.0 ) * pow( 1.0 - roughness, 2.0 ) );\n}\n#if NUM_RECT_AREA_LIGHTS > 0\n\tvoid RE_Direct_RectArea_Physical( const in RectAreaLight rectAreaLight, const in GeometricContext geometry, const in PhysicalMaterial material, inout ReflectedLight reflectedLight ) {\n\t\tvec3 normal = geometry.normal;\n\t\tvec3 viewDir = geometry.viewDir;\n\t\tvec3 position = geometry.position;\n\t\tvec3 lightPos = rectAreaLight.position;\n\t\tvec3 halfWidth = rectAreaLight.halfWidth;\n\t\tvec3 halfHeight = rectAreaLight.halfHeight;\n\t\tvec3 lightColor = rectAreaLight.color;\n\t\tfloat roughness = material.specularRoughness;\n\t\tvec3 rectCoords[ 4 ];\n\t\trectCoords[ 0 ] = lightPos - halfWidth - halfHeight;\t\trectCoords[ 1 ] = lightPos + halfWidth - halfHeight;\n\t\trectCoords[ 2 ] = lightPos + halfWidth + halfHeight;\n\t\trectCoords[ 3 ] = lightPos - halfWidth + halfHeight;\n\t\tvec2 uv = LTC_Uv( normal, viewDir, roughness );\n\t\tfloat norm = texture2D( ltcMag, uv ).a;\n\t\tvec4 t = texture2D( ltcMat, uv );\n\t\tmat3 mInv = mat3(\n\t\t\tvec3(   1,   0, t.y ),\n\t\t\tvec3(   0, t.z,   0 ),\n\t\t\tvec3( t.w,   0, t.x )\n\t\t);\n\t\treflectedLight.directSpecular += lightColor * material.specularColor * norm * LTC_Evaluate( normal, viewDir, position, mInv, rectCoords );\n\t\treflectedLight.directDiffuse += lightColor * material.diffuseColor * LTC_Evaluate( normal, viewDir, position, mat3( 1 ), rectCoords );\n\t}\n#endif\nvoid RE_Direct_Physical( const in IncidentLight directLight, const in GeometricContext geometry, const in PhysicalMaterial material, inout ReflectedLight reflectedLight ) {\n\tfloat dotNL = saturate( dot( geometry.normal, directLight.direction ) );\n\tvec3 irradiance = dotNL * directLight.color;\n\t#ifndef PHYSICALLY_CORRECT_LIGHTS\n\t\tirradiance *= PI;\n\t#endif\n\t#ifndef STANDARD\n\t\tfloat clearCoatDHR = material.clearCoat * clearCoatDHRApprox( material.clearCoatRoughness, dotNL );\n\t#else\n\t\tfloat clearCoatDHR = 0.0;\n\t#endif\n\treflectedLight.directSpecular += ( 1.0 - clearCoatDHR ) * irradiance * BRDF_Specular_GGX( directLight, geometry, material.specularColor, material.specularRoughness );\n\treflectedLight.directDiffuse += ( 1.0 - clearCoatDHR ) * irradiance * BRDF_Diffuse_Lambert( material.diffuseColor );\n\t#ifndef STANDARD\n\t\treflectedLight.directSpecular += irradiance * material.clearCoat * BRDF_Specular_GGX( directLight, geometry, vec3( DEFAULT_SPECULAR_COEFFICIENT ), material.clearCoatRoughness );\n\t#endif\n}\nvoid RE_IndirectDiffuse_Physical( const in vec3 irradiance, const in GeometricContext geometry, const in PhysicalMaterial material, inout ReflectedLight reflectedLight ) {\n\treflectedLight.indirectDiffuse += irradiance * BRDF_Diffuse_Lambert( material.diffuseColor );\n}\nvoid RE_IndirectSpecular_Physical( const in vec3 radiance, const in vec3 clearCoatRadiance, const in GeometricContext geometry, const in PhysicalMaterial material, inout ReflectedLight reflectedLight ) {\n\t#ifndef STANDARD\n\t\tfloat dotNV = saturate( dot( geometry.normal, geometry.viewDir ) );\n\t\tfloat dotNL = dotNV;\n\t\tfloat clearCoatDHR = material.clearCoat * clearCoatDHRApprox( material.clearCoatRoughness, dotNL );\n\t#else\n\t\tfloat clearCoatDHR = 0.0;\n\t#endif\n\treflectedLight.indirectSpecular += ( 1.0 - clearCoatDHR ) * radiance * BRDF_Specular_GGX_Environment( geometry, material.specularColor, material.specularRoughness );\n\t#ifndef STANDARD\n\t\treflectedLight.indirectSpecular += clearCoatRadiance * material.clearCoat * BRDF_Specular_GGX_Environment( geometry, vec3( DEFAULT_SPECULAR_COEFFICIENT ), material.clearCoatRoughness );\n\t#endif\n}\n#define RE_Direct\t\t\t\tRE_Direct_Physical\n#define RE_Direct_RectArea\t\tRE_Direct_RectArea_Physical\n#define RE_IndirectDiffuse\t\tRE_IndirectDiffuse_Physical\n#define RE_IndirectSpecular\t\tRE_IndirectSpecular_Physical\n#define Material_BlinnShininessExponent( material )   GGXRoughnessToBlinnExponent( material.specularRoughness )\n#define Material_ClearCoat_BlinnShininessExponent( material )   GGXRoughnessToBlinnExponent( material.clearCoatRoughness )\nfloat computeSpecularOcclusion( const in float dotNV, const in float ambientOcclusion, const in float roughness ) {\n\treturn saturate( pow( dotNV + ambientOcclusion, exp2( - 16.0 * roughness - 1.0 ) ) - 1.0 + ambientOcclusion );\n}\n";
 
-var lights_template = "\nGeometricContext geometry;\ngeometry.position = - vViewPosition;\ngeometry.normal = normal;\ngeometry.viewDir = normalize( vViewPosition );\nIncidentLight directLight;\n#if ( NUM_POINT_LIGHTS > 0 ) && defined( RE_Direct )\n\tPointLight pointLight;\n\tfor ( int i = 0; i < NUM_POINT_LIGHTS; i ++ ) {\n\t\tpointLight = pointLights[ i ];\n\t\tgetPointDirectLightIrradiance( pointLight, geometry, directLight );\n\t\t#ifdef USE_SHADOWMAP\n\t\tdirectLight.color *= all( bvec2( pointLight.shadow, directLight.visible ) ) ? getPointShadow( pointShadowMap[ i ], pointLight.shadowMapSize, pointLight.shadowBias, pointLight.shadowRadius, vPointShadowCoord[ i ] ) : 1.0;\n\t\t#endif\n\t\tRE_Direct( directLight, geometry, material, reflectedLight );\n\t}\n#endif\n#if ( NUM_SPOT_LIGHTS > 0 ) && defined( RE_Direct )\n\tSpotLight spotLight;\n\tfor ( int i = 0; i < NUM_SPOT_LIGHTS; i ++ ) {\n\t\tspotLight = spotLights[ i ];\n\t\tgetSpotDirectLightIrradiance( spotLight, geometry, directLight );\n\t\t#ifdef USE_SHADOWMAP\n\t\tdirectLight.color *= all( bvec2( spotLight.shadow, directLight.visible ) ) ? getShadow( spotShadowMap[ i ], spotLight.shadowMapSize, spotLight.shadowBias, spotLight.shadowRadius, vSpotShadowCoord[ i ] ) : 1.0;\n\t\t#endif\n\t\tRE_Direct( directLight, geometry, material, reflectedLight );\n\t}\n#endif\n#if ( NUM_DIR_LIGHTS > 0 ) && defined( RE_Direct )\n\tDirectionalLight directionalLight;\n\tfor ( int i = 0; i < NUM_DIR_LIGHTS; i ++ ) {\n\t\tdirectionalLight = directionalLights[ i ];\n\t\tgetDirectionalDirectLightIrradiance( directionalLight, geometry, directLight );\n\t\t#ifdef USE_SHADOWMAP\n\t\tdirectLight.color *= all( bvec2( directionalLight.shadow, directLight.visible ) ) ? getShadow( directionalShadowMap[ i ], directionalLight.shadowMapSize, directionalLight.shadowBias, directionalLight.shadowRadius, vDirectionalShadowCoord[ i ] ) : 1.0;\n\t\t#endif\n\t\tRE_Direct( directLight, geometry, material, reflectedLight );\n\t}\n#endif\n#if ( NUM_RECT_AREA_LIGHTS > 0 ) && defined( RE_Direct_RectArea )\n\tRectAreaLight rectAreaLight;\n\tfor ( int i = 0; i < NUM_RECT_AREA_LIGHTS; i ++ ) {\n\t\trectAreaLight = rectAreaLights[ i ];\n\t\tRE_Direct_RectArea( rectAreaLight, geometry, material, reflectedLight );\n\t}\n#endif\n#if defined( RE_IndirectDiffuse )\n\tvec3 irradiance = getAmbientLightIrradiance( ambientLightColor );\n\t#ifdef USE_LIGHTMAP\n\t\tvec3 lightMapIrradiance = texture2D( lightMap, vUv2 ).xyz * lightMapIntensity;\n\t\t#ifndef PHYSICALLY_CORRECT_LIGHTS\n\t\t\tlightMapIrradiance *= PI;\n\t\t#endif\n\t\tirradiance += lightMapIrradiance;\n\t#endif\n\t#if ( NUM_HEMI_LIGHTS > 0 )\n\t\tfor ( int i = 0; i < NUM_HEMI_LIGHTS; i ++ ) {\n\t\t\tirradiance += getHemisphereLightIrradiance( hemisphereLights[ i ], geometry );\n\t\t}\n\t#endif\n\t#if defined( USE_ENVMAP ) && defined( PHYSICAL ) && defined( ENVMAP_TYPE_CUBE_UV )\n\t\tirradiance += getLightProbeIndirectIrradiance( geometry, 8 );\n\t#endif\n\tRE_IndirectDiffuse( irradiance, geometry, material, reflectedLight );\n#endif\n#if defined( USE_ENVMAP ) && defined( RE_IndirectSpecular )\n\tvec3 radiance = getLightProbeIndirectRadiance( geometry, Material_BlinnShininessExponent( material ), 8 );\n\t#ifndef STANDARD\n\t\tvec3 clearCoatRadiance = getLightProbeIndirectRadiance( geometry, Material_ClearCoat_BlinnShininessExponent( material ), 8 );\n\t#else\n\t\tvec3 clearCoatRadiance = vec3( 0.0 );\n\t#endif\n\tRE_IndirectSpecular( radiance, clearCoatRadiance, geometry, material, reflectedLight );\n#endif\n";
+var lights_template = "\nGeometricContext geometry;\ngeometry.position = - vViewPosition;\ngeometry.normal = normal;\ngeometry.viewDir = normalize( vViewPosition );\nIncidentLight directLight;\n#if ( NUM_POINT_LIGHTS > 0 ) && defined( RE_Direct )\n\tPointLight pointLight;\n\tfor ( int i = 0; i < NUM_POINT_LIGHTS; i ++ ) {\n\t\tpointLight = pointLights[ i ];\n\t\tgetPointDirectLightIrradiance( pointLight, geometry, directLight );\n\t\t#ifdef USE_SHADOWMAP\n\t\tdirectLight.color *= all( bvec2( pointLight.shadow, directLight.visible ) ) ? getPointShadow( pointShadowMap[ i ], pointLight.shadowMapSize, pointLight.shadowBias, pointLight.shadowRadius, vPointShadowCoord[ i ], pointLight.shadowCameraNear, pointLight.shadowCameraFar ) : 1.0;\n\t\t#endif\n\t\tRE_Direct( directLight, geometry, material, reflectedLight );\n\t}\n#endif\n#if ( NUM_SPOT_LIGHTS > 0 ) && defined( RE_Direct )\n\tSpotLight spotLight;\n\tfor ( int i = 0; i < NUM_SPOT_LIGHTS; i ++ ) {\n\t\tspotLight = spotLights[ i ];\n\t\tgetSpotDirectLightIrradiance( spotLight, geometry, directLight );\n\t\t#ifdef USE_SHADOWMAP\n\t\tdirectLight.color *= all( bvec2( spotLight.shadow, directLight.visible ) ) ? getShadow( spotShadowMap[ i ], spotLight.shadowMapSize, spotLight.shadowBias, spotLight.shadowRadius, vSpotShadowCoord[ i ] ) : 1.0;\n\t\t#endif\n\t\tRE_Direct( directLight, geometry, material, reflectedLight );\n\t}\n#endif\n#if ( NUM_DIR_LIGHTS > 0 ) && defined( RE_Direct )\n\tDirectionalLight directionalLight;\n\tfor ( int i = 0; i < NUM_DIR_LIGHTS; i ++ ) {\n\t\tdirectionalLight = directionalLights[ i ];\n\t\tgetDirectionalDirectLightIrradiance( directionalLight, geometry, directLight );\n\t\t#ifdef USE_SHADOWMAP\n\t\tdirectLight.color *= all( bvec2( directionalLight.shadow, directLight.visible ) ) ? getShadow( directionalShadowMap[ i ], directionalLight.shadowMapSize, directionalLight.shadowBias, directionalLight.shadowRadius, vDirectionalShadowCoord[ i ] ) : 1.0;\n\t\t#endif\n\t\tRE_Direct( directLight, geometry, material, reflectedLight );\n\t}\n#endif\n#if ( NUM_RECT_AREA_LIGHTS > 0 ) && defined( RE_Direct_RectArea )\n\tRectAreaLight rectAreaLight;\n\tfor ( int i = 0; i < NUM_RECT_AREA_LIGHTS; i ++ ) {\n\t\trectAreaLight = rectAreaLights[ i ];\n\t\tRE_Direct_RectArea( rectAreaLight, geometry, material, reflectedLight );\n\t}\n#endif\n#if defined( RE_IndirectDiffuse )\n\tvec3 irradiance = getAmbientLightIrradiance( ambientLightColor );\n\t#ifdef USE_LIGHTMAP\n\t\tvec3 lightMapIrradiance = texture2D( lightMap, vUv2 ).xyz * lightMapIntensity;\n\t\t#ifndef PHYSICALLY_CORRECT_LIGHTS\n\t\t\tlightMapIrradiance *= PI;\n\t\t#endif\n\t\tirradiance += lightMapIrradiance;\n\t#endif\n\t#if ( NUM_HEMI_LIGHTS > 0 )\n\t\tfor ( int i = 0; i < NUM_HEMI_LIGHTS; i ++ ) {\n\t\t\tirradiance += getHemisphereLightIrradiance( hemisphereLights[ i ], geometry );\n\t\t}\n\t#endif\n\t#if defined( USE_ENVMAP ) && defined( PHYSICAL ) && defined( ENVMAP_TYPE_CUBE_UV )\n\t\tirradiance += getLightProbeIndirectIrradiance( geometry, 8 );\n\t#endif\n\tRE_IndirectDiffuse( irradiance, geometry, material, reflectedLight );\n#endif\n#if defined( USE_ENVMAP ) && defined( RE_IndirectSpecular )\n\tvec3 radiance = getLightProbeIndirectRadiance( geometry, Material_BlinnShininessExponent( material ), 8 );\n\t#ifndef STANDARD\n\t\tvec3 clearCoatRadiance = getLightProbeIndirectRadiance( geometry, Material_ClearCoat_BlinnShininessExponent( material ), 8 );\n\t#else\n\t\tvec3 clearCoatRadiance = vec3( 0.0 );\n\t#endif\n\tRE_IndirectSpecular( radiance, clearCoatRadiance, geometry, material, reflectedLight );\n#endif\n";
 
 var logdepthbuf_fragment = "#if defined(USE_LOGDEPTHBUF) && defined(USE_LOGDEPTHBUF_EXT)\n\tgl_FragDepthEXT = log2(vFragDepth) * logDepthBufFC * 0.5;\n#endif";
 
@@ -8836,9 +10327,7 @@ var morphtarget_pars_vertex = "#ifdef USE_MORPHTARGETS\n\t#ifndef USE_MORPHNORMA
 
 var morphtarget_vertex = "#ifdef USE_MORPHTARGETS\n\ttransformed += ( morphTarget0 - position ) * morphTargetInfluences[ 0 ];\n\ttransformed += ( morphTarget1 - position ) * morphTargetInfluences[ 1 ];\n\ttransformed += ( morphTarget2 - position ) * morphTargetInfluences[ 2 ];\n\ttransformed += ( morphTarget3 - position ) * morphTargetInfluences[ 3 ];\n\t#ifndef USE_MORPHNORMALS\n\ttransformed += ( morphTarget4 - position ) * morphTargetInfluences[ 4 ];\n\ttransformed += ( morphTarget5 - position ) * morphTargetInfluences[ 5 ];\n\ttransformed += ( morphTarget6 - position ) * morphTargetInfluences[ 6 ];\n\ttransformed += ( morphTarget7 - position ) * morphTargetInfluences[ 7 ];\n\t#endif\n#endif\n";
 
-var normal_flip = "#ifdef DOUBLE_SIDED\n\tfloat flipNormal = ( float( gl_FrontFacing ) * 2.0 - 1.0 );\n#else\n\tfloat flipNormal = 1.0;\n#endif\n";
-
-var normal_fragment = "#ifdef FLAT_SHADED\n\tvec3 fdx = vec3( dFdx( vViewPosition.x ), dFdx( vViewPosition.y ), dFdx( vViewPosition.z ) );\n\tvec3 fdy = vec3( dFdy( vViewPosition.x ), dFdy( vViewPosition.y ), dFdy( vViewPosition.z ) );\n\tvec3 normal = normalize( cross( fdx, fdy ) );\n#else\n\tvec3 normal = normalize( vNormal ) * flipNormal;\n#endif\n#ifdef USE_NORMALMAP\n\tnormal = perturbNormal2Arb( -vViewPosition, normal );\n#elif defined( USE_BUMPMAP )\n\tnormal = perturbNormalArb( -vViewPosition, normal, dHdxy_fwd() );\n#endif\n";
+var normal_fragment = "#ifdef FLAT_SHADED\n\tvec3 fdx = vec3( dFdx( vViewPosition.x ), dFdx( vViewPosition.y ), dFdx( vViewPosition.z ) );\n\tvec3 fdy = vec3( dFdy( vViewPosition.x ), dFdy( vViewPosition.y ), dFdy( vViewPosition.z ) );\n\tvec3 normal = normalize( cross( fdx, fdy ) );\n#else\n\tvec3 normal = normalize( vNormal );\n\t#ifdef DOUBLE_SIDED\n\t\tnormal = normal * ( float( gl_FrontFacing ) * 2.0 - 1.0 );\n\t#endif\n#endif\n#ifdef USE_NORMALMAP\n\tnormal = perturbNormal2Arb( -vViewPosition, normal );\n#elif defined( USE_BUMPMAP )\n\tnormal = perturbNormalArb( -vViewPosition, normal, dHdxy_fwd() );\n#endif\n";
 
 var normalmap_pars_fragment = "#ifdef USE_NORMALMAP\n\tuniform sampler2D normalMap;\n\tuniform vec2 normalScale;\n\tvec3 perturbNormal2Arb( vec3 eye_pos, vec3 surf_norm ) {\n\t\tvec3 q0 = vec3( dFdx( eye_pos.x ), dFdx( eye_pos.y ), dFdx( eye_pos.z ) );\n\t\tvec3 q1 = vec3( dFdy( eye_pos.x ), dFdy( eye_pos.y ), dFdy( eye_pos.z ) );\n\t\tvec2 st0 = dFdx( vUv.st );\n\t\tvec2 st1 = dFdy( vUv.st );\n\t\tvec3 S = normalize( q0 * st1.t - q1 * st0.t );\n\t\tvec3 T = normalize( -q0 * st1.s + q1 * st0.s );\n\t\tvec3 N = normalize( surf_norm );\n\t\tvec3 mapN = texture2D( normalMap, vUv ).xyz * 2.0 - 1.0;\n\t\tmapN.xy = normalScale * mapN.xy;\n\t\tmat3 tsn = mat3( S, T, N );\n\t\treturn normalize( tsn * mapN );\n\t}\n#endif\n";
 
@@ -8856,13 +10345,13 @@ var roughnessmap_fragment = "float roughnessFactor = roughness;\n#ifdef USE_ROUG
 
 var roughnessmap_pars_fragment = "#ifdef USE_ROUGHNESSMAP\n\tuniform sampler2D roughnessMap;\n#endif";
 
-var shadowmap_pars_fragment = "#ifdef USE_SHADOWMAP\n\t#if NUM_DIR_LIGHTS > 0\n\t\tuniform sampler2D directionalShadowMap[ NUM_DIR_LIGHTS ];\n\t\tvarying vec4 vDirectionalShadowCoord[ NUM_DIR_LIGHTS ];\n\t#endif\n\t#if NUM_SPOT_LIGHTS > 0\n\t\tuniform sampler2D spotShadowMap[ NUM_SPOT_LIGHTS ];\n\t\tvarying vec4 vSpotShadowCoord[ NUM_SPOT_LIGHTS ];\n\t#endif\n\t#if NUM_POINT_LIGHTS > 0\n\t\tuniform sampler2D pointShadowMap[ NUM_POINT_LIGHTS ];\n\t\tvarying vec4 vPointShadowCoord[ NUM_POINT_LIGHTS ];\n\t#endif\n\tfloat texture2DCompare( sampler2D depths, vec2 uv, float compare ) {\n\t\treturn step( compare, unpackRGBAToDepth( texture2D( depths, uv ) ) );\n\t}\n\tfloat texture2DShadowLerp( sampler2D depths, vec2 size, vec2 uv, float compare ) {\n\t\tconst vec2 offset = vec2( 0.0, 1.0 );\n\t\tvec2 texelSize = vec2( 1.0 ) / size;\n\t\tvec2 centroidUV = floor( uv * size + 0.5 ) / size;\n\t\tfloat lb = texture2DCompare( depths, centroidUV + texelSize * offset.xx, compare );\n\t\tfloat lt = texture2DCompare( depths, centroidUV + texelSize * offset.xy, compare );\n\t\tfloat rb = texture2DCompare( depths, centroidUV + texelSize * offset.yx, compare );\n\t\tfloat rt = texture2DCompare( depths, centroidUV + texelSize * offset.yy, compare );\n\t\tvec2 f = fract( uv * size + 0.5 );\n\t\tfloat a = mix( lb, lt, f.y );\n\t\tfloat b = mix( rb, rt, f.y );\n\t\tfloat c = mix( a, b, f.x );\n\t\treturn c;\n\t}\n\tfloat getShadow( sampler2D shadowMap, vec2 shadowMapSize, float shadowBias, float shadowRadius, vec4 shadowCoord ) {\n\t\tfloat shadow = 1.0;\n\t\tshadowCoord.xyz /= shadowCoord.w;\n\t\tshadowCoord.z += shadowBias;\n\t\tbvec4 inFrustumVec = bvec4 ( shadowCoord.x >= 0.0, shadowCoord.x <= 1.0, shadowCoord.y >= 0.0, shadowCoord.y <= 1.0 );\n\t\tbool inFrustum = all( inFrustumVec );\n\t\tbvec2 frustumTestVec = bvec2( inFrustum, shadowCoord.z <= 1.0 );\n\t\tbool frustumTest = all( frustumTestVec );\n\t\tif ( frustumTest ) {\n\t\t#if defined( SHADOWMAP_TYPE_PCF )\n\t\t\tvec2 texelSize = vec2( 1.0 ) / shadowMapSize;\n\t\t\tfloat dx0 = - texelSize.x * shadowRadius;\n\t\t\tfloat dy0 = - texelSize.y * shadowRadius;\n\t\t\tfloat dx1 = + texelSize.x * shadowRadius;\n\t\t\tfloat dy1 = + texelSize.y * shadowRadius;\n\t\t\tshadow = (\n\t\t\t\ttexture2DCompare( shadowMap, shadowCoord.xy + vec2( dx0, dy0 ), shadowCoord.z ) +\n\t\t\t\ttexture2DCompare( shadowMap, shadowCoord.xy + vec2( 0.0, dy0 ), shadowCoord.z ) +\n\t\t\t\ttexture2DCompare( shadowMap, shadowCoord.xy + vec2( dx1, dy0 ), shadowCoord.z ) +\n\t\t\t\ttexture2DCompare( shadowMap, shadowCoord.xy + vec2( dx0, 0.0 ), shadowCoord.z ) +\n\t\t\t\ttexture2DCompare( shadowMap, shadowCoord.xy, shadowCoord.z ) +\n\t\t\t\ttexture2DCompare( shadowMap, shadowCoord.xy + vec2( dx1, 0.0 ), shadowCoord.z ) +\n\t\t\t\ttexture2DCompare( shadowMap, shadowCoord.xy + vec2( dx0, dy1 ), shadowCoord.z ) +\n\t\t\t\ttexture2DCompare( shadowMap, shadowCoord.xy + vec2( 0.0, dy1 ), shadowCoord.z ) +\n\t\t\t\ttexture2DCompare( shadowMap, shadowCoord.xy + vec2( dx1, dy1 ), shadowCoord.z )\n\t\t\t) * ( 1.0 / 9.0 );\n\t\t#elif defined( SHADOWMAP_TYPE_PCF_SOFT )\n\t\t\tvec2 texelSize = vec2( 1.0 ) / shadowMapSize;\n\t\t\tfloat dx0 = - texelSize.x * shadowRadius;\n\t\t\tfloat dy0 = - texelSize.y * shadowRadius;\n\t\t\tfloat dx1 = + texelSize.x * shadowRadius;\n\t\t\tfloat dy1 = + texelSize.y * shadowRadius;\n\t\t\tshadow = (\n\t\t\t\ttexture2DShadowLerp( shadowMap, shadowMapSize, shadowCoord.xy + vec2( dx0, dy0 ), shadowCoord.z ) +\n\t\t\t\ttexture2DShadowLerp( shadowMap, shadowMapSize, shadowCoord.xy + vec2( 0.0, dy0 ), shadowCoord.z ) +\n\t\t\t\ttexture2DShadowLerp( shadowMap, shadowMapSize, shadowCoord.xy + vec2( dx1, dy0 ), shadowCoord.z ) +\n\t\t\t\ttexture2DShadowLerp( shadowMap, shadowMapSize, shadowCoord.xy + vec2( dx0, 0.0 ), shadowCoord.z ) +\n\t\t\t\ttexture2DShadowLerp( shadowMap, shadowMapSize, shadowCoord.xy, shadowCoord.z ) +\n\t\t\t\ttexture2DShadowLerp( shadowMap, shadowMapSize, shadowCoord.xy + vec2( dx1, 0.0 ), shadowCoord.z ) +\n\t\t\t\ttexture2DShadowLerp( shadowMap, shadowMapSize, shadowCoord.xy + vec2( dx0, dy1 ), shadowCoord.z ) +\n\t\t\t\ttexture2DShadowLerp( shadowMap, shadowMapSize, shadowCoord.xy + vec2( 0.0, dy1 ), shadowCoord.z ) +\n\t\t\t\ttexture2DShadowLerp( shadowMap, shadowMapSize, shadowCoord.xy + vec2( dx1, dy1 ), shadowCoord.z )\n\t\t\t) * ( 1.0 / 9.0 );\n\t\t#else\n\t\t\tshadow = texture2DCompare( shadowMap, shadowCoord.xy, shadowCoord.z );\n\t\t#endif\n\t\t}\n\t\treturn shadow;\n\t}\n\tvec2 cubeToUV( vec3 v, float texelSizeY ) {\n\t\tvec3 absV = abs( v );\n\t\tfloat scaleToCube = 1.0 / max( absV.x, max( absV.y, absV.z ) );\n\t\tabsV *= scaleToCube;\n\t\tv *= scaleToCube * ( 1.0 - 2.0 * texelSizeY );\n\t\tvec2 planar = v.xy;\n\t\tfloat almostATexel = 1.5 * texelSizeY;\n\t\tfloat almostOne = 1.0 - almostATexel;\n\t\tif ( absV.z >= almostOne ) {\n\t\t\tif ( v.z > 0.0 )\n\t\t\t\tplanar.x = 4.0 - v.x;\n\t\t} else if ( absV.x >= almostOne ) {\n\t\t\tfloat signX = sign( v.x );\n\t\t\tplanar.x = v.z * signX + 2.0 * signX;\n\t\t} else if ( absV.y >= almostOne ) {\n\t\t\tfloat signY = sign( v.y );\n\t\t\tplanar.x = v.x + 2.0 * signY + 2.0;\n\t\t\tplanar.y = v.z * signY - 2.0;\n\t\t}\n\t\treturn vec2( 0.125, 0.25 ) * planar + vec2( 0.375, 0.75 );\n\t}\n\tfloat getPointShadow( sampler2D shadowMap, vec2 shadowMapSize, float shadowBias, float shadowRadius, vec4 shadowCoord ) {\n\t\tvec2 texelSize = vec2( 1.0 ) / ( shadowMapSize * vec2( 4.0, 2.0 ) );\n\t\tvec3 lightToPosition = shadowCoord.xyz;\n\t\tvec3 bd3D = normalize( lightToPosition );\n\t\tfloat dp = ( length( lightToPosition ) - shadowBias ) / 1000.0;\n\t\t#if defined( SHADOWMAP_TYPE_PCF ) || defined( SHADOWMAP_TYPE_PCF_SOFT )\n\t\t\tvec2 offset = vec2( - 1, 1 ) * shadowRadius * texelSize.y;\n\t\t\treturn (\n\t\t\t\ttexture2DCompare( shadowMap, cubeToUV( bd3D + offset.xyy, texelSize.y ), dp ) +\n\t\t\t\ttexture2DCompare( shadowMap, cubeToUV( bd3D + offset.yyy, texelSize.y ), dp ) +\n\t\t\t\ttexture2DCompare( shadowMap, cubeToUV( bd3D + offset.xyx, texelSize.y ), dp ) +\n\t\t\t\ttexture2DCompare( shadowMap, cubeToUV( bd3D + offset.yyx, texelSize.y ), dp ) +\n\t\t\t\ttexture2DCompare( shadowMap, cubeToUV( bd3D, texelSize.y ), dp ) +\n\t\t\t\ttexture2DCompare( shadowMap, cubeToUV( bd3D + offset.xxy, texelSize.y ), dp ) +\n\t\t\t\ttexture2DCompare( shadowMap, cubeToUV( bd3D + offset.yxy, texelSize.y ), dp ) +\n\t\t\t\ttexture2DCompare( shadowMap, cubeToUV( bd3D + offset.xxx, texelSize.y ), dp ) +\n\t\t\t\ttexture2DCompare( shadowMap, cubeToUV( bd3D + offset.yxx, texelSize.y ), dp )\n\t\t\t) * ( 1.0 / 9.0 );\n\t\t#else\n\t\t\treturn texture2DCompare( shadowMap, cubeToUV( bd3D, texelSize.y ), dp );\n\t\t#endif\n\t}\n#endif\n";
+var shadowmap_pars_fragment = "#ifdef USE_SHADOWMAP\n\t#if NUM_DIR_LIGHTS > 0\n\t\tuniform sampler2D directionalShadowMap[ NUM_DIR_LIGHTS ];\n\t\tvarying vec4 vDirectionalShadowCoord[ NUM_DIR_LIGHTS ];\n\t#endif\n\t#if NUM_SPOT_LIGHTS > 0\n\t\tuniform sampler2D spotShadowMap[ NUM_SPOT_LIGHTS ];\n\t\tvarying vec4 vSpotShadowCoord[ NUM_SPOT_LIGHTS ];\n\t#endif\n\t#if NUM_POINT_LIGHTS > 0\n\t\tuniform sampler2D pointShadowMap[ NUM_POINT_LIGHTS ];\n\t\tvarying vec4 vPointShadowCoord[ NUM_POINT_LIGHTS ];\n\t#endif\n\tfloat texture2DCompare( sampler2D depths, vec2 uv, float compare ) {\n\t\treturn step( compare, unpackRGBAToDepth( texture2D( depths, uv ) ) );\n\t}\n\tfloat texture2DShadowLerp( sampler2D depths, vec2 size, vec2 uv, float compare ) {\n\t\tconst vec2 offset = vec2( 0.0, 1.0 );\n\t\tvec2 texelSize = vec2( 1.0 ) / size;\n\t\tvec2 centroidUV = floor( uv * size + 0.5 ) / size;\n\t\tfloat lb = texture2DCompare( depths, centroidUV + texelSize * offset.xx, compare );\n\t\tfloat lt = texture2DCompare( depths, centroidUV + texelSize * offset.xy, compare );\n\t\tfloat rb = texture2DCompare( depths, centroidUV + texelSize * offset.yx, compare );\n\t\tfloat rt = texture2DCompare( depths, centroidUV + texelSize * offset.yy, compare );\n\t\tvec2 f = fract( uv * size + 0.5 );\n\t\tfloat a = mix( lb, lt, f.y );\n\t\tfloat b = mix( rb, rt, f.y );\n\t\tfloat c = mix( a, b, f.x );\n\t\treturn c;\n\t}\n\tfloat getShadow( sampler2D shadowMap, vec2 shadowMapSize, float shadowBias, float shadowRadius, vec4 shadowCoord ) {\n\t\tfloat shadow = 1.0;\n\t\tshadowCoord.xyz /= shadowCoord.w;\n\t\tshadowCoord.z += shadowBias;\n\t\tbvec4 inFrustumVec = bvec4 ( shadowCoord.x >= 0.0, shadowCoord.x <= 1.0, shadowCoord.y >= 0.0, shadowCoord.y <= 1.0 );\n\t\tbool inFrustum = all( inFrustumVec );\n\t\tbvec2 frustumTestVec = bvec2( inFrustum, shadowCoord.z <= 1.0 );\n\t\tbool frustumTest = all( frustumTestVec );\n\t\tif ( frustumTest ) {\n\t\t#if defined( SHADOWMAP_TYPE_PCF )\n\t\t\tvec2 texelSize = vec2( 1.0 ) / shadowMapSize;\n\t\t\tfloat dx0 = - texelSize.x * shadowRadius;\n\t\t\tfloat dy0 = - texelSize.y * shadowRadius;\n\t\t\tfloat dx1 = + texelSize.x * shadowRadius;\n\t\t\tfloat dy1 = + texelSize.y * shadowRadius;\n\t\t\tshadow = (\n\t\t\t\ttexture2DCompare( shadowMap, shadowCoord.xy + vec2( dx0, dy0 ), shadowCoord.z ) +\n\t\t\t\ttexture2DCompare( shadowMap, shadowCoord.xy + vec2( 0.0, dy0 ), shadowCoord.z ) +\n\t\t\t\ttexture2DCompare( shadowMap, shadowCoord.xy + vec2( dx1, dy0 ), shadowCoord.z ) +\n\t\t\t\ttexture2DCompare( shadowMap, shadowCoord.xy + vec2( dx0, 0.0 ), shadowCoord.z ) +\n\t\t\t\ttexture2DCompare( shadowMap, shadowCoord.xy, shadowCoord.z ) +\n\t\t\t\ttexture2DCompare( shadowMap, shadowCoord.xy + vec2( dx1, 0.0 ), shadowCoord.z ) +\n\t\t\t\ttexture2DCompare( shadowMap, shadowCoord.xy + vec2( dx0, dy1 ), shadowCoord.z ) +\n\t\t\t\ttexture2DCompare( shadowMap, shadowCoord.xy + vec2( 0.0, dy1 ), shadowCoord.z ) +\n\t\t\t\ttexture2DCompare( shadowMap, shadowCoord.xy + vec2( dx1, dy1 ), shadowCoord.z )\n\t\t\t) * ( 1.0 / 9.0 );\n\t\t#elif defined( SHADOWMAP_TYPE_PCF_SOFT )\n\t\t\tvec2 texelSize = vec2( 1.0 ) / shadowMapSize;\n\t\t\tfloat dx0 = - texelSize.x * shadowRadius;\n\t\t\tfloat dy0 = - texelSize.y * shadowRadius;\n\t\t\tfloat dx1 = + texelSize.x * shadowRadius;\n\t\t\tfloat dy1 = + texelSize.y * shadowRadius;\n\t\t\tshadow = (\n\t\t\t\ttexture2DShadowLerp( shadowMap, shadowMapSize, shadowCoord.xy + vec2( dx0, dy0 ), shadowCoord.z ) +\n\t\t\t\ttexture2DShadowLerp( shadowMap, shadowMapSize, shadowCoord.xy + vec2( 0.0, dy0 ), shadowCoord.z ) +\n\t\t\t\ttexture2DShadowLerp( shadowMap, shadowMapSize, shadowCoord.xy + vec2( dx1, dy0 ), shadowCoord.z ) +\n\t\t\t\ttexture2DShadowLerp( shadowMap, shadowMapSize, shadowCoord.xy + vec2( dx0, 0.0 ), shadowCoord.z ) +\n\t\t\t\ttexture2DShadowLerp( shadowMap, shadowMapSize, shadowCoord.xy, shadowCoord.z ) +\n\t\t\t\ttexture2DShadowLerp( shadowMap, shadowMapSize, shadowCoord.xy + vec2( dx1, 0.0 ), shadowCoord.z ) +\n\t\t\t\ttexture2DShadowLerp( shadowMap, shadowMapSize, shadowCoord.xy + vec2( dx0, dy1 ), shadowCoord.z ) +\n\t\t\t\ttexture2DShadowLerp( shadowMap, shadowMapSize, shadowCoord.xy + vec2( 0.0, dy1 ), shadowCoord.z ) +\n\t\t\t\ttexture2DShadowLerp( shadowMap, shadowMapSize, shadowCoord.xy + vec2( dx1, dy1 ), shadowCoord.z )\n\t\t\t) * ( 1.0 / 9.0 );\n\t\t#else\n\t\t\tshadow = texture2DCompare( shadowMap, shadowCoord.xy, shadowCoord.z );\n\t\t#endif\n\t\t}\n\t\treturn shadow;\n\t}\n\tvec2 cubeToUV( vec3 v, float texelSizeY ) {\n\t\tvec3 absV = abs( v );\n\t\tfloat scaleToCube = 1.0 / max( absV.x, max( absV.y, absV.z ) );\n\t\tabsV *= scaleToCube;\n\t\tv *= scaleToCube * ( 1.0 - 2.0 * texelSizeY );\n\t\tvec2 planar = v.xy;\n\t\tfloat almostATexel = 1.5 * texelSizeY;\n\t\tfloat almostOne = 1.0 - almostATexel;\n\t\tif ( absV.z >= almostOne ) {\n\t\t\tif ( v.z > 0.0 )\n\t\t\t\tplanar.x = 4.0 - v.x;\n\t\t} else if ( absV.x >= almostOne ) {\n\t\t\tfloat signX = sign( v.x );\n\t\t\tplanar.x = v.z * signX + 2.0 * signX;\n\t\t} else if ( absV.y >= almostOne ) {\n\t\t\tfloat signY = sign( v.y );\n\t\t\tplanar.x = v.x + 2.0 * signY + 2.0;\n\t\t\tplanar.y = v.z * signY - 2.0;\n\t\t}\n\t\treturn vec2( 0.125, 0.25 ) * planar + vec2( 0.375, 0.75 );\n\t}\n\tfloat getPointShadow( sampler2D shadowMap, vec2 shadowMapSize, float shadowBias, float shadowRadius, vec4 shadowCoord, float shadowCameraNear, float shadowCameraFar ) {\n\t\tvec2 texelSize = vec2( 1.0 ) / ( shadowMapSize * vec2( 4.0, 2.0 ) );\n\t\tvec3 lightToPosition = shadowCoord.xyz;\n\t\tfloat dp = ( length( lightToPosition ) - shadowCameraNear ) / ( shadowCameraFar - shadowCameraNear );\t\tdp += shadowBias;\n\t\tvec3 bd3D = normalize( lightToPosition );\n\t\t#if defined( SHADOWMAP_TYPE_PCF ) || defined( SHADOWMAP_TYPE_PCF_SOFT )\n\t\t\tvec2 offset = vec2( - 1, 1 ) * shadowRadius * texelSize.y;\n\t\t\treturn (\n\t\t\t\ttexture2DCompare( shadowMap, cubeToUV( bd3D + offset.xyy, texelSize.y ), dp ) +\n\t\t\t\ttexture2DCompare( shadowMap, cubeToUV( bd3D + offset.yyy, texelSize.y ), dp ) +\n\t\t\t\ttexture2DCompare( shadowMap, cubeToUV( bd3D + offset.xyx, texelSize.y ), dp ) +\n\t\t\t\ttexture2DCompare( shadowMap, cubeToUV( bd3D + offset.yyx, texelSize.y ), dp ) +\n\t\t\t\ttexture2DCompare( shadowMap, cubeToUV( bd3D, texelSize.y ), dp ) +\n\t\t\t\ttexture2DCompare( shadowMap, cubeToUV( bd3D + offset.xxy, texelSize.y ), dp ) +\n\t\t\t\ttexture2DCompare( shadowMap, cubeToUV( bd3D + offset.yxy, texelSize.y ), dp ) +\n\t\t\t\ttexture2DCompare( shadowMap, cubeToUV( bd3D + offset.xxx, texelSize.y ), dp ) +\n\t\t\t\ttexture2DCompare( shadowMap, cubeToUV( bd3D + offset.yxx, texelSize.y ), dp )\n\t\t\t) * ( 1.0 / 9.0 );\n\t\t#else\n\t\t\treturn texture2DCompare( shadowMap, cubeToUV( bd3D, texelSize.y ), dp );\n\t\t#endif\n\t}\n#endif\n";
 
 var shadowmap_pars_vertex = "#ifdef USE_SHADOWMAP\n\t#if NUM_DIR_LIGHTS > 0\n\t\tuniform mat4 directionalShadowMatrix[ NUM_DIR_LIGHTS ];\n\t\tvarying vec4 vDirectionalShadowCoord[ NUM_DIR_LIGHTS ];\n\t#endif\n\t#if NUM_SPOT_LIGHTS > 0\n\t\tuniform mat4 spotShadowMatrix[ NUM_SPOT_LIGHTS ];\n\t\tvarying vec4 vSpotShadowCoord[ NUM_SPOT_LIGHTS ];\n\t#endif\n\t#if NUM_POINT_LIGHTS > 0\n\t\tuniform mat4 pointShadowMatrix[ NUM_POINT_LIGHTS ];\n\t\tvarying vec4 vPointShadowCoord[ NUM_POINT_LIGHTS ];\n\t#endif\n#endif\n";
 
 var shadowmap_vertex = "#ifdef USE_SHADOWMAP\n\t#if NUM_DIR_LIGHTS > 0\n\tfor ( int i = 0; i < NUM_DIR_LIGHTS; i ++ ) {\n\t\tvDirectionalShadowCoord[ i ] = directionalShadowMatrix[ i ] * worldPosition;\n\t}\n\t#endif\n\t#if NUM_SPOT_LIGHTS > 0\n\tfor ( int i = 0; i < NUM_SPOT_LIGHTS; i ++ ) {\n\t\tvSpotShadowCoord[ i ] = spotShadowMatrix[ i ] * worldPosition;\n\t}\n\t#endif\n\t#if NUM_POINT_LIGHTS > 0\n\tfor ( int i = 0; i < NUM_POINT_LIGHTS; i ++ ) {\n\t\tvPointShadowCoord[ i ] = pointShadowMatrix[ i ] * worldPosition;\n\t}\n\t#endif\n#endif\n";
 
-var shadowmask_pars_fragment = "float getShadowMask() {\n\tfloat shadow = 1.0;\n\t#ifdef USE_SHADOWMAP\n\t#if NUM_DIR_LIGHTS > 0\n\tDirectionalLight directionalLight;\n\tfor ( int i = 0; i < NUM_DIR_LIGHTS; i ++ ) {\n\t\tdirectionalLight = directionalLights[ i ];\n\t\tshadow *= bool( directionalLight.shadow ) ? getShadow( directionalShadowMap[ i ], directionalLight.shadowMapSize, directionalLight.shadowBias, directionalLight.shadowRadius, vDirectionalShadowCoord[ i ] ) : 1.0;\n\t}\n\t#endif\n\t#if NUM_SPOT_LIGHTS > 0\n\tSpotLight spotLight;\n\tfor ( int i = 0; i < NUM_SPOT_LIGHTS; i ++ ) {\n\t\tspotLight = spotLights[ i ];\n\t\tshadow *= bool( spotLight.shadow ) ? getShadow( spotShadowMap[ i ], spotLight.shadowMapSize, spotLight.shadowBias, spotLight.shadowRadius, vSpotShadowCoord[ i ] ) : 1.0;\n\t}\n\t#endif\n\t#if NUM_POINT_LIGHTS > 0\n\tPointLight pointLight;\n\tfor ( int i = 0; i < NUM_POINT_LIGHTS; i ++ ) {\n\t\tpointLight = pointLights[ i ];\n\t\tshadow *= bool( pointLight.shadow ) ? getPointShadow( pointShadowMap[ i ], pointLight.shadowMapSize, pointLight.shadowBias, pointLight.shadowRadius, vPointShadowCoord[ i ] ) : 1.0;\n\t}\n\t#endif\n\t#endif\n\treturn shadow;\n}\n";
+var shadowmask_pars_fragment = "float getShadowMask() {\n\tfloat shadow = 1.0;\n\t#ifdef USE_SHADOWMAP\n\t#if NUM_DIR_LIGHTS > 0\n\tDirectionalLight directionalLight;\n\tfor ( int i = 0; i < NUM_DIR_LIGHTS; i ++ ) {\n\t\tdirectionalLight = directionalLights[ i ];\n\t\tshadow *= bool( directionalLight.shadow ) ? getShadow( directionalShadowMap[ i ], directionalLight.shadowMapSize, directionalLight.shadowBias, directionalLight.shadowRadius, vDirectionalShadowCoord[ i ] ) : 1.0;\n\t}\n\t#endif\n\t#if NUM_SPOT_LIGHTS > 0\n\tSpotLight spotLight;\n\tfor ( int i = 0; i < NUM_SPOT_LIGHTS; i ++ ) {\n\t\tspotLight = spotLights[ i ];\n\t\tshadow *= bool( spotLight.shadow ) ? getShadow( spotShadowMap[ i ], spotLight.shadowMapSize, spotLight.shadowBias, spotLight.shadowRadius, vSpotShadowCoord[ i ] ) : 1.0;\n\t}\n\t#endif\n\t#if NUM_POINT_LIGHTS > 0\n\tPointLight pointLight;\n\tfor ( int i = 0; i < NUM_POINT_LIGHTS; i ++ ) {\n\t\tpointLight = pointLights[ i ];\n\t\tshadow *= bool( pointLight.shadow ) ? getPointShadow( pointShadowMap[ i ], pointLight.shadowMapSize, pointLight.shadowBias, pointLight.shadowRadius, vPointShadowCoord[ i ], pointLight.shadowCameraNear, pointLight.shadowCameraFar ) : 1.0;\n\t}\n\t#endif\n\t#endif\n\treturn shadow;\n}\n";
 
 var skinbase_vertex = "#ifdef USE_SKINNING\n\tmat4 boneMatX = getBoneMatrix( skinIndex.x );\n\tmat4 boneMatY = getBoneMatrix( skinIndex.y );\n\tmat4 boneMatZ = getBoneMatrix( skinIndex.z );\n\tmat4 boneMatW = getBoneMatrix( skinIndex.w );\n#endif";
 
@@ -8892,9 +10381,9 @@ var uv2_pars_vertex = "#if defined( USE_LIGHTMAP ) || defined( USE_AOMAP )\n\tat
 
 var uv2_vertex = "#if defined( USE_LIGHTMAP ) || defined( USE_AOMAP )\n\tvUv2 = uv2;\n#endif";
 
-var worldpos_vertex = "#if defined( USE_ENVMAP ) || defined( PHONG ) || defined( PHYSICAL ) || defined( LAMBERT ) || defined ( USE_SHADOWMAP )\n\tvec4 worldPosition = modelMatrix * vec4( transformed, 1.0 );\n#endif\n";
+var worldpos_vertex = "#if defined( USE_ENVMAP ) || defined( PHONG ) || defined( PHYSICAL ) || defined( LAMBERT ) || defined( DISTANCE ) || defined ( USE_SHADOWMAP )\n\tvec4 worldPosition = modelMatrix * vec4( transformed, 1.0 );\n#endif\n";
 
-var cube_frag = "uniform samplerCube tCube;\nuniform float tFlip;\nuniform float opacity;\nvarying vec3 vWorldPosition;\n#include <common>\nvoid main() {\n\tgl_FragColor = textureCube( tCube, vec3( tFlip * vWorldPosition.x, vWorldPosition.yz ) );\n\tgl_FragColor.a *= opacity;\n}\n";
+var cube_frag = "uniform samplerCube tCube;\nuniform float tFlip;\nuniform float opacity;\nvarying vec3 vWorldPosition;\nvoid main() {\n\tgl_FragColor = textureCube( tCube, vec3( tFlip * vWorldPosition.x, vWorldPosition.yz ) );\n\tgl_FragColor.a *= opacity;\n}\n";
 
 var cube_vert = "varying vec3 vWorldPosition;\n#include <common>\nvoid main() {\n\tvWorldPosition = transformDirection( position, modelMatrix );\n\t#include <begin_vertex>\n\t#include <project_vertex>\n}\n";
 
@@ -8902,11 +10391,11 @@ var depth_frag = "#if DEPTH_PACKING == 3200\n\tuniform float opacity;\n#endif\n#
 
 var depth_vert = "#include <common>\n#include <uv_pars_vertex>\n#include <displacementmap_pars_vertex>\n#include <morphtarget_pars_vertex>\n#include <skinning_pars_vertex>\n#include <logdepthbuf_pars_vertex>\n#include <clipping_planes_pars_vertex>\nvoid main() {\n\t#include <uv_vertex>\n\t#include <skinbase_vertex>\n\t#ifdef USE_DISPLACEMENTMAP\n\t\t#include <beginnormal_vertex>\n\t\t#include <morphnormal_vertex>\n\t\t#include <skinnormal_vertex>\n\t#endif\n\t#include <begin_vertex>\n\t#include <morphtarget_vertex>\n\t#include <skinning_vertex>\n\t#include <displacementmap_vertex>\n\t#include <project_vertex>\n\t#include <logdepthbuf_vertex>\n\t#include <clipping_planes_vertex>\n}\n";
 
-var distanceRGBA_frag = "uniform vec3 lightPos;\nvarying vec4 vWorldPosition;\n#include <common>\n#include <packing>\n#include <clipping_planes_pars_fragment>\nvoid main () {\n\t#include <clipping_planes_fragment>\n\tgl_FragColor = packDepthToRGBA( length( vWorldPosition.xyz - lightPos.xyz ) / 1000.0 );\n}\n";
+var distanceRGBA_frag = "#define DISTANCE\nuniform vec3 referencePosition;\nuniform float nearDistance;\nuniform float farDistance;\nvarying vec3 vWorldPosition;\n#include <common>\n#include <packing>\n#include <uv_pars_fragment>\n#include <map_pars_fragment>\n#include <alphamap_pars_fragment>\n#include <clipping_planes_pars_fragment>\nvoid main () {\n\t#include <clipping_planes_fragment>\n\tvec4 diffuseColor = vec4( 1.0 );\n\t#include <map_fragment>\n\t#include <alphamap_fragment>\n\t#include <alphatest_fragment>\n\tfloat dist = length( vWorldPosition - referencePosition );\n\tdist = ( dist - nearDistance ) / ( farDistance - nearDistance );\n\tdist = saturate( dist );\n\tgl_FragColor = packDepthToRGBA( dist );\n}\n";
 
-var distanceRGBA_vert = "varying vec4 vWorldPosition;\n#include <common>\n#include <morphtarget_pars_vertex>\n#include <skinning_pars_vertex>\n#include <clipping_planes_pars_vertex>\nvoid main() {\n\t#include <skinbase_vertex>\n\t#include <begin_vertex>\n\t#include <morphtarget_vertex>\n\t#include <skinning_vertex>\n\t#include <project_vertex>\n\t#include <worldpos_vertex>\n\t#include <clipping_planes_vertex>\n\tvWorldPosition = worldPosition;\n}\n";
+var distanceRGBA_vert = "#define DISTANCE\nvarying vec3 vWorldPosition;\n#include <common>\n#include <uv_pars_vertex>\n#include <displacementmap_pars_vertex>\n#include <morphtarget_pars_vertex>\n#include <skinning_pars_vertex>\n#include <clipping_planes_pars_vertex>\nvoid main() {\n\t#include <uv_vertex>\n\t#include <skinbase_vertex>\n\t#ifdef USE_DISPLACEMENTMAP\n\t\t#include <beginnormal_vertex>\n\t\t#include <morphnormal_vertex>\n\t\t#include <skinnormal_vertex>\n\t#endif\n\t#include <begin_vertex>\n\t#include <morphtarget_vertex>\n\t#include <skinning_vertex>\n\t#include <displacementmap_vertex>\n\t#include <project_vertex>\n\t#include <worldpos_vertex>\n\t#include <clipping_planes_vertex>\n\tvWorldPosition = worldPosition.xyz;\n}\n";
 
-var equirect_frag = "uniform sampler2D tEquirect;\nuniform float tFlip;\nvarying vec3 vWorldPosition;\n#include <common>\nvoid main() {\n\tvec3 direction = normalize( vWorldPosition );\n\tvec2 sampleUV;\n\tsampleUV.y = saturate( tFlip * direction.y * -0.5 + 0.5 );\n\tsampleUV.x = atan( direction.z, direction.x ) * RECIPROCAL_PI2 + 0.5;\n\tgl_FragColor = texture2D( tEquirect, sampleUV );\n}\n";
+var equirect_frag = "uniform sampler2D tEquirect;\nvarying vec3 vWorldPosition;\n#include <common>\nvoid main() {\n\tvec3 direction = normalize( vWorldPosition );\n\tvec2 sampleUV;\n\tsampleUV.y = asin( clamp( direction.y, - 1.0, 1.0 ) ) * RECIPROCAL_PI + 0.5;\n\tsampleUV.x = atan( direction.z, direction.x ) * RECIPROCAL_PI2 + 0.5;\n\tgl_FragColor = texture2D( tEquirect, sampleUV );\n}\n";
 
 var equirect_vert = "varying vec3 vWorldPosition;\n#include <common>\nvoid main() {\n\tvWorldPosition = transformDirection( position, modelMatrix );\n\t#include <begin_vertex>\n\t#include <project_vertex>\n}\n";
 
@@ -8914,23 +10403,23 @@ var linedashed_frag = "uniform vec3 diffuse;\nuniform float opacity;\nuniform fl
 
 var linedashed_vert = "uniform float scale;\nattribute float lineDistance;\nvarying float vLineDistance;\n#include <common>\n#include <color_pars_vertex>\n#include <fog_pars_vertex>\n#include <logdepthbuf_pars_vertex>\n#include <clipping_planes_pars_vertex>\nvoid main() {\n\t#include <color_vertex>\n\tvLineDistance = scale * lineDistance;\n\tvec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );\n\tgl_Position = projectionMatrix * mvPosition;\n\t#include <logdepthbuf_vertex>\n\t#include <clipping_planes_vertex>\n\t#include <fog_vertex>\n}\n";
 
-var meshbasic_frag = "uniform vec3 diffuse;\nuniform float opacity;\n#ifndef FLAT_SHADED\n\tvarying vec3 vNormal;\n#endif\n#include <common>\n#include <color_pars_fragment>\n#include <uv_pars_fragment>\n#include <uv2_pars_fragment>\n#include <map_pars_fragment>\n#include <alphamap_pars_fragment>\n#include <aomap_pars_fragment>\n#include <lightmap_pars_fragment>\n#include <envmap_pars_fragment>\n#include <fog_pars_fragment>\n#include <specularmap_pars_fragment>\n#include <logdepthbuf_pars_fragment>\n#include <clipping_planes_pars_fragment>\nvoid main() {\n\t#include <clipping_planes_fragment>\n\tvec4 diffuseColor = vec4( diffuse, opacity );\n\t#include <logdepthbuf_fragment>\n\t#include <map_fragment>\n\t#include <color_fragment>\n\t#include <alphamap_fragment>\n\t#include <alphatest_fragment>\n\t#include <specularmap_fragment>\n\tReflectedLight reflectedLight = ReflectedLight( vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ) );\n\t#ifdef USE_LIGHTMAP\n\t\treflectedLight.indirectDiffuse += texture2D( lightMap, vUv2 ).xyz * lightMapIntensity;\n\t#else\n\t\treflectedLight.indirectDiffuse += vec3( 1.0 );\n\t#endif\n\t#include <aomap_fragment>\n\treflectedLight.indirectDiffuse *= diffuseColor.rgb;\n\tvec3 outgoingLight = reflectedLight.indirectDiffuse;\n\t#include <normal_flip>\n\t#include <envmap_fragment>\n\tgl_FragColor = vec4( outgoingLight, diffuseColor.a );\n\t#include <premultiplied_alpha_fragment>\n\t#include <tonemapping_fragment>\n\t#include <encodings_fragment>\n\t#include <fog_fragment>\n}\n";
+var meshbasic_frag = "uniform vec3 diffuse;\nuniform float opacity;\n#ifndef FLAT_SHADED\n\tvarying vec3 vNormal;\n#endif\n#include <common>\n#include <color_pars_fragment>\n#include <uv_pars_fragment>\n#include <uv2_pars_fragment>\n#include <map_pars_fragment>\n#include <alphamap_pars_fragment>\n#include <aomap_pars_fragment>\n#include <lightmap_pars_fragment>\n#include <envmap_pars_fragment>\n#include <fog_pars_fragment>\n#include <specularmap_pars_fragment>\n#include <logdepthbuf_pars_fragment>\n#include <clipping_planes_pars_fragment>\nvoid main() {\n\t#include <clipping_planes_fragment>\n\tvec4 diffuseColor = vec4( diffuse, opacity );\n\t#include <logdepthbuf_fragment>\n\t#include <map_fragment>\n\t#include <color_fragment>\n\t#include <alphamap_fragment>\n\t#include <alphatest_fragment>\n\t#include <specularmap_fragment>\n\tReflectedLight reflectedLight = ReflectedLight( vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ) );\n\t#ifdef USE_LIGHTMAP\n\t\treflectedLight.indirectDiffuse += texture2D( lightMap, vUv2 ).xyz * lightMapIntensity;\n\t#else\n\t\treflectedLight.indirectDiffuse += vec3( 1.0 );\n\t#endif\n\t#include <aomap_fragment>\n\treflectedLight.indirectDiffuse *= diffuseColor.rgb;\n\tvec3 outgoingLight = reflectedLight.indirectDiffuse;\n\t#include <envmap_fragment>\n\tgl_FragColor = vec4( outgoingLight, diffuseColor.a );\n\t#include <premultiplied_alpha_fragment>\n\t#include <tonemapping_fragment>\n\t#include <encodings_fragment>\n\t#include <fog_fragment>\n}\n";
 
 var meshbasic_vert = "#include <common>\n#include <uv_pars_vertex>\n#include <uv2_pars_vertex>\n#include <envmap_pars_vertex>\n#include <color_pars_vertex>\n#include <fog_pars_vertex>\n#include <morphtarget_pars_vertex>\n#include <skinning_pars_vertex>\n#include <logdepthbuf_pars_vertex>\n#include <clipping_planes_pars_vertex>\nvoid main() {\n\t#include <uv_vertex>\n\t#include <uv2_vertex>\n\t#include <color_vertex>\n\t#include <skinbase_vertex>\n\t#ifdef USE_ENVMAP\n\t#include <beginnormal_vertex>\n\t#include <morphnormal_vertex>\n\t#include <skinnormal_vertex>\n\t#include <defaultnormal_vertex>\n\t#endif\n\t#include <begin_vertex>\n\t#include <morphtarget_vertex>\n\t#include <skinning_vertex>\n\t#include <project_vertex>\n\t#include <logdepthbuf_vertex>\n\t#include <worldpos_vertex>\n\t#include <clipping_planes_vertex>\n\t#include <envmap_vertex>\n\t#include <fog_vertex>\n}\n";
 
-var meshlambert_frag = "uniform vec3 diffuse;\nuniform vec3 emissive;\nuniform float opacity;\nvarying vec3 vLightFront;\n#ifdef DOUBLE_SIDED\n\tvarying vec3 vLightBack;\n#endif\n#include <common>\n#include <packing>\n#include <dithering_pars_fragment>\n#include <color_pars_fragment>\n#include <uv_pars_fragment>\n#include <uv2_pars_fragment>\n#include <map_pars_fragment>\n#include <alphamap_pars_fragment>\n#include <aomap_pars_fragment>\n#include <lightmap_pars_fragment>\n#include <emissivemap_pars_fragment>\n#include <envmap_pars_fragment>\n#include <bsdfs>\n#include <lights_pars>\n#include <fog_pars_fragment>\n#include <shadowmap_pars_fragment>\n#include <shadowmask_pars_fragment>\n#include <specularmap_pars_fragment>\n#include <logdepthbuf_pars_fragment>\n#include <clipping_planes_pars_fragment>\nvoid main() {\n\t#include <clipping_planes_fragment>\n\tvec4 diffuseColor = vec4( diffuse, opacity );\n\tReflectedLight reflectedLight = ReflectedLight( vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ) );\n\tvec3 totalEmissiveRadiance = emissive;\n\t#include <logdepthbuf_fragment>\n\t#include <map_fragment>\n\t#include <color_fragment>\n\t#include <alphamap_fragment>\n\t#include <alphatest_fragment>\n\t#include <specularmap_fragment>\n\t#include <emissivemap_fragment>\n\treflectedLight.indirectDiffuse = getAmbientLightIrradiance( ambientLightColor );\n\t#include <lightmap_fragment>\n\treflectedLight.indirectDiffuse *= BRDF_Diffuse_Lambert( diffuseColor.rgb );\n\t#ifdef DOUBLE_SIDED\n\t\treflectedLight.directDiffuse = ( gl_FrontFacing ) ? vLightFront : vLightBack;\n\t#else\n\t\treflectedLight.directDiffuse = vLightFront;\n\t#endif\n\treflectedLight.directDiffuse *= BRDF_Diffuse_Lambert( diffuseColor.rgb ) * getShadowMask();\n\t#include <aomap_fragment>\n\tvec3 outgoingLight = reflectedLight.directDiffuse + reflectedLight.indirectDiffuse + totalEmissiveRadiance;\n\t#include <normal_flip>\n\t#include <envmap_fragment>\n\tgl_FragColor = vec4( outgoingLight, diffuseColor.a );\n\t#include <tonemapping_fragment>\n\t#include <encodings_fragment>\n\t#include <fog_fragment>\n\t#include <premultiplied_alpha_fragment>\n\t#include <dithering_fragment>\n}\n";
+var meshlambert_frag = "uniform vec3 diffuse;\nuniform vec3 emissive;\nuniform float opacity;\nvarying vec3 vLightFront;\n#ifdef DOUBLE_SIDED\n\tvarying vec3 vLightBack;\n#endif\n#include <common>\n#include <packing>\n#include <dithering_pars_fragment>\n#include <color_pars_fragment>\n#include <uv_pars_fragment>\n#include <uv2_pars_fragment>\n#include <map_pars_fragment>\n#include <alphamap_pars_fragment>\n#include <aomap_pars_fragment>\n#include <lightmap_pars_fragment>\n#include <emissivemap_pars_fragment>\n#include <envmap_pars_fragment>\n#include <bsdfs>\n#include <lights_pars>\n#include <fog_pars_fragment>\n#include <shadowmap_pars_fragment>\n#include <shadowmask_pars_fragment>\n#include <specularmap_pars_fragment>\n#include <logdepthbuf_pars_fragment>\n#include <clipping_planes_pars_fragment>\nvoid main() {\n\t#include <clipping_planes_fragment>\n\tvec4 diffuseColor = vec4( diffuse, opacity );\n\tReflectedLight reflectedLight = ReflectedLight( vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ) );\n\tvec3 totalEmissiveRadiance = emissive;\n\t#include <logdepthbuf_fragment>\n\t#include <map_fragment>\n\t#include <color_fragment>\n\t#include <alphamap_fragment>\n\t#include <alphatest_fragment>\n\t#include <specularmap_fragment>\n\t#include <emissivemap_fragment>\n\treflectedLight.indirectDiffuse = getAmbientLightIrradiance( ambientLightColor );\n\t#include <lightmap_fragment>\n\treflectedLight.indirectDiffuse *= BRDF_Diffuse_Lambert( diffuseColor.rgb );\n\t#ifdef DOUBLE_SIDED\n\t\treflectedLight.directDiffuse = ( gl_FrontFacing ) ? vLightFront : vLightBack;\n\t#else\n\t\treflectedLight.directDiffuse = vLightFront;\n\t#endif\n\treflectedLight.directDiffuse *= BRDF_Diffuse_Lambert( diffuseColor.rgb ) * getShadowMask();\n\t#include <aomap_fragment>\n\tvec3 outgoingLight = reflectedLight.directDiffuse + reflectedLight.indirectDiffuse + totalEmissiveRadiance;\n\t#include <envmap_fragment>\n\tgl_FragColor = vec4( outgoingLight, diffuseColor.a );\n\t#include <tonemapping_fragment>\n\t#include <encodings_fragment>\n\t#include <fog_fragment>\n\t#include <premultiplied_alpha_fragment>\n\t#include <dithering_fragment>\n}\n";
 
 var meshlambert_vert = "#define LAMBERT\nvarying vec3 vLightFront;\n#ifdef DOUBLE_SIDED\n\tvarying vec3 vLightBack;\n#endif\n#include <common>\n#include <uv_pars_vertex>\n#include <uv2_pars_vertex>\n#include <envmap_pars_vertex>\n#include <bsdfs>\n#include <lights_pars>\n#include <color_pars_vertex>\n#include <fog_pars_vertex>\n#include <morphtarget_pars_vertex>\n#include <skinning_pars_vertex>\n#include <shadowmap_pars_vertex>\n#include <logdepthbuf_pars_vertex>\n#include <clipping_planes_pars_vertex>\nvoid main() {\n\t#include <uv_vertex>\n\t#include <uv2_vertex>\n\t#include <color_vertex>\n\t#include <beginnormal_vertex>\n\t#include <morphnormal_vertex>\n\t#include <skinbase_vertex>\n\t#include <skinnormal_vertex>\n\t#include <defaultnormal_vertex>\n\t#include <begin_vertex>\n\t#include <morphtarget_vertex>\n\t#include <skinning_vertex>\n\t#include <project_vertex>\n\t#include <logdepthbuf_vertex>\n\t#include <clipping_planes_vertex>\n\t#include <worldpos_vertex>\n\t#include <envmap_vertex>\n\t#include <lights_lambert_vertex>\n\t#include <shadowmap_vertex>\n\t#include <fog_vertex>\n}\n";
 
-var meshphong_frag = "#define PHONG\nuniform vec3 diffuse;\nuniform vec3 emissive;\nuniform vec3 specular;\nuniform float shininess;\nuniform float opacity;\n#include <common>\n#include <packing>\n#include <dithering_pars_fragment>\n#include <color_pars_fragment>\n#include <uv_pars_fragment>\n#include <uv2_pars_fragment>\n#include <map_pars_fragment>\n#include <alphamap_pars_fragment>\n#include <aomap_pars_fragment>\n#include <lightmap_pars_fragment>\n#include <emissivemap_pars_fragment>\n#include <envmap_pars_fragment>\n#include <gradientmap_pars_fragment>\n#include <fog_pars_fragment>\n#include <bsdfs>\n#include <lights_pars>\n#include <lights_phong_pars_fragment>\n#include <shadowmap_pars_fragment>\n#include <bumpmap_pars_fragment>\n#include <normalmap_pars_fragment>\n#include <specularmap_pars_fragment>\n#include <logdepthbuf_pars_fragment>\n#include <clipping_planes_pars_fragment>\nvoid main() {\n\t#include <clipping_planes_fragment>\n\tvec4 diffuseColor = vec4( diffuse, opacity );\n\tReflectedLight reflectedLight = ReflectedLight( vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ) );\n\tvec3 totalEmissiveRadiance = emissive;\n\t#include <logdepthbuf_fragment>\n\t#include <map_fragment>\n\t#include <color_fragment>\n\t#include <alphamap_fragment>\n\t#include <alphatest_fragment>\n\t#include <specularmap_fragment>\n\t#include <normal_flip>\n\t#include <normal_fragment>\n\t#include <emissivemap_fragment>\n\t#include <lights_phong_fragment>\n\t#include <lights_template>\n\t#include <aomap_fragment>\n\tvec3 outgoingLight = reflectedLight.directDiffuse + reflectedLight.indirectDiffuse + reflectedLight.directSpecular + reflectedLight.indirectSpecular + totalEmissiveRadiance;\n\t#include <envmap_fragment>\n\tgl_FragColor = vec4( outgoingLight, diffuseColor.a );\n\t#include <tonemapping_fragment>\n\t#include <encodings_fragment>\n\t#include <fog_fragment>\n\t#include <premultiplied_alpha_fragment>\n\t#include <dithering_fragment>\n}\n";
+var meshphong_frag = "#define PHONG\nuniform vec3 diffuse;\nuniform vec3 emissive;\nuniform vec3 specular;\nuniform float shininess;\nuniform float opacity;\n#include <common>\n#include <packing>\n#include <dithering_pars_fragment>\n#include <color_pars_fragment>\n#include <uv_pars_fragment>\n#include <uv2_pars_fragment>\n#include <map_pars_fragment>\n#include <alphamap_pars_fragment>\n#include <aomap_pars_fragment>\n#include <lightmap_pars_fragment>\n#include <emissivemap_pars_fragment>\n#include <envmap_pars_fragment>\n#include <gradientmap_pars_fragment>\n#include <fog_pars_fragment>\n#include <bsdfs>\n#include <lights_pars>\n#include <lights_phong_pars_fragment>\n#include <shadowmap_pars_fragment>\n#include <bumpmap_pars_fragment>\n#include <normalmap_pars_fragment>\n#include <specularmap_pars_fragment>\n#include <logdepthbuf_pars_fragment>\n#include <clipping_planes_pars_fragment>\nvoid main() {\n\t#include <clipping_planes_fragment>\n\tvec4 diffuseColor = vec4( diffuse, opacity );\n\tReflectedLight reflectedLight = ReflectedLight( vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ) );\n\tvec3 totalEmissiveRadiance = emissive;\n\t#include <logdepthbuf_fragment>\n\t#include <map_fragment>\n\t#include <color_fragment>\n\t#include <alphamap_fragment>\n\t#include <alphatest_fragment>\n\t#include <specularmap_fragment>\n\t#include <normal_fragment>\n\t#include <emissivemap_fragment>\n\t#include <lights_phong_fragment>\n\t#include <lights_template>\n\t#include <aomap_fragment>\n\tvec3 outgoingLight = reflectedLight.directDiffuse + reflectedLight.indirectDiffuse + reflectedLight.directSpecular + reflectedLight.indirectSpecular + totalEmissiveRadiance;\n\t#include <envmap_fragment>\n\tgl_FragColor = vec4( outgoingLight, diffuseColor.a );\n\t#include <tonemapping_fragment>\n\t#include <encodings_fragment>\n\t#include <fog_fragment>\n\t#include <premultiplied_alpha_fragment>\n\t#include <dithering_fragment>\n}\n";
 
 var meshphong_vert = "#define PHONG\nvarying vec3 vViewPosition;\n#ifndef FLAT_SHADED\n\tvarying vec3 vNormal;\n#endif\n#include <common>\n#include <uv_pars_vertex>\n#include <uv2_pars_vertex>\n#include <displacementmap_pars_vertex>\n#include <envmap_pars_vertex>\n#include <color_pars_vertex>\n#include <fog_pars_vertex>\n#include <morphtarget_pars_vertex>\n#include <skinning_pars_vertex>\n#include <shadowmap_pars_vertex>\n#include <logdepthbuf_pars_vertex>\n#include <clipping_planes_pars_vertex>\nvoid main() {\n\t#include <uv_vertex>\n\t#include <uv2_vertex>\n\t#include <color_vertex>\n\t#include <beginnormal_vertex>\n\t#include <morphnormal_vertex>\n\t#include <skinbase_vertex>\n\t#include <skinnormal_vertex>\n\t#include <defaultnormal_vertex>\n#ifndef FLAT_SHADED\n\tvNormal = normalize( transformedNormal );\n#endif\n\t#include <begin_vertex>\n\t#include <morphtarget_vertex>\n\t#include <skinning_vertex>\n\t#include <displacementmap_vertex>\n\t#include <project_vertex>\n\t#include <logdepthbuf_vertex>\n\t#include <clipping_planes_vertex>\n\tvViewPosition = - mvPosition.xyz;\n\t#include <worldpos_vertex>\n\t#include <envmap_vertex>\n\t#include <shadowmap_vertex>\n\t#include <fog_vertex>\n}\n";
 
-var meshphysical_frag = "#define PHYSICAL\nuniform vec3 diffuse;\nuniform vec3 emissive;\nuniform float roughness;\nuniform float metalness;\nuniform float opacity;\n#ifndef STANDARD\n\tuniform float clearCoat;\n\tuniform float clearCoatRoughness;\n#endif\nvarying vec3 vViewPosition;\n#ifndef FLAT_SHADED\n\tvarying vec3 vNormal;\n#endif\n#include <common>\n#include <packing>\n#include <dithering_pars_fragment>\n#include <color_pars_fragment>\n#include <uv_pars_fragment>\n#include <uv2_pars_fragment>\n#include <map_pars_fragment>\n#include <alphamap_pars_fragment>\n#include <aomap_pars_fragment>\n#include <lightmap_pars_fragment>\n#include <emissivemap_pars_fragment>\n#include <envmap_pars_fragment>\n#include <fog_pars_fragment>\n#include <bsdfs>\n#include <cube_uv_reflection_fragment>\n#include <lights_pars>\n#include <lights_physical_pars_fragment>\n#include <shadowmap_pars_fragment>\n#include <bumpmap_pars_fragment>\n#include <normalmap_pars_fragment>\n#include <roughnessmap_pars_fragment>\n#include <metalnessmap_pars_fragment>\n#include <logdepthbuf_pars_fragment>\n#include <clipping_planes_pars_fragment>\nvoid main() {\n\t#include <clipping_planes_fragment>\n\tvec4 diffuseColor = vec4( diffuse, opacity );\n\tReflectedLight reflectedLight = ReflectedLight( vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ) );\n\tvec3 totalEmissiveRadiance = emissive;\n\t#include <logdepthbuf_fragment>\n\t#include <map_fragment>\n\t#include <color_fragment>\n\t#include <alphamap_fragment>\n\t#include <alphatest_fragment>\n\t#include <roughnessmap_fragment>\n\t#include <metalnessmap_fragment>\n\t#include <normal_flip>\n\t#include <normal_fragment>\n\t#include <emissivemap_fragment>\n\t#include <lights_physical_fragment>\n\t#include <lights_template>\n\t#include <aomap_fragment>\n\tvec3 outgoingLight = reflectedLight.directDiffuse + reflectedLight.indirectDiffuse + reflectedLight.directSpecular + reflectedLight.indirectSpecular + totalEmissiveRadiance;\n\tgl_FragColor = vec4( outgoingLight, diffuseColor.a );\n\t#include <tonemapping_fragment>\n\t#include <encodings_fragment>\n\t#include <fog_fragment>\n\t#include <premultiplied_alpha_fragment>\n\t#include <dithering_fragment>\n}\n";
+var meshphysical_frag = "#define PHYSICAL\nuniform vec3 diffuse;\nuniform vec3 emissive;\nuniform float roughness;\nuniform float metalness;\nuniform float opacity;\n#ifndef STANDARD\n\tuniform float clearCoat;\n\tuniform float clearCoatRoughness;\n#endif\nvarying vec3 vViewPosition;\n#ifndef FLAT_SHADED\n\tvarying vec3 vNormal;\n#endif\n#include <common>\n#include <packing>\n#include <dithering_pars_fragment>\n#include <color_pars_fragment>\n#include <uv_pars_fragment>\n#include <uv2_pars_fragment>\n#include <map_pars_fragment>\n#include <alphamap_pars_fragment>\n#include <aomap_pars_fragment>\n#include <lightmap_pars_fragment>\n#include <emissivemap_pars_fragment>\n#include <envmap_pars_fragment>\n#include <fog_pars_fragment>\n#include <bsdfs>\n#include <cube_uv_reflection_fragment>\n#include <lights_pars>\n#include <lights_physical_pars_fragment>\n#include <shadowmap_pars_fragment>\n#include <bumpmap_pars_fragment>\n#include <normalmap_pars_fragment>\n#include <roughnessmap_pars_fragment>\n#include <metalnessmap_pars_fragment>\n#include <logdepthbuf_pars_fragment>\n#include <clipping_planes_pars_fragment>\nvoid main() {\n\t#include <clipping_planes_fragment>\n\tvec4 diffuseColor = vec4( diffuse, opacity );\n\tReflectedLight reflectedLight = ReflectedLight( vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ) );\n\tvec3 totalEmissiveRadiance = emissive;\n\t#include <logdepthbuf_fragment>\n\t#include <map_fragment>\n\t#include <color_fragment>\n\t#include <alphamap_fragment>\n\t#include <alphatest_fragment>\n\t#include <roughnessmap_fragment>\n\t#include <metalnessmap_fragment>\n\t#include <normal_fragment>\n\t#include <emissivemap_fragment>\n\t#include <lights_physical_fragment>\n\t#include <lights_template>\n\t#include <aomap_fragment>\n\tvec3 outgoingLight = reflectedLight.directDiffuse + reflectedLight.indirectDiffuse + reflectedLight.directSpecular + reflectedLight.indirectSpecular + totalEmissiveRadiance;\n\tgl_FragColor = vec4( outgoingLight, diffuseColor.a );\n\t#include <tonemapping_fragment>\n\t#include <encodings_fragment>\n\t#include <fog_fragment>\n\t#include <premultiplied_alpha_fragment>\n\t#include <dithering_fragment>\n}\n";
 
 var meshphysical_vert = "#define PHYSICAL\nvarying vec3 vViewPosition;\n#ifndef FLAT_SHADED\n\tvarying vec3 vNormal;\n#endif\n#include <common>\n#include <uv_pars_vertex>\n#include <uv2_pars_vertex>\n#include <displacementmap_pars_vertex>\n#include <color_pars_vertex>\n#include <fog_pars_vertex>\n#include <morphtarget_pars_vertex>\n#include <skinning_pars_vertex>\n#include <shadowmap_pars_vertex>\n#include <logdepthbuf_pars_vertex>\n#include <clipping_planes_pars_vertex>\nvoid main() {\n\t#include <uv_vertex>\n\t#include <uv2_vertex>\n\t#include <color_vertex>\n\t#include <beginnormal_vertex>\n\t#include <morphnormal_vertex>\n\t#include <skinbase_vertex>\n\t#include <skinnormal_vertex>\n\t#include <defaultnormal_vertex>\n#ifndef FLAT_SHADED\n\tvNormal = normalize( transformedNormal );\n#endif\n\t#include <begin_vertex>\n\t#include <morphtarget_vertex>\n\t#include <skinning_vertex>\n\t#include <displacementmap_vertex>\n\t#include <project_vertex>\n\t#include <logdepthbuf_vertex>\n\t#include <clipping_planes_vertex>\n\tvViewPosition = - mvPosition.xyz;\n\t#include <worldpos_vertex>\n\t#include <shadowmap_vertex>\n\t#include <fog_vertex>\n}\n";
 
-var normal_frag = "#define NORMAL\nuniform float opacity;\n#if defined( FLAT_SHADED ) || defined( USE_BUMPMAP ) || defined( USE_NORMALMAP )\n\tvarying vec3 vViewPosition;\n#endif\n#ifndef FLAT_SHADED\n\tvarying vec3 vNormal;\n#endif\n#include <packing>\n#include <uv_pars_fragment>\n#include <bumpmap_pars_fragment>\n#include <normalmap_pars_fragment>\n#include <logdepthbuf_pars_fragment>\nvoid main() {\n\t#include <logdepthbuf_fragment>\n\t#include <normal_flip>\n\t#include <normal_fragment>\n\tgl_FragColor = vec4( packNormalToRGB( normal ), opacity );\n}\n";
+var normal_frag = "#define NORMAL\nuniform float opacity;\n#if defined( FLAT_SHADED ) || defined( USE_BUMPMAP ) || defined( USE_NORMALMAP )\n\tvarying vec3 vViewPosition;\n#endif\n#ifndef FLAT_SHADED\n\tvarying vec3 vNormal;\n#endif\n#include <packing>\n#include <uv_pars_fragment>\n#include <bumpmap_pars_fragment>\n#include <normalmap_pars_fragment>\n#include <logdepthbuf_pars_fragment>\nvoid main() {\n\t#include <logdepthbuf_fragment>\n\t#include <normal_fragment>\n\tgl_FragColor = vec4( packNormalToRGB( normal ), opacity );\n}\n";
 
 var normal_vert = "#define NORMAL\n#if defined( FLAT_SHADED ) || defined( USE_BUMPMAP ) || defined( USE_NORMALMAP )\n\tvarying vec3 vViewPosition;\n#endif\n#ifndef FLAT_SHADED\n\tvarying vec3 vNormal;\n#endif\n#include <uv_pars_vertex>\n#include <displacementmap_pars_vertex>\n#include <morphtarget_pars_vertex>\n#include <skinning_pars_vertex>\n#include <logdepthbuf_pars_vertex>\nvoid main() {\n\t#include <uv_vertex>\n\t#include <beginnormal_vertex>\n\t#include <morphnormal_vertex>\n\t#include <skinbase_vertex>\n\t#include <skinnormal_vertex>\n\t#include <defaultnormal_vertex>\n#ifndef FLAT_SHADED\n\tvNormal = normalize( transformedNormal );\n#endif\n\t#include <begin_vertex>\n\t#include <morphtarget_vertex>\n\t#include <skinning_vertex>\n\t#include <displacementmap_vertex>\n\t#include <project_vertex>\n\t#include <logdepthbuf_vertex>\n#if defined( FLAT_SHADED ) || defined( USE_BUMPMAP ) || defined( USE_NORMALMAP )\n\tvViewPosition = - mvPosition.xyz;\n#endif\n}\n";
 
@@ -8938,7 +10427,7 @@ var points_frag = "uniform vec3 diffuse;\nuniform float opacity;\n#include <comm
 
 var points_vert = "uniform float size;\nuniform float scale;\n#include <common>\n#include <color_pars_vertex>\n#include <fog_pars_vertex>\n#include <shadowmap_pars_vertex>\n#include <logdepthbuf_pars_vertex>\n#include <clipping_planes_pars_vertex>\nvoid main() {\n\t#include <color_vertex>\n\t#include <begin_vertex>\n\t#include <project_vertex>\n\t#ifdef USE_SIZEATTENUATION\n\t\tgl_PointSize = size * ( scale / - mvPosition.z );\n\t#else\n\t\tgl_PointSize = size;\n\t#endif\n\t#include <logdepthbuf_vertex>\n\t#include <clipping_planes_vertex>\n\t#include <worldpos_vertex>\n\t#include <shadowmap_vertex>\n\t#include <fog_vertex>\n}\n";
 
-var shadow_frag = "uniform float opacity;\n#include <common>\n#include <packing>\n#include <bsdfs>\n#include <lights_pars>\n#include <shadowmap_pars_fragment>\n#include <shadowmask_pars_fragment>\nvoid main() {\n\tgl_FragColor = vec4( 0.0, 0.0, 0.0, opacity * ( 1.0 - getShadowMask() ) );\n}\n";
+var shadow_frag = "uniform vec3 color;\nuniform float opacity;\n#include <common>\n#include <packing>\n#include <bsdfs>\n#include <lights_pars>\n#include <shadowmap_pars_fragment>\n#include <shadowmask_pars_fragment>\nvoid main() {\n\tgl_FragColor = vec4( color, opacity * ( 1.0 - getShadowMask() ) );\n}\n";
 
 var shadow_vert = "#include <shadowmap_pars_vertex>\nvoid main() {\n\t#include <begin_vertex>\n\t#include <project_vertex>\n\t#include <worldpos_vertex>\n\t#include <shadowmap_vertex>\n}\n";
 
@@ -9000,7 +10489,6 @@ var ShaderChunk = {
 	morphnormal_vertex: morphnormal_vertex,
 	morphtarget_pars_vertex: morphtarget_pars_vertex,
 	morphtarget_vertex: morphtarget_vertex,
-	normal_flip: normal_flip,
 	normal_fragment: normal_fragment,
 	normalmap_pars_fragment: normalmap_pars_fragment,
 	packing: packing,
@@ -9068,6 +10556,8 @@ var ShaderLib = {
 
 		uniforms: UniformsUtils.merge( [
 			UniformsLib.common,
+			UniformsLib.specularmap,
+			UniformsLib.envmap,
 			UniformsLib.aomap,
 			UniformsLib.lightmap,
 			UniformsLib.fog
@@ -9082,6 +10572,8 @@ var ShaderLib = {
 
 		uniforms: UniformsUtils.merge( [
 			UniformsLib.common,
+			UniformsLib.specularmap,
+			UniformsLib.envmap,
 			UniformsLib.aomap,
 			UniformsLib.lightmap,
 			UniformsLib.emissivemap,
@@ -9101,6 +10593,8 @@ var ShaderLib = {
 
 		uniforms: UniformsUtils.merge( [
 			UniformsLib.common,
+			UniformsLib.specularmap,
+			UniformsLib.envmap,
 			UniformsLib.aomap,
 			UniformsLib.lightmap,
 			UniformsLib.emissivemap,
@@ -9126,6 +10620,7 @@ var ShaderLib = {
 
 		uniforms: UniformsUtils.merge( [
 			UniformsLib.common,
+			UniformsLib.envmap,
 			UniformsLib.aomap,
 			UniformsLib.lightmap,
 			UniformsLib.emissivemap,
@@ -9224,15 +10719,10 @@ var ShaderLib = {
 
 	},
 
-	/* -------------------------------------------------------------------------
-	//	Cube map shader
-	 ------------------------------------------------------------------------- */
-
 	equirect: {
 
 		uniforms: {
 			tEquirect: { value: null },
-			tFlip: { value: - 1 }
 		},
 
 		vertexShader: ShaderChunk.equirect_vert,
@@ -9242,12 +10732,33 @@ var ShaderLib = {
 
 	distanceRGBA: {
 
-		uniforms: {
-			lightPos: { value: new Vector3() }
-		},
+		uniforms: UniformsUtils.merge( [
+			UniformsLib.common,
+			UniformsLib.displacementmap,
+			{
+				referencePosition: { value: new Vector3() },
+				nearDistance: { value: 1 },
+				farDistance: { value: 1000 }
+			}
+		] ),
 
 		vertexShader: ShaderChunk.distanceRGBA_vert,
 		fragmentShader: ShaderChunk.distanceRGBA_frag
+
+	},
+
+	shadow: {
+
+		uniforms: UniformsUtils.merge( [
+			UniformsLib.lights,
+			{
+				color: { value: new Color( 0x00000 ) },
+				opacity: { value: 1.0 }
+			},
+		] ),
+
+		vertexShader: ShaderChunk.shadow_vert,
+		fragmentShader: ShaderChunk.shadow_frag
 
 	}
 
@@ -9490,10 +11001,7 @@ Object.assign( Box2.prototype, {
  * @author alteredq / http://alteredqualia.com/
  */
 
-function LensFlarePlugin( renderer, flares ) {
-
-	var gl = renderer.context;
-	var state = renderer.state;
+function WebGLFlareRenderer( renderer, gl, state, textures, capabilities ) {
 
 	var vertexBuffer, elementBuffer;
 	var shader, program, attributes, uniforms;
@@ -9664,7 +11172,7 @@ function LensFlarePlugin( renderer, flares ) {
 	 *         reads these back and calculates occlusion.
 	 */
 
-	this.render = function ( scene, camera, viewport ) {
+	this.render = function ( flares, scene, camera, viewport ) {
 
 		if ( flares.length === 0 ) return;
 
@@ -9691,7 +11199,7 @@ function LensFlarePlugin( renderer, flares ) {
 
 		}
 
-		gl.useProgram( program );
+		state.useProgram( program );
 
 		state.initAttributes();
 		state.enableAttribute( attributes.vertex );
@@ -9820,7 +11328,8 @@ function LensFlarePlugin( renderer, flares ) {
 						gl.uniform3f( uniforms.color, sprite.color.r, sprite.color.g, sprite.color.b );
 
 						state.setBlending( sprite.blending, sprite.blendEquation, sprite.blendSrc, sprite.blendDst );
-						renderer.setTexture2D( sprite.texture, 1 );
+
+						textures.setTexture2D( sprite.texture, 1 );
 
 						gl.drawElements( gl.TRIANGLES, 6, gl.UNSIGNED_SHORT, 0 );
 
@@ -9838,7 +11347,7 @@ function LensFlarePlugin( renderer, flares ) {
 		state.enable( gl.DEPTH_TEST );
 		state.buffers.depth.setMask( true );
 
-		renderer.resetGLState();
+		state.reset();
 
 	};
 
@@ -9849,7 +11358,7 @@ function LensFlarePlugin( renderer, flares ) {
 		var fragmentShader = gl.createShader( gl.FRAGMENT_SHADER );
 		var vertexShader = gl.createShader( gl.VERTEX_SHADER );
 
-		var prefix = "precision " + renderer.getPrecision() + " float;\n";
+		var prefix = "precision " + capabilities.precision + " float;\n";
 
 		gl.shaderSource( fragmentShader, prefix + shader.fragmentShader );
 		gl.shaderSource( vertexShader, prefix + shader.vertexShader );
@@ -9869,14 +11378,26 @@ function LensFlarePlugin( renderer, flares ) {
 }
 
 /**
+ * @author mrdoob / http://mrdoob.com/
+ */
+
+function CanvasTexture( canvas, mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy ) {
+
+	Texture.call( this, canvas, mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy );
+
+	this.needsUpdate = true;
+
+}
+
+CanvasTexture.prototype = Object.create( Texture.prototype );
+CanvasTexture.prototype.constructor = CanvasTexture;
+
+/**
  * @author mikael emtinger / http://gomo.se/
  * @author alteredq / http://alteredqualia.com/
  */
 
-function SpritePlugin( renderer, sprites ) {
-
-	var gl = renderer.context;
-	var state = renderer.state;
+function WebGLSpriteRenderer( renderer, gl, state, textures, capabilities ) {
 
 	var vertexBuffer, elementBuffer;
 	var program, attributes, uniforms;
@@ -9950,12 +11471,11 @@ function SpritePlugin( renderer, sprites ) {
 		context.fillStyle = 'white';
 		context.fillRect( 0, 0, 8, 8 );
 
-		texture = new Texture( canvas );
-		texture.needsUpdate = true;
+		texture = new CanvasTexture( canvas );
 
 	}
 
-	this.render = function ( scene, camera ) {
+	this.render = function ( sprites, scene, camera ) {
 
 		if ( sprites.length === 0 ) return;
 
@@ -9967,7 +11487,7 @@ function SpritePlugin( renderer, sprites ) {
 
 		}
 
-		gl.useProgram( program );
+		state.useProgram( program );
 
 		state.initAttributes();
 		state.enableAttribute( attributes.position );
@@ -10095,15 +11615,7 @@ function SpritePlugin( renderer, sprites ) {
 			state.buffers.depth.setTest( material.depthTest );
 			state.buffers.depth.setMask( material.depthWrite );
 
-			if ( material.map ) {
-
-				renderer.setTexture2D( material.map, 0 );
-
-			} else {
-
-				renderer.setTexture2D( texture, 0 );
-
-			}
+			textures.setTexture2D( material.map || texture, 0 );
 
 			gl.drawElements( gl.TRIANGLES, 6, gl.UNSIGNED_SHORT, 0 );
 
@@ -10115,7 +11627,7 @@ function SpritePlugin( renderer, sprites ) {
 
 		state.enable( gl.CULL_FACE );
 
-		renderer.resetGLState();
+		state.reset();
 
 	};
 
@@ -10128,7 +11640,7 @@ function SpritePlugin( renderer, sprites ) {
 
 		gl.shaderSource( vertexShader, [
 
-			'precision ' + renderer.getPrecision() + ' float;',
+			'precision ' + capabilities.precision + ' float;',
 
 			'#define SHADER_NAME ' + 'SpriteMaterial',
 
@@ -10168,7 +11680,7 @@ function SpritePlugin( renderer, sprites ) {
 
 		gl.shaderSource( fragmentShader, [
 
-			'precision ' + renderer.getPrecision() + ' float;',
+			'precision ' + capabilities.precision + ' float;',
 
 			'#define SHADER_NAME ' + 'SpriteMaterial',
 
@@ -10271,7 +11783,7 @@ function Material() {
 
 	this.blending = NormalBlending;
 	this.side = FrontSide;
-	this.shading = SmoothShading; // THREE.FlatShading, THREE.SmoothShading
+	this.flatShading = false;
 	this.vertexColors = NoColors; // THREE.NoColors, THREE.VertexColors, THREE.FaceColors
 
 	this.opacity = 1;
@@ -10309,6 +11821,8 @@ function Material() {
 
 	this.visible = true;
 
+	this.userData = {};
+
 	this.needsUpdate = true;
 
 }
@@ -10330,6 +11844,15 @@ Object.assign( Material.prototype, EventDispatcher.prototype, {
 			if ( newValue === undefined ) {
 
 				console.warn( "THREE.Material: '" + key + "' parameter is undefined." );
+				continue;
+
+			}
+
+			// for backward compatability if shading is set in the constructor
+			if ( key === 'shading' ) {
+
+				console.warn( 'THREE.' + this.type + ': .shading has been removed. Use the boolean .flatShading instead.' );
+				this.flatShading = ( newValue === FlatShading ) ? true : false;
 				continue;
 
 			}
@@ -10449,7 +11972,7 @@ Object.assign( Material.prototype, EventDispatcher.prototype, {
 		if ( this.sizeAttenuation !== undefined ) data.sizeAttenuation = this.sizeAttenuation;
 
 		if ( this.blending !== NormalBlending ) data.blending = this.blending;
-		if ( this.shading !== SmoothShading ) data.shading = this.shading;
+		if ( this.flatShading === true ) data.flatShading = this.flatShading;
 		if ( this.side !== FrontSide ) data.side = this.side;
 		if ( this.vertexColors !== NoColors ) data.vertexColors = this.vertexColors;
 
@@ -10460,17 +11983,21 @@ Object.assign( Material.prototype, EventDispatcher.prototype, {
 		data.depthTest = this.depthTest;
 		data.depthWrite = this.depthWrite;
 
+		if ( this.dithering === true ) data.dithering = true;
+
 		if ( this.alphaTest > 0 ) data.alphaTest = this.alphaTest;
 		if ( this.premultipliedAlpha === true ) data.premultipliedAlpha = this.premultipliedAlpha;
+
 		if ( this.wireframe === true ) data.wireframe = this.wireframe;
 		if ( this.wireframeLinewidth > 1 ) data.wireframeLinewidth = this.wireframeLinewidth;
 		if ( this.wireframeLinecap !== 'round' ) data.wireframeLinecap = this.wireframeLinecap;
 		if ( this.wireframeLinejoin !== 'round' ) data.wireframeLinejoin = this.wireframeLinejoin;
 
-		data.skinning = this.skinning;
-		data.morphTargets = this.morphTargets;
+		if ( this.morphTargets === true ) data.morphTargets = true;
+		if ( this.skinning === true ) data.skinning = true;
 
-		data.dithering = this.dithering;
+		if ( this.visible === false ) data.visible = false;
+		if ( JSON.stringify( this.userData ) !== '{}' ) data.userData = this.userData;
 
 		// TODO: Copied from Object3D.toJSON
 
@@ -10519,7 +12046,7 @@ Object.assign( Material.prototype, EventDispatcher.prototype, {
 
 		this.blending = source.blending;
 		this.side = source.side;
-		this.shading = source.shading;
+		this.flatShading = source.flatShading;
 		this.vertexColors = source.vertexColors;
 
 		this.opacity = source.opacity;
@@ -10547,12 +12074,13 @@ Object.assign( Material.prototype, EventDispatcher.prototype, {
 		this.dithering = source.dithering;
 
 		this.alphaTest = source.alphaTest;
-
 		this.premultipliedAlpha = source.premultipliedAlpha;
 
 		this.overdraw = source.overdraw;
 
 		this.visible = source.visible;
+		this.userData = JSON.parse( JSON.stringify( source.userData ) );
+
 		this.clipShadows = source.clipShadows;
 		this.clipIntersection = source.clipIntersection;
 
@@ -10781,6 +12309,85 @@ MeshDepthMaterial.prototype.copy = function ( source ) {
 
 	this.wireframe = source.wireframe;
 	this.wireframeLinewidth = source.wireframeLinewidth;
+
+	return this;
+
+};
+
+/**
+ * @author WestLangley / http://github.com/WestLangley
+ *
+ * parameters = {
+ *
+ *  referencePosition: <float>,
+ *  nearDistance: <float>,
+ *  farDistance: <float>,
+ *
+ *  skinning: <bool>,
+ *  morphTargets: <bool>,
+ *
+ *  map: new THREE.Texture( <Image> ),
+ *
+ *  alphaMap: new THREE.Texture( <Image> ),
+ *
+ *  displacementMap: new THREE.Texture( <Image> ),
+ *  displacementScale: <float>,
+ *  displacementBias: <float>
+ *
+ * }
+ */
+
+function MeshDistanceMaterial( parameters ) {
+
+	Material.call( this );
+
+	this.type = 'MeshDistanceMaterial';
+
+	this.referencePosition = new Vector3();
+	this.nearDistance = 1;
+	this.farDistance = 1000;
+
+	this.skinning = false;
+	this.morphTargets = false;
+
+	this.map = null;
+
+	this.alphaMap = null;
+
+	this.displacementMap = null;
+	this.displacementScale = 1;
+	this.displacementBias = 0;
+
+	this.fog = false;
+	this.lights = false;
+
+	this.setValues( parameters );
+
+}
+
+MeshDistanceMaterial.prototype = Object.create( Material.prototype );
+MeshDistanceMaterial.prototype.constructor = MeshDistanceMaterial;
+
+MeshDistanceMaterial.prototype.isMeshDistanceMaterial = true;
+
+MeshDistanceMaterial.prototype.copy = function ( source ) {
+
+	Material.prototype.copy.call( this, source );
+
+	this.referencePosition.copy( source.referencePosition );
+	this.nearDistance = source.nearDistance;
+	this.farDistance = source.farDistance;
+
+	this.skinning = source.skinning;
+	this.morphTargets = source.morphTargets;
+
+	this.map = source.map;
+
+	this.alphaMap = source.alphaMap;
+
+	this.displacementMap = source.displacementMap;
+	this.displacementScale = source.displacementScale;
+	this.displacementBias = source.displacementBias;
 
 	return this;
 
@@ -11372,15 +12979,7 @@ Object.assign( Sphere.prototype, {
 
 	intersectsPlane: function ( plane ) {
 
-		// We use the following equation to compute the signed distance from
-		// the center of the sphere to the plane.
-		//
-		// distance = q * n - d
-		//
-		// If this distance is greater than the radius of the sphere,
-		// then there is no intersection.
-
-		return Math.abs( this.center.dot( plane.normal ) - plane.constant ) <= this.radius;
+		return Math.abs( plane.distanceToPoint( this.center ) ) <= this.radius;
 
 	},
 
@@ -11623,7 +13222,7 @@ Object.assign( Matrix3.prototype, {
 
 		if ( matrix && matrix.isMatrix4 ) {
 
-			console.error( "THREE.Matrix3.getInverse no longer takes a Matrix4 argument." );
+			console.error( "THREE.Matrix3: .getInverse() no longer takes a Matrix4 argument." );
 
 		}
 
@@ -11642,7 +13241,7 @@ Object.assign( Matrix3.prototype, {
 
 		if ( det === 0 ) {
 
-			var msg = "THREE.Matrix3.getInverse(): can't invert matrix, determinant is 0";
+			var msg = "THREE.Matrix3: .getInverse() can't invert matrix, determinant is 0";
 
 			if ( throwOnDegenerate === true ) {
 
@@ -11772,6 +13371,8 @@ Object.assign( Matrix3.prototype, {
 
 function Plane( normal, constant ) {
 
+	// normal is assumed to be normalized
+
 	this.normal = ( normal !== undefined ) ? normal : new Vector3( 1, 0, 0 );
 	this.constant = ( constant !== undefined ) ? constant : 0;
 
@@ -11800,7 +13401,7 @@ Object.assign( Plane.prototype, {
 	setFromNormalAndCoplanarPoint: function ( normal, point ) {
 
 		this.normal.copy( normal );
-		this.constant = - point.dot( this.normal );	// must be this.normal, not normal, as this.normal is normalized
+		this.constant = - point.dot( this.normal );
 
 		return this;
 
@@ -11875,16 +13476,9 @@ Object.assign( Plane.prototype, {
 
 	projectPoint: function ( point, optionalTarget ) {
 
-		return this.orthoPoint( point, optionalTarget ).sub( point ).negate();
-
-	},
-
-	orthoPoint: function ( point, optionalTarget ) {
-
-		var perpendicularMagnitude = this.distanceToPoint( point );
-
 		var result = optionalTarget || new Vector3();
-		return result.copy( this.normal ).multiplyScalar( perpendicularMagnitude );
+
+		return result.copy( this.normal ).multiplyScalar( - this.distanceToPoint( point ) ).add( point );
 
 	},
 
@@ -11954,6 +13548,7 @@ Object.assign( Plane.prototype, {
 	coplanarPoint: function ( optionalTarget ) {
 
 		var result = optionalTarget || new Vector3();
+
 		return result.copy( this.normal ).multiplyScalar( - this.constant );
 
 	},
@@ -11965,14 +13560,12 @@ Object.assign( Plane.prototype, {
 
 		return function applyMatrix4( matrix, optionalNormalMatrix ) {
 
+			var normalMatrix = optionalNormalMatrix || m1.getNormalMatrix( matrix );
+
 			var referencePoint = this.coplanarPoint( v1 ).applyMatrix4( matrix );
 
-			// transform normal based on theory here:
-			// http://www.songho.ca/opengl/gl_normaltransform.html
-			var normalMatrix = optionalNormalMatrix || m1.getNormalMatrix( matrix );
 			var normal = this.normal.applyMatrix3( normalMatrix ).normalize();
 
-			// recalculate constant (like in setFromNormalAndCoplanarPoint)
 			this.constant = - referencePoint.dot( normal );
 
 			return this;
@@ -11983,7 +13576,7 @@ Object.assign( Plane.prototype, {
 
 	translate: function ( offset ) {
 
-		this.constant = this.constant - offset.dot( this.normal );
+		this.constant -= offset.dot( this.normal );
 
 		return this;
 
@@ -12197,17 +13790,13 @@ Object.assign( Frustum.prototype, {
  * @author mrdoob / http://mrdoob.com/
  */
 
-function WebGLShadowMap( _renderer, _lights, _objects, capabilities ) {
+function WebGLShadowMap( _renderer, _objects, maxTextureSize ) {
 
-	var _gl = _renderer.context,
-		_state = _renderer.state,
-		_frustum = new Frustum(),
+	var _frustum = new Frustum(),
 		_projScreenMatrix = new Matrix4(),
 
-		_lightShadows = _lights.shadows,
-
 		_shadowMapSize = new Vector2(),
-		_maxShadowMapSize = new Vector2( capabilities.maxTextureSize, capabilities.maxTextureSize ),
+		_maxShadowMapSize = new Vector2( maxTextureSize, maxTextureSize ),
 
 		_lookTarget = new Vector3(),
 		_lightPositionWorld = new Vector3(),
@@ -12239,34 +13828,29 @@ function WebGLShadowMap( _renderer, _lights, _objects, capabilities ) {
 
 	// init
 
-	var depthMaterialTemplate = new MeshDepthMaterial();
-	depthMaterialTemplate.depthPacking = RGBADepthPacking;
-	depthMaterialTemplate.clipping = true;
-
-	var distanceShader = ShaderLib[ "distanceRGBA" ];
-	var distanceUniforms = UniformsUtils.clone( distanceShader.uniforms );
-
 	for ( var i = 0; i !== _NumberOfMaterialVariants; ++ i ) {
 
 		var useMorphing = ( i & _MorphingFlag ) !== 0;
 		var useSkinning = ( i & _SkinningFlag ) !== 0;
 
-		var depthMaterial = depthMaterialTemplate.clone();
-		depthMaterial.morphTargets = useMorphing;
-		depthMaterial.skinning = useSkinning;
+		var depthMaterial = new MeshDepthMaterial( {
+
+			depthPacking: RGBADepthPacking,
+
+			morphTargets: useMorphing,
+			skinning: useSkinning
+
+		} );
 
 		_depthMaterials[ i ] = depthMaterial;
 
-		var distanceMaterial = new ShaderMaterial( {
-			defines: {
-				'USE_SHADOWMAP': ''
-			},
-			uniforms: distanceUniforms,
-			vertexShader: distanceShader.vertexShader,
-			fragmentShader: distanceShader.fragmentShader,
+		//
+
+		var distanceMaterial = new MeshDistanceMaterial( {
+
 			morphTargets: useMorphing,
-			skinning: useSkinning,
-			clipping: true
+			skinning: useSkinning
+
 		} );
 
 		_distanceMaterials[ i ] = distanceMaterial;
@@ -12287,12 +13871,16 @@ function WebGLShadowMap( _renderer, _lights, _objects, capabilities ) {
 	this.renderReverseSided = true;
 	this.renderSingleSided = true;
 
-	this.render = function ( scene, camera ) {
+	this.render = function ( lights, scene, camera ) {
 
 		if ( scope.enabled === false ) return;
 		if ( scope.autoUpdate === false && scope.needsUpdate === false ) return;
 
-		if ( _lightShadows.length === 0 ) return;
+		if ( lights.length === 0 ) return;
+
+		// TODO Clean up (needed in case of contextlost)
+		var _gl = _renderer.context;
+		var _state = _renderer.state;
 
 		// Set GL state for depth map.
 		_state.disable( _gl.BLEND );
@@ -12304,9 +13892,9 @@ function WebGLShadowMap( _renderer, _lights, _objects, capabilities ) {
 
 		var faceCount;
 
-		for ( var i = 0, il = _lightShadows.length; i < il; i ++ ) {
+		for ( var i = 0, il = lights.length; i < il; i ++ ) {
 
-			var light = _lightShadows[ i ];
+			var light = lights[ i ];
 			var shadow = light.shadow;
 			var isPointLight = light && light.isPointLight;
 
@@ -12446,16 +14034,11 @@ function WebGLShadowMap( _renderer, _lights, _objects, capabilities ) {
 
 		}
 
-		// Restore GL state.
-		var clearColor = _renderer.getClearColor();
-		var clearAlpha = _renderer.getClearAlpha();
-		_renderer.setClearColor( clearColor, clearAlpha );
-
 		scope.needsUpdate = false;
 
 	};
 
-	function getDepthMaterial( object, material, isPointLight, lightPositionWorld ) {
+	function getDepthMaterial( object, material, isPointLight, lightPositionWorld, shadowCameraNear, shadowCameraFar ) {
 
 		var geometry = object.geometry;
 
@@ -12563,13 +14146,16 @@ function WebGLShadowMap( _renderer, _lights, _objects, capabilities ) {
 
 		result.clipShadows = material.clipShadows;
 		result.clippingPlanes = material.clippingPlanes;
+		result.clipIntersection = material.clipIntersection;
 
 		result.wireframeLinewidth = material.wireframeLinewidth;
 		result.linewidth = material.linewidth;
 
-		if ( isPointLight && result.uniforms.lightPos !== undefined ) {
+		if ( isPointLight && result.isMeshDistanceMaterial ) {
 
-			result.uniforms.lightPos.value.copy( lightPositionWorld );
+			result.referencePosition.copy( lightPositionWorld );
+			result.nearDistance = shadowCameraNear;
+			result.farDistance = shadowCameraFar;
 
 		}
 
@@ -12603,7 +14189,7 @@ function WebGLShadowMap( _renderer, _lights, _objects, capabilities ) {
 
 						if ( groupMaterial && groupMaterial.visible ) {
 
-							var depthMaterial = getDepthMaterial( object, groupMaterial, isPointLight, _lightPositionWorld );
+							var depthMaterial = getDepthMaterial( object, groupMaterial, isPointLight, _lightPositionWorld, shadowCamera.near, shadowCamera.far );
 							_renderer.renderBufferDirect( shadowCamera, null, geometry, depthMaterial, object, group );
 
 						}
@@ -12612,7 +14198,7 @@ function WebGLShadowMap( _renderer, _lights, _objects, capabilities ) {
 
 				} else if ( material.visible ) {
 
-					var depthMaterial = getDepthMaterial( object, material, isPointLight, _lightPositionWorld );
+					var depthMaterial = getDepthMaterial( object, material, isPointLight, _lightPositionWorld, shadowCamera.near, shadowCamera.far );
 					_renderer.renderBufferDirect( shadowCamera, null, geometry, depthMaterial, object, null );
 
 				}
@@ -13541,7 +15127,7 @@ Object.assign( Object3D.prototype, EventDispatcher.prototype, {
 		}
 
 		return this;
-		
+
 	},
 
 	getObjectById: function ( id ) {
@@ -13781,10 +15367,10 @@ Object.assign( Object3D.prototype, EventDispatcher.prototype, {
 		object.type = this.type;
 
 		if ( this.name !== '' ) object.name = this.name;
-		if ( JSON.stringify( this.userData ) !== '{}' ) object.userData = this.userData;
 		if ( this.castShadow === true ) object.castShadow = true;
 		if ( this.receiveShadow === true ) object.receiveShadow = true;
 		if ( this.visible === false ) object.visible = false;
+		if ( JSON.stringify( this.userData ) !== '{}' ) object.userData = this.userData;
 
 		object.matrix = this.matrix.toArray();
 
@@ -16508,6 +18094,10 @@ Object.assign( DirectGeometry.prototype, {
 
 } );
 
+/**
+ * @author mrdoob / http://mrdoob.com/
+ */
+
 function arrayMax( array ) {
 
 	if ( array.length === 0 ) return - Infinity;
@@ -17327,23 +18917,27 @@ Object.assign( BufferGeometry.prototype, EventDispatcher.prototype, {
 
 	normalizeNormals: function () {
 
-		var normals = this.attributes.normal;
+		var vector = new Vector3();
 
-		var x, y, z, n;
+		return function normalizeNormals() {
 
-		for ( var i = 0, il = normals.count; i < il; i ++ ) {
+			var normals = this.attributes.normal;
 
-			x = normals.getX( i );
-			y = normals.getY( i );
-			z = normals.getZ( i );
+			for ( var i = 0, il = normals.count; i < il; i ++ ) {
 
-			n = 1.0 / Math.sqrt( x * x + y * y + z * z );
+				vector.x = normals.getX( i );
+				vector.y = normals.getY( i );
+				vector.z = normals.getZ( i );
 
-			normals.setXYZ( i, x * n, y * n, z * n );
+				vector.normalize();
 
-		}
+				normals.setXYZ( i, vector.x, vector.y, vector.z );
 
-	},
+			}
+
+		};
+
+	}(),
 
 	toNonIndexed: function () {
 
@@ -17943,7 +19537,6 @@ PlaneBufferGeometry.prototype.constructor = PlaneBufferGeometry;
  *  reflectivity: <float>,
  *  refractionRatio: <float>,
  *
- *  shading: THREE.SmoothShading,
  *  depthTest: <bool>,
  *  depthWrite: <bool>,
  *
@@ -19078,10 +20671,9 @@ Mesh.prototype = Object.assign( Object.create( Object3D.prototype ), {
 
 		}
 
-		function checkIntersection( object, raycaster, ray, pA, pB, pC, point ) {
+		function checkIntersection( object, material, raycaster, ray, pA, pB, pC, point ) {
 
 			var intersect;
-			var material = object.material;
 
 			if ( material.side === BackSide ) {
 
@@ -19116,7 +20708,7 @@ Mesh.prototype = Object.assign( Object.create( Object3D.prototype ), {
 			vB.fromBufferAttribute( position, b );
 			vC.fromBufferAttribute( position, c );
 
-			var intersection = checkIntersection( object, raycaster, ray, vA, vB, vC, intersectionPoint );
+			var intersection = checkIntersection( object, object.material, raycaster, ray, vA, vB, vC, intersectionPoint );
 
 			if ( intersection ) {
 
@@ -19279,7 +20871,7 @@ Mesh.prototype = Object.assign( Object.create( Object3D.prototype ), {
 
 					}
 
-					intersection = checkIntersection( this, raycaster, ray, fvA, fvB, fvC, intersectionPoint );
+					intersection = checkIntersection( this, faceMaterial, raycaster, ray, fvA, fvB, fvC, intersectionPoint );
 
 					if ( intersection ) {
 
@@ -19320,15 +20912,15 @@ Mesh.prototype = Object.assign( Object.create( Object3D.prototype ), {
  * @author mrdoob / http://mrdoob.com/
  */
 
-function WebGLBackground( renderer, state, objects, premultipliedAlpha ) {
+function WebGLBackground( renderer, state, geometries, premultipliedAlpha ) {
 
 	var clearColor = new Color( 0x000000 );
 	var clearAlpha = 0;
 
 	var planeCamera, planeMesh;
-	var boxCamera, boxMesh;
+	var boxMesh;
 
-	function render( scene, camera, forceClear ) {
+	function render( renderList, scene, camera, forceClear ) {
 
 		var background = scene.background;
 
@@ -19351,36 +20943,43 @@ function WebGLBackground( renderer, state, objects, premultipliedAlpha ) {
 
 		if ( background && background.isCubeTexture ) {
 
-			if ( boxCamera === undefined ) {
-
-				boxCamera = new PerspectiveCamera();
+			if ( boxMesh === undefined ) {
 
 				boxMesh = new Mesh(
-					new BoxBufferGeometry( 5, 5, 5 ),
+					new BoxBufferGeometry( 1, 1, 1 ),
 					new ShaderMaterial( {
 						uniforms: ShaderLib.cube.uniforms,
 						vertexShader: ShaderLib.cube.vertexShader,
 						fragmentShader: ShaderLib.cube.fragmentShader,
 						side: BackSide,
-						depthTest: false,
+						depthTest: true,
 						depthWrite: false,
+						polygonOffset: true,
 						fog: false
 					} )
 				);
 
+				boxMesh.geometry.removeAttribute( 'normal' );
+				boxMesh.geometry.removeAttribute( 'uv' );
+
+				boxMesh.onBeforeRender = function ( renderer, scene, camera ) {
+
+					var scale = camera.far;
+
+					this.matrixWorld.makeScale( scale, scale, scale );
+					this.matrixWorld.copyPosition( camera.matrixWorld );
+
+					this.material.polygonOffsetUnits = scale * 10;
+
+				};
+
+				geometries.update( boxMesh.geometry );
+
 			}
 
-			boxCamera.projectionMatrix.copy( camera.projectionMatrix );
+			boxMesh.material.uniforms.tCube.value = background;
 
-			boxCamera.matrixWorld.extractRotation( camera.matrixWorld );
-			boxCamera.matrixWorldInverse.getInverse( boxCamera.matrixWorld );
-
-			boxMesh.material.uniforms[ "tCube" ].value = background;
-			boxMesh.modelViewMatrix.multiplyMatrices( boxCamera.matrixWorldInverse, boxMesh.matrixWorld );
-
-			objects.update( boxMesh );
-
-			renderer.renderBufferDirect( boxCamera, null, boxMesh.geometry, boxMesh.material, boxMesh, null );
+			renderList.push( boxMesh, boxMesh.geometry, boxMesh.material, 0, null );
 
 		} else if ( background && background.isTexture ) {
 
@@ -19393,11 +20992,13 @@ function WebGLBackground( renderer, state, objects, premultipliedAlpha ) {
 					new MeshBasicMaterial( { depthTest: false, depthWrite: false, fog: false } )
 				);
 
+				geometries.update( planeMesh.geometry );
+
 			}
 
 			planeMesh.material.map = background;
 
-			objects.update( planeMesh );
+			// TODO Push this to renderList
 
 			renderer.renderBufferDirect( planeCamera, null, planeMesh.geometry, planeMesh.material, planeMesh, null );
 
@@ -19492,53 +21093,26 @@ function reversePainterSortStable( a, b ) {
 
 function WebGLRenderList() {
 
-	var opaque = [];
-	var opaqueLastIndex = - 1;
+	var renderItems = [];
+	var renderItemsIndex = 0;
 
+	var opaque = [];
 	var transparent = [];
-	var transparentLastIndex = - 1;
 
 	function init() {
 
-		opaqueLastIndex = - 1;
-		transparentLastIndex = - 1;
+		renderItemsIndex = 0;
+
+		opaque.length = 0;
+		transparent.length = 0;
 
 	}
 
 	function push( object, geometry, material, z, group ) {
 
-		var array, index;
+		var renderItem = renderItems[ renderItemsIndex ];
 
-		// allocate the next position in the appropriate array
-
-		if ( material.transparent ) {
-
-			array = transparent;
-			index = ++ transparentLastIndex;
-
-		} else {
-
-			array = opaque;
-			index = ++ opaqueLastIndex;
-
-		}
-
-		// recycle existing render item or grow the array
-
-		var renderItem = array[ index ];
-
-		if ( renderItem ) {
-
-			renderItem.id = object.id;
-			renderItem.object = object;
-			renderItem.geometry = geometry;
-			renderItem.material = material;
-			renderItem.program = material.program;
-			renderItem.renderOrder = object.renderOrder;
-			renderItem.z = z;
-			renderItem.group = group;
-
-		} else {
+		if ( renderItem === undefined ) {
 
 			renderItem = {
 				id: object.id,
@@ -19551,24 +21125,31 @@ function WebGLRenderList() {
 				group: group
 			};
 
-			// assert( index === array.length );
-			array.push( renderItem );
+			renderItems[ renderItemsIndex ] = renderItem;
+
+		} else {
+
+			renderItem.id = object.id;
+			renderItem.object = object;
+			renderItem.geometry = geometry;
+			renderItem.material = material;
+			renderItem.program = material.program;
+			renderItem.renderOrder = object.renderOrder;
+			renderItem.z = z;
+			renderItem.group = group;
 
 		}
 
-	}
+		( material.transparent === true ? transparent : opaque ).push( renderItem );
 
-	function finish() {
-
-		opaque.length = opaqueLastIndex + 1;
-		transparent.length = transparentLastIndex + 1;
+		renderItemsIndex ++;
 
 	}
 
 	function sort() {
 
-		opaque.sort( painterSortStable );
-		transparent.sort( reversePainterSortStable );
+		if ( opaque.length > 1 ) opaque.sort( painterSortStable );
+		if ( transparent.length > 1 ) transparent.sort( reversePainterSortStable );
 
 	}
 
@@ -19578,7 +21159,6 @@ function WebGLRenderList() {
 
 		init: init,
 		push: push,
-		finish: finish,
 
 		sort: sort
 	};
@@ -19624,6 +21204,115 @@ function WebGLRenderLists() {
  * @author mrdoob / http://mrdoob.com/
  */
 
+function absNumericalSort( a, b ) {
+
+	return Math.abs( b[ 1 ] ) - Math.abs( a[ 1 ] );
+
+}
+
+function WebGLMorphtargets( gl ) {
+
+	var influencesList = {};
+	var morphInfluences = new Float32Array( 8 );
+
+	function update( object, geometry, material, program ) {
+
+		var objectInfluences = object.morphTargetInfluences;
+
+		var length = objectInfluences.length;
+
+		var influences = influencesList[ geometry.id ];
+
+		if ( influences === undefined ) {
+
+			// initialise list
+
+			influences = [];
+
+			for ( var i = 0; i < length; i ++ ) {
+
+				influences[ i ] = [ i, 0 ];
+
+			}
+
+			influencesList[ geometry.id ] = influences;
+
+		}
+
+		var morphTargets = material.morphTargets && geometry.morphAttributes.position;
+		var morphNormals = material.morphNormals && geometry.morphAttributes.normal;
+
+		// Remove current morphAttributes
+
+		for ( var i = 0; i < length; i ++ ) {
+
+			var influence = influences[ i ];
+
+			if ( influence[ 1 ] !== 0 ) {
+
+				if ( morphTargets ) geometry.removeAttribute( 'morphTarget' + i );
+				if ( morphNormals ) geometry.removeAttribute( 'morphNormal' + i );
+
+			}
+
+		}
+
+		// Collect influences
+
+		for ( var i = 0; i < length; i ++ ) {
+
+			var influence = influences[ i ];
+
+			influence[ 0 ] = i;
+			influence[ 1 ] = objectInfluences[ i ];
+
+		}
+
+		influences.sort( absNumericalSort );
+
+		// Add morphAttributes
+
+		for ( var i = 0; i < 8; i ++ ) {
+
+			var influence = influences[ i ];
+
+			if ( influence ) {
+
+				var index = influence[ 0 ];
+				var value = influence[ 1 ];
+
+				if ( value ) {
+
+					if ( morphTargets ) geometry.addAttribute( 'morphTarget' + i, morphTargets[ index ] );
+					if ( morphNormals ) geometry.addAttribute( 'morphNormal' + i, morphNormals[ index ] );
+
+					morphInfluences[ i ] = value;
+					continue;
+
+				}
+
+			}
+
+			morphInfluences[ i ] = 0;
+
+		}
+
+		program.getUniforms().setValue( gl, 'morphTargetInfluences', morphInfluences );
+
+	}
+
+	return {
+
+		update: update
+
+	}
+
+}
+
+/**
+ * @author mrdoob / http://mrdoob.com/
+ */
+
 function WebGLIndexedBufferRenderer( gl, extensions, infoRender ) {
 
 	var mode;
@@ -19651,6 +21340,7 @@ function WebGLIndexedBufferRenderer( gl, extensions, infoRender ) {
 		infoRender.vertices += count;
 
 		if ( mode === gl.TRIANGLES ) infoRender.faces += count / 3;
+		else if ( mode === gl.POINTS ) infoRender.points += count;
 
 	}
 
@@ -19671,6 +21361,7 @@ function WebGLIndexedBufferRenderer( gl, extensions, infoRender ) {
 		infoRender.vertices += count * geometry.maxInstancedCount;
 
 		if ( mode === gl.TRIANGLES ) infoRender.faces += geometry.maxInstancedCount * count / 3;
+		else if ( mode === gl.POINTS ) infoRender.points += geometry.maxInstancedCount * count;
 
 	}
 
@@ -19705,6 +21396,7 @@ function WebGLBufferRenderer( gl, extensions, infoRender ) {
 		infoRender.vertices += count;
 
 		if ( mode === gl.TRIANGLES ) infoRender.faces += count / 3;
+		else if ( mode === gl.POINTS ) infoRender.points += count;
 
 	}
 
@@ -19737,6 +21429,7 @@ function WebGLBufferRenderer( gl, extensions, infoRender ) {
 		infoRender.vertices += count * geometry.maxInstancedCount;
 
 		if ( mode === gl.TRIANGLES ) infoRender.faces += geometry.maxInstancedCount * count / 3;
+		else if ( mode === gl.POINTS ) infoRender.points += geometry.maxInstancedCount * count;
 
 	}
 
@@ -19941,7 +21634,7 @@ function WebGLGeometries( gl, attributes, infoMemory ) {
  * @author mrdoob / http://mrdoob.com/
  */
 
-function WebGLLights() {
+function UniformsCache() {
 
 	var lights = {};
 
@@ -19998,7 +21691,9 @@ function WebGLLights() {
 						shadow: false,
 						shadowBias: 0,
 						shadowRadius: 1,
-						shadowMapSize: new Vector2()
+						shadowMapSize: new Vector2(),
+						shadowCameraNear: 1,
+						shadowCameraFar: 1000
 					};
 					break;
 
@@ -20032,11 +21727,237 @@ function WebGLLights() {
 
 }
 
+function WebGLLights() {
+
+	var cache = new UniformsCache();
+
+	var state = {
+
+		hash: '',
+
+		ambient: [ 0, 0, 0 ],
+		directional: [],
+		directionalShadowMap: [],
+		directionalShadowMatrix: [],
+		spot: [],
+		spotShadowMap: [],
+		spotShadowMatrix: [],
+		rectArea: [],
+		point: [],
+		pointShadowMap: [],
+		pointShadowMatrix: [],
+		hemi: []
+
+	};
+
+	var vector3 = new Vector3();
+	var matrix4 = new Matrix4();
+	var matrix42 = new Matrix4();
+
+	function setup( lights, shadows, camera ) {
+
+		var r = 0, g = 0, b = 0;
+
+		var directionalLength = 0;
+		var pointLength = 0;
+		var spotLength = 0;
+		var rectAreaLength = 0;
+		var hemiLength = 0;
+
+		var viewMatrix = camera.matrixWorldInverse;
+
+		for ( var i = 0, l = lights.length; i < l; i ++ ) {
+
+			var light = lights[ i ];
+
+			var color = light.color;
+			var intensity = light.intensity;
+			var distance = light.distance;
+
+			var shadowMap = ( light.shadow && light.shadow.map ) ? light.shadow.map.texture : null;
+
+			if ( light.isAmbientLight ) {
+
+				r += color.r * intensity;
+				g += color.g * intensity;
+				b += color.b * intensity;
+
+			} else if ( light.isDirectionalLight ) {
+
+				var uniforms = cache.get( light );
+
+				uniforms.color.copy( light.color ).multiplyScalar( light.intensity );
+				uniforms.direction.setFromMatrixPosition( light.matrixWorld );
+				vector3.setFromMatrixPosition( light.target.matrixWorld );
+				uniforms.direction.sub( vector3 );
+				uniforms.direction.transformDirection( viewMatrix );
+
+				uniforms.shadow = light.castShadow;
+
+				if ( light.castShadow ) {
+
+					var shadow = light.shadow;
+
+					uniforms.shadowBias = shadow.bias;
+					uniforms.shadowRadius = shadow.radius;
+					uniforms.shadowMapSize = shadow.mapSize;
+
+				}
+
+				state.directionalShadowMap[ directionalLength ] = shadowMap;
+				state.directionalShadowMatrix[ directionalLength ] = light.shadow.matrix;
+				state.directional[ directionalLength ] = uniforms;
+
+				directionalLength ++;
+
+			} else if ( light.isSpotLight ) {
+
+				var uniforms = cache.get( light );
+
+				uniforms.position.setFromMatrixPosition( light.matrixWorld );
+				uniforms.position.applyMatrix4( viewMatrix );
+
+				uniforms.color.copy( color ).multiplyScalar( intensity );
+				uniforms.distance = distance;
+
+				uniforms.direction.setFromMatrixPosition( light.matrixWorld );
+				vector3.setFromMatrixPosition( light.target.matrixWorld );
+				uniforms.direction.sub( vector3 );
+				uniforms.direction.transformDirection( viewMatrix );
+
+				uniforms.coneCos = Math.cos( light.angle );
+				uniforms.penumbraCos = Math.cos( light.angle * ( 1 - light.penumbra ) );
+				uniforms.decay = ( light.distance === 0 ) ? 0.0 : light.decay;
+
+				uniforms.shadow = light.castShadow;
+
+				if ( light.castShadow ) {
+
+					var shadow = light.shadow;
+
+					uniforms.shadowBias = shadow.bias;
+					uniforms.shadowRadius = shadow.radius;
+					uniforms.shadowMapSize = shadow.mapSize;
+
+				}
+
+				state.spotShadowMap[ spotLength ] = shadowMap;
+				state.spotShadowMatrix[ spotLength ] = light.shadow.matrix;
+				state.spot[ spotLength ] = uniforms;
+
+				spotLength ++;
+
+			} else if ( light.isRectAreaLight ) {
+
+				var uniforms = cache.get( light );
+
+				// (a) intensity controls irradiance of entire light
+				uniforms.color
+					.copy( color )
+					.multiplyScalar( intensity / ( light.width * light.height ) );
+
+				// (b) intensity controls the radiance per light area
+				// uniforms.color.copy( color ).multiplyScalar( intensity );
+
+				uniforms.position.setFromMatrixPosition( light.matrixWorld );
+				uniforms.position.applyMatrix4( viewMatrix );
+
+				// extract local rotation of light to derive width/height half vectors
+				matrix42.identity();
+				matrix4.copy( light.matrixWorld );
+				matrix4.premultiply( viewMatrix );
+				matrix42.extractRotation( matrix4 );
+
+				uniforms.halfWidth.set( light.width * 0.5,                0.0, 0.0 );
+				uniforms.halfHeight.set(              0.0, light.height * 0.5, 0.0 );
+
+				uniforms.halfWidth.applyMatrix4( matrix42 );
+				uniforms.halfHeight.applyMatrix4( matrix42 );
+
+				// TODO (abelnation): RectAreaLight distance?
+				// uniforms.distance = distance;
+
+				state.rectArea[ rectAreaLength ] = uniforms;
+
+				rectAreaLength ++;
+
+			} else if ( light.isPointLight ) {
+
+				var uniforms = cache.get( light );
+
+				uniforms.position.setFromMatrixPosition( light.matrixWorld );
+				uniforms.position.applyMatrix4( viewMatrix );
+
+				uniforms.color.copy( light.color ).multiplyScalar( light.intensity );
+				uniforms.distance = light.distance;
+				uniforms.decay = ( light.distance === 0 ) ? 0.0 : light.decay;
+
+				uniforms.shadow = light.castShadow;
+
+				if ( light.castShadow ) {
+
+					var shadow = light.shadow;
+
+					uniforms.shadowBias = shadow.bias;
+					uniforms.shadowRadius = shadow.radius;
+					uniforms.shadowMapSize = shadow.mapSize;
+					uniforms.shadowCameraNear = shadow.camera.near;
+					uniforms.shadowCameraFar = shadow.camera.far;
+
+				}
+
+				state.pointShadowMap[ pointLength ] = shadowMap;
+				state.pointShadowMatrix[ pointLength ] = light.shadow.matrix;
+				state.point[ pointLength ] = uniforms;
+
+				pointLength ++;
+
+			} else if ( light.isHemisphereLight ) {
+
+				var uniforms = cache.get( light );
+
+				uniforms.direction.setFromMatrixPosition( light.matrixWorld );
+				uniforms.direction.transformDirection( viewMatrix );
+				uniforms.direction.normalize();
+
+				uniforms.skyColor.copy( light.color ).multiplyScalar( intensity );
+				uniforms.groundColor.copy( light.groundColor ).multiplyScalar( intensity );
+
+				state.hemi[ hemiLength ] = uniforms;
+
+				hemiLength ++;
+
+			}
+
+		}
+
+		state.ambient[ 0 ] = r;
+		state.ambient[ 1 ] = g;
+		state.ambient[ 2 ] = b;
+
+		state.directional.length = directionalLength;
+		state.spot.length = spotLength;
+		state.rectArea.length = rectAreaLength;
+		state.point.length = pointLength;
+		state.hemi.length = hemiLength;
+
+		// TODO (sam-g-steel) why aren't we using join
+		state.hash = directionalLength + ',' + pointLength + ',' + spotLength + ',' + rectAreaLength + ',' + hemiLength + ',' + shadows.length;
+
+	}
+
+	return {
+		setup: setup,
+		state: state
+	}
+
+}
+
 /**
  * @author mrdoob / http://mrdoob.com/
  */
 
-function WebGLObjects( gl, geometries, infoRender ) {
+function WebGLObjects( geometries, infoRender ) {
 
 	var updateList = {};
 
@@ -20317,11 +22238,10 @@ function unrollLoops( string ) {
 
 }
 
-function WebGLProgram( renderer, code, material, shader, parameters ) {
+function WebGLProgram( renderer, extensions, code, material, shader, parameters ) {
 
 	var gl = renderer.context;
 
-	var extensions = material.extensions;
 	var defines = material.defines;
 
 	var vertexShader = shader.vertexShader;
@@ -20401,7 +22321,7 @@ function WebGLProgram( renderer, code, material, shader, parameters ) {
 
 	//
 
-	var customExtensions = generateExtensions( extensions, parameters, renderer.extensions );
+	var customExtensions = generateExtensions( material.extensions, parameters, extensions );
 
 	var customDefines = generateDefines( defines );
 
@@ -20482,7 +22402,7 @@ function WebGLProgram( renderer, code, material, shader, parameters ) {
 			parameters.sizeAttenuation ? '#define USE_SIZEATTENUATION' : '',
 
 			parameters.logarithmicDepthBuffer ? '#define USE_LOGDEPTHBUF' : '',
-			parameters.logarithmicDepthBuffer && renderer.extensions.get( 'EXT_frag_depth' ) ? '#define USE_LOGDEPTHBUF_EXT' : '',
+			parameters.logarithmicDepthBuffer && extensions.get( 'EXT_frag_depth' ) ? '#define USE_LOGDEPTHBUF_EXT' : '',
 
 			'uniform mat4 modelMatrix;',
 			'uniform mat4 modelViewMatrix;',
@@ -20589,9 +22509,9 @@ function WebGLProgram( renderer, code, material, shader, parameters ) {
 			parameters.physicallyCorrectLights ? "#define PHYSICALLY_CORRECT_LIGHTS" : '',
 
 			parameters.logarithmicDepthBuffer ? '#define USE_LOGDEPTHBUF' : '',
-			parameters.logarithmicDepthBuffer && renderer.extensions.get( 'EXT_frag_depth' ) ? '#define USE_LOGDEPTHBUF_EXT' : '',
+			parameters.logarithmicDepthBuffer && extensions.get( 'EXT_frag_depth' ) ? '#define USE_LOGDEPTHBUF_EXT' : '',
 
-			parameters.envMap && renderer.extensions.get( 'EXT_shader_texture_lod' ) ? '#define TEXTURE_LOD_EXT' : '',
+			parameters.envMap && extensions.get( 'EXT_shader_texture_lod' ) ? '#define TEXTURE_LOD_EXT' : '',
 
 			'uniform mat4 viewMatrix;',
 			'uniform vec3 cameraPosition;',
@@ -20718,12 +22638,11 @@ function WebGLProgram( renderer, code, material, shader, parameters ) {
 
 	var cachedUniforms;
 
-	this.getUniforms = function() {
+	this.getUniforms = function () {
 
 		if ( cachedUniforms === undefined ) {
 
-			cachedUniforms =
-				new WebGLUniforms( gl, program, renderer );
+			cachedUniforms = new WebGLUniforms( gl, program, renderer );
 
 		}
 
@@ -20735,7 +22654,7 @@ function WebGLProgram( renderer, code, material, shader, parameters ) {
 
 	var cachedAttributes;
 
-	this.getAttributes = function() {
+	this.getAttributes = function () {
 
 		if ( cachedAttributes === undefined ) {
 
@@ -20798,12 +22717,13 @@ function WebGLProgram( renderer, code, material, shader, parameters ) {
  * @author mrdoob / http://mrdoob.com/
  */
 
-function WebGLPrograms( renderer, capabilities ) {
+function WebGLPrograms( renderer, extensions, capabilities ) {
 
 	var programs = [];
 
 	var shaderIDs = {
 		MeshDepthMaterial: 'depth',
+		MeshDistanceMaterial: 'distanceRGBA',
 		MeshNormalMaterial: 'normal',
 		MeshBasicMaterial: 'basic',
 		MeshLambertMaterial: 'lambert',
@@ -20813,7 +22733,8 @@ function WebGLPrograms( renderer, capabilities ) {
 		MeshPhysicalMaterial: 'physical',
 		LineBasicMaterial: 'basic',
 		LineDashedMaterial: 'dashed',
-		PointsMaterial: 'points'
+		PointsMaterial: 'points',
+		ShadowMaterial: 'shadow'
 	};
 
 	var parameterNames = [
@@ -20896,7 +22817,7 @@ function WebGLPrograms( renderer, capabilities ) {
 
 	}
 
-	this.getParameters = function ( material, lights, fog, nClipPlanes, nClipIntersection, object ) {
+	this.getParameters = function ( material, lights, shadows, fog, nClipPlanes, nClipIntersection, object ) {
 
 		var shaderID = shaderIDs[ material.type ];
 
@@ -20904,7 +22825,7 @@ function WebGLPrograms( renderer, capabilities ) {
 		// (not to blow over maxLights budget)
 
 		var maxBones = object.isSkinnedMesh ? allocateBones( object ) : 0;
-		var precision = renderer.getPrecision();
+		var precision = capabilities.precision;
 
 		if ( material.precision !== null ) {
 
@@ -20955,7 +22876,7 @@ function WebGLPrograms( renderer, capabilities ) {
 			useFog: material.fog,
 			fogExp: ( fog && fog.isFogExp2 ),
 
-			flatShading: material.shading === FlatShading,
+			flatShading: material.flatShading,
 
 			sizeAttenuation: material.sizeAttenuation,
 			logarithmicDepthBuffer: capabilities.logarithmicDepthBuffer,
@@ -20980,7 +22901,7 @@ function WebGLPrograms( renderer, capabilities ) {
 
 			dithering: material.dithering,
 
-			shadowMapEnabled: renderer.shadowMap.enabled && object.receiveShadow && lights.shadows.length > 0,
+			shadowMapEnabled: renderer.shadowMap.enabled && object.receiveShadow && shadows.length > 0,
 			shadowMapType: renderer.shadowMap.type,
 
 			toneMapping: renderer.toneMapping,
@@ -21062,7 +22983,7 @@ function WebGLPrograms( renderer, capabilities ) {
 
 		if ( program === undefined ) {
 
-			program = new WebGLProgram( renderer, code, material, shader, parameters );
+			program = new WebGLProgram( renderer, extensions, code, material, shader, parameters );
 			programs.push( program );
 
 		}
@@ -21096,7 +23017,7 @@ function WebGLPrograms( renderer, capabilities ) {
  * @author mrdoob / http://mrdoob.com/
  */
 
-function WebGLTextures( _gl, extensions, state, properties, capabilities, paramThreeToGL, infoMemory ) {
+function WebGLTextures( _gl, extensions, state, properties, capabilities, utils, infoMemory ) {
 
 	var _isWebGL2 = ( typeof WebGL2RenderingContext !== 'undefined' && _gl instanceof WebGL2RenderingContext );
 
@@ -21355,8 +23276,8 @@ function WebGLTextures( _gl, extensions, state, properties, capabilities, paramT
 
 				var image = cubeImage[ 0 ],
 				isPowerOfTwoImage = isPowerOfTwo( image ),
-				glFormat = paramThreeToGL( texture.format ),
-				glType = paramThreeToGL( texture.type );
+				glFormat = utils.convert( texture.format ),
+				glType = utils.convert( texture.type );
 
 				setTextureParameters( _gl.TEXTURE_CUBE_MAP, texture, isPowerOfTwoImage );
 
@@ -21390,7 +23311,7 @@ function WebGLTextures( _gl, extensions, state, properties, capabilities, paramT
 
 								} else {
 
-									console.warn( "THREE.WebGLRenderer: Attempt to load unsupported compressed texture format in .setTextureCube()" );
+									console.warn( 'THREE.WebGLRenderer: Attempt to load unsupported compressed texture format in .setTextureCube()' );
 
 								}
 
@@ -21440,11 +23361,11 @@ function WebGLTextures( _gl, extensions, state, properties, capabilities, paramT
 
 		if ( isPowerOfTwoImage ) {
 
-			_gl.texParameteri( textureType, _gl.TEXTURE_WRAP_S, paramThreeToGL( texture.wrapS ) );
-			_gl.texParameteri( textureType, _gl.TEXTURE_WRAP_T, paramThreeToGL( texture.wrapT ) );
+			_gl.texParameteri( textureType, _gl.TEXTURE_WRAP_S, utils.convert( texture.wrapS ) );
+			_gl.texParameteri( textureType, _gl.TEXTURE_WRAP_T, utils.convert( texture.wrapT ) );
 
-			_gl.texParameteri( textureType, _gl.TEXTURE_MAG_FILTER, paramThreeToGL( texture.magFilter ) );
-			_gl.texParameteri( textureType, _gl.TEXTURE_MIN_FILTER, paramThreeToGL( texture.minFilter ) );
+			_gl.texParameteri( textureType, _gl.TEXTURE_MAG_FILTER, utils.convert( texture.magFilter ) );
+			_gl.texParameteri( textureType, _gl.TEXTURE_MIN_FILTER, utils.convert( texture.minFilter ) );
 
 		} else {
 
@@ -21516,8 +23437,8 @@ function WebGLTextures( _gl, extensions, state, properties, capabilities, paramT
 		}
 
 		var isPowerOfTwoImage = isPowerOfTwo( image ),
-		glFormat = paramThreeToGL( texture.format ),
-		glType = paramThreeToGL( texture.type );
+		glFormat = utils.convert( texture.format ),
+		glType = utils.convert( texture.type );
 
 		setTextureParameters( _gl.TEXTURE_2D, texture, isPowerOfTwoImage );
 
@@ -21551,7 +23472,7 @@ function WebGLTextures( _gl, extensions, state, properties, capabilities, paramT
 				        console.warn( 'THREE.WebGLRenderer: Use UnsignedShortType or UnsignedIntType for DepthFormat DepthTexture.' );
 
 					texture.type = UnsignedShortType;
-					glType = paramThreeToGL( texture.type );
+					glType = utils.convert( texture.type );
 
 				}
 
@@ -21571,7 +23492,7 @@ function WebGLTextures( _gl, extensions, state, properties, capabilities, paramT
 					console.warn( 'THREE.WebGLRenderer: Use UnsignedInt248Type for DepthStencilFormat DepthTexture.' );
 
 					texture.type = UnsignedInt248Type;
-					glType = paramThreeToGL( texture.type );
+					glType = utils.convert( texture.type );
 
 				}
 
@@ -21616,7 +23537,7 @@ function WebGLTextures( _gl, extensions, state, properties, capabilities, paramT
 
 					} else {
 
-						console.warn( "THREE.WebGLRenderer: Attempt to load unsupported compressed texture format in .uploadTexture()" );
+						console.warn( 'THREE.WebGLRenderer: Attempt to load unsupported compressed texture format in .uploadTexture()' );
 
 					}
 
@@ -21668,8 +23589,8 @@ function WebGLTextures( _gl, extensions, state, properties, capabilities, paramT
 	// Setup storage for target texture and bind it to correct framebuffer
 	function setupFrameBufferTexture( framebuffer, renderTarget, attachment, textureTarget ) {
 
-		var glFormat = paramThreeToGL( renderTarget.texture.format );
-		var glType = paramThreeToGL( renderTarget.texture.type );
+		var glFormat = utils.convert( renderTarget.texture.format );
+		var glType = utils.convert( renderTarget.texture.type );
 		state.texImage2D( textureTarget, 0, glFormat, renderTarget.width, renderTarget.height, 0, glFormat, glType, null );
 		_gl.bindFramebuffer( _gl.FRAMEBUFFER, framebuffer );
 		_gl.framebufferTexture2D( _gl.FRAMEBUFFER, attachment, textureTarget, properties.get( renderTarget.texture ).__webglTexture, 0 );
@@ -21707,13 +23628,13 @@ function WebGLTextures( _gl, extensions, state, properties, capabilities, paramT
 	function setupDepthTexture( framebuffer, renderTarget ) {
 
 		var isCube = ( renderTarget && renderTarget.isWebGLRenderTargetCube );
-		if ( isCube ) throw new Error('Depth Texture with cube render targets is not supported!');
+		if ( isCube ) throw new Error( 'Depth Texture with cube render targets is not supported' );
 
 		_gl.bindFramebuffer( _gl.FRAMEBUFFER, framebuffer );
 
 		if ( !( renderTarget.depthTexture && renderTarget.depthTexture.isDepthTexture ) ) {
 
-			throw new Error('renderTarget.depthTexture must be an instance of THREE.DepthTexture');
+			throw new Error( 'renderTarget.depthTexture must be an instance of THREE.DepthTexture' );
 
 		}
 
@@ -21740,7 +23661,7 @@ function WebGLTextures( _gl, extensions, state, properties, capabilities, paramT
 
 		} else {
 
-			throw new Error('Unknown depthTexture format')
+			throw new Error( 'Unknown depthTexture format' );
 
 		}
 
@@ -21755,7 +23676,7 @@ function WebGLTextures( _gl, extensions, state, properties, capabilities, paramT
 
 		if ( renderTarget.depthTexture ) {
 
-			if ( isCube ) throw new Error('target.depthTexture not supported in Cube render targets');
+			if ( isCube ) throw new Error( 'target.depthTexture not supported in Cube render targets' );
 
 			setupDepthTexture( renderTargetProperties.__webglFramebuffer, renderTarget );
 
@@ -21931,7 +23852,7 @@ function WebGLProperties() {
  * @author mrdoob / http://mrdoob.com/
  */
 
-function WebGLState( gl, extensions, paramThreeToGL ) {
+function WebGLState( gl, extensions, utils ) {
 
 	function ColorBuffer() {
 
@@ -21939,7 +23860,7 @@ function WebGLState( gl, extensions, paramThreeToGL ) {
 
 		var color = new Vector4();
 		var currentColorMask = null;
-		var currentColorClear = new Vector4();
+		var currentColorClear = new Vector4( 0, 0, 0, 0 );
 
 		return {
 
@@ -21984,7 +23905,7 @@ function WebGLState( gl, extensions, paramThreeToGL ) {
 				locked = false;
 
 				currentColorMask = null;
-				currentColorClear.set( 0, 0, 0, 1 );
+				currentColorClear.set( - 1, 0, 0, 0 ); // set to invalid state
 
 			}
 
@@ -22247,6 +24168,8 @@ function WebGLState( gl, extensions, paramThreeToGL ) {
 
 	var compressedTextureFormats = null;
 
+	var currentProgram = null;
+
 	var currentBlending = null;
 	var currentBlendEquation = null;
 	var currentBlendSrc = null;
@@ -22263,8 +24186,6 @@ function WebGLState( gl, extensions, paramThreeToGL ) {
 
 	var currentPolygonOffsetFactor = null;
 	var currentPolygonOffsetUnits = null;
-
-	var currentScissorTest = null;
 
 	var maxTextures = gl.getParameter( gl.MAX_COMBINED_TEXTURE_IMAGE_UNITS );
 
@@ -22300,25 +24221,23 @@ function WebGLState( gl, extensions, paramThreeToGL ) {
 	emptyTextures[ gl.TEXTURE_2D ] = createTexture( gl.TEXTURE_2D, gl.TEXTURE_2D, 1 );
 	emptyTextures[ gl.TEXTURE_CUBE_MAP ] = createTexture( gl.TEXTURE_CUBE_MAP, gl.TEXTURE_CUBE_MAP_POSITIVE_X, 6 );
 
+	// init
+
+	colorBuffer.setClear( 0, 0, 0, 1 );
+	depthBuffer.setClear( 1 );
+	stencilBuffer.setClear( 0 );
+
+	enable( gl.DEPTH_TEST );
+	depthBuffer.setFunc( LessEqualDepth );
+
+	setFlipSided( false );
+	setCullFace( CullFaceBack );
+	enable( gl.CULL_FACE );
+
+	enable( gl.BLEND );
+	setBlending( NormalBlending );
+
 	//
-
-	function init() {
-
-		colorBuffer.setClear( 0, 0, 0, 1 );
-		depthBuffer.setClear( 1 );
-		stencilBuffer.setClear( 0 );
-
-		enable( gl.DEPTH_TEST );
-		depthBuffer.setFunc( LessEqualDepth );
-
-		setFlipSided( false );
-		setCullFace( CullFaceBack );
-		enable( gl.CULL_FACE );
-
-		enable( gl.BLEND );
-		setBlending( NormalBlending );
-
-	}
 
 	function initAttributes() {
 
@@ -22437,6 +24356,22 @@ function WebGLState( gl, extensions, paramThreeToGL ) {
 
 	}
 
+	function useProgram( program ) {
+
+		if ( currentProgram !== program ) {
+
+			gl.useProgram( program );
+
+			currentProgram = program;
+
+			return true;
+
+		}
+
+		return false;
+
+	}
+
 	function setBlending( blending, blendEquation, blendSrc, blendDst, blendEquationAlpha, blendSrcAlpha, blendDstAlpha, premultipliedAlpha ) {
 
 		if ( blending !== NoBlending ) {
@@ -22449,98 +24384,74 @@ function WebGLState( gl, extensions, paramThreeToGL ) {
 
 		}
 
-		if ( ( blending !== CustomBlending ) && ( blending !== currentBlending || premultipliedAlpha !== currentPremultipledAlpha ) ) {
+		if ( blending !== CustomBlending ) {
 
-			if ( blending === AdditiveBlending ) {
+			if ( blending !== currentBlending || premultipliedAlpha !== currentPremultipledAlpha ) {
 
-				if ( premultipliedAlpha ) {
+				switch ( blending ) {
 
-					gl.blendEquationSeparate( gl.FUNC_ADD, gl.FUNC_ADD );
-					gl.blendFuncSeparate( gl.ONE, gl.ONE, gl.ONE, gl.ONE );
+					case AdditiveBlending:
 
-				} else {
+						if ( premultipliedAlpha ) {
 
-					gl.blendEquation( gl.FUNC_ADD );
-					gl.blendFunc( gl.SRC_ALPHA, gl.ONE );
+							gl.blendEquationSeparate( gl.FUNC_ADD, gl.FUNC_ADD );
+							gl.blendFuncSeparate( gl.ONE, gl.ONE, gl.ONE, gl.ONE );
 
-				}
+						} else {
 
-			} else if ( blending === SubtractiveBlending ) {
+							gl.blendEquation( gl.FUNC_ADD );
+							gl.blendFunc( gl.SRC_ALPHA, gl.ONE );
 
-				if ( premultipliedAlpha ) {
+						}
+						break;
 
-					gl.blendEquationSeparate( gl.FUNC_ADD, gl.FUNC_ADD );
-					gl.blendFuncSeparate( gl.ZERO, gl.ZERO, gl.ONE_MINUS_SRC_COLOR, gl.ONE_MINUS_SRC_ALPHA );
+					case SubtractiveBlending:
 
-				} else {
+						if ( premultipliedAlpha ) {
 
-					gl.blendEquation( gl.FUNC_ADD );
-					gl.blendFunc( gl.ZERO, gl.ONE_MINUS_SRC_COLOR );
+							gl.blendEquationSeparate( gl.FUNC_ADD, gl.FUNC_ADD );
+							gl.blendFuncSeparate( gl.ZERO, gl.ZERO, gl.ONE_MINUS_SRC_COLOR, gl.ONE_MINUS_SRC_ALPHA );
 
-				}
+						} else {
 
-			} else if ( blending === MultiplyBlending ) {
+							gl.blendEquation( gl.FUNC_ADD );
+							gl.blendFunc( gl.ZERO, gl.ONE_MINUS_SRC_COLOR );
 
-				if ( premultipliedAlpha ) {
+						}
+						break;
 
-					gl.blendEquationSeparate( gl.FUNC_ADD, gl.FUNC_ADD );
-					gl.blendFuncSeparate( gl.ZERO, gl.SRC_COLOR, gl.ZERO, gl.SRC_ALPHA );
+					case MultiplyBlending:
 
-				} else {
+						if ( premultipliedAlpha ) {
 
-					gl.blendEquation( gl.FUNC_ADD );
-					gl.blendFunc( gl.ZERO, gl.SRC_COLOR );
+							gl.blendEquationSeparate( gl.FUNC_ADD, gl.FUNC_ADD );
+							gl.blendFuncSeparate( gl.ZERO, gl.SRC_COLOR, gl.ZERO, gl.SRC_ALPHA );
 
-				}
+						} else {
 
-			} else {
+							gl.blendEquation( gl.FUNC_ADD );
+							gl.blendFunc( gl.ZERO, gl.SRC_COLOR );
 
-				if ( premultipliedAlpha ) {
+						}
+						break;
 
-					gl.blendEquationSeparate( gl.FUNC_ADD, gl.FUNC_ADD );
-					gl.blendFuncSeparate( gl.ONE, gl.ONE_MINUS_SRC_ALPHA, gl.ONE, gl.ONE_MINUS_SRC_ALPHA );
+					default:
 
-				} else {
+						if ( premultipliedAlpha ) {
 
-					gl.blendEquationSeparate( gl.FUNC_ADD, gl.FUNC_ADD );
-					gl.blendFuncSeparate( gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA, gl.ONE, gl.ONE_MINUS_SRC_ALPHA );
+							gl.blendEquationSeparate( gl.FUNC_ADD, gl.FUNC_ADD );
+							gl.blendFuncSeparate( gl.ONE, gl.ONE_MINUS_SRC_ALPHA, gl.ONE, gl.ONE_MINUS_SRC_ALPHA );
+
+						} else {
+
+							gl.blendEquationSeparate( gl.FUNC_ADD, gl.FUNC_ADD );
+							gl.blendFuncSeparate( gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA, gl.ONE, gl.ONE_MINUS_SRC_ALPHA );
+
+						}
 
 				}
 
 			}
-
-			currentBlending = blending;
-			currentPremultipledAlpha = premultipliedAlpha;
-
-		}
-
-		if ( blending === CustomBlending ) {
-
-			blendEquationAlpha = blendEquationAlpha || blendEquation;
-			blendSrcAlpha = blendSrcAlpha || blendSrc;
-			blendDstAlpha = blendDstAlpha || blendDst;
-
-			if ( blendEquation !== currentBlendEquation || blendEquationAlpha !== currentBlendEquationAlpha ) {
-
-				gl.blendEquationSeparate( paramThreeToGL( blendEquation ), paramThreeToGL( blendEquationAlpha ) );
-
-				currentBlendEquation = blendEquation;
-				currentBlendEquationAlpha = blendEquationAlpha;
-
-			}
-
-			if ( blendSrc !== currentBlendSrc || blendDst !== currentBlendDst || blendSrcAlpha !== currentBlendSrcAlpha || blendDstAlpha !== currentBlendDstAlpha ) {
-
-				gl.blendFuncSeparate( paramThreeToGL( blendSrc ), paramThreeToGL( blendDst ), paramThreeToGL( blendSrcAlpha ), paramThreeToGL( blendDstAlpha ) );
-
-				currentBlendSrc = blendSrc;
-				currentBlendDst = blendDst;
-				currentBlendSrcAlpha = blendSrcAlpha;
-				currentBlendDstAlpha = blendDstAlpha;
-
-			}
-
-		} else {
 
 			currentBlendEquation = null;
 			currentBlendSrc = null;
@@ -22549,7 +24460,36 @@ function WebGLState( gl, extensions, paramThreeToGL ) {
 			currentBlendSrcAlpha = null;
 			currentBlendDstAlpha = null;
 
+		} else {
+
+			blendEquationAlpha = blendEquationAlpha || blendEquation;
+			blendSrcAlpha = blendSrcAlpha || blendSrc;
+			blendDstAlpha = blendDstAlpha || blendDst;
+
+			if ( blendEquation !== currentBlendEquation || blendEquationAlpha !== currentBlendEquationAlpha ) {
+
+				gl.blendEquationSeparate( utils.convert( blendEquation ), utils.convert( blendEquationAlpha ) );
+
+				currentBlendEquation = blendEquation;
+				currentBlendEquationAlpha = blendEquationAlpha;
+
+			}
+
+			if ( blendSrc !== currentBlendSrc || blendDst !== currentBlendDst || blendSrcAlpha !== currentBlendSrcAlpha || blendDstAlpha !== currentBlendDstAlpha ) {
+
+				gl.blendFuncSeparate( utils.convert( blendSrc ), utils.convert( blendDst ), utils.convert( blendSrcAlpha ), utils.convert( blendDstAlpha ) );
+
+				currentBlendSrc = blendSrc;
+				currentBlendDst = blendDst;
+				currentBlendSrcAlpha = blendSrcAlpha;
+				currentBlendDstAlpha = blendDstAlpha;
+
+			}
+
 		}
+
+		currentBlending = blending;
+		currentPremultipledAlpha = premultipliedAlpha;
 
 	}
 
@@ -22665,15 +24605,7 @@ function WebGLState( gl, extensions, paramThreeToGL ) {
 
 	}
 
-	function getScissorTest() {
-
-		return currentScissorTest;
-
-	}
-
 	function setScissorTest( scissorTest ) {
-
-		currentScissorTest = scissorTest;
 
 		if ( scissorTest ) {
 
@@ -22804,6 +24736,8 @@ function WebGLState( gl, extensions, paramThreeToGL ) {
 		currentTextureSlot = null;
 		currentBoundTextures = {};
 
+		currentProgram = null;
+
 		currentBlending = null;
 
 		currentFlipSided = null;
@@ -22823,7 +24757,6 @@ function WebGLState( gl, extensions, paramThreeToGL ) {
 			stencil: stencilBuffer
 		},
 
-		init: init,
 		initAttributes: initAttributes,
 		enableAttribute: enableAttribute,
 		enableAttributeAndDivisor: enableAttributeAndDivisor,
@@ -22831,6 +24764,8 @@ function WebGLState( gl, extensions, paramThreeToGL ) {
 		enable: enable,
 		disable: disable,
 		getCompressedTextureFormats: getCompressedTextureFormats,
+
+		useProgram: useProgram,
 
 		setBlending: setBlending,
 		setMaterial: setMaterial,
@@ -22841,7 +24776,6 @@ function WebGLState( gl, extensions, paramThreeToGL ) {
 		setLineWidth: setLineWidth,
 		setPolygonOffset: setPolygonOffset,
 
-		getScissorTest: getScissorTest,
 		setScissorTest: setScissorTest,
 
 		activeTexture: activeTexture,
@@ -23028,7 +24962,7 @@ function WebVRManager( renderer ) {
 
 	function onVRDisplayPresentChange() {
 
-		if ( device.isPresenting ) {
+		if ( device !== null && device.isPresenting ) {
 
 			var eyeParameters = device.getEyeParameters( 'left' );
 			var renderWidth = eyeParameters.renderWidth;
@@ -23113,6 +25047,12 @@ function WebVRManager( renderer ) {
 
 		//
 
+		cameraL.near = camera.near;
+		cameraR.near = camera.near;
+
+		cameraL.far = camera.far;
+		cameraR.far = camera.far;
+
 		cameraVR.matrixWorld.copy( camera.matrixWorld );
 		cameraVR.matrixWorldInverse.copy( camera.matrixWorldInverse );
 
@@ -23185,6 +25125,12 @@ function WebVRManager( renderer ) {
 	this.submitFrame = function () {
 
 		if ( device && device.isPresenting ) device.submitFrame();
+
+	};
+
+	this.dispose = function() {
+
+		window.removeEventListener( 'vrdisplaypresentchange', onVRDisplayPresentChange );
 
 	};
 
@@ -23413,6 +25359,142 @@ function WebGLClipping() {
 
 }
 
+/**
+ * @author thespite / http://www.twitter.com/thespite
+ */
+
+function WebGLUtils ( gl, extensions ) {
+
+	function convert ( p ) {
+
+		var extension;
+
+		if ( p === RepeatWrapping ) return gl.REPEAT;
+		if ( p === ClampToEdgeWrapping ) return gl.CLAMP_TO_EDGE;
+		if ( p === MirroredRepeatWrapping ) return gl.MIRRORED_REPEAT;
+
+		if ( p === NearestFilter ) return gl.NEAREST;
+		if ( p === NearestMipMapNearestFilter ) return gl.NEAREST_MIPMAP_NEAREST;
+		if ( p === NearestMipMapLinearFilter ) return gl.NEAREST_MIPMAP_LINEAR;
+
+		if ( p === LinearFilter ) return gl.LINEAR;
+		if ( p === LinearMipMapNearestFilter ) return gl.LINEAR_MIPMAP_NEAREST;
+		if ( p === LinearMipMapLinearFilter ) return gl.LINEAR_MIPMAP_LINEAR;
+
+		if ( p === UnsignedByteType ) return gl.UNSIGNED_BYTE;
+		if ( p === UnsignedShort4444Type ) return gl.UNSIGNED_SHORT_4_4_4_4;
+		if ( p === UnsignedShort5551Type ) return gl.UNSIGNED_SHORT_5_5_5_1;
+		if ( p === UnsignedShort565Type ) return gl.UNSIGNED_SHORT_5_6_5;
+
+		if ( p === ByteType ) return gl.BYTE;
+		if ( p === ShortType ) return gl.SHORT;
+		if ( p === UnsignedShortType ) return gl.UNSIGNED_SHORT;
+		if ( p === IntType ) return gl.INT;
+		if ( p === UnsignedIntType ) return gl.UNSIGNED_INT;
+		if ( p === FloatType ) return gl.FLOAT;
+
+		if ( p === HalfFloatType ) {
+
+			extension = extensions.get( 'OES_texture_half_float' );
+
+			if ( extension !== null ) return extension.HALF_FLOAT_OES;
+
+		}
+
+		if ( p === AlphaFormat ) return gl.ALPHA;
+		if ( p === RGBFormat ) return gl.RGB;
+		if ( p === RGBAFormat ) return gl.RGBA;
+		if ( p === LuminanceFormat ) return gl.LUMINANCE;
+		if ( p === LuminanceAlphaFormat ) return gl.LUMINANCE_ALPHA;
+		if ( p === DepthFormat ) return gl.DEPTH_COMPONENT;
+		if ( p === DepthStencilFormat ) return gl.DEPTH_STENCIL;
+
+		if ( p === AddEquation ) return gl.FUNC_ADD;
+		if ( p === SubtractEquation ) return gl.FUNC_SUBTRACT;
+		if ( p === ReverseSubtractEquation ) return gl.FUNC_REVERSE_SUBTRACT;
+
+		if ( p === ZeroFactor ) return gl.ZERO;
+		if ( p === OneFactor ) return gl.ONE;
+		if ( p === SrcColorFactor ) return gl.SRC_COLOR;
+		if ( p === OneMinusSrcColorFactor ) return gl.ONE_MINUS_SRC_COLOR;
+		if ( p === SrcAlphaFactor ) return gl.SRC_ALPHA;
+		if ( p === OneMinusSrcAlphaFactor ) return gl.ONE_MINUS_SRC_ALPHA;
+		if ( p === DstAlphaFactor ) return gl.DST_ALPHA;
+		if ( p === OneMinusDstAlphaFactor ) return gl.ONE_MINUS_DST_ALPHA;
+
+		if ( p === DstColorFactor ) return gl.DST_COLOR;
+		if ( p === OneMinusDstColorFactor ) return gl.ONE_MINUS_DST_COLOR;
+		if ( p === SrcAlphaSaturateFactor ) return gl.SRC_ALPHA_SATURATE;
+
+		if ( p === RGB_S3TC_DXT1_Format || p === RGBA_S3TC_DXT1_Format ||
+			p === RGBA_S3TC_DXT3_Format || p === RGBA_S3TC_DXT5_Format ) {
+
+			extension = extensions.get( 'WEBGL_compressed_texture_s3tc' );
+
+			if ( extension !== null ) {
+
+				if ( p === RGB_S3TC_DXT1_Format ) return extension.COMPRESSED_RGB_S3TC_DXT1_EXT;
+				if ( p === RGBA_S3TC_DXT1_Format ) return extension.COMPRESSED_RGBA_S3TC_DXT1_EXT;
+				if ( p === RGBA_S3TC_DXT3_Format ) return extension.COMPRESSED_RGBA_S3TC_DXT3_EXT;
+				if ( p === RGBA_S3TC_DXT5_Format ) return extension.COMPRESSED_RGBA_S3TC_DXT5_EXT;
+
+			}
+
+		}
+
+		if ( p === RGB_PVRTC_4BPPV1_Format || p === RGB_PVRTC_2BPPV1_Format ||
+			p === RGBA_PVRTC_4BPPV1_Format || p === RGBA_PVRTC_2BPPV1_Format ) {
+
+			extension = extensions.get( 'WEBGL_compressed_texture_pvrtc' );
+
+			if ( extension !== null ) {
+
+				if ( p === RGB_PVRTC_4BPPV1_Format ) return extension.COMPRESSED_RGB_PVRTC_4BPPV1_IMG;
+				if ( p === RGB_PVRTC_2BPPV1_Format ) return extension.COMPRESSED_RGB_PVRTC_2BPPV1_IMG;
+				if ( p === RGBA_PVRTC_4BPPV1_Format ) return extension.COMPRESSED_RGBA_PVRTC_4BPPV1_IMG;
+				if ( p === RGBA_PVRTC_2BPPV1_Format ) return extension.COMPRESSED_RGBA_PVRTC_2BPPV1_IMG;
+
+			}
+
+		}
+
+		if ( p === RGB_ETC1_Format ) {
+
+			extension = extensions.get( 'WEBGL_compressed_texture_etc1' );
+
+			if ( extension !== null ) return extension.COMPRESSED_RGB_ETC1_WEBGL;
+
+		}
+
+		if ( p === MinEquation || p === MaxEquation ) {
+
+			extension = extensions.get( 'EXT_blend_minmax' );
+
+			if ( extension !== null ) {
+
+				if ( p === MinEquation ) return extension.MIN_EXT;
+				if ( p === MaxEquation ) return extension.MAX_EXT;
+
+			}
+
+		}
+
+		if ( p === UnsignedInt248Type ) {
+
+			extension = extensions.get( 'WEBGL_depth_texture' );
+
+			if ( extension !== null ) return extension.UNSIGNED_INT_24_8_WEBGL;
+
+		}
+
+		return 0;
+
+	}
+
+	return { convert: convert }
+
+}
+
 // import { Sphere } from '../math/Sphere';
 /**
  * @author supereggbert / http://www.paulbrunt.co.uk/
@@ -23438,14 +25520,13 @@ function WebGLRenderer( parameters ) {
 		_premultipliedAlpha = parameters.premultipliedAlpha !== undefined ? parameters.premultipliedAlpha : true,
 		_preserveDrawingBuffer = parameters.preserveDrawingBuffer !== undefined ? parameters.preserveDrawingBuffer : false;
 
-	var lights = [];
+	var lightsArray = [];
+	var shadowsArray = [];
 
 	var currentRenderList = null;
 
-	var morphInfluences = new Float32Array( 8 );
-
-	var sprites = [];
-	var lensFlares = [];
+	var spritesArray = [];
+	var flaresArray = [];
 
 	// public properties
 
@@ -23493,9 +25574,10 @@ function WebGLRenderer( parameters ) {
 
 	var _this = this,
 
+		_isContextLost = false,
+
 		// internal state cache
 
-		_currentProgram = null,
 		_currentRenderTarget = null,
 		_currentFramebuffer = null,
 		_currentMaterialId = - 1,
@@ -23504,10 +25586,9 @@ function WebGLRenderer( parameters ) {
 		_currentCamera = null,
 		_currentArrayCamera = null,
 
+		_currentViewport = new Vector4(),
 		_currentScissor = new Vector4(),
 		_currentScissorTest = null,
-
-		_currentViewport = new Vector4(),
 
 		//
 
@@ -23520,10 +25601,9 @@ function WebGLRenderer( parameters ) {
 
 		_pixelRatio = 1,
 
+		_viewport = new Vector4( 0, 0, _width, _height ),
 		_scissor = new Vector4( 0, 0, _width, _height ),
 		_scissorTest = false,
-
-		_viewport = new Vector4( 0, 0, _width, _height ),
 
 		// frustum
 
@@ -23540,31 +25620,6 @@ function WebGLRenderer( parameters ) {
 		_projScreenMatrix = new Matrix4(),
 
 		_vector3 = new Vector3(),
-		_matrix4 = new Matrix4(),
-		_matrix42 = new Matrix4(),
-
-		// light arrays cache
-
-		_lights = {
-
-			hash: '',
-
-			ambient: [ 0, 0, 0 ],
-			directional: [],
-			directionalShadowMap: [],
-			directionalShadowMatrix: [],
-			spot: [],
-			spotShadowMap: [],
-			spotShadowMatrix: [],
-			rectArea: [],
-			point: [],
-			pointShadowMap: [],
-			pointShadowMatrix: [],
-			hemi: [],
-
-			shadows: []
-
-		},
 
 		// info
 
@@ -23591,6 +25646,11 @@ function WebGLRenderer( parameters ) {
 
 	};
 
+	function getTargetPixelRatio() {
+
+		return _currentRenderTarget === null ? _pixelRatio : 1;
+
+	}
 
 	// initialize
 
@@ -23636,6 +25696,7 @@ function WebGLRenderer( parameters ) {
 		}
 
 		_canvas.addEventListener( 'webglcontextlost', onContextLost, false );
+		_canvas.addEventListener( 'webglcontextrestored', onContextRestore, false );
 
 	} catch ( error ) {
 
@@ -23643,93 +25704,82 @@ function WebGLRenderer( parameters ) {
 
 	}
 
-	var extensions = new WebGLExtensions( _gl );
+	var extensions, capabilities, state;
+	var properties, textures, attributes, geometries, objects, lights;
+	var programCache, renderLists;
 
-	extensions.get( 'WEBGL_depth_texture' );
-	extensions.get( 'OES_texture_float' );
-	extensions.get( 'OES_texture_float_linear' );
-	extensions.get( 'OES_texture_half_float' );
-	extensions.get( 'OES_texture_half_float_linear' );
-	extensions.get( 'OES_standard_derivatives' );
-	extensions.get( 'ANGLE_instanced_arrays' );
+	var background, morphtargets, bufferRenderer, indexedBufferRenderer;
+	var flareRenderer, spriteRenderer;
 
-	if ( extensions.get( 'OES_element_index_uint' ) ) {
+	var utils;
 
-		BufferGeometry.MaxIndex = 4294967296;
+	function initGLContext() {
 
-	}
+		extensions = new WebGLExtensions( _gl );
+		extensions.get( 'WEBGL_depth_texture' );
+		extensions.get( 'OES_texture_float' );
+		extensions.get( 'OES_texture_float_linear' );
+		extensions.get( 'OES_texture_half_float' );
+		extensions.get( 'OES_texture_half_float_linear' );
+		extensions.get( 'OES_standard_derivatives' );
+		extensions.get( 'ANGLE_instanced_arrays' );
 
-	var capabilities = new WebGLCapabilities( _gl, extensions, parameters );
+		if ( extensions.get( 'OES_element_index_uint' ) ) {
 
-	var state = new WebGLState( _gl, extensions, paramThreeToGL );
+			BufferGeometry.MaxIndex = 4294967296;
 
-	var properties = new WebGLProperties();
-	var textures = new WebGLTextures( _gl, extensions, state, properties, capabilities, paramThreeToGL, _infoMemory );
-	var attributes = new WebGLAttributes( _gl );
-	var geometries = new WebGLGeometries( _gl, attributes, _infoMemory );
-	var objects = new WebGLObjects( _gl, geometries, _infoRender );
-	var programCache = new WebGLPrograms( this, capabilities );
-	var lightCache = new WebGLLights();
-	var renderLists = new WebGLRenderLists();
+		}
 
-	var background = new WebGLBackground( this, state, objects, _premultipliedAlpha );
-	var vr = new WebVRManager( this );
+		utils = new WebGLUtils( _gl, extensions );
 
-	this.info.programs = programCache.programs;
+		capabilities = new WebGLCapabilities( _gl, extensions, parameters );
 
-	var bufferRenderer = new WebGLBufferRenderer( _gl, extensions, _infoRender );
-	var indexedBufferRenderer = new WebGLIndexedBufferRenderer( _gl, extensions, _infoRender );
-
-	//
-
-	function getTargetPixelRatio() {
-
-		return _currentRenderTarget === null ? _pixelRatio : 1;
-
-	}
-
-	function setDefaultGLState() {
-
-		state.init();
-
+		state = new WebGLState( _gl, extensions, utils );
 		state.scissor( _currentScissor.copy( _scissor ).multiplyScalar( _pixelRatio ) );
 		state.viewport( _currentViewport.copy( _viewport ).multiplyScalar( _pixelRatio ) );
 
+		properties = new WebGLProperties();
+		textures = new WebGLTextures( _gl, extensions, state, properties, capabilities, utils, _infoMemory );
+		attributes = new WebGLAttributes( _gl );
+		geometries = new WebGLGeometries( _gl, attributes, _infoMemory );
+		objects = new WebGLObjects( geometries, _infoRender );
+		morphtargets = new WebGLMorphtargets( _gl );
+		programCache = new WebGLPrograms( _this, extensions, capabilities );
+		lights = new WebGLLights();
+		renderLists = new WebGLRenderLists();
+
+		background = new WebGLBackground( _this, state, geometries, _premultipliedAlpha );
+
+		bufferRenderer = new WebGLBufferRenderer( _gl, extensions, _infoRender );
+		indexedBufferRenderer = new WebGLIndexedBufferRenderer( _gl, extensions, _infoRender );
+
+		flareRenderer = new WebGLFlareRenderer( _this, _gl, state, textures, capabilities );
+		spriteRenderer = new WebGLSpriteRenderer( _this, _gl, state, textures, capabilities );
+
+		_this.info.programs = programCache.programs;
+
+		_this.context = _gl;
+		_this.capabilities = capabilities;
+		_this.extensions = extensions;
+		_this.properties = properties;
+		_this.renderLists = renderLists;
+		_this.state = state;
+
 	}
 
-	function resetGLState() {
+	initGLContext();
 
-		_currentProgram = null;
-		_currentCamera = null;
+	// vr
 
-		_currentGeometryProgram = '';
-		_currentMaterialId = - 1;
+	var vr = new WebVRManager( _this );
 
-		state.reset();
-
-	}
-
-	setDefaultGLState();
-
-	this.context = _gl;
-	this.capabilities = capabilities;
-	this.extensions = extensions;
-	this.properties = properties;
-	this.renderLists = renderLists;
-	this.state = state;
 	this.vr = vr;
 
 	// shadow map
 
-	var shadowMap = new WebGLShadowMap( this, _lights, objects, capabilities );
+	var shadowMap = new WebGLShadowMap( _this, objects, capabilities.maxTextureSize );
 
 	this.shadowMap = shadowMap;
-
-
-	// Plugins
-
-	var spritePlugin = new SpritePlugin( this, sprites );
-	var lensFlarePlugin = new LensFlarePlugin( this, lensFlares );
 
 	// API
 
@@ -23752,15 +25802,10 @@ function WebGLRenderer( parameters ) {
 
 	};
 
-	this.getMaxAnisotropy = function () {
+	this.forceContextRestore = function () {
 
-		return capabilities.getMaxAnisotropy();
-
-	};
-
-	this.getPrecision = function () {
-
-		return capabilities.precision;
+		var extension = extensions.get( 'WEBGL_lose_context' );
+		if ( extension ) extension.restoreContext();
 
 	};
 
@@ -23904,15 +25949,16 @@ function WebGLRenderer( parameters ) {
 
 	};
 
-	// Reset
-
-	this.resetGLState = resetGLState;
+	//
 
 	this.dispose = function () {
 
 		_canvas.removeEventListener( 'webglcontextlost', onContextLost, false );
+		_canvas.removeEventListener( 'webglcontextrestored', onContextRestore, false );
 
 		renderLists.dispose();
+
+		vr.dispose();
 
 	};
 
@@ -23922,11 +25968,19 @@ function WebGLRenderer( parameters ) {
 
 		event.preventDefault();
 
-		resetGLState();
-		setDefaultGLState();
+		console.log( 'THREE.WebGLRenderer: Context Lost.' );
 
-		properties.clear();
-		objects.clear();
+		_isContextLost = true;
+
+	}
+
+	function onContextRestore( event ) {
+
+		console.log( 'THREE.WebGLRenderer: Context Restored.' );
+
+		_isContextLost = false;
+
+		initGLContext();
 
 	}
 
@@ -24007,7 +26061,7 @@ function WebGLRenderer( parameters ) {
 			if ( ! material.isMeshPhongMaterial &&
 				! material.isMeshStandardMaterial &&
 				! material.isMeshNormalMaterial &&
-				material.shading === FlatShading ) {
+				material.flatShading === true ) {
 
 				for ( var i = 0, l = object.count * 3; i < l; i += 9 ) {
 
@@ -24048,7 +26102,7 @@ function WebGLRenderer( parameters ) {
 
 			state.enableAttribute( programAttributes.uv );
 
-			_gl.vertexAttribPointer( attributes.uv, 2, _gl.FLOAT, false, 0, 0 );
+			_gl.vertexAttribPointer( programAttributes.uv, 2, _gl.FLOAT, false, 0, 0 );
 
 		}
 
@@ -24071,12 +26125,6 @@ function WebGLRenderer( parameters ) {
 
 	};
 
-	function absNumericalSort( a, b ) {
-
-		return Math.abs( b[ 0 ] ) - Math.abs( a[ 0 ] );
-
-	}
-
 	this.renderBufferDirect = function ( camera, fog, geometry, material, object, group ) {
 
 		state.setMaterial( material );
@@ -24093,61 +26141,9 @@ function WebGLRenderer( parameters ) {
 
 		}
 
-		// morph targets
+		if ( object.morphTargetInfluences ) {
 
-		var morphTargetInfluences = object.morphTargetInfluences;
-
-		if ( morphTargetInfluences !== undefined ) {
-
-			// TODO Remove allocations
-
-			var activeInfluences = [];
-
-			for ( var i = 0, l = morphTargetInfluences.length; i < l; i ++ ) {
-
-				var influence = morphTargetInfluences[ i ];
-				activeInfluences.push( [ influence, i ] );
-
-			}
-
-			activeInfluences.sort( absNumericalSort );
-
-			if ( activeInfluences.length > 8 ) {
-
-				activeInfluences.length = 8;
-
-			}
-
-			var morphAttributes = geometry.morphAttributes;
-
-			for ( var i = 0, l = activeInfluences.length; i < l; i ++ ) {
-
-				var influence = activeInfluences[ i ];
-				morphInfluences[ i ] = influence[ 0 ];
-
-				if ( influence[ 0 ] !== 0 ) {
-
-					var index = influence[ 1 ];
-
-					if ( material.morphTargets === true && morphAttributes.position ) geometry.addAttribute( 'morphTarget' + i, morphAttributes.position[ index ] );
-					if ( material.morphNormals === true && morphAttributes.normal ) geometry.addAttribute( 'morphNormal' + i, morphAttributes.normal[ index ] );
-
-				} else {
-
-					if ( material.morphTargets === true ) geometry.removeAttribute( 'morphTarget' + i );
-					if ( material.morphNormals === true ) geometry.removeAttribute( 'morphNormal' + i );
-
-				}
-
-			}
-
-			for ( var i = activeInfluences.length, il = morphInfluences.length; i < il; i ++ ) {
-
-				morphInfluences[ i ] = 0.0;
-
-			}
-
-			program.getUniforms().setValue( _gl, 'morphTargetInfluences', morphInfluences );
+			morphtargets.update( object, geometry, material, program );
 
 			updateBuffers = true;
 
@@ -24329,6 +26325,10 @@ function WebGLRenderer( parameters ) {
 
 					var attribute = attributes.get( geometryAttribute );
 
+					// TODO Attribute may not be available on context restore
+
+					if ( attribute === undefined ) continue;
+
 					var buffer = attribute.buffer;
 					var type = attribute.type;
 					var bytesPerElement = attribute.bytesPerElement;
@@ -24422,19 +26422,26 @@ function WebGLRenderer( parameters ) {
 
 	this.compile = function ( scene, camera ) {
 
-		lights = [];
+		lightsArray.length = 0;
+		shadowsArray.length = 0;
 
 		scene.traverse( function ( object ) {
 
 			if ( object.isLight ) {
 
-				lights.push( object );
+				lightsArray.push( object );
+
+				if ( object.castShadow ) {
+
+					shadowsArray.push( object );
+
+				}
 
 			}
 
 		} );
 
-		setupLights( lights, camera );
+		lights.setup( lightsArray, shadowsArray, camera );
 
 		scene.traverse( function ( object ) {
 
@@ -24460,21 +26467,34 @@ function WebGLRenderer( parameters ) {
 
 	};
 
-	// Rendering
+	// Animation Loop
+
+	var isAnimating = false;
+	var onAnimationFrame = null;
+
+	function start() {
+
+		if ( isAnimating ) return;
+		( vr.getDevice() || window ).requestAnimationFrame( loop );
+		isAnimating = true;
+
+	}
+
+	function loop( time ) {
+
+		if ( onAnimationFrame !== null ) onAnimationFrame( time );
+		( vr.getDevice() || window ).requestAnimationFrame( loop );
+
+	}
 
 	this.animate = function ( callback ) {
 
-		function onFrame() {
-
-			callback();
-
-			( vr.getDevice() || window ).requestAnimationFrame( onFrame );
-
-		}
-
-		( vr.getDevice() || window ).requestAnimationFrame( onFrame );
+		onAnimationFrame = callback;
+		start();
 
 	};
+
+	// Rendering
 
 	this.render = function ( scene, camera, renderTarget, forceClear ) {
 
@@ -24484,6 +26504,8 @@ function WebGLRenderer( parameters ) {
 			return;
 
 		}
+
+		if ( _isContextLost ) return;
 
 		// reset caching for this frame
 
@@ -24508,9 +26530,11 @@ function WebGLRenderer( parameters ) {
 		_projScreenMatrix.multiplyMatrices( camera.projectionMatrix, camera.matrixWorldInverse );
 		_frustum.setFromMatrix( _projScreenMatrix );
 
-		lights.length = 0;
-		sprites.length = 0;
-		lensFlares.length = 0;
+		lightsArray.length = 0;
+		shadowsArray.length = 0;
+
+		spritesArray.length = 0;
+		flaresArray.length = 0;
 
 		_localClippingEnabled = this.localClippingEnabled;
 		_clippingEnabled = _clipping.init( this.clippingPlanes, _localClippingEnabled, camera );
@@ -24519,8 +26543,6 @@ function WebGLRenderer( parameters ) {
 		currentRenderList.init();
 
 		projectObject( scene, camera, _this.sortObjects );
-
-		currentRenderList.finish();
 
 		if ( _this.sortObjects === true ) {
 
@@ -24532,11 +26554,9 @@ function WebGLRenderer( parameters ) {
 
 		if ( _clippingEnabled ) _clipping.beginShadows();
 
-		setupShadows( lights );
+		shadowMap.render( shadowsArray, scene, camera );
 
-		shadowMap.render( scene, camera );
-
-		setupLights( lights, camera );
+		lights.setup( lightsArray, shadowsArray, camera );
 
 		if ( _clippingEnabled ) _clipping.endShadows();
 
@@ -24558,7 +26578,7 @@ function WebGLRenderer( parameters ) {
 
 		//
 
-		background.render( scene, camera, forceClear );
+		background.render( currentRenderList, scene, camera, forceClear );
 
 		// render scene
 
@@ -24584,10 +26604,10 @@ function WebGLRenderer( parameters ) {
 
 		}
 
-		// custom render plugins (post pass)
+		// custom renderers
 
-		spritePlugin.render( scene, camera );
-		lensFlarePlugin.render( scene, camera, _currentViewport );
+		spriteRenderer.render( spritesArray, scene, camera );
+		flareRenderer.render( flaresArray, scene, camera, _currentViewport );
 
 		// Generate mipmap if we're using any kind of mipmap filtering
 
@@ -24603,11 +26623,7 @@ function WebGLRenderer( parameters ) {
 		state.buffers.depth.setMask( true );
 		state.buffers.color.setMask( true );
 
-		if ( camera.isArrayCamera ) {
-
-			_this.setScissorTest( false );
-
-		}
+		state.setPolygonOffset( false );
 
 		if ( vr.enabled ) {
 
@@ -24684,19 +26700,25 @@ function WebGLRenderer( parameters ) {
 
 			if ( object.isLight ) {
 
-				lights.push( object );
+				lightsArray.push( object );
+
+				if ( object.castShadow ) {
+
+					shadowsArray.push( object );
+
+				}
 
 			} else if ( object.isSprite ) {
 
 				if ( ! object.frustumCulled || _frustum.intersectsSprite( object ) ) {
 
-					sprites.push( object );
+					spritesArray.push( object );
 
 				}
 
 			} else if ( object.isLensFlare ) {
 
-				lensFlares.push( object );
+				flaresArray.push( object );
 
 			} else if ( object.isImmediateRenderObject ) {
 
@@ -24798,9 +26820,7 @@ function WebGLRenderer( parameters ) {
 						var width = bounds.z * _width;
 						var height = bounds.w * _height;
 
-						_this.setViewport( x, y, width, height );
-						_this.setScissor( x, y, width, height );
-						_this.setScissorTest( true );
+						state.viewport( _currentViewport.set( x, y, width, height ).multiplyScalar( _pixelRatio ) );
 
 						renderObject( object, scene, camera2, geometry, material, group );
 
@@ -24822,10 +26842,10 @@ function WebGLRenderer( parameters ) {
 
 	function renderObject( object, scene, camera, geometry, material, group ) {
 
+		object.onBeforeRender( _this, scene, camera, geometry, material, group );
+
 		object.modelViewMatrix.multiplyMatrices( camera.matrixWorldInverse, object.matrixWorld );
 		object.normalMatrix.getNormalMatrix( object.modelViewMatrix );
-
-		object.onBeforeRender( _this, scene, camera, geometry, material, group );
 
 		if ( object.isImmediateRenderObject ) {
 
@@ -24852,7 +26872,7 @@ function WebGLRenderer( parameters ) {
 		var materialProperties = properties.get( material );
 
 		var parameters = programCache.getParameters(
-			material, _lights, fog, _clipping.numPlanes, _clipping.numIntersection, object );
+			material, lights.state, shadowsArray, fog, _clipping.numPlanes, _clipping.numIntersection, object );
 
 		var code = programCache.getProgramCode( material, parameters );
 
@@ -24964,25 +26984,25 @@ function WebGLRenderer( parameters ) {
 
 		// store the light setup it was created for
 
-		materialProperties.lightsHash = _lights.hash;
+		materialProperties.lightsHash = lights.state.hash;
 
 		if ( material.lights ) {
 
 			// wire up the material to this renderer's lighting state
 
-			uniforms.ambientLightColor.value = _lights.ambient;
-			uniforms.directionalLights.value = _lights.directional;
-			uniforms.spotLights.value = _lights.spot;
-			uniforms.rectAreaLights.value = _lights.rectArea;
-			uniforms.pointLights.value = _lights.point;
-			uniforms.hemisphereLights.value = _lights.hemi;
+			uniforms.ambientLightColor.value = lights.state.ambient;
+			uniforms.directionalLights.value = lights.state.directional;
+			uniforms.spotLights.value = lights.state.spot;
+			uniforms.rectAreaLights.value = lights.state.rectArea;
+			uniforms.pointLights.value = lights.state.point;
+			uniforms.hemisphereLights.value = lights.state.hemi;
 
-			uniforms.directionalShadowMap.value = _lights.directionalShadowMap;
-			uniforms.directionalShadowMatrix.value = _lights.directionalShadowMatrix;
-			uniforms.spotShadowMap.value = _lights.spotShadowMap;
-			uniforms.spotShadowMatrix.value = _lights.spotShadowMatrix;
-			uniforms.pointShadowMap.value = _lights.pointShadowMap;
-			uniforms.pointShadowMatrix.value = _lights.pointShadowMatrix;
+			uniforms.directionalShadowMap.value = lights.state.directionalShadowMap;
+			uniforms.directionalShadowMatrix.value = lights.state.directionalShadowMatrix;
+			uniforms.spotShadowMap.value = lights.state.spotShadowMap;
+			uniforms.spotShadowMatrix.value = lights.state.spotShadowMatrix;
+			uniforms.pointShadowMap.value = lights.state.pointShadowMap;
+			uniforms.pointShadowMatrix.value = lights.state.pointShadowMatrix;
 			// TODO (abelnation): add area lights shadow info to uniforms
 
 		}
@@ -25030,7 +27050,7 @@ function WebGLRenderer( parameters ) {
 
 				material.needsUpdate = true;
 
-			} else if ( material.lights && materialProperties.lightsHash !== _lights.hash ) {
+			} else if ( material.lights && materialProperties.lightsHash !== lights.state.hash ) {
 
 				material.needsUpdate = true;
 
@@ -25059,10 +27079,7 @@ function WebGLRenderer( parameters ) {
 			p_uniforms = program.getUniforms(),
 			m_uniforms = materialProperties.shader.uniforms;
 
-		if ( program.id !== _currentProgram ) {
-
-			_gl.useProgram( program.program );
-			_currentProgram = program.id;
+		if ( state.useProgram( program.program ) ) {
 
 			refreshProgram = true;
 			refreshMaterial = true;
@@ -25219,65 +27236,76 @@ function WebGLRenderer( parameters ) {
 
 			}
 
-			if ( material.isMeshBasicMaterial ||
-				material.isMeshLambertMaterial ||
-				material.isMeshPhongMaterial ||
-				material.isMeshStandardMaterial ||
-				material.isMeshNormalMaterial ||
-				material.isMeshDepthMaterial ) {
+			if ( material.isMeshBasicMaterial ) {
 
 				refreshUniformsCommon( m_uniforms, material );
 
-			}
+			} else if ( material.isMeshLambertMaterial ) {
 
-			// refresh single material specific uniforms
+				refreshUniformsCommon( m_uniforms, material );
+				refreshUniformsLambert( m_uniforms, material );
 
-			if ( material.isLineBasicMaterial ) {
+			} else if ( material.isMeshPhongMaterial ) {
+
+				refreshUniformsCommon( m_uniforms, material );
+
+				if ( material.isMeshToonMaterial ) {
+
+					refreshUniformsToon( m_uniforms, material );
+
+				} else {
+
+					refreshUniformsPhong( m_uniforms, material );
+
+				}
+
+			} else if ( material.isMeshStandardMaterial ) {
+
+				refreshUniformsCommon( m_uniforms, material );
+
+				if ( material.isMeshPhysicalMaterial ) {
+
+					refreshUniformsPhysical( m_uniforms, material );
+
+				} else {
+
+					refreshUniformsStandard( m_uniforms, material );
+
+				}
+
+			} else if ( material.isMeshDepthMaterial ) {
+
+				refreshUniformsCommon( m_uniforms, material );
+				refreshUniformsDepth( m_uniforms, material );
+
+			} else if ( material.isMeshDistanceMaterial ) {
+
+				refreshUniformsCommon( m_uniforms, material );
+				refreshUniformsDistance( m_uniforms, material );
+
+			} else if ( material.isMeshNormalMaterial ) {
+
+				refreshUniformsCommon( m_uniforms, material );
+				refreshUniformsNormal( m_uniforms, material );
+
+			} else if ( material.isLineBasicMaterial ) {
 
 				refreshUniformsLine( m_uniforms, material );
 
-			} else if ( material.isLineDashedMaterial ) {
+				if ( material.isLineDashedMaterial ) {
 
-				refreshUniformsLine( m_uniforms, material );
-				refreshUniformsDash( m_uniforms, material );
+					refreshUniformsDash( m_uniforms, material );
+
+				}
 
 			} else if ( material.isPointsMaterial ) {
 
 				refreshUniformsPoints( m_uniforms, material );
 
-			} else if ( material.isMeshLambertMaterial ) {
+			} else if ( material.isShadowMaterial ) {
 
-				refreshUniformsLambert( m_uniforms, material );
-
-			} else if ( material.isMeshToonMaterial ) {
-
-				refreshUniformsToon( m_uniforms, material );
-
-			} else if ( material.isMeshPhongMaterial ) {
-
-				refreshUniformsPhong( m_uniforms, material );
-
-			} else if ( material.isMeshPhysicalMaterial ) {
-
-				refreshUniformsPhysical( m_uniforms, material );
-
-			} else if ( material.isMeshStandardMaterial ) {
-
-				refreshUniformsStandard( m_uniforms, material );
-
-			} else if ( material.isMeshDepthMaterial ) {
-
-				if ( material.displacementMap ) {
-
-					m_uniforms.displacementMap.value = material.displacementMap;
-					m_uniforms.displacementScale.value = material.displacementScale;
-					m_uniforms.displacementBias.value = material.displacementBias;
-
-				}
-
-			} else if ( material.isMeshNormalMaterial ) {
-
-				refreshUniformsNormal( m_uniforms, material );
+				m_uniforms.color.value = material.color;
+				m_uniforms.opacity.value = material.opacity;
 
 			}
 
@@ -25309,7 +27337,11 @@ function WebGLRenderer( parameters ) {
 
 		uniforms.opacity.value = material.opacity;
 
-		uniforms.diffuse.value = material.color;
+		if ( material.color ) {
+
+			uniforms.diffuse.value = material.color;
+
+		}
 
 		if ( material.emissive ) {
 
@@ -25317,9 +27349,38 @@ function WebGLRenderer( parameters ) {
 
 		}
 
-		uniforms.map.value = material.map;
-		uniforms.specularMap.value = material.specularMap;
-		uniforms.alphaMap.value = material.alphaMap;
+		if ( material.map ) {
+
+			uniforms.map.value = material.map;
+
+		}
+
+		if ( material.alphaMap ) {
+
+			uniforms.alphaMap.value = material.alphaMap;
+
+		}
+
+		if ( material.specularMap ) {
+
+			uniforms.specularMap.value = material.specularMap;
+
+		}
+
+		if ( material.envMap ) {
+
+			uniforms.envMap.value = material.envMap;
+
+			// don't flip CubeTexture envMaps, flip everything else:
+			//  WebGLRenderTargetCube will be flipped for backwards compatibility
+			//  WebGLRenderTargetCube.texture will be flipped because it's a Texture and NOT a CubeTexture
+			// this check must be handled differently, or removed entirely, if WebGLRenderTargetCube uses a CubeTexture in the future
+			uniforms.flipEnvMap.value = ( ! ( material.envMap && material.envMap.isCubeTexture ) ) ? 1 : - 1;
+
+			uniforms.reflectivity.value = material.reflectivity;
+			uniforms.refractionRatio.value = material.refractionRatio;
+
+		}
 
 		if ( material.lightMap ) {
 
@@ -25398,17 +27459,6 @@ function WebGLRenderer( parameters ) {
 			uniforms.offsetRepeat.value.set( offset.x, offset.y, repeat.x, repeat.y );
 
 		}
-
-		uniforms.envMap.value = material.envMap;
-
-		// don't flip CubeTexture envMaps, flip everything else:
-		//  WebGLRenderTargetCube will be flipped for backwards compatibility
-		//  WebGLRenderTargetCube.texture will be flipped because it's a Texture and NOT a CubeTexture
-		// this check must be handled differently, or removed entirely, if WebGLRenderTargetCube uses a CubeTexture in the future
-		uniforms.flipEnvMap.value = ( ! ( material.envMap && material.envMap.isCubeTexture ) ) ? 1 : - 1;
-
-		uniforms.reflectivity.value = material.reflectivity;
-		uniforms.refractionRatio.value = material.refractionRatio;
 
 	}
 
@@ -25584,6 +27634,34 @@ function WebGLRenderer( parameters ) {
 
 	}
 
+	function refreshUniformsDepth( uniforms, material ) {
+
+		if ( material.displacementMap ) {
+
+			uniforms.displacementMap.value = material.displacementMap;
+			uniforms.displacementScale.value = material.displacementScale;
+			uniforms.displacementBias.value = material.displacementBias;
+
+		}
+
+	}
+
+	function refreshUniformsDistance( uniforms, material ) {
+
+		if ( material.displacementMap ) {
+
+			uniforms.displacementMap.value = material.displacementMap;
+			uniforms.displacementScale.value = material.displacementScale;
+			uniforms.displacementBias.value = material.displacementBias;
+
+		}
+
+		uniforms.referencePosition.value.copy( material.referencePosition );
+		uniforms.nearDistance.value = material.nearDistance;
+		uniforms.farDistance.value = material.farDistance;
+
+	}
+
 	function refreshUniformsNormal( uniforms, material ) {
 
 		if ( material.bumpMap ) {
@@ -25621,224 +27699,6 @@ function WebGLRenderer( parameters ) {
 		uniforms.spotLights.needsUpdate = value;
 		uniforms.rectAreaLights.needsUpdate = value;
 		uniforms.hemisphereLights.needsUpdate = value;
-
-	}
-
-	// Lighting
-
-	function setupShadows( lights ) {
-
-		var lightShadowsLength = 0;
-
-		for ( var i = 0, l = lights.length; i < l; i ++ ) {
-
-			var light = lights[ i ];
-
-			if ( light.castShadow ) {
-
-				_lights.shadows[ lightShadowsLength ] = light;
-				lightShadowsLength ++;
-
-			}
-
-		}
-
-		_lights.shadows.length = lightShadowsLength;
-
-	}
-
-	function setupLights( lights, camera ) {
-
-		var l, ll, light, shadow,
-			r = 0, g = 0, b = 0,
-			color,
-			intensity,
-			distance,
-			shadowMap,
-
-			viewMatrix = camera.matrixWorldInverse,
-
-			directionalLength = 0,
-			pointLength = 0,
-			spotLength = 0,
-			rectAreaLength = 0,
-			hemiLength = 0;
-
-		for ( l = 0, ll = lights.length; l < ll; l ++ ) {
-
-			light = lights[ l ];
-
-			color = light.color;
-			intensity = light.intensity;
-			distance = light.distance;
-
-			shadowMap = ( light.shadow && light.shadow.map ) ? light.shadow.map.texture : null;
-
-			if ( light.isAmbientLight ) {
-
-				r += color.r * intensity;
-				g += color.g * intensity;
-				b += color.b * intensity;
-
-			} else if ( light.isDirectionalLight ) {
-
-				var uniforms = lightCache.get( light );
-
-				uniforms.color.copy( light.color ).multiplyScalar( light.intensity );
-				uniforms.direction.setFromMatrixPosition( light.matrixWorld );
-				_vector3.setFromMatrixPosition( light.target.matrixWorld );
-				uniforms.direction.sub( _vector3 );
-				uniforms.direction.transformDirection( viewMatrix );
-
-				uniforms.shadow = light.castShadow;
-
-				if ( light.castShadow ) {
-
-					shadow = light.shadow;
-
-					uniforms.shadowBias = shadow.bias;
-					uniforms.shadowRadius = shadow.radius;
-					uniforms.shadowMapSize = shadow.mapSize;
-
-				}
-
-				_lights.directionalShadowMap[ directionalLength ] = shadowMap;
-				_lights.directionalShadowMatrix[ directionalLength ] = light.shadow.matrix;
-				_lights.directional[ directionalLength ] = uniforms;
-
-				directionalLength ++;
-
-			} else if ( light.isSpotLight ) {
-
-				var uniforms = lightCache.get( light );
-
-				uniforms.position.setFromMatrixPosition( light.matrixWorld );
-				uniforms.position.applyMatrix4( viewMatrix );
-
-				uniforms.color.copy( color ).multiplyScalar( intensity );
-				uniforms.distance = distance;
-
-				uniforms.direction.setFromMatrixPosition( light.matrixWorld );
-				_vector3.setFromMatrixPosition( light.target.matrixWorld );
-				uniforms.direction.sub( _vector3 );
-				uniforms.direction.transformDirection( viewMatrix );
-
-				uniforms.coneCos = Math.cos( light.angle );
-				uniforms.penumbraCos = Math.cos( light.angle * ( 1 - light.penumbra ) );
-				uniforms.decay = ( light.distance === 0 ) ? 0.0 : light.decay;
-
-				uniforms.shadow = light.castShadow;
-
-				if ( light.castShadow ) {
-
-					shadow = light.shadow;
-
-					uniforms.shadowBias = shadow.bias;
-					uniforms.shadowRadius = shadow.radius;
-					uniforms.shadowMapSize = shadow.mapSize;
-
-				}
-
-				_lights.spotShadowMap[ spotLength ] = shadowMap;
-				_lights.spotShadowMatrix[ spotLength ] = light.shadow.matrix;
-				_lights.spot[ spotLength ] = uniforms;
-
-				spotLength ++;
-
-			} else if ( light.isRectAreaLight ) {
-
-				var uniforms = lightCache.get( light );
-
-				// (a) intensity controls irradiance of entire light
-				uniforms.color
-					.copy( color )
-					.multiplyScalar( intensity / ( light.width * light.height ) );
-
-				// (b) intensity controls the radiance per light area
-				// uniforms.color.copy( color ).multiplyScalar( intensity );
-
-				uniforms.position.setFromMatrixPosition( light.matrixWorld );
-				uniforms.position.applyMatrix4( viewMatrix );
-
-				// extract local rotation of light to derive width/height half vectors
-				_matrix42.identity();
-				_matrix4.copy( light.matrixWorld );
-				_matrix4.premultiply( viewMatrix );
-				_matrix42.extractRotation( _matrix4 );
-
-				uniforms.halfWidth.set( light.width * 0.5,                0.0, 0.0 );
-				uniforms.halfHeight.set(              0.0, light.height * 0.5, 0.0 );
-
-				uniforms.halfWidth.applyMatrix4( _matrix42 );
-				uniforms.halfHeight.applyMatrix4( _matrix42 );
-
-				// TODO (abelnation): RectAreaLight distance?
-				// uniforms.distance = distance;
-
-				_lights.rectArea[ rectAreaLength ] = uniforms;
-
-				rectAreaLength ++;
-
-			} else if ( light.isPointLight ) {
-
-				var uniforms = lightCache.get( light );
-
-				uniforms.position.setFromMatrixPosition( light.matrixWorld );
-				uniforms.position.applyMatrix4( viewMatrix );
-
-				uniforms.color.copy( light.color ).multiplyScalar( light.intensity );
-				uniforms.distance = light.distance;
-				uniforms.decay = ( light.distance === 0 ) ? 0.0 : light.decay;
-
-				uniforms.shadow = light.castShadow;
-
-				if ( light.castShadow ) {
-
-					shadow = light.shadow;
-
-					uniforms.shadowBias = shadow.bias;
-					uniforms.shadowRadius = shadow.radius;
-					uniforms.shadowMapSize = shadow.mapSize;
-
-				}
-
-				_lights.pointShadowMap[ pointLength ] = shadowMap;
-				_lights.pointShadowMatrix[ pointLength ] = light.shadow.matrix;
-				_lights.point[ pointLength ] = uniforms;
-
-				pointLength ++;
-
-			} else if ( light.isHemisphereLight ) {
-
-				var uniforms = lightCache.get( light );
-
-				uniforms.direction.setFromMatrixPosition( light.matrixWorld );
-				uniforms.direction.transformDirection( viewMatrix );
-				uniforms.direction.normalize();
-
-				uniforms.skyColor.copy( light.color ).multiplyScalar( intensity );
-				uniforms.groundColor.copy( light.groundColor ).multiplyScalar( intensity );
-
-				_lights.hemi[ hemiLength ] = uniforms;
-
-				hemiLength ++;
-
-			}
-
-		}
-
-		_lights.ambient[ 0 ] = r;
-		_lights.ambient[ 1 ] = g;
-		_lights.ambient[ 2 ] = b;
-
-		_lights.directional.length = directionalLength;
-		_lights.spot.length = spotLength;
-		_lights.rectArea.length = rectAreaLength;
-		_lights.point.length = pointLength;
-		_lights.hemi.length = hemiLength;
-
-		// TODO (sam-g-steel) why aren't we using join
-		_lights.hash = directionalLength + ',' + pointLength + ',' + spotLength + ',' + rectAreaLength + ',' + hemiLength + ',' + _lights.shadows.length;
 
 	}
 
@@ -25975,36 +27835,33 @@ function WebGLRenderer( parameters ) {
 
 		}
 
-		var isCube = ( renderTarget && renderTarget.isWebGLRenderTargetCube );
-		var framebuffer;
+		var framebuffer = null;
+		var isCube = false;
 
 		if ( renderTarget ) {
 
-			var renderTargetProperties = properties.get( renderTarget );
+			var __webglFramebuffer = properties.get( renderTarget ).__webglFramebuffer;
 
-			if ( isCube ) {
+			if ( renderTarget.isWebGLRenderTargetCube ) {
 
-				framebuffer = renderTargetProperties.__webglFramebuffer[ renderTarget.activeCubeFace ];
+				framebuffer = __webglFramebuffer[ renderTarget.activeCubeFace ];
+				isCube = true;
 
 			} else {
 
-				framebuffer = renderTargetProperties.__webglFramebuffer;
+				framebuffer = __webglFramebuffer;
 
 			}
 
+			_currentViewport.copy( renderTarget.viewport );
 			_currentScissor.copy( renderTarget.scissor );
 			_currentScissorTest = renderTarget.scissorTest;
 
-			_currentViewport.copy( renderTarget.viewport );
-
 		} else {
 
-			framebuffer = null;
-
+			_currentViewport.copy( _viewport ).multiplyScalar( _pixelRatio );
 			_currentScissor.copy( _scissor ).multiplyScalar( _pixelRatio );
 			_currentScissorTest = _scissorTest;
-
-			_currentViewport.copy( _viewport ).multiplyScalar( _pixelRatio );
 
 		}
 
@@ -26015,10 +27872,9 @@ function WebGLRenderer( parameters ) {
 
 		}
 
+		state.viewport( _currentViewport );
 		state.scissor( _currentScissor );
 		state.setScissorTest( _currentScissorTest );
-
-		state.viewport( _currentViewport );
 
 		if ( isCube ) {
 
@@ -26058,14 +27914,14 @@ function WebGLRenderer( parameters ) {
 				var textureFormat = texture.format;
 				var textureType = texture.type;
 
-				if ( textureFormat !== RGBAFormat && paramThreeToGL( textureFormat ) !== _gl.getParameter( _gl.IMPLEMENTATION_COLOR_READ_FORMAT ) ) {
+				if ( textureFormat !== RGBAFormat && utils.convert( textureFormat ) !== _gl.getParameter( _gl.IMPLEMENTATION_COLOR_READ_FORMAT ) ) {
 
 					console.error( 'THREE.WebGLRenderer.readRenderTargetPixels: renderTarget is not in RGBA or implementation defined format.' );
 					return;
 
 				}
 
-				if ( textureType !== UnsignedByteType && paramThreeToGL( textureType ) !== _gl.getParameter( _gl.IMPLEMENTATION_COLOR_READ_TYPE ) && // IE11, Edge and Chrome Mac < 52 (#9513)
+				if ( textureType !== UnsignedByteType && utils.convert( textureType ) !== _gl.getParameter( _gl.IMPLEMENTATION_COLOR_READ_TYPE ) && // IE11, Edge and Chrome Mac < 52 (#9513)
 					! ( textureType === FloatType && ( extensions.get( 'OES_texture_float' ) || extensions.get( 'WEBGL_color_buffer_float' ) ) ) && // Chrome Mac >= 52 and Firefox
 					! ( textureType === HalfFloatType && extensions.get( 'EXT_color_buffer_half_float' ) ) ) {
 
@@ -26080,7 +27936,7 @@ function WebGLRenderer( parameters ) {
 
 					if ( ( x >= 0 && x <= ( renderTarget.width - width ) ) && ( y >= 0 && y <= ( renderTarget.height - height ) ) ) {
 
-						_gl.readPixels( x, y, width, height, paramThreeToGL( textureFormat ), paramThreeToGL( textureType ), buffer );
+						_gl.readPixels( x, y, width, height, utils.convert( textureFormat ), utils.convert( textureType ), buffer );
 
 					}
 
@@ -26103,134 +27959,6 @@ function WebGLRenderer( parameters ) {
 		}
 
 	};
-
-	// Map three.js constants to WebGL constants
-
-	function paramThreeToGL( p ) {
-
-		var extension;
-
-		if ( p === RepeatWrapping ) return _gl.REPEAT;
-		if ( p === ClampToEdgeWrapping ) return _gl.CLAMP_TO_EDGE;
-		if ( p === MirroredRepeatWrapping ) return _gl.MIRRORED_REPEAT;
-
-		if ( p === NearestFilter ) return _gl.NEAREST;
-		if ( p === NearestMipMapNearestFilter ) return _gl.NEAREST_MIPMAP_NEAREST;
-		if ( p === NearestMipMapLinearFilter ) return _gl.NEAREST_MIPMAP_LINEAR;
-
-		if ( p === LinearFilter ) return _gl.LINEAR;
-		if ( p === LinearMipMapNearestFilter ) return _gl.LINEAR_MIPMAP_NEAREST;
-		if ( p === LinearMipMapLinearFilter ) return _gl.LINEAR_MIPMAP_LINEAR;
-
-		if ( p === UnsignedByteType ) return _gl.UNSIGNED_BYTE;
-		if ( p === UnsignedShort4444Type ) return _gl.UNSIGNED_SHORT_4_4_4_4;
-		if ( p === UnsignedShort5551Type ) return _gl.UNSIGNED_SHORT_5_5_5_1;
-		if ( p === UnsignedShort565Type ) return _gl.UNSIGNED_SHORT_5_6_5;
-
-		if ( p === ByteType ) return _gl.BYTE;
-		if ( p === ShortType ) return _gl.SHORT;
-		if ( p === UnsignedShortType ) return _gl.UNSIGNED_SHORT;
-		if ( p === IntType ) return _gl.INT;
-		if ( p === UnsignedIntType ) return _gl.UNSIGNED_INT;
-		if ( p === FloatType ) return _gl.FLOAT;
-
-		if ( p === HalfFloatType ) {
-
-			extension = extensions.get( 'OES_texture_half_float' );
-
-			if ( extension !== null ) return extension.HALF_FLOAT_OES;
-
-		}
-
-		if ( p === AlphaFormat ) return _gl.ALPHA;
-		if ( p === RGBFormat ) return _gl.RGB;
-		if ( p === RGBAFormat ) return _gl.RGBA;
-		if ( p === LuminanceFormat ) return _gl.LUMINANCE;
-		if ( p === LuminanceAlphaFormat ) return _gl.LUMINANCE_ALPHA;
-		if ( p === DepthFormat ) return _gl.DEPTH_COMPONENT;
-		if ( p === DepthStencilFormat ) return _gl.DEPTH_STENCIL;
-
-		if ( p === AddEquation ) return _gl.FUNC_ADD;
-		if ( p === SubtractEquation ) return _gl.FUNC_SUBTRACT;
-		if ( p === ReverseSubtractEquation ) return _gl.FUNC_REVERSE_SUBTRACT;
-
-		if ( p === ZeroFactor ) return _gl.ZERO;
-		if ( p === OneFactor ) return _gl.ONE;
-		if ( p === SrcColorFactor ) return _gl.SRC_COLOR;
-		if ( p === OneMinusSrcColorFactor ) return _gl.ONE_MINUS_SRC_COLOR;
-		if ( p === SrcAlphaFactor ) return _gl.SRC_ALPHA;
-		if ( p === OneMinusSrcAlphaFactor ) return _gl.ONE_MINUS_SRC_ALPHA;
-		if ( p === DstAlphaFactor ) return _gl.DST_ALPHA;
-		if ( p === OneMinusDstAlphaFactor ) return _gl.ONE_MINUS_DST_ALPHA;
-
-		if ( p === DstColorFactor ) return _gl.DST_COLOR;
-		if ( p === OneMinusDstColorFactor ) return _gl.ONE_MINUS_DST_COLOR;
-		if ( p === SrcAlphaSaturateFactor ) return _gl.SRC_ALPHA_SATURATE;
-
-		if ( p === RGB_S3TC_DXT1_Format || p === RGBA_S3TC_DXT1_Format ||
-			p === RGBA_S3TC_DXT3_Format || p === RGBA_S3TC_DXT5_Format ) {
-
-			extension = extensions.get( 'WEBGL_compressed_texture_s3tc' );
-
-			if ( extension !== null ) {
-
-				if ( p === RGB_S3TC_DXT1_Format ) return extension.COMPRESSED_RGB_S3TC_DXT1_EXT;
-				if ( p === RGBA_S3TC_DXT1_Format ) return extension.COMPRESSED_RGBA_S3TC_DXT1_EXT;
-				if ( p === RGBA_S3TC_DXT3_Format ) return extension.COMPRESSED_RGBA_S3TC_DXT3_EXT;
-				if ( p === RGBA_S3TC_DXT5_Format ) return extension.COMPRESSED_RGBA_S3TC_DXT5_EXT;
-
-			}
-
-		}
-
-		if ( p === RGB_PVRTC_4BPPV1_Format || p === RGB_PVRTC_2BPPV1_Format ||
-			p === RGBA_PVRTC_4BPPV1_Format || p === RGBA_PVRTC_2BPPV1_Format ) {
-
-			extension = extensions.get( 'WEBGL_compressed_texture_pvrtc' );
-
-			if ( extension !== null ) {
-
-				if ( p === RGB_PVRTC_4BPPV1_Format ) return extension.COMPRESSED_RGB_PVRTC_4BPPV1_IMG;
-				if ( p === RGB_PVRTC_2BPPV1_Format ) return extension.COMPRESSED_RGB_PVRTC_2BPPV1_IMG;
-				if ( p === RGBA_PVRTC_4BPPV1_Format ) return extension.COMPRESSED_RGBA_PVRTC_4BPPV1_IMG;
-				if ( p === RGBA_PVRTC_2BPPV1_Format ) return extension.COMPRESSED_RGBA_PVRTC_2BPPV1_IMG;
-
-			}
-
-		}
-
-		if ( p === RGB_ETC1_Format ) {
-
-			extension = extensions.get( 'WEBGL_compressed_texture_etc1' );
-
-			if ( extension !== null ) return extension.COMPRESSED_RGB_ETC1_WEBGL;
-
-		}
-
-		if ( p === MinEquation || p === MaxEquation ) {
-
-			extension = extensions.get( 'EXT_blend_minmax' );
-
-			if ( extension !== null ) {
-
-				if ( p === MinEquation ) return extension.MIN_EXT;
-				if ( p === MaxEquation ) return extension.MAX_EXT;
-
-			}
-
-		}
-
-		if ( p === UnsignedInt248Type ) {
-
-			extension = extensions.get( 'WEBGL_depth_texture' );
-
-			if ( extension !== null ) return extension.UNSIGNED_INT_24_8_WEBGL;
-
-		}
-
-		return 0;
-
-	}
 
 }
 
@@ -27652,21 +29380,6 @@ CompressedTexture.prototype.constructor = CompressedTexture;
 CompressedTexture.prototype.isCompressedTexture = true;
 
 /**
- * @author mrdoob / http://mrdoob.com/
- */
-
-function CanvasTexture( canvas, mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy ) {
-
-	Texture.call( this, canvas, mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy );
-
-	this.needsUpdate = true;
-
-}
-
-CanvasTexture.prototype = Object.create( Texture.prototype );
-CanvasTexture.prototype.constructor = CanvasTexture;
-
-/**
  * @author Matt DesLauriers / @mattdesl
  * @author atix / arthursilber.de
  */
@@ -27677,7 +29390,7 @@ function DepthTexture( width, height, type, mapping, wrapS, wrapT, magFilter, mi
 
 	if ( format !== DepthFormat && format !== DepthStencilFormat ) {
 
-		throw new Error( 'DepthTexture format must be either THREE.DepthFormat or THREE.DepthStencilFormat' )
+		throw new Error( 'DepthTexture format must be either THREE.DepthFormat or THREE.DepthStencilFormat' );
 
 	}
 
@@ -29325,7 +31038,7 @@ var ShapeUtils = {
 			if ( indices ) return vertIndices;
 			return result;
 
-		}
+		};
 
 	} )(),
 
@@ -29663,7 +31376,7 @@ var ShapeUtils = {
 					hIdx, nextIdx, intersection;
 				for ( ihIdx = 0; ihIdx < indepHoles.length; ihIdx ++ ) {
 
-					chkHole = holes[ indepHoles[ ihIdx ]];
+					chkHole = holes[ indepHoles[ ihIdx ] ];
 					for ( hIdx = 0; hIdx < chkHole.length; hIdx ++ ) {
 
 						nextIdx = hIdx + 1; nextIdx %= chkHole.length;
@@ -29696,7 +31409,7 @@ var ShapeUtils = {
 				counter --;
 				if ( counter < 0 ) {
 
-					console.log( "Infinite Loop! Holes left:" + indepHoles.length + ", Probably Hole outside Shape!" );
+					console.log( 'THREE.ShapeUtils: Infinite Loop! Holes left:" + indepHoles.length + ", Probably Hole outside Shape!' );
 					break;
 
 				}
@@ -29714,7 +31427,7 @@ var ShapeUtils = {
 						holeIdx = indepHoles[ h ];
 
 						// prevent multiple checks
-						cutKey = shapePt.x + ":" + shapePt.y + ":" + holeIdx;
+						cutKey = shapePt.x + ':' + shapePt.y + ':' + holeIdx;
 						if ( failedCuts[ cutKey ] !== undefined )			continue;
 
 						hole = holes[ holeIdx ];
@@ -29779,11 +31492,11 @@ var ShapeUtils = {
 
 		for ( i = 0, il = allpoints.length; i < il; i ++ ) {
 
-			key = allpoints[ i ].x + ":" + allpoints[ i ].y;
+			key = allpoints[ i ].x + ':' + allpoints[ i ].y;
 
 			if ( allPointsMap[ key ] !== undefined ) {
 
-				console.warn( "THREE.ShapeUtils: Duplicate point", key, i );
+				console.warn( 'THREE.ShapeUtils: Duplicate point', key, i );
 
 			}
 
@@ -29805,7 +31518,7 @@ var ShapeUtils = {
 
 			for ( f = 0; f < 3; f ++ ) {
 
-				key = face[ f ].x + ":" + face[ f ].y;
+				key = face[ f ].x + ':' + face[ f ].y;
 
 				index = allPointsMap[ key ];
 
@@ -31976,43 +33689,28 @@ var Geometries = Object.freeze({
  * @author mrdoob / http://mrdoob.com/
  *
  * parameters = {
+ *  color: <THREE.Color>,
  *  opacity: <float>
  * }
  */
 
 function ShadowMaterial( parameters ) {
 
-	ShaderMaterial.call( this, {
-		uniforms: UniformsUtils.merge( [
-			UniformsLib.lights,
-			{
-				opacity: { value: 1.0 }
-			}
-		] ),
-		vertexShader: ShaderChunk[ 'shadow_vert' ],
-		fragmentShader: ShaderChunk[ 'shadow_frag' ]
-	} );
+	Material.call( this );
+
+	this.type = 'ShadowMaterial';
+
+	this.color = new Color( 0x000000 );
+	this.opacity = 1.0;
 
 	this.lights = true;
 	this.transparent = true;
-
-	Object.defineProperties( this, {
-		opacity: {
-			enumerable: true,
-			get: function () {
-				return this.uniforms.opacity.value;
-			},
-			set: function ( value ) {
-				this.uniforms.opacity.value = value;
-			}
-		}
-	} );
 
 	this.setValues( parameters );
 
 }
 
-ShadowMaterial.prototype = Object.create( ShaderMaterial.prototype );
+ShadowMaterial.prototype = Object.create( Material.prototype );
 ShadowMaterial.prototype.constructor = ShadowMaterial;
 
 ShadowMaterial.prototype.isShadowMaterial = true;
@@ -32675,36 +34373,26 @@ MeshLambertMaterial.prototype.copy = function ( source ) {
 
 function LineDashedMaterial( parameters ) {
 
-	Material.call( this );
+	LineBasicMaterial.call( this );
 
 	this.type = 'LineDashedMaterial';
-
-	this.color = new Color( 0xffffff );
-
-	this.linewidth = 1;
 
 	this.scale = 1;
 	this.dashSize = 3;
 	this.gapSize = 1;
 
-	this.lights = false;
-
 	this.setValues( parameters );
 
 }
 
-LineDashedMaterial.prototype = Object.create( Material.prototype );
+LineDashedMaterial.prototype = Object.create( LineBasicMaterial.prototype );
 LineDashedMaterial.prototype.constructor = LineDashedMaterial;
 
 LineDashedMaterial.prototype.isLineDashedMaterial = true;
 
 LineDashedMaterial.prototype.copy = function ( source ) {
 
-	Material.prototype.copy.call( this, source );
-
-	this.color.copy( source.color );
-
-	this.linewidth = source.linewidth;
+	LineBasicMaterial.prototype.copy.call( this, source );
 
 	this.scale = source.scale;
 	this.dashSize = source.dashSize;
@@ -32729,6 +34417,7 @@ var Materials = Object.freeze({
 	MeshNormalMaterial: MeshNormalMaterial,
 	MeshLambertMaterial: MeshLambertMaterial,
 	MeshDepthMaterial: MeshDepthMaterial,
+	MeshDistanceMaterial: MeshDistanceMaterial,
 	MeshBasicMaterial: MeshBasicMaterial,
 	LineDashedMaterial: LineDashedMaterial,
 	LineBasicMaterial: LineBasicMaterial,
@@ -33325,6 +35014,8 @@ function ImageLoader( manager ) {
 
 Object.assign( ImageLoader.prototype, {
 
+	crossOrigin: 'Anonymous',
+
 	load: function ( url, onLoad, onProgress, onError ) {
 
 		if ( url === undefined ) url = '';
@@ -33422,6 +35113,8 @@ function CubeTextureLoader( manager ) {
 
 Object.assign( CubeTextureLoader.prototype, {
 
+	crossOrigin: 'Anonymous',
+
 	load: function ( urls, onLoad, onProgress, onError ) {
 
 		var texture = new CubeTexture();
@@ -33489,6 +35182,8 @@ function TextureLoader( manager ) {
 }
 
 Object.assign( TextureLoader.prototype, {
+
+	crossOrigin: 'Anonymous',
 
 	load: function ( url, onLoad, onProgress, onError ) {
 
@@ -35270,7 +36965,7 @@ Object.assign( KeyframeTrack, {
 
 		} else {
 
-			// by default, we asssume a constructor compatible with the base
+			// by default, we assume a constructor compatible with the base
 			return new trackType(
 					json.name, json.times, json.values, json.interpolation );
 
@@ -35774,7 +37469,7 @@ Object.assign( MaterialLoader.prototype, {
 		if ( json.fragmentShader !== undefined ) material.fragmentShader = json.fragmentShader;
 		if ( json.vertexColors !== undefined ) material.vertexColors = json.vertexColors;
 		if ( json.fog !== undefined ) material.fog = json.fog;
-		if ( json.shading !== undefined ) material.shading = json.shading;
+		if ( json.flatShading !== undefined ) material.flatShading = json.flatShading;
 		if ( json.blending !== undefined ) material.blending = json.blending;
 		if ( json.side !== undefined ) material.side = json.side;
 		if ( json.opacity !== undefined ) material.opacity = json.opacity;
@@ -35787,8 +37482,17 @@ Object.assign( MaterialLoader.prototype, {
 		if ( json.wireframeLinewidth !== undefined ) material.wireframeLinewidth = json.wireframeLinewidth;
 		if ( json.wireframeLinecap !== undefined ) material.wireframeLinecap = json.wireframeLinecap;
 		if ( json.wireframeLinejoin !== undefined ) material.wireframeLinejoin = json.wireframeLinejoin;
+
 		if ( json.skinning !== undefined ) material.skinning = json.skinning;
 		if ( json.morphTargets !== undefined ) material.morphTargets = json.morphTargets;
+		if ( json.dithering !== undefined ) material.dithering = json.dithering;
+
+		if ( json.visible !== undefined ) material.visible = json.visible;
+		if ( json.userData !== undefined ) material.userData = json.userData;
+
+		// Deprecated
+
+		if ( json.shading !== undefined ) material.flatShading = json.shading === 1; // THREE.FlatShading
 
 		// for PointsMaterial
 
@@ -37560,9 +39264,11 @@ Object.assign( ObjectLoader.prototype, {
 
 			if ( data.children !== undefined ) {
 
-				for ( var child in data.children ) {
+				var children = data.children;
 
-					object.add( this.parseObject( data.children[ child ], geometries, materials ) );
+				for ( var  i = 0; i < children.length; i ++ ) {
+
+					object.add( this.parseObject( children[ i ], geometries, materials ) );
 
 				}
 
@@ -39425,7 +41131,7 @@ function CubeCamera( near, far, cubeResolution ) {
 	this.renderTarget = new WebGLRenderTargetCube( cubeResolution, cubeResolution, options );
 	this.renderTarget.texture.name = "CubeCamera";
 
-	this.updateCubeMap = function ( renderer, scene ) {
+	this.update = function ( renderer, scene ) {
 
 		if ( this.parent === null ) this.updateMatrixWorld();
 
@@ -39453,6 +41159,23 @@ function CubeCamera( near, far, cubeResolution ) {
 
 		renderTarget.activeCubeFace = 5;
 		renderer.render( scene, cameraNZ, renderTarget );
+
+		renderer.setRenderTarget( null );
+
+	};
+
+	this.clear = function ( renderer, color, depth, stencil ) {
+
+		var renderTarget = this.renderTarget;
+
+		for ( var i = 0; i < 6; i ++ ) {
+
+			renderTarget.activeCubeFace = i;
+			renderer.setRenderTarget( renderTarget );
+
+			renderer.clear( color, depth, stencil );
+
+		}
 
 		renderer.setRenderTarget( null );
 
@@ -39872,7 +41595,7 @@ Audio.prototype = Object.assign( Object.create( Object3D.prototype ), {
 		return this.gain.gain.value;
 
 	},
-	
+
 	setVolume: function ( value ) {
 
 		this.gain.gain.value = value;
@@ -43437,322 +45160,6 @@ Object.assign( Cylindrical.prototype, {
  * @author alteredq / http://alteredqualia.com/
  */
 
-function MorphBlendMesh( geometry, material ) {
-
-	Mesh.call( this, geometry, material );
-
-	this.animationsMap = {};
-	this.animationsList = [];
-
-	// prepare default animation
-	// (all frames played together in 1 second)
-
-	var numFrames = this.geometry.morphTargets.length;
-
-	var name = "__default";
-
-	var startFrame = 0;
-	var endFrame = numFrames - 1;
-
-	var fps = numFrames / 1;
-
-	this.createAnimation( name, startFrame, endFrame, fps );
-	this.setAnimationWeight( name, 1 );
-
-}
-
-MorphBlendMesh.prototype = Object.create( Mesh.prototype );
-MorphBlendMesh.prototype.constructor = MorphBlendMesh;
-
-MorphBlendMesh.prototype.createAnimation = function ( name, start, end, fps ) {
-
-	var animation = {
-
-		start: start,
-		end: end,
-
-		length: end - start + 1,
-
-		fps: fps,
-		duration: ( end - start ) / fps,
-
-		lastFrame: 0,
-		currentFrame: 0,
-
-		active: false,
-
-		time: 0,
-		direction: 1,
-		weight: 1,
-
-		directionBackwards: false,
-		mirroredLoop: false
-
-	};
-
-	this.animationsMap[ name ] = animation;
-	this.animationsList.push( animation );
-
-};
-
-MorphBlendMesh.prototype.autoCreateAnimations = function ( fps ) {
-
-	var pattern = /([a-z]+)_?(\d+)/i;
-
-	var firstAnimation, frameRanges = {};
-
-	var geometry = this.geometry;
-
-	for ( var i = 0, il = geometry.morphTargets.length; i < il; i ++ ) {
-
-		var morph = geometry.morphTargets[ i ];
-		var chunks = morph.name.match( pattern );
-
-		if ( chunks && chunks.length > 1 ) {
-
-			var name = chunks[ 1 ];
-
-			if ( ! frameRanges[ name ] ) frameRanges[ name ] = { start: Infinity, end: - Infinity };
-
-			var range = frameRanges[ name ];
-
-			if ( i < range.start ) range.start = i;
-			if ( i > range.end ) range.end = i;
-
-			if ( ! firstAnimation ) firstAnimation = name;
-
-		}
-
-	}
-
-	for ( var name in frameRanges ) {
-
-		var range = frameRanges[ name ];
-		this.createAnimation( name, range.start, range.end, fps );
-
-	}
-
-	this.firstAnimation = firstAnimation;
-
-};
-
-MorphBlendMesh.prototype.setAnimationDirectionForward = function ( name ) {
-
-	var animation = this.animationsMap[ name ];
-
-	if ( animation ) {
-
-		animation.direction = 1;
-		animation.directionBackwards = false;
-
-	}
-
-};
-
-MorphBlendMesh.prototype.setAnimationDirectionBackward = function ( name ) {
-
-	var animation = this.animationsMap[ name ];
-
-	if ( animation ) {
-
-		animation.direction = - 1;
-		animation.directionBackwards = true;
-
-	}
-
-};
-
-MorphBlendMesh.prototype.setAnimationFPS = function ( name, fps ) {
-
-	var animation = this.animationsMap[ name ];
-
-	if ( animation ) {
-
-		animation.fps = fps;
-		animation.duration = ( animation.end - animation.start ) / animation.fps;
-
-	}
-
-};
-
-MorphBlendMesh.prototype.setAnimationDuration = function ( name, duration ) {
-
-	var animation = this.animationsMap[ name ];
-
-	if ( animation ) {
-
-		animation.duration = duration;
-		animation.fps = ( animation.end - animation.start ) / animation.duration;
-
-	}
-
-};
-
-MorphBlendMesh.prototype.setAnimationWeight = function ( name, weight ) {
-
-	var animation = this.animationsMap[ name ];
-
-	if ( animation ) {
-
-		animation.weight = weight;
-
-	}
-
-};
-
-MorphBlendMesh.prototype.setAnimationTime = function ( name, time ) {
-
-	var animation = this.animationsMap[ name ];
-
-	if ( animation ) {
-
-		animation.time = time;
-
-	}
-
-};
-
-MorphBlendMesh.prototype.getAnimationTime = function ( name ) {
-
-	var time = 0;
-
-	var animation = this.animationsMap[ name ];
-
-	if ( animation ) {
-
-		time = animation.time;
-
-	}
-
-	return time;
-
-};
-
-MorphBlendMesh.prototype.getAnimationDuration = function ( name ) {
-
-	var duration = - 1;
-
-	var animation = this.animationsMap[ name ];
-
-	if ( animation ) {
-
-		duration = animation.duration;
-
-	}
-
-	return duration;
-
-};
-
-MorphBlendMesh.prototype.playAnimation = function ( name ) {
-
-	var animation = this.animationsMap[ name ];
-
-	if ( animation ) {
-
-		animation.time = 0;
-		animation.active = true;
-
-	} else {
-
-		console.warn( "THREE.MorphBlendMesh: animation[" + name + "] undefined in .playAnimation()" );
-
-	}
-
-};
-
-MorphBlendMesh.prototype.stopAnimation = function ( name ) {
-
-	var animation = this.animationsMap[ name ];
-
-	if ( animation ) {
-
-		animation.active = false;
-
-	}
-
-};
-
-MorphBlendMesh.prototype.update = function ( delta ) {
-
-	for ( var i = 0, il = this.animationsList.length; i < il; i ++ ) {
-
-		var animation = this.animationsList[ i ];
-
-		if ( ! animation.active ) continue;
-
-		var frameTime = animation.duration / animation.length;
-
-		animation.time += animation.direction * delta;
-
-		if ( animation.mirroredLoop ) {
-
-			if ( animation.time > animation.duration || animation.time < 0 ) {
-
-				animation.direction *= - 1;
-
-				if ( animation.time > animation.duration ) {
-
-					animation.time = animation.duration;
-					animation.directionBackwards = true;
-
-				}
-
-				if ( animation.time < 0 ) {
-
-					animation.time = 0;
-					animation.directionBackwards = false;
-
-				}
-
-			}
-
-		} else {
-
-			animation.time = animation.time % animation.duration;
-
-			if ( animation.time < 0 ) animation.time += animation.duration;
-
-		}
-
-		var keyframe = animation.start + _Math.clamp( Math.floor( animation.time / frameTime ), 0, animation.length - 1 );
-		var weight = animation.weight;
-
-		if ( keyframe !== animation.currentFrame ) {
-
-			this.morphTargetInfluences[ animation.lastFrame ] = 0;
-			this.morphTargetInfluences[ animation.currentFrame ] = 1 * weight;
-
-			this.morphTargetInfluences[ keyframe ] = 0;
-
-			animation.lastFrame = animation.currentFrame;
-			animation.currentFrame = keyframe;
-
-		}
-
-		var mix = ( animation.time % frameTime ) / frameTime;
-
-		if ( animation.directionBackwards ) mix = 1 - mix;
-
-		if ( animation.currentFrame !== animation.lastFrame ) {
-
-			this.morphTargetInfluences[ animation.currentFrame ] = mix * weight;
-			this.morphTargetInfluences[ animation.lastFrame ] = ( 1 - mix ) * weight;
-
-		} else {
-
-			this.morphTargetInfluences[ animation.currentFrame ] = weight;
-
-		}
-
-	}
-
-};
-
-/**
- * @author alteredq / http://alteredqualia.com/
- */
-
 function ImmediateRenderObject( material ) {
 
 	Object3D.call( this );
@@ -43770,7 +45177,7 @@ ImmediateRenderObject.prototype.isImmediateRenderObject = true;
 /**
  * @author mrdoob / http://mrdoob.com/
  * @author WestLangley / http://github.com/WestLangley
-*/
+ */
 
 function VertexNormalsHelper( object, size, hex, linewidth ) {
 
@@ -43915,9 +45322,9 @@ VertexNormalsHelper.prototype.update = ( function () {
  * @author alteredq / http://alteredqualia.com/
  * @author mrdoob / http://mrdoob.com/
  * @author WestLangley / http://github.com/WestLangley
-*/
+ */
 
-function SpotLightHelper( light ) {
+function SpotLightHelper( light, color ) {
 
 	Object3D.call( this );
 
@@ -43926,6 +45333,8 @@ function SpotLightHelper( light ) {
 
 	this.matrix = light.matrixWorld;
 	this.matrixAutoUpdate = false;
+
+	this.color = color;
 
 	var geometry = new BufferGeometry();
 
@@ -43989,7 +45398,15 @@ SpotLightHelper.prototype.update = function () {
 
 		this.cone.lookAt( vector2.sub( vector ) );
 
-		this.cone.material.color.copy( this.light.color );
+		if ( this.color !== undefined ) {
+
+			this.cone.material.color.set( this.color );
+
+		} else {
+
+			this.cone.material.color.copy( this.light.color );
+
+		}
 
 	};
 
@@ -44117,19 +45534,23 @@ SkeletonHelper.prototype.onBeforeRender = function () {
  * @author mrdoob / http://mrdoob.com/
  */
 
-function PointLightHelper( light, sphereSize ) {
+function PointLightHelper( light, sphereSize, color ) {
 
 	this.light = light;
 	this.light.updateMatrixWorld();
 
+	this.color = color;
+
 	var geometry = new SphereBufferGeometry( sphereSize, 4, 2 );
 	var material = new MeshBasicMaterial( { wireframe: true, fog: false } );
-	material.color.copy( this.light.color );
 
 	Mesh.call( this, geometry, material );
 
 	this.matrix = this.light.matrixWorld;
 	this.matrixAutoUpdate = false;
+
+	this.update();
+
 
 	/*
 	var distanceGeometry = new THREE.IcosahedronGeometry( 1, 2 );
@@ -44167,7 +45588,15 @@ PointLightHelper.prototype.dispose = function () {
 
 PointLightHelper.prototype.update = function () {
 
-	this.material.color.copy( this.light.color );
+	if ( this.color !== undefined ) {
+
+		this.material.color.set( this.color );
+
+	} else {
+
+		this.material.color.copy( this.light.color );
+
+	}
 
 	/*
 	var d = this.light.distance;
@@ -44192,7 +45621,7 @@ PointLightHelper.prototype.update = function () {
  * @author WestLangley / http://github.com/WestLangley
  */
 
-function RectAreaLightHelper( light ) {
+function RectAreaLightHelper( light, color ) {
 
 	Object3D.call( this );
 
@@ -44202,13 +45631,17 @@ function RectAreaLightHelper( light ) {
 	this.matrix = light.matrixWorld;
 	this.matrixAutoUpdate = false;
 
-	var material = new LineBasicMaterial( { color: light.color } );
+	this.color = color;
+
+	var material = new LineBasicMaterial( { fog: false } );
 
 	var geometry = new BufferGeometry();
 
 	geometry.addAttribute( 'position', new BufferAttribute( new Float32Array( 5 * 3 ), 3 ) );
 
-	this.add( new Line( geometry, material ) );
+	this.line = new Line( geometry, material );
+	this.add( this.line );
+
 
 	this.update();
 
@@ -44226,18 +45659,12 @@ RectAreaLightHelper.prototype.dispose = function () {
 
 RectAreaLightHelper.prototype.update = function () {
 
-	var line = this.children[ 0 ];
-
-	// update material
-
-	line.material.color.copy( this.light.color );
-
 	// calculate new dimensions of the helper
 
 	var hx = this.light.width * 0.5;
 	var hy = this.light.height * 0.5;
 
-	var position = line.geometry.attributes.position;
+	var position = this.line.geometry.attributes.position;
 	var array = position.array;
 
 	// update vertices
@@ -44250,6 +45677,16 @@ RectAreaLightHelper.prototype.update = function () {
 
 	position.needsUpdate = true;
 
+	if ( this.color !== undefined ) {
+
+		this.line.material.color.set( this.color );
+
+	} else {
+
+		this.line.material.color.copy( this.light.color );
+
+	}
+
 };
 
 /**
@@ -44258,7 +45695,7 @@ RectAreaLightHelper.prototype.update = function () {
  * @author Mugen87 / https://github.com/Mugen87
  */
 
-function HemisphereLightHelper( light, size ) {
+function HemisphereLightHelper( light, size, color ) {
 
 	Object3D.call( this );
 
@@ -44268,17 +45705,20 @@ function HemisphereLightHelper( light, size ) {
 	this.matrix = light.matrixWorld;
 	this.matrixAutoUpdate = false;
 
+	this.color = color;
+
 	var geometry = new OctahedronBufferGeometry( size );
 	geometry.rotateY( Math.PI * 0.5 );
 
-	var material = new MeshBasicMaterial( { vertexColors: VertexColors, wireframe: true } );
+	this.material = new MeshBasicMaterial( { wireframe: true, fog: false } );
+	if ( this.color === undefined ) this.material.vertexColors = VertexColors;
 
 	var position = geometry.getAttribute( 'position' );
 	var colors = new Float32Array( position.count * 3 );
 
 	geometry.addAttribute( 'color', new BufferAttribute( colors, 3 ) );
 
-	this.add( new Mesh( geometry, material ) );
+	this.add( new Mesh( geometry, this.material ) );
 
 	this.update();
 
@@ -44305,22 +45745,30 @@ HemisphereLightHelper.prototype.update = function () {
 
 		var mesh = this.children[ 0 ];
 
-		var colors = mesh.geometry.getAttribute( 'color' );
+		if ( this.color !== undefined ) {
 
-		color1.copy( this.light.color );
-		color2.copy( this.light.groundColor );
+			this.material.color.set( this.color );
 
-		for ( var i = 0, l = colors.count; i < l; i ++ ) {
+		} else {
 
-			var color = ( i < ( l / 2 ) ) ? color1 : color2;
+			var colors = mesh.geometry.getAttribute( 'color' );
 
-			colors.setXYZ( i, color.r, color.g, color.b );
+			color1.copy( this.light.color );
+			color2.copy( this.light.groundColor );
+
+			for ( var i = 0, l = colors.count; i < l; i ++ ) {
+
+				var color = ( i < ( l / 2 ) ) ? color1 : color2;
+
+				colors.setXYZ( i, color.r, color.g, color.b );
+
+			}
+
+			colors.needsUpdate = true;
 
 		}
 
 		mesh.lookAt( vector.setFromMatrixPosition( this.light.matrixWorld ).negate() );
-
-		colors.needsUpdate = true;
 
 	};
 
@@ -44460,7 +45908,7 @@ PolarGridHelper.prototype.constructor = PolarGridHelper;
 /**
  * @author mrdoob / http://mrdoob.com/
  * @author WestLangley / http://github.com/WestLangley
-*/
+ */
 
 function FaceNormalsHelper( object, size, hex, linewidth ) {
 
@@ -44572,7 +46020,7 @@ FaceNormalsHelper.prototype.update = ( function () {
  * @author WestLangley / http://github.com/WestLangley
  */
 
-function DirectionalLightHelper( light, size ) {
+function DirectionalLightHelper( light, size, color ) {
 
 	Object3D.call( this );
 
@@ -44581,6 +46029,8 @@ function DirectionalLightHelper( light, size ) {
 
 	this.matrix = light.matrixWorld;
 	this.matrixAutoUpdate = false;
+
+	this.color = color;
 
 	if ( size === undefined ) size = 1;
 
@@ -44595,12 +46045,14 @@ function DirectionalLightHelper( light, size ) {
 
 	var material = new LineBasicMaterial( { fog: false } );
 
-	this.add( new Line( geometry, material ) );
+	this.lightPlane = new Line( geometry, material );
+	this.add( this.lightPlane );
 
 	geometry = new BufferGeometry();
 	geometry.addAttribute( 'position', new Float32BufferAttribute( [ 0, 0, 0, 0, 0, 1 ], 3 ) );
 
-	this.add( new Line( geometry, material ));
+	this.targetLine = new Line( geometry, material );
+	this.add( this.targetLine );
 
 	this.update();
 
@@ -44611,13 +46063,10 @@ DirectionalLightHelper.prototype.constructor = DirectionalLightHelper;
 
 DirectionalLightHelper.prototype.dispose = function () {
 
-	var lightPlane = this.children[ 0 ];
-	var targetLine = this.children[ 1 ];
-
-	lightPlane.geometry.dispose();
-	lightPlane.material.dispose();
-	targetLine.geometry.dispose();
-	targetLine.material.dispose();
+	this.lightPlane.geometry.dispose();
+	this.lightPlane.material.dispose();
+	this.targetLine.geometry.dispose();
+	this.targetLine.material.dispose();
 
 };
 
@@ -44633,14 +46082,22 @@ DirectionalLightHelper.prototype.update = function () {
 		v2.setFromMatrixPosition( this.light.target.matrixWorld );
 		v3.subVectors( v2, v1 );
 
-		var lightPlane = this.children[ 0 ];
-		var targetLine = this.children[ 1 ];
+		this.lightPlane.lookAt( v3 );
 
-		lightPlane.lookAt( v3 );
-		lightPlane.material.color.copy( this.light.color );
+		if ( this.color !== undefined ) {
 
-		targetLine.lookAt( v3 );
-		targetLine.scale.z = v3.length();
+			this.lightPlane.material.color.set( this.color );
+			this.targetLine.material.color.set( this.color );
+
+		} else {
+
+			this.lightPlane.material.color.copy( this.light.color );
+			this.targetLine.material.color.copy( this.light.color );
+
+		}
+
+		this.targetLine.lookAt( v3 );
+		this.targetLine.scale.z = v3.length();
 
 	};
 
@@ -44939,6 +46396,108 @@ BoxHelper.prototype.setFromObject = function ( object ) {
 	this.update();
 
 	return this;
+
+};
+
+/**
+ * @author WestLangley / http://github.com/WestLangley
+ */
+
+function Box3Helper( box, hex ) {
+
+	this.type = 'Box3Helper';
+
+	this.box = box;
+
+	var color = ( hex !== undefined ) ? hex : 0xffff00;
+
+	var indices = new Uint16Array( [ 0, 1, 1, 2, 2, 3, 3, 0, 4, 5, 5, 6, 6, 7, 7, 4, 0, 4, 1, 5, 2, 6, 3, 7 ] );
+
+	var positions = [ 1, 1, 1, - 1, 1, 1, - 1, - 1, 1, 1, - 1, 1, 1, 1, - 1, - 1, 1, - 1, - 1, - 1, - 1, 1, - 1, - 1 ];
+
+	var geometry = new BufferGeometry();
+
+	geometry.setIndex( new BufferAttribute( indices, 1 ) );
+
+	geometry.addAttribute( 'position', new Float32BufferAttribute( positions, 3 ) );
+
+	LineSegments.call( this, geometry, new LineBasicMaterial( { color: color } ) );
+
+	this.geometry.computeBoundingSphere();
+
+	this.onBeforeRender();
+
+}
+
+Box3Helper.prototype = Object.create( LineSegments.prototype );
+Box3Helper.prototype.constructor = Box3Helper;
+
+Box3Helper.prototype.onBeforeRender = function () {
+
+	var box = this.box;
+
+	if ( box.isEmpty() ) return;
+
+	box.getCenter( this.position );
+
+	box.getSize( this.scale );
+
+	this.scale.multiplyScalar( 0.5 );
+
+};
+
+/**
+ * @author WestLangley / http://github.com/WestLangley
+ */
+
+function PlaneHelper( plane, size, hex ) {
+
+	this.type = 'PlaneHelper';
+
+	this.plane = plane;
+
+	this.size = ( size === undefined ) ? 1 : size;
+
+	var color = ( hex !== undefined ) ? hex : 0xffff00;
+
+	var positions = [ 1, - 1, 1, - 1, 1, 1, - 1, - 1, 1, 1, 1, 1, - 1, 1, 1, - 1, - 1, 1, 1, - 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0 ];
+
+	var geometry = new BufferGeometry();
+	geometry.addAttribute( 'position', new Float32BufferAttribute( positions, 3 ) );
+	geometry.computeBoundingSphere();
+
+	Line.call( this, geometry, new LineBasicMaterial( { color: color } ) );
+
+	//
+
+	var positions2 = [ 1, 1, 1, - 1, 1, 1, - 1, - 1, 1, 1, 1, 1, - 1, - 1, 1, 1, - 1, 1 ];
+
+	var geometry2 = new BufferGeometry();
+	geometry2.addAttribute( 'position', new Float32BufferAttribute( positions2, 3 ) );
+	geometry2.computeBoundingSphere();
+
+	this.add( new Mesh( geometry2, new MeshBasicMaterial( { color: color, opacity: 0.2, transparent: true, depthWrite: false } ) ) );
+
+	//
+
+	this.onBeforeRender();
+
+}
+
+PlaneHelper.prototype = Object.create( Line.prototype );
+PlaneHelper.prototype.constructor = PlaneHelper;
+
+PlaneHelper.prototype.onBeforeRender = function () {
+
+	var scale = - this.plane.constant;
+
+	if ( Math.abs( scale ) < 1e-8 ) scale = 1e-8; // sign does not matter
+
+	this.scale.set( 0.5 * this.size, 0.5 * this.size, scale );
+
+	this.lookAt( this.plane.normal );
+
+	this.updateMatrixWorld();
 
 };
 
@@ -45649,7 +47208,7 @@ GridHelper.prototype.setColors = function () {
 SkeletonHelper.prototype.update = function () {
 
 	console.error( 'THREE.SkeletonHelper: update() no longer needs to be called.' );
-	
+
 };
 
 function WireframeHelper( object, hex ) {
@@ -46362,6 +47921,20 @@ Object.defineProperties( Material.prototype, {
 			return new Color();
 
 		}
+	},
+
+	shading: {
+		get: function () {
+
+			console.error( 'THREE.' + this.type + ': .shading has been removed. Use the boolean .flatShading instead.' );
+
+		},
+		set: function ( value ) {
+
+			console.warn( 'THREE.' + this.type + ': .shading has been removed. Use the boolean .flatShading instead.' );
+			this.flatShading = ( value === FlatShading );
+
+		}
 	}
 
 } );
@@ -46411,6 +47984,20 @@ Object.assign( WebGLRenderer.prototype, {
 
 		console.warn( 'THREE.WebGLRenderer: .getCurrentRenderTarget() is now .getRenderTarget().' );
 		return this.getRenderTarget();
+
+	},
+
+	getMaxAnisotropy: function () {
+
+		console.warn( 'THREE.WebGLRenderer: .getMaxAnisotropy() is now .capabilities.getMaxAnisotropy().' );
+		return this.capabilities.getMaxAnisotropy();
+
+	},
+
+	getPrecision: function () {
+
+		console.warn( 'THREE.WebGLRenderer: .getPrecision() is now .capabilities.precision.' );
+		return this.capabilities.precision;
 
 	},
 
@@ -46725,6 +48312,15 @@ AudioAnalyser.prototype.getData = function () {
 
 //
 
+CubeCamera.prototype.updateCubeMap = function ( renderer, scene ) {
+
+	console.warn( 'THREE.CubeCamera: .updateCubeMap() is now .update().' );
+	return this.update( renderer, scene );
+
+};
+
+//
+
 var GeometryUtils = {
 
 	merge: function ( geometry1, geometry2, materialIndexOffset ) {
@@ -46845,6 +48441,6599 @@ function CanvasRenderer() {
 }
 
 
+
+
+/***/ }),
+
+/***/ "../../../../three/examples/js/controls/OrbitControls.js":
+/***/ (function(module, exports) {
+
+/**
+ * @author qiao / https://github.com/qiao
+ * @author mrdoob / http://mrdoob.com
+ * @author alteredq / http://alteredqualia.com/
+ * @author WestLangley / http://github.com/WestLangley
+ * @author erich666 / http://erichaines.com
+ */
+
+// This set of controls performs orbiting, dollying (zooming), and panning.
+// Unlike TrackballControls, it maintains the "up" direction object.up (+Y by default).
+//
+//    Orbit - left mouse / touch: one finger move
+//    Zoom - middle mouse, or mousewheel / touch: two finger spread or squish
+//    Pan - right mouse, or arrow keys / touch: three finger swipe
+
+THREE.OrbitControls = function ( object, domElement ) {
+
+	this.object = object;
+
+	this.domElement = ( domElement !== undefined ) ? domElement : document;
+
+	// Set to false to disable this control
+	this.enabled = true;
+
+	// "target" sets the location of focus, where the object orbits around
+	this.target = new THREE.Vector3();
+
+	// How far you can dolly in and out ( PerspectiveCamera only )
+	this.minDistance = 0;
+	this.maxDistance = Infinity;
+
+	// How far you can zoom in and out ( OrthographicCamera only )
+	this.minZoom = 0;
+	this.maxZoom = Infinity;
+
+	// How far you can orbit vertically, upper and lower limits.
+	// Range is 0 to Math.PI radians.
+	this.minPolarAngle = 0; // radians
+	this.maxPolarAngle = Math.PI; // radians
+
+	// How far you can orbit horizontally, upper and lower limits.
+	// If set, must be a sub-interval of the interval [ - Math.PI, Math.PI ].
+	this.minAzimuthAngle = - Infinity; // radians
+	this.maxAzimuthAngle = Infinity; // radians
+
+	// Set to true to enable damping (inertia)
+	// If damping is enabled, you must call controls.update() in your animation loop
+	this.enableDamping = false;
+	this.dampingFactor = 0.25;
+
+	// This option actually enables dollying in and out; left as "zoom" for backwards compatibility.
+	// Set to false to disable zooming
+	this.enableZoom = true;
+	this.zoomSpeed = 1.0;
+
+	// Set to false to disable rotating
+	this.enableRotate = true;
+	this.rotateSpeed = 1.0;
+
+	// Set to false to disable panning
+	this.enablePan = true;
+	this.keyPanSpeed = 7.0;	// pixels moved per arrow key push
+
+	// Set to true to automatically rotate around the target
+	// If auto-rotate is enabled, you must call controls.update() in your animation loop
+	this.autoRotate = false;
+	this.autoRotateSpeed = 2.0; // 30 seconds per round when fps is 60
+
+	// Set to false to disable use of the keys
+	this.enableKeys = true;
+
+	// The four arrow keys
+	this.keys = { LEFT: 37, UP: 38, RIGHT: 39, BOTTOM: 40 };
+
+	// Mouse buttons
+	this.mouseButtons = { ORBIT: THREE.MOUSE.LEFT, ZOOM: THREE.MOUSE.MIDDLE, PAN: THREE.MOUSE.RIGHT };
+
+	// for reset
+	this.target0 = this.target.clone();
+	this.position0 = this.object.position.clone();
+	this.zoom0 = this.object.zoom;
+
+	//
+	// public methods
+	//
+
+	this.getPolarAngle = function () {
+
+		return spherical.phi;
+
+	};
+
+	this.getAzimuthalAngle = function () {
+
+		return spherical.theta;
+
+	};
+
+	this.saveState = function () {
+
+		scope.target0.copy( scope.target );
+		scope.position0.copy( scope.object.position );
+		scope.zoom0 = scope.object.zoom;
+
+	};
+
+	this.reset = function () {
+
+		scope.target.copy( scope.target0 );
+		scope.object.position.copy( scope.position0 );
+		scope.object.zoom = scope.zoom0;
+
+		scope.object.updateProjectionMatrix();
+		scope.dispatchEvent( changeEvent );
+
+		scope.update();
+
+		state = STATE.NONE;
+
+	};
+
+	// this method is exposed, but perhaps it would be better if we can make it private...
+	this.update = function () {
+
+		var offset = new THREE.Vector3();
+
+		// so camera.up is the orbit axis
+		var quat = new THREE.Quaternion().setFromUnitVectors( object.up, new THREE.Vector3( 0, 1, 0 ) );
+		var quatInverse = quat.clone().inverse();
+
+		var lastPosition = new THREE.Vector3();
+		var lastQuaternion = new THREE.Quaternion();
+
+		return function update() {
+
+			var position = scope.object.position;
+
+			offset.copy( position ).sub( scope.target );
+
+			// rotate offset to "y-axis-is-up" space
+			offset.applyQuaternion( quat );
+
+			// angle from z-axis around y-axis
+			spherical.setFromVector3( offset );
+
+			if ( scope.autoRotate && state === STATE.NONE ) {
+
+				rotateLeft( getAutoRotationAngle() );
+
+			}
+
+			spherical.theta += sphericalDelta.theta;
+			spherical.phi += sphericalDelta.phi;
+
+			// restrict theta to be between desired limits
+			spherical.theta = Math.max( scope.minAzimuthAngle, Math.min( scope.maxAzimuthAngle, spherical.theta ) );
+
+			// restrict phi to be between desired limits
+			spherical.phi = Math.max( scope.minPolarAngle, Math.min( scope.maxPolarAngle, spherical.phi ) );
+
+			spherical.makeSafe();
+
+
+			spherical.radius *= scale;
+
+			// restrict radius to be between desired limits
+			spherical.radius = Math.max( scope.minDistance, Math.min( scope.maxDistance, spherical.radius ) );
+
+			// move target to panned location
+			scope.target.add( panOffset );
+
+			offset.setFromSpherical( spherical );
+
+			// rotate offset back to "camera-up-vector-is-up" space
+			offset.applyQuaternion( quatInverse );
+
+			position.copy( scope.target ).add( offset );
+
+			scope.object.lookAt( scope.target );
+
+			if ( scope.enableDamping === true ) {
+
+				sphericalDelta.theta *= ( 1 - scope.dampingFactor );
+				sphericalDelta.phi *= ( 1 - scope.dampingFactor );
+
+			} else {
+
+				sphericalDelta.set( 0, 0, 0 );
+
+			}
+
+			scale = 1;
+			panOffset.set( 0, 0, 0 );
+
+			// update condition is:
+			// min(camera displacement, camera rotation in radians)^2 > EPS
+			// using small-angle approximation cos(x/2) = 1 - x^2 / 8
+
+			if ( zoomChanged ||
+				lastPosition.distanceToSquared( scope.object.position ) > EPS ||
+				8 * ( 1 - lastQuaternion.dot( scope.object.quaternion ) ) > EPS ) {
+
+				scope.dispatchEvent( changeEvent );
+
+				lastPosition.copy( scope.object.position );
+				lastQuaternion.copy( scope.object.quaternion );
+				zoomChanged = false;
+
+				return true;
+
+			}
+
+			return false;
+
+		};
+
+	}();
+
+	this.dispose = function () {
+
+		scope.domElement.removeEventListener( 'contextmenu', onContextMenu, false );
+		scope.domElement.removeEventListener( 'mousedown', onMouseDown, false );
+		scope.domElement.removeEventListener( 'wheel', onMouseWheel, false );
+
+		scope.domElement.removeEventListener( 'touchstart', onTouchStart, false );
+		scope.domElement.removeEventListener( 'touchend', onTouchEnd, false );
+		scope.domElement.removeEventListener( 'touchmove', onTouchMove, false );
+
+		document.removeEventListener( 'mousemove', onMouseMove, false );
+		document.removeEventListener( 'mouseup', onMouseUp, false );
+
+		window.removeEventListener( 'keydown', onKeyDown, false );
+
+		//scope.dispatchEvent( { type: 'dispose' } ); // should this be added here?
+
+	};
+
+	//
+	// internals
+	//
+
+	var scope = this;
+
+	var changeEvent = { type: 'change' };
+	var startEvent = { type: 'start' };
+	var endEvent = { type: 'end' };
+
+	var STATE = { NONE: - 1, ROTATE: 0, DOLLY: 1, PAN: 2, TOUCH_ROTATE: 3, TOUCH_DOLLY: 4, TOUCH_PAN: 5 };
+
+	var state = STATE.NONE;
+
+	var EPS = 0.000001;
+
+	// current position in spherical coordinates
+	var spherical = new THREE.Spherical();
+	var sphericalDelta = new THREE.Spherical();
+
+	var scale = 1;
+	var panOffset = new THREE.Vector3();
+	var zoomChanged = false;
+
+	var rotateStart = new THREE.Vector2();
+	var rotateEnd = new THREE.Vector2();
+	var rotateDelta = new THREE.Vector2();
+
+	var panStart = new THREE.Vector2();
+	var panEnd = new THREE.Vector2();
+	var panDelta = new THREE.Vector2();
+
+	var dollyStart = new THREE.Vector2();
+	var dollyEnd = new THREE.Vector2();
+	var dollyDelta = new THREE.Vector2();
+
+	function getAutoRotationAngle() {
+
+		return 2 * Math.PI / 60 / 60 * scope.autoRotateSpeed;
+
+	}
+
+	function getZoomScale() {
+
+		return Math.pow( 0.95, scope.zoomSpeed );
+
+	}
+
+	function rotateLeft( angle ) {
+
+		sphericalDelta.theta -= angle;
+
+	}
+
+	function rotateUp( angle ) {
+
+		sphericalDelta.phi -= angle;
+
+	}
+
+	var panLeft = function () {
+
+		var v = new THREE.Vector3();
+
+		return function panLeft( distance, objectMatrix ) {
+
+			v.setFromMatrixColumn( objectMatrix, 0 ); // get X column of objectMatrix
+			v.multiplyScalar( - distance );
+
+			panOffset.add( v );
+
+		};
+
+	}();
+
+	var panUp = function () {
+
+		var v = new THREE.Vector3();
+
+		return function panUp( distance, objectMatrix ) {
+
+			v.setFromMatrixColumn( objectMatrix, 1 ); // get Y column of objectMatrix
+			v.multiplyScalar( distance );
+
+			panOffset.add( v );
+
+		};
+
+	}();
+
+	// deltaX and deltaY are in pixels; right and down are positive
+	var pan = function () {
+
+		var offset = new THREE.Vector3();
+
+		return function pan( deltaX, deltaY ) {
+
+			var element = scope.domElement === document ? scope.domElement.body : scope.domElement;
+
+			if ( scope.object instanceof THREE.PerspectiveCamera ) {
+
+				// perspective
+				var position = scope.object.position;
+				offset.copy( position ).sub( scope.target );
+				var targetDistance = offset.length();
+
+				// half of the fov is center to top of screen
+				targetDistance *= Math.tan( ( scope.object.fov / 2 ) * Math.PI / 180.0 );
+
+				// we actually don't use screenWidth, since perspective camera is fixed to screen height
+				panLeft( 2 * deltaX * targetDistance / element.clientHeight, scope.object.matrix );
+				panUp( 2 * deltaY * targetDistance / element.clientHeight, scope.object.matrix );
+
+			} else if ( scope.object instanceof THREE.OrthographicCamera ) {
+
+				// orthographic
+				panLeft( deltaX * ( scope.object.right - scope.object.left ) / scope.object.zoom / element.clientWidth, scope.object.matrix );
+				panUp( deltaY * ( scope.object.top - scope.object.bottom ) / scope.object.zoom / element.clientHeight, scope.object.matrix );
+
+			} else {
+
+				// camera neither orthographic nor perspective
+				console.warn( 'WARNING: OrbitControls.js encountered an unknown camera type - pan disabled.' );
+				scope.enablePan = false;
+
+			}
+
+		};
+
+	}();
+
+	function dollyIn( dollyScale ) {
+
+		if ( scope.object instanceof THREE.PerspectiveCamera ) {
+
+			scale /= dollyScale;
+
+		} else if ( scope.object instanceof THREE.OrthographicCamera ) {
+
+			scope.object.zoom = Math.max( scope.minZoom, Math.min( scope.maxZoom, scope.object.zoom * dollyScale ) );
+			scope.object.updateProjectionMatrix();
+			zoomChanged = true;
+
+		} else {
+
+			console.warn( 'WARNING: OrbitControls.js encountered an unknown camera type - dolly/zoom disabled.' );
+			scope.enableZoom = false;
+
+		}
+
+	}
+
+	function dollyOut( dollyScale ) {
+
+		if ( scope.object instanceof THREE.PerspectiveCamera ) {
+
+			scale *= dollyScale;
+
+		} else if ( scope.object instanceof THREE.OrthographicCamera ) {
+
+			scope.object.zoom = Math.max( scope.minZoom, Math.min( scope.maxZoom, scope.object.zoom / dollyScale ) );
+			scope.object.updateProjectionMatrix();
+			zoomChanged = true;
+
+		} else {
+
+			console.warn( 'WARNING: OrbitControls.js encountered an unknown camera type - dolly/zoom disabled.' );
+			scope.enableZoom = false;
+
+		}
+
+	}
+
+	//
+	// event callbacks - update the object state
+	//
+
+	function handleMouseDownRotate( event ) {
+
+		//console.log( 'handleMouseDownRotate' );
+
+		rotateStart.set( event.clientX, event.clientY );
+
+	}
+
+	function handleMouseDownDolly( event ) {
+
+		//console.log( 'handleMouseDownDolly' );
+
+		dollyStart.set( event.clientX, event.clientY );
+
+	}
+
+	function handleMouseDownPan( event ) {
+
+		//console.log( 'handleMouseDownPan' );
+
+		panStart.set( event.clientX, event.clientY );
+
+	}
+
+	function handleMouseMoveRotate( event ) {
+
+		//console.log( 'handleMouseMoveRotate' );
+
+		rotateEnd.set( event.clientX, event.clientY );
+		rotateDelta.subVectors( rotateEnd, rotateStart );
+
+		var element = scope.domElement === document ? scope.domElement.body : scope.domElement;
+
+		// rotating across whole screen goes 360 degrees around
+		rotateLeft( 2 * Math.PI * rotateDelta.x / element.clientWidth * scope.rotateSpeed );
+
+		// rotating up and down along whole screen attempts to go 360, but limited to 180
+		rotateUp( 2 * Math.PI * rotateDelta.y / element.clientHeight * scope.rotateSpeed );
+
+		rotateStart.copy( rotateEnd );
+
+		scope.update();
+
+	}
+
+	function handleMouseMoveDolly( event ) {
+
+		//console.log( 'handleMouseMoveDolly' );
+
+		dollyEnd.set( event.clientX, event.clientY );
+
+		dollyDelta.subVectors( dollyEnd, dollyStart );
+
+		if ( dollyDelta.y > 0 ) {
+
+			dollyIn( getZoomScale() );
+
+		} else if ( dollyDelta.y < 0 ) {
+
+			dollyOut( getZoomScale() );
+
+		}
+
+		dollyStart.copy( dollyEnd );
+
+		scope.update();
+
+	}
+
+	function handleMouseMovePan( event ) {
+
+		//console.log( 'handleMouseMovePan' );
+
+		panEnd.set( event.clientX, event.clientY );
+
+		panDelta.subVectors( panEnd, panStart );
+
+		pan( panDelta.x, panDelta.y );
+
+		panStart.copy( panEnd );
+
+		scope.update();
+
+	}
+
+	function handleMouseUp( event ) {
+
+		// console.log( 'handleMouseUp' );
+
+	}
+
+	function handleMouseWheel( event ) {
+
+		// console.log( 'handleMouseWheel' );
+
+		if ( event.deltaY < 0 ) {
+
+			dollyOut( getZoomScale() );
+
+		} else if ( event.deltaY > 0 ) {
+
+			dollyIn( getZoomScale() );
+
+		}
+
+		scope.update();
+
+	}
+
+	function handleKeyDown( event ) {
+
+		//console.log( 'handleKeyDown' );
+
+		switch ( event.keyCode ) {
+
+			case scope.keys.UP:
+				pan( 0, scope.keyPanSpeed );
+				scope.update();
+				break;
+
+			case scope.keys.BOTTOM:
+				pan( 0, - scope.keyPanSpeed );
+				scope.update();
+				break;
+
+			case scope.keys.LEFT:
+				pan( scope.keyPanSpeed, 0 );
+				scope.update();
+				break;
+
+			case scope.keys.RIGHT:
+				pan( - scope.keyPanSpeed, 0 );
+				scope.update();
+				break;
+
+		}
+
+	}
+
+	function handleTouchStartRotate( event ) {
+
+		//console.log( 'handleTouchStartRotate' );
+
+		rotateStart.set( event.touches[ 0 ].pageX, event.touches[ 0 ].pageY );
+
+	}
+
+	function handleTouchStartDolly( event ) {
+
+		//console.log( 'handleTouchStartDolly' );
+
+		var dx = event.touches[ 0 ].pageX - event.touches[ 1 ].pageX;
+		var dy = event.touches[ 0 ].pageY - event.touches[ 1 ].pageY;
+
+		var distance = Math.sqrt( dx * dx + dy * dy );
+
+		dollyStart.set( 0, distance );
+
+	}
+
+	function handleTouchStartPan( event ) {
+
+		//console.log( 'handleTouchStartPan' );
+
+		panStart.set( event.touches[ 0 ].pageX, event.touches[ 0 ].pageY );
+
+	}
+
+	function handleTouchMoveRotate( event ) {
+
+		//console.log( 'handleTouchMoveRotate' );
+
+		rotateEnd.set( event.touches[ 0 ].pageX, event.touches[ 0 ].pageY );
+		rotateDelta.subVectors( rotateEnd, rotateStart );
+
+		var element = scope.domElement === document ? scope.domElement.body : scope.domElement;
+
+		// rotating across whole screen goes 360 degrees around
+		rotateLeft( 2 * Math.PI * rotateDelta.x / element.clientWidth * scope.rotateSpeed );
+
+		// rotating up and down along whole screen attempts to go 360, but limited to 180
+		rotateUp( 2 * Math.PI * rotateDelta.y / element.clientHeight * scope.rotateSpeed );
+
+		rotateStart.copy( rotateEnd );
+
+		scope.update();
+
+	}
+
+	function handleTouchMoveDolly( event ) {
+
+		//console.log( 'handleTouchMoveDolly' );
+
+		var dx = event.touches[ 0 ].pageX - event.touches[ 1 ].pageX;
+		var dy = event.touches[ 0 ].pageY - event.touches[ 1 ].pageY;
+
+		var distance = Math.sqrt( dx * dx + dy * dy );
+
+		dollyEnd.set( 0, distance );
+
+		dollyDelta.subVectors( dollyEnd, dollyStart );
+
+		if ( dollyDelta.y > 0 ) {
+
+			dollyOut( getZoomScale() );
+
+		} else if ( dollyDelta.y < 0 ) {
+
+			dollyIn( getZoomScale() );
+
+		}
+
+		dollyStart.copy( dollyEnd );
+
+		scope.update();
+
+	}
+
+	function handleTouchMovePan( event ) {
+
+		//console.log( 'handleTouchMovePan' );
+
+		panEnd.set( event.touches[ 0 ].pageX, event.touches[ 0 ].pageY );
+
+		panDelta.subVectors( panEnd, panStart );
+
+		pan( panDelta.x, panDelta.y );
+
+		panStart.copy( panEnd );
+
+		scope.update();
+
+	}
+
+	function handleTouchEnd( event ) {
+
+		//console.log( 'handleTouchEnd' );
+
+	}
+
+	//
+	// event handlers - FSM: listen for events and reset state
+	//
+
+	function onMouseDown( event ) {
+
+		if ( scope.enabled === false ) return;
+
+		event.preventDefault();
+
+		switch ( event.button ) {
+
+			case scope.mouseButtons.ORBIT:
+
+				if ( scope.enableRotate === false ) return;
+
+				handleMouseDownRotate( event );
+
+				state = STATE.ROTATE;
+
+				break;
+
+			case scope.mouseButtons.ZOOM:
+
+				if ( scope.enableZoom === false ) return;
+
+				handleMouseDownDolly( event );
+
+				state = STATE.DOLLY;
+
+				break;
+
+			case scope.mouseButtons.PAN:
+
+				if ( scope.enablePan === false ) return;
+
+				handleMouseDownPan( event );
+
+				state = STATE.PAN;
+
+				break;
+
+		}
+
+		if ( state !== STATE.NONE ) {
+
+			document.addEventListener( 'mousemove', onMouseMove, false );
+			document.addEventListener( 'mouseup', onMouseUp, false );
+
+			scope.dispatchEvent( startEvent );
+
+		}
+
+	}
+
+	function onMouseMove( event ) {
+
+		if ( scope.enabled === false ) return;
+
+		event.preventDefault();
+
+		switch ( state ) {
+
+			case STATE.ROTATE:
+
+				if ( scope.enableRotate === false ) return;
+
+				handleMouseMoveRotate( event );
+
+				break;
+
+			case STATE.DOLLY:
+
+				if ( scope.enableZoom === false ) return;
+
+				handleMouseMoveDolly( event );
+
+				break;
+
+			case STATE.PAN:
+
+				if ( scope.enablePan === false ) return;
+
+				handleMouseMovePan( event );
+
+				break;
+
+		}
+
+	}
+
+	function onMouseUp( event ) {
+
+		if ( scope.enabled === false ) return;
+
+		handleMouseUp( event );
+
+		document.removeEventListener( 'mousemove', onMouseMove, false );
+		document.removeEventListener( 'mouseup', onMouseUp, false );
+
+		scope.dispatchEvent( endEvent );
+
+		state = STATE.NONE;
+
+	}
+
+	function onMouseWheel( event ) {
+
+		if ( scope.enabled === false || scope.enableZoom === false || ( state !== STATE.NONE && state !== STATE.ROTATE ) ) return;
+
+		event.preventDefault();
+		event.stopPropagation();
+
+		handleMouseWheel( event );
+
+		scope.dispatchEvent( startEvent ); // not sure why these are here...
+		scope.dispatchEvent( endEvent );
+
+	}
+
+	function onKeyDown( event ) {
+
+		if ( scope.enabled === false || scope.enableKeys === false || scope.enablePan === false ) return;
+
+		handleKeyDown( event );
+
+	}
+
+	function onTouchStart( event ) {
+
+		if ( scope.enabled === false ) return;
+
+		switch ( event.touches.length ) {
+
+			case 1:	// one-fingered touch: rotate
+
+				if ( scope.enableRotate === false ) return;
+
+				handleTouchStartRotate( event );
+
+				state = STATE.TOUCH_ROTATE;
+
+				break;
+
+			case 2:	// two-fingered touch: dolly
+
+				if ( scope.enableZoom === false ) return;
+
+				handleTouchStartDolly( event );
+
+				state = STATE.TOUCH_DOLLY;
+
+				break;
+
+			case 3: // three-fingered touch: pan
+
+				if ( scope.enablePan === false ) return;
+
+				handleTouchStartPan( event );
+
+				state = STATE.TOUCH_PAN;
+
+				break;
+
+			default:
+
+				state = STATE.NONE;
+
+		}
+
+		if ( state !== STATE.NONE ) {
+
+			scope.dispatchEvent( startEvent );
+
+		}
+
+	}
+
+	function onTouchMove( event ) {
+
+		if ( scope.enabled === false ) return;
+
+		event.preventDefault();
+		event.stopPropagation();
+
+		switch ( event.touches.length ) {
+
+			case 1: // one-fingered touch: rotate
+
+				if ( scope.enableRotate === false ) return;
+				if ( state !== STATE.TOUCH_ROTATE ) return; // is this needed?...
+
+				handleTouchMoveRotate( event );
+
+				break;
+
+			case 2: // two-fingered touch: dolly
+
+				if ( scope.enableZoom === false ) return;
+				if ( state !== STATE.TOUCH_DOLLY ) return; // is this needed?...
+
+				handleTouchMoveDolly( event );
+
+				break;
+
+			case 3: // three-fingered touch: pan
+
+				if ( scope.enablePan === false ) return;
+				if ( state !== STATE.TOUCH_PAN ) return; // is this needed?...
+
+				handleTouchMovePan( event );
+
+				break;
+
+			default:
+
+				state = STATE.NONE;
+
+		}
+
+	}
+
+	function onTouchEnd( event ) {
+
+		if ( scope.enabled === false ) return;
+
+		handleTouchEnd( event );
+
+		scope.dispatchEvent( endEvent );
+
+		state = STATE.NONE;
+
+	}
+
+	function onContextMenu( event ) {
+
+		if ( scope.enabled === false ) return;
+
+		event.preventDefault();
+
+	}
+
+	//
+
+	scope.domElement.addEventListener( 'contextmenu', onContextMenu, false );
+
+	scope.domElement.addEventListener( 'mousedown', onMouseDown, false );
+	scope.domElement.addEventListener( 'wheel', onMouseWheel, false );
+
+	scope.domElement.addEventListener( 'touchstart', onTouchStart, false );
+	scope.domElement.addEventListener( 'touchend', onTouchEnd, false );
+	scope.domElement.addEventListener( 'touchmove', onTouchMove, false );
+
+	window.addEventListener( 'keydown', onKeyDown, false );
+
+	// force an update at start
+
+	this.update();
+
+};
+
+THREE.OrbitControls.prototype = Object.create( THREE.EventDispatcher.prototype );
+THREE.OrbitControls.prototype.constructor = THREE.OrbitControls;
+
+Object.defineProperties( THREE.OrbitControls.prototype, {
+
+	center: {
+
+		get: function () {
+
+			console.warn( 'THREE.OrbitControls: .center has been renamed to .target' );
+			return this.target;
+
+		}
+
+	},
+
+	// backward compatibility
+
+	noZoom: {
+
+		get: function () {
+
+			console.warn( 'THREE.OrbitControls: .noZoom has been deprecated. Use .enableZoom instead.' );
+			return ! this.enableZoom;
+
+		},
+
+		set: function ( value ) {
+
+			console.warn( 'THREE.OrbitControls: .noZoom has been deprecated. Use .enableZoom instead.' );
+			this.enableZoom = ! value;
+
+		}
+
+	},
+
+	noRotate: {
+
+		get: function () {
+
+			console.warn( 'THREE.OrbitControls: .noRotate has been deprecated. Use .enableRotate instead.' );
+			return ! this.enableRotate;
+
+		},
+
+		set: function ( value ) {
+
+			console.warn( 'THREE.OrbitControls: .noRotate has been deprecated. Use .enableRotate instead.' );
+			this.enableRotate = ! value;
+
+		}
+
+	},
+
+	noPan: {
+
+		get: function () {
+
+			console.warn( 'THREE.OrbitControls: .noPan has been deprecated. Use .enablePan instead.' );
+			return ! this.enablePan;
+
+		},
+
+		set: function ( value ) {
+
+			console.warn( 'THREE.OrbitControls: .noPan has been deprecated. Use .enablePan instead.' );
+			this.enablePan = ! value;
+
+		}
+
+	},
+
+	noKeys: {
+
+		get: function () {
+
+			console.warn( 'THREE.OrbitControls: .noKeys has been deprecated. Use .enableKeys instead.' );
+			return ! this.enableKeys;
+
+		},
+
+		set: function ( value ) {
+
+			console.warn( 'THREE.OrbitControls: .noKeys has been deprecated. Use .enableKeys instead.' );
+			this.enableKeys = ! value;
+
+		}
+
+	},
+
+	staticMoving: {
+
+		get: function () {
+
+			console.warn( 'THREE.OrbitControls: .staticMoving has been deprecated. Use .enableDamping instead.' );
+			return ! this.enableDamping;
+
+		},
+
+		set: function ( value ) {
+
+			console.warn( 'THREE.OrbitControls: .staticMoving has been deprecated. Use .enableDamping instead.' );
+			this.enableDamping = ! value;
+
+		}
+
+	},
+
+	dynamicDampingFactor: {
+
+		get: function () {
+
+			console.warn( 'THREE.OrbitControls: .dynamicDampingFactor has been renamed. Use .dampingFactor instead.' );
+			return this.dampingFactor;
+
+		},
+
+		set: function ( value ) {
+
+			console.warn( 'THREE.OrbitControls: .dynamicDampingFactor has been renamed. Use .dampingFactor instead.' );
+			this.dampingFactor = value;
+
+		}
+
+	}
+
+} );
+
+
+/***/ }),
+
+/***/ "../../../../three/examples/js/loaders/ColladaLoader.js":
+/***/ (function(module, exports) {
+
+/**
+* @author Tim Knip / http://www.floorplanner.com/ / tim at floorplanner.com
+* @author Tony Parisi / http://www.tonyparisi.com/
+*/
+
+THREE.ColladaLoader = function () {
+
+	var COLLADA = null;
+	var scene = null;
+	var visualScene;
+	var kinematicsModel;
+
+	var readyCallbackFunc = null;
+
+	var sources = {};
+	var images = {};
+	var animations = {};
+	var controllers = {};
+	var geometries = {};
+	var materials = {};
+	var effects = {};
+	var cameras = {};
+	var lights = {};
+
+	var animData;
+	var kinematics;
+	var visualScenes;
+	var kinematicsModels;
+	var baseUrl;
+	var morphs;
+	var skins;
+
+	var flip_uv = true;
+
+	var options = {
+		// Force Geometry to always be centered at the local origin of the
+		// containing Mesh.
+		centerGeometry: false,
+
+		// Axis conversion is done for geometries, animations, and controllers.
+		// If we ever pull cameras or lights out of the COLLADA file, they'll
+		// need extra work.
+		convertUpAxis: false,
+
+		subdivideFaces: true,
+
+		upAxis: 'Y',
+
+		// For reflective or refractive materials we'll use this cubemap
+		defaultEnvMap: null
+
+	};
+
+	var colladaUnit = 1.0;
+	var colladaUp = 'Y';
+	var upConversion = null;
+
+	function load ( url, readyCallback, progressCallback, failCallback ) {
+
+		var length = 0;
+
+		if ( document.implementation && document.implementation.createDocument ) {
+
+			var request = new XMLHttpRequest();
+
+			request.onreadystatechange = function() {
+
+				if ( request.readyState === 4 ) {
+
+					if ( request.status === 0 || request.status === 200 ) {
+
+						if ( request.response ) {
+
+							readyCallbackFunc = readyCallback;
+							parse( request.response, undefined, url );
+
+						} else {
+
+							if ( failCallback ) {
+
+								failCallback( { type: 'error', url: url } );
+
+							} else {
+
+								console.error( "ColladaLoader: Empty or non-existing file (" + url + ")" );
+
+							}
+
+						}
+
+					}else{
+
+						if( failCallback ){
+
+							failCallback( { type: 'error', url: url } );
+
+						}else{
+
+							console.error( 'ColladaLoader: Couldn\'t load "' + url + '" (' + request.status + ')' );
+
+						}
+
+					}
+
+				} else if ( request.readyState === 3 ) {
+
+					if ( progressCallback ) {
+
+						if ( length === 0 ) {
+
+							length = request.getResponseHeader( "Content-Length" );
+
+						}
+
+						progressCallback( { total: length, loaded: request.responseText.length } );
+
+					}
+
+				}
+
+			};
+
+			request.open( "GET", url, true );
+			request.send( null );
+
+		} else {
+
+			alert( "Don't know how to parse XML!" );
+
+		}
+
+	}
+
+	function parse( text, callBack, url ) {
+
+		COLLADA = new DOMParser().parseFromString( text, 'text/xml' );
+		callBack = callBack || readyCallbackFunc;
+
+		if ( url !== undefined ) {
+
+			var parts = url.split( '/' );
+			parts.pop();
+			baseUrl = ( parts.length < 1 ? '.' : parts.join( '/' ) ) + '/';
+
+		}
+
+		parseAsset();
+		setUpConversion();
+		images = parseLib( "library_images image", _Image, "image" );
+		materials = parseLib( "library_materials material", Material, "material" );
+		effects = parseLib( "library_effects effect", Effect, "effect" );
+		geometries = parseLib( "library_geometries geometry", Geometry, "geometry" );
+		cameras = parseLib( "library_cameras camera", Camera, "camera" );
+		lights = parseLib( "library_lights light", Light, "light" );
+		controllers = parseLib( "library_controllers controller", Controller, "controller" );
+		animations = parseLib( "library_animations animation", Animation, "animation" );
+		visualScenes = parseLib( "library_visual_scenes visual_scene", VisualScene, "visual_scene" );
+		kinematicsModels = parseLib( "library_kinematics_models kinematics_model", KinematicsModel, "kinematics_model" );
+
+		morphs = [];
+		skins = [];
+
+		visualScene = parseScene();
+		scene = new THREE.Group();
+
+		for ( var i = 0; i < visualScene.nodes.length; i ++ ) {
+
+			scene.add( createSceneGraph( visualScene.nodes[ i ] ) );
+
+		}
+
+		// unit conversion
+		scene.scale.multiplyScalar( colladaUnit );
+
+		createAnimations();
+
+		kinematicsModel = parseKinematicsModel();
+		createKinematics();
+
+		var result = {
+
+			scene: scene,
+			morphs: morphs,
+			skins: skins,
+			animations: animData,
+			kinematics: kinematics,
+			dae: {
+				images: images,
+				materials: materials,
+				cameras: cameras,
+				lights: lights,
+				effects: effects,
+				geometries: geometries,
+				controllers: controllers,
+				animations: animations,
+				visualScenes: visualScenes,
+				visualScene: visualScene,
+				scene: visualScene,
+				kinematicsModels: kinematicsModels,
+				kinematicsModel: kinematicsModel
+			}
+
+		};
+
+		if ( callBack ) {
+
+			callBack( result );
+
+		}
+
+		return result;
+
+	}
+
+	function parseAsset () {
+
+		var elements = COLLADA.querySelectorAll('asset');
+
+		var element = elements[0];
+
+		if ( element && element.childNodes ) {
+
+			for ( var i = 0; i < element.childNodes.length; i ++ ) {
+
+				var child = element.childNodes[ i ];
+
+				switch ( child.nodeName ) {
+
+					case 'unit':
+
+						var meter = child.getAttribute( 'meter' );
+
+						if ( meter ) {
+
+							colladaUnit = parseFloat( meter );
+
+						}
+
+						break;
+
+					case 'up_axis':
+
+						colladaUp = child.textContent.charAt(0);
+						break;
+
+				}
+
+			}
+
+		}
+
+	}
+
+	function parseLib ( q, classSpec, prefix ) {
+
+		var elements = COLLADA.querySelectorAll(q);
+
+		var lib = {};
+
+		var i = 0;
+
+		var elementsLength = elements.length;
+
+		for ( var j = 0; j < elementsLength; j ++ ) {
+
+			var element = elements[j];
+			var daeElement = ( new classSpec() ).parse( element );
+
+			if ( !daeElement.id || daeElement.id.length === 0 ) daeElement.id = prefix + ( i ++ );
+			lib[ daeElement.id ] = daeElement;
+
+		}
+
+		return lib;
+
+	}
+
+	function parseScene() {
+
+		var sceneElement = COLLADA.querySelectorAll('scene instance_visual_scene')[0];
+
+		if ( sceneElement ) {
+
+			var url = sceneElement.getAttribute( 'url' ).replace( /^#/, '' );
+			return visualScenes[ url.length > 0 ? url : 'visual_scene0' ];
+
+		} else {
+
+			return null;
+
+		}
+
+	}
+
+	function parseKinematicsModel() {
+
+		var kinematicsModelElement = COLLADA.querySelectorAll('instance_kinematics_model')[0];
+
+		if ( kinematicsModelElement ) {
+
+			var url = kinematicsModelElement.getAttribute( 'url' ).replace(/^#/, '');
+			return kinematicsModels[ url.length > 0 ? url : 'kinematics_model0' ];
+
+		} else {
+
+			return null;
+
+		}
+
+	}
+
+	function createAnimations() {
+
+		animData = [];
+
+		// fill in the keys
+		recurseHierarchy( scene );
+
+	}
+
+	function recurseHierarchy( node ) {
+
+		var n = visualScene.getChildById( node.colladaId, true ),
+			newData = null;
+
+		if ( n && n.keys ) {
+
+			newData = {
+				fps: 60,
+				hierarchy: [ {
+					node: n,
+					keys: n.keys,
+					sids: n.sids
+				} ],
+				node: node,
+				name: 'animation_' + node.name,
+				length: 0
+			};
+
+			animData.push(newData);
+
+			for ( var i = 0, il = n.keys.length; i < il; i ++ ) {
+
+				newData.length = Math.max( newData.length, n.keys[i].time );
+
+			}
+
+		} else {
+
+			newData = {
+				hierarchy: [ {
+					keys: [],
+					sids: []
+				} ]
+			}
+
+		}
+
+		for ( var i = 0, il = node.children.length; i < il; i ++ ) {
+
+			var d = recurseHierarchy( node.children[i] );
+
+			for ( var j = 0, jl = d.hierarchy.length; j < jl; j ++ ) {
+
+				newData.hierarchy.push( {
+					keys: [],
+					sids: []
+				} );
+
+			}
+
+		}
+
+		return newData;
+
+	}
+
+	function calcAnimationBounds () {
+
+		var start = 1000000;
+		var end = -start;
+		var frames = 0;
+		var ID;
+		for ( var id in animations ) {
+
+			var animation = animations[ id ];
+			ID = ID || animation.id;
+			for ( var i = 0; i < animation.sampler.length; i ++ ) {
+
+				var sampler = animation.sampler[ i ];
+
+				sampler.create();
+
+				start = Math.min( start, sampler.startTime );
+				end = Math.max( end, sampler.endTime );
+				frames = Math.max( frames, sampler.input.length );
+
+			}
+
+		}
+
+		return { start:start, end:end, frames:frames,ID:ID };
+
+	}
+
+	function createMorph ( geometry, ctrl ) {
+
+		var morphCtrl = ctrl instanceof InstanceController ? controllers[ ctrl.url ] : ctrl;
+
+		if ( !morphCtrl || !morphCtrl.morph ) {
+
+			console.log("could not find morph controller!");
+			return;
+
+		}
+
+		var morph = morphCtrl.morph;
+
+		for ( var i = 0; i < morph.targets.length; i ++ ) {
+
+			var target_id = morph.targets[ i ];
+			var daeGeometry = geometries[ target_id ];
+
+			if ( !daeGeometry.mesh ||
+				 !daeGeometry.mesh.primitives ||
+				 !daeGeometry.mesh.primitives.length ) {
+				 continue;
+			}
+
+			var target = daeGeometry.mesh.primitives[ 0 ].geometry;
+
+			if ( target.vertices.length === geometry.vertices.length ) {
+
+				geometry.morphTargets.push( { name: "target_1", vertices: target.vertices } );
+
+			}
+
+		}
+
+		geometry.morphTargets.push( { name: "target_Z", vertices: geometry.vertices } );
+
+	}
+
+	function createSkin ( geometry, ctrl, applyBindShape ) {
+
+		var skinCtrl = controllers[ ctrl.url ];
+
+		if ( !skinCtrl || !skinCtrl.skin ) {
+
+			console.log( "could not find skin controller!" );
+			return;
+
+		}
+
+		if ( !ctrl.skeleton || !ctrl.skeleton.length ) {
+
+			console.log( "could not find the skeleton for the skin!" );
+			return;
+
+		}
+
+		var skin = skinCtrl.skin;
+		var skeleton = visualScene.getChildById( ctrl.skeleton[ 0 ] );
+		var hierarchy = [];
+
+		applyBindShape = applyBindShape !== undefined ? applyBindShape : true;
+
+		var bones = [];
+		geometry.skinWeights = [];
+		geometry.skinIndices = [];
+
+		//createBones( geometry.bones, skin, hierarchy, skeleton, null, -1 );
+		//createWeights( skin, geometry.bones, geometry.skinIndices, geometry.skinWeights );
+
+		/*
+		geometry.animation = {
+			name: 'take_001',
+			fps: 30,
+			length: 2,
+			JIT: true,
+			hierarchy: hierarchy
+		};
+		*/
+
+		if ( applyBindShape ) {
+
+			for ( var i = 0; i < geometry.vertices.length; i ++ ) {
+
+				geometry.vertices[ i ].applyMatrix4( skin.bindShapeMatrix );
+
+			}
+
+		}
+
+	}
+
+	function setupSkeleton ( node, bones, frame, parent ) {
+
+		node.world = node.world || new THREE.Matrix4();
+		node.localworld = node.localworld || new THREE.Matrix4();
+		node.world.copy( node.matrix );
+		node.localworld.copy( node.matrix );
+
+		if ( node.channels && node.channels.length ) {
+
+			var channel = node.channels[ 0 ];
+			var m = channel.sampler.output[ frame ];
+
+			if ( m instanceof THREE.Matrix4 ) {
+
+				node.world.copy( m );
+				node.localworld.copy(m);
+				if (frame === 0)
+					node.matrix.copy(m);
+			}
+
+		}
+
+		if ( parent ) {
+
+			node.world.multiplyMatrices( parent, node.world );
+
+		}
+
+		bones.push( node );
+
+		for ( var i = 0; i < node.nodes.length; i ++ ) {
+
+			setupSkeleton( node.nodes[ i ], bones, frame, node.world );
+
+		}
+
+	}
+
+	function setupSkinningMatrices ( bones, skin ) {
+
+		// FIXME: this is dumb...
+
+		for ( var i = 0; i < bones.length; i ++ ) {
+
+			var bone = bones[ i ];
+			var found = -1;
+
+			if ( bone.type != 'JOINT' ) continue;
+
+			for ( var j = 0; j < skin.joints.length; j ++ ) {
+
+				if ( bone.sid === skin.joints[ j ] ) {
+
+					found = j;
+					break;
+
+				}
+
+			}
+
+			if ( found >= 0 ) {
+
+				var inv = skin.invBindMatrices[ found ];
+
+				bone.invBindMatrix = inv;
+				bone.skinningMatrix = new THREE.Matrix4();
+				bone.skinningMatrix.multiplyMatrices(bone.world, inv); // (IBMi * JMi)
+				bone.animatrix = new THREE.Matrix4();
+
+				bone.animatrix.copy(bone.localworld);
+				bone.weights = [];
+
+				for ( var j = 0; j < skin.weights.length; j ++ ) {
+
+					for (var k = 0; k < skin.weights[ j ].length; k ++ ) {
+
+						var w = skin.weights[ j ][ k ];
+
+						if ( w.joint === found ) {
+
+							bone.weights.push( w );
+
+						}
+
+					}
+
+				}
+
+			} else {
+
+				console.warn( "ColladaLoader: Could not find joint '" + bone.sid + "'." );
+
+				bone.skinningMatrix = new THREE.Matrix4();
+				bone.weights = [];
+
+			}
+		}
+
+	}
+
+	//Walk the Collada tree and flatten the bones into a list, extract the position, quat and scale from the matrix
+	function flattenSkeleton(skeleton) {
+
+		var list = [];
+		var walk = function(parentid, node, list) {
+
+			var bone = {};
+			bone.name = node.sid;
+			bone.parent = parentid;
+			bone.matrix = node.matrix;
+			var data = [ new THREE.Vector3(),new THREE.Quaternion(),new THREE.Vector3() ];
+			bone.matrix.decompose(data[0], data[1], data[2]);
+
+			bone.pos = [ data[0].x,data[0].y,data[0].z ];
+
+			bone.scl = [ data[2].x,data[2].y,data[2].z ];
+			bone.rotq = [ data[1].x,data[1].y,data[1].z,data[1].w ];
+			list.push(bone);
+
+			for (var i in node.nodes) {
+
+				walk(node.sid, node.nodes[i], list);
+
+			}
+
+		};
+
+		walk(-1, skeleton, list);
+		return list;
+
+	}
+
+	//Move the vertices into the pose that is proper for the start of the animation
+	function skinToBindPose(geometry,skeleton,skinController) {
+
+		var bones = [];
+		setupSkeleton( skeleton, bones, -1 );
+		setupSkinningMatrices( bones, skinController.skin );
+		var v = new THREE.Vector3();
+		var skinned = [];
+
+		for (var i = 0; i < geometry.vertices.length; i ++) {
+
+			skinned.push(new THREE.Vector3());
+
+		}
+
+		for ( i = 0; i < bones.length; i ++ ) {
+
+			if ( bones[ i ].type != 'JOINT' ) continue;
+
+			for ( var j = 0; j < bones[ i ].weights.length; j ++ ) {
+
+				var w = bones[ i ].weights[ j ];
+				var vidx = w.index;
+				var weight = w.weight;
+
+				var o = geometry.vertices[vidx];
+				var s = skinned[vidx];
+
+				v.x = o.x;
+				v.y = o.y;
+				v.z = o.z;
+
+				v.applyMatrix4( bones[i].skinningMatrix );
+
+				s.x += (v.x * weight);
+				s.y += (v.y * weight);
+				s.z += (v.z * weight);
+			}
+
+		}
+
+		for (var i = 0; i < geometry.vertices.length; i ++) {
+
+			geometry.vertices[i] = skinned[i];
+
+		}
+
+	}
+
+	function applySkin( geometry, instanceCtrl, frame ) {
+
+		if ( frame === undefined ) frame = 40;
+
+		var skinController = controllers[ instanceCtrl.url ];
+
+		if ( !skinController || !skinController.skin ) {
+
+			console.log( 'ColladaLoader: Could not find skin controller.' );
+			return;
+
+		}
+
+		if ( !instanceCtrl.skeleton || !instanceCtrl.skeleton.length ) {
+
+			console.log( 'ColladaLoader: Could not find the skeleton for the skin. ' );
+			return;
+
+		}
+
+		var animationBounds = calcAnimationBounds();
+		var skeleton = visualScene.getChildById( instanceCtrl.skeleton[0], true ) || visualScene.getChildBySid( instanceCtrl.skeleton[0], true );
+
+		//flatten the skeleton into a list of bones
+		var bonelist = flattenSkeleton(skeleton);
+		var joints = skinController.skin.joints;
+
+		//sort that list so that the order reflects the order in the joint list
+		var sortedbones = [];
+		for (var i = 0; i < joints.length; i ++) {
+
+			for (var j = 0; j < bonelist.length; j ++) {
+
+				if (bonelist[j].name === joints[i]) {
+
+					sortedbones[i] = bonelist[j];
+
+				}
+
+			}
+
+		}
+
+		//hook up the parents by index instead of name
+		for (var i = 0; i < sortedbones.length; i ++) {
+
+			for (var j = 0; j < sortedbones.length; j ++) {
+
+				if (sortedbones[i].parent === sortedbones[j].name) {
+
+					sortedbones[i].parent = j;
+
+				}
+
+			}
+
+		}
+
+
+		var i, j, w, vidx, weight;
+		var v = new THREE.Vector3(), o, s;
+
+		// move vertices to bind shape
+		for ( i = 0; i < geometry.vertices.length; i ++ ) {
+			geometry.vertices[i].applyMatrix4( skinController.skin.bindShapeMatrix );
+		}
+
+		var skinIndices = [];
+		var skinWeights = [];
+		var weights = skinController.skin.weights;
+
+		// hook up the skin weights
+		// TODO - this might be a good place to choose greatest 4 weights
+		for ( var i =0; i < weights.length; i ++ ) {
+
+			var indicies = new THREE.Vector4(weights[i][0] ? weights[i][0].joint : 0,weights[i][1] ? weights[i][1].joint : 0,weights[i][2] ? weights[i][2].joint : 0,weights[i][3] ? weights[i][3].joint : 0);
+			var weight = new THREE.Vector4(weights[i][0] ? weights[i][0].weight : 0,weights[i][1] ? weights[i][1].weight : 0,weights[i][2] ? weights[i][2].weight : 0,weights[i][3] ? weights[i][3].weight : 0);
+
+			skinIndices.push(indicies);
+			skinWeights.push(weight);
+
+		}
+
+		geometry.skinIndices = skinIndices;
+		geometry.skinWeights = skinWeights;
+		geometry.bones = sortedbones;
+		// process animation, or simply pose the rig if no animation
+
+		//create an animation for the animated bones
+		//NOTE: this has no effect when using morphtargets
+		var animationdata = { "name":animationBounds.ID,"fps":30,"length":animationBounds.frames / 30,"hierarchy":[] };
+
+		for (var j = 0; j < sortedbones.length; j ++) {
+
+			animationdata.hierarchy.push({ parent:sortedbones[j].parent, name:sortedbones[j].name, keys:[] });
+
+		}
+
+		console.log( 'ColladaLoader:', animationBounds.ID + ' has ' + sortedbones.length + ' bones.' );
+
+
+
+		skinToBindPose(geometry, skeleton, skinController);
+
+
+		for ( frame = 0; frame < animationBounds.frames; frame ++ ) {
+
+			var bones = [];
+			var skinned = [];
+			// process the frame and setup the rig with a fresh
+			// transform, possibly from the bone's animation channel(s)
+
+			setupSkeleton( skeleton, bones, frame );
+			setupSkinningMatrices( bones, skinController.skin );
+
+			for (var i = 0; i < bones.length; i ++) {
+
+				for (var j = 0; j < animationdata.hierarchy.length; j ++) {
+
+					if (animationdata.hierarchy[j].name === bones[i].sid) {
+
+						var key = {};
+						key.time = (frame / 30);
+						key.matrix = bones[i].animatrix;
+
+						if (frame === 0)
+							bones[i].matrix = key.matrix;
+
+						var data = [ new THREE.Vector3(),new THREE.Quaternion(),new THREE.Vector3() ];
+						key.matrix.decompose(data[0], data[1], data[2]);
+
+						key.pos = [ data[0].x,data[0].y,data[0].z ];
+
+						key.scl = [ data[2].x,data[2].y,data[2].z ];
+						key.rot = data[1];
+
+						animationdata.hierarchy[j].keys.push(key);
+
+					}
+
+				}
+
+			}
+
+			geometry.animation = animationdata;
+
+		}
+
+	}
+
+	function createKinematics() {
+
+		if ( kinematicsModel && kinematicsModel.joints.length === 0 ) {
+			kinematics = undefined;
+			return;
+		}
+
+		var jointMap = {};
+
+		var _addToMap = function( jointIndex, parentVisualElement ) {
+
+			var parentVisualElementId = parentVisualElement.getAttribute( 'id' );
+			var colladaNode = visualScene.getChildById( parentVisualElementId, true );
+			var joint = kinematicsModel.joints[ jointIndex ];
+
+			scene.traverse(function( node ) {
+
+				if ( node.colladaId == parentVisualElementId ) {
+
+					jointMap[ jointIndex ] = {
+						node: node,
+						transforms: colladaNode.transforms,
+						joint: joint,
+						position: joint.zeroPosition
+					};
+
+				}
+
+			});
+
+		};
+
+		kinematics = {
+
+			joints: kinematicsModel && kinematicsModel.joints,
+
+			getJointValue: function( jointIndex ) {
+
+				var jointData = jointMap[ jointIndex ];
+
+				if ( jointData ) {
+
+					return jointData.position;
+
+				} else {
+
+					console.log( 'getJointValue: joint ' + jointIndex + ' doesn\'t exist' );
+
+				}
+
+			},
+
+			setJointValue: function( jointIndex, value ) {
+
+				var jointData = jointMap[ jointIndex ];
+
+				if ( jointData ) {
+
+					var joint = jointData.joint;
+
+					if ( value > joint.limits.max || value < joint.limits.min ) {
+
+						console.log( 'setJointValue: joint ' + jointIndex + ' value ' + value + ' outside of limits (min: ' + joint.limits.min + ', max: ' + joint.limits.max + ')' );
+
+					} else if ( joint.static ) {
+
+						console.log( 'setJointValue: joint ' + jointIndex + ' is static' );
+
+					} else {
+
+						var threejsNode = jointData.node;
+						var axis = joint.axis;
+						var transforms = jointData.transforms;
+
+						var matrix = new THREE.Matrix4();
+						var m1 = new THREE.Matrix4();
+
+						for (i = 0; i < transforms.length; i ++ ) {
+
+							var transform = transforms[ i ];
+
+							// kinda ghetto joint detection
+
+							if ( transform.sid && transform.sid.indexOf( 'joint' + jointIndex ) !== -1 ) {
+
+								// apply actual joint value here
+								switch ( joint.type ) {
+
+									case 'revolute':
+
+										matrix.multiply( m1.makeRotationAxis( axis, THREE.Math.degToRad(value) ) );
+										break;
+
+									case 'prismatic':
+
+										matrix.multiply( m1.makeTranslation(axis.x * value, axis.y * value, axis.z * value ) );
+										break;
+
+									default:
+
+										console.warn( 'setJointValue: unknown joint type: ' + joint.type );
+										break;
+
+								}
+
+							} else {
+
+								switch ( transform.type ) {
+
+									case 'matrix':
+
+										matrix.multiply( transform.obj );
+
+										break;
+
+									case 'translate':
+
+										matrix.multiply( m1.makeTranslation( transform.obj.x, transform.obj.y, transform.obj.z ) );
+
+										break;
+
+									case 'rotate':
+
+										matrix.multiply( m1.makeRotationAxis( transform.obj, transform.angle ) );
+
+										break;
+
+								}
+							}
+						}
+
+						// apply the matrix to the threejs node
+						var elementsFloat32Arr = matrix.elements;
+						var elements = Array.prototype.slice.call( elementsFloat32Arr );
+
+						var elementsRowMajor = [
+							elements[ 0 ],
+							elements[ 4 ],
+							elements[ 8 ],
+							elements[ 12 ],
+							elements[ 1 ],
+							elements[ 5 ],
+							elements[ 9 ],
+							elements[ 13 ],
+							elements[ 2 ],
+							elements[ 6 ],
+							elements[ 10 ],
+							elements[ 14 ],
+							elements[ 3 ],
+							elements[ 7 ],
+							elements[ 11 ],
+							elements[ 15 ]
+						];
+
+						threejsNode.matrix.set.apply( threejsNode.matrix, elementsRowMajor );
+						threejsNode.matrix.decompose( threejsNode.position, threejsNode.quaternion, threejsNode.scale );
+
+						jointMap[ jointIndex ].position = value;
+
+					}
+
+				} else {
+
+					console.log( 'setJointValue: joint ' + jointIndex + ' doesn\'t exist' );
+
+				}
+
+			}
+
+		};
+
+		var element = COLLADA.querySelector('scene instance_kinematics_scene');
+
+		if ( element ) {
+
+			for ( var i = 0; i < element.childNodes.length; i ++ ) {
+
+				var child = element.childNodes[ i ];
+
+				if ( child.nodeType != 1 ) continue;
+
+				switch ( child.nodeName ) {
+
+					case 'bind_joint_axis':
+
+						var visualTarget = child.getAttribute( 'target' ).split( '/' ).pop();
+						var axis = child.querySelector('axis param').textContent;
+						var jointIndex = parseInt( axis.split( 'joint' ).pop().split( '.' )[0] );
+						var visualTargetElement = COLLADA.querySelector( '[sid="' + visualTarget + '"]' );
+
+						if ( visualTargetElement ) {
+							var parentVisualElement = visualTargetElement.parentElement;
+							_addToMap(jointIndex, parentVisualElement);
+						}
+
+						break;
+
+					default:
+
+						break;
+
+				}
+
+			}
+		}
+
+	}
+
+	function createSceneGraph ( node, parent ) {
+
+		var obj = new THREE.Object3D();
+		var skinned = false;
+		var skinController;
+		var morphController;
+		var i, j;
+
+		// FIXME: controllers
+
+		for ( i = 0; i < node.controllers.length; i ++ ) {
+
+			var controller = controllers[ node.controllers[ i ].url ];
+
+			switch ( controller.type ) {
+
+				case 'skin':
+
+					if ( geometries[ controller.skin.source ] ) {
+
+						var inst_geom = new InstanceGeometry();
+
+						inst_geom.url = controller.skin.source;
+						inst_geom.instance_material = node.controllers[ i ].instance_material;
+
+						node.geometries.push( inst_geom );
+						skinned = true;
+						skinController = node.controllers[ i ];
+
+					} else if ( controllers[ controller.skin.source ] ) {
+
+						// urgh: controller can be chained
+						// handle the most basic case...
+
+						var second = controllers[ controller.skin.source ];
+						morphController = second;
+					//	skinController = node.controllers[i];
+
+						if ( second.morph && geometries[ second.morph.source ] ) {
+
+							var inst_geom = new InstanceGeometry();
+
+							inst_geom.url = second.morph.source;
+							inst_geom.instance_material = node.controllers[ i ].instance_material;
+
+							node.geometries.push( inst_geom );
+
+						}
+
+					}
+
+					break;
+
+				case 'morph':
+
+					if ( geometries[ controller.morph.source ] ) {
+
+						var inst_geom = new InstanceGeometry();
+
+						inst_geom.url = controller.morph.source;
+						inst_geom.instance_material = node.controllers[ i ].instance_material;
+
+						node.geometries.push( inst_geom );
+						morphController = node.controllers[ i ];
+
+					}
+
+					console.log( 'ColladaLoader: Morph-controller partially supported.' );
+
+				default:
+					break;
+
+			}
+
+		}
+
+		// geometries
+
+		var double_sided_materials = {};
+
+		for ( i = 0; i < node.geometries.length; i ++ ) {
+
+			var instance_geometry = node.geometries[i];
+			var instance_materials = instance_geometry.instance_material;
+			var geometry = geometries[ instance_geometry.url ];
+			var used_materials = {};
+			var used_materials_array = [];
+			var num_materials = 0;
+			var first_material;
+
+			if ( geometry ) {
+
+				if ( !geometry.mesh || !geometry.mesh.primitives )
+					continue;
+
+				if ( obj.name.length === 0 ) {
+
+					obj.name = geometry.id;
+
+				}
+
+				// collect used fx for this geometry-instance
+
+				if ( instance_materials ) {
+
+					for ( j = 0; j < instance_materials.length; j ++ ) {
+
+						var instance_material = instance_materials[ j ];
+						var mat = materials[ instance_material.target ];
+						var effect_id = mat.instance_effect.url;
+						var shader = effects[ effect_id ].shader;
+						var material3js = shader.material;
+
+						if ( geometry.doubleSided ) {
+
+							if ( !( instance_material.symbol in double_sided_materials ) ) {
+
+								var _copied_material = material3js.clone();
+								_copied_material.side = THREE.DoubleSide;
+								double_sided_materials[ instance_material.symbol ] = _copied_material;
+
+							}
+
+							material3js = double_sided_materials[ instance_material.symbol ];
+
+						}
+
+						material3js.opacity = !material3js.opacity ? 1 : material3js.opacity;
+						used_materials[ instance_material.symbol ] = num_materials;
+						used_materials_array.push( material3js );
+						first_material = material3js;
+						first_material.name = mat.name === null || mat.name === '' ? mat.id : mat.name;
+						num_materials ++;
+
+					}
+
+				}
+
+				var mesh;
+				var material = first_material || new THREE.MeshLambertMaterial( { color: 0xdddddd, side: geometry.doubleSided ? THREE.DoubleSide : THREE.FrontSide } );
+				var geom = geometry.mesh.geometry3js;
+
+				if ( num_materials > 1 ) {
+
+					material = new THREE.MultiMaterial( used_materials_array );
+
+					for ( j = 0; j < geom.faces.length; j ++ ) {
+
+						var face = geom.faces[ j ];
+						face.materialIndex = used_materials[ face.daeMaterial ]
+
+					}
+
+				}
+
+				if ( skinController !== undefined ) {
+
+
+					applySkin( geom, skinController );
+
+					if ( geom.morphTargets.length > 0 ) {
+
+						material.morphTargets = true;
+						material.skinning = false;
+
+					} else {
+
+						material.morphTargets = false;
+						material.skinning = true;
+
+					}
+
+
+					mesh = new THREE.SkinnedMesh( geom, material, false );
+
+
+					//mesh.skeleton = skinController.skeleton;
+					//mesh.skinController = controllers[ skinController.url ];
+					//mesh.skinInstanceController = skinController;
+					mesh.name = 'skin_' + skins.length;
+
+
+
+					//mesh.animationHandle.setKey(0);
+					skins.push( mesh );
+
+				} else if ( morphController !== undefined ) {
+
+					createMorph( geom, morphController );
+
+					material.morphTargets = true;
+
+					mesh = new THREE.Mesh( geom, material );
+					mesh.name = 'morph_' + morphs.length;
+
+					morphs.push( mesh );
+
+				} else {
+
+					if ( geom.isLineStrip === true ) {
+
+						mesh = new THREE.Line( geom );
+
+					} else {
+
+						mesh = new THREE.Mesh( geom, material );
+
+					}
+
+				}
+
+				obj.add(mesh);
+
+			}
+
+		}
+
+		for ( i = 0; i < node.cameras.length; i ++ ) {
+
+			var instance_camera = node.cameras[i];
+			var cparams = cameras[instance_camera.url];
+
+			var cam = new THREE.PerspectiveCamera(cparams.yfov, parseFloat(cparams.aspect_ratio),
+					parseFloat(cparams.znear), parseFloat(cparams.zfar));
+
+			obj.add(cam);
+		}
+
+		for ( i = 0; i < node.lights.length; i ++ ) {
+
+			var light = null;
+			var instance_light = node.lights[i];
+			var lparams = lights[instance_light.url];
+
+			if ( lparams && lparams.technique ) {
+
+				var color = lparams.color.getHex();
+				var intensity = lparams.intensity;
+				var distance = lparams.distance;
+				var angle = lparams.falloff_angle;
+
+				switch ( lparams.technique ) {
+
+					case 'directional':
+
+						light = new THREE.DirectionalLight( color, intensity, distance );
+						light.position.set(0, 0, 1);
+						break;
+
+					case 'point':
+
+						light = new THREE.PointLight( color, intensity, distance );
+						break;
+
+					case 'spot':
+
+						light = new THREE.SpotLight( color, intensity, distance, angle );
+						light.position.set(0, 0, 1);
+						break;
+
+					case 'ambient':
+
+						light = new THREE.AmbientLight( color );
+						break;
+
+				}
+
+			}
+
+			if (light) {
+				obj.add(light);
+			}
+		}
+
+		obj.name = node.name || node.id || "";
+		obj.colladaId = node.id || "";
+		obj.layer = node.layer || "";
+		obj.matrix = node.matrix;
+		obj.matrix.decompose( obj.position, obj.quaternion, obj.scale );
+
+		if ( options.centerGeometry && obj.geometry ) {
+
+			var delta = obj.geometry.center();
+			delta.multiply( obj.scale );
+			delta.applyQuaternion( obj.quaternion );
+
+			obj.position.sub( delta );
+
+		}
+
+		for ( i = 0; i < node.nodes.length; i ++ ) {
+
+			obj.add( createSceneGraph( node.nodes[i], node ) );
+
+		}
+
+		return obj;
+
+	}
+
+	function getJointId( skin, id ) {
+
+		for ( var i = 0; i < skin.joints.length; i ++ ) {
+
+			if ( skin.joints[ i ] === id ) {
+
+				return i;
+
+			}
+
+		}
+
+	}
+
+	function getLibraryNode( id ) {
+
+		var nodes = COLLADA.querySelectorAll('library_nodes node');
+
+		for ( var i = 0; i < nodes.length; i++ ) {
+
+			var attObj = nodes[i].attributes.getNamedItem('id');
+
+			if ( attObj && attObj.value === id ) {
+
+				return nodes[i];
+
+			}
+
+		}
+
+		return undefined;
+
+	}
+
+	function getChannelsForNode ( node ) {
+
+		var channels = [];
+		var startTime = 1000000;
+		var endTime = -1000000;
+
+		for ( var id in animations ) {
+
+			var animation = animations[id];
+
+			for ( var i = 0; i < animation.channel.length; i ++ ) {
+
+				var channel = animation.channel[i];
+				var sampler = animation.sampler[i];
+				var id = channel.target.split('/')[0];
+
+				if ( id == node.id ) {
+
+					sampler.create();
+					channel.sampler = sampler;
+					startTime = Math.min(startTime, sampler.startTime);
+					endTime = Math.max(endTime, sampler.endTime);
+					channels.push(channel);
+
+				}
+
+			}
+
+		}
+
+		if ( channels.length ) {
+
+			node.startTime = startTime;
+			node.endTime = endTime;
+
+		}
+
+		return channels;
+
+	}
+
+	function calcFrameDuration( node ) {
+
+		var minT = 10000000;
+
+		for ( var i = 0; i < node.channels.length; i ++ ) {
+
+			var sampler = node.channels[i].sampler;
+
+			for ( var j = 0; j < sampler.input.length - 1; j ++ ) {
+
+				var t0 = sampler.input[ j ];
+				var t1 = sampler.input[ j + 1 ];
+				minT = Math.min( minT, t1 - t0 );
+
+			}
+		}
+
+		return minT;
+
+	}
+
+	function calcMatrixAt( node, t ) {
+
+		var animated = {};
+
+		var i, j;
+
+		for ( i = 0; i < node.channels.length; i ++ ) {
+
+			var channel = node.channels[ i ];
+			animated[ channel.sid ] = channel;
+
+		}
+
+		var matrix = new THREE.Matrix4();
+
+		for ( i = 0; i < node.transforms.length; i ++ ) {
+
+			var transform = node.transforms[ i ];
+			var channel = animated[ transform.sid ];
+
+			if ( channel !== undefined ) {
+
+				var sampler = channel.sampler;
+				var value;
+
+				for ( j = 0; j < sampler.input.length - 1; j ++ ) {
+
+					if ( sampler.input[ j + 1 ] > t ) {
+
+						value = sampler.output[ j ];
+						//console.log(value.flatten)
+						break;
+
+					}
+
+				}
+
+				if ( value !== undefined ) {
+
+					if ( value instanceof THREE.Matrix4 ) {
+
+						matrix.multiplyMatrices( matrix, value );
+
+					} else {
+
+						// FIXME: handle other types
+
+						matrix.multiplyMatrices( matrix, transform.matrix );
+
+					}
+
+				} else {
+
+					matrix.multiplyMatrices( matrix, transform.matrix );
+
+				}
+
+			} else {
+
+				matrix.multiplyMatrices( matrix, transform.matrix );
+
+			}
+
+		}
+
+		return matrix;
+
+	}
+
+	function bakeAnimations ( node ) {
+
+		if ( node.channels && node.channels.length ) {
+
+			var keys = [],
+				sids = [];
+
+			for ( var i = 0, il = node.channels.length; i < il; i ++ ) {
+
+				var channel = node.channels[i],
+					fullSid = channel.fullSid,
+					sampler = channel.sampler,
+					input = sampler.input,
+					transform = node.getTransformBySid( channel.sid ),
+					member;
+
+				if ( channel.arrIndices ) {
+
+					member = [];
+
+					for ( var j = 0, jl = channel.arrIndices.length; j < jl; j ++ ) {
+
+						member[ j ] = getConvertedIndex( channel.arrIndices[ j ] );
+
+					}
+
+				} else {
+
+					member = getConvertedMember( channel.member );
+
+				}
+
+				if ( transform ) {
+
+					if ( sids.indexOf( fullSid ) === -1 ) {
+
+						sids.push( fullSid );
+
+					}
+
+					for ( var j = 0, jl = input.length; j < jl; j ++ ) {
+
+						var time = input[j],
+							data = sampler.getData( transform.type, j, member ),
+							key = findKey( keys, time );
+
+						if ( !key ) {
+
+							key = new Key( time );
+							var timeNdx = findTimeNdx( keys, time );
+							keys.splice( timeNdx === -1 ? keys.length : timeNdx, 0, key );
+
+						}
+
+						key.addTarget( fullSid, transform, member, data );
+
+					}
+
+				} else {
+
+					console.log( 'Could not find transform "' + channel.sid + '" in node ' + node.id );
+
+				}
+
+			}
+
+			// post process
+			for ( var i = 0; i < sids.length; i ++ ) {
+
+				var sid = sids[ i ];
+
+				for ( var j = 0; j < keys.length; j ++ ) {
+
+					var key = keys[ j ];
+
+					if ( !key.hasTarget( sid ) ) {
+
+						interpolateKeys( keys, key, j, sid );
+
+					}
+
+				}
+
+			}
+
+			node.keys = keys;
+			node.sids = sids;
+
+		}
+
+	}
+
+	function findKey ( keys, time) {
+
+		var retVal = null;
+
+		for ( var i = 0, il = keys.length; i < il && retVal === null; i ++ ) {
+
+			var key = keys[i];
+
+			if ( key.time === time ) {
+
+				retVal = key;
+
+			} else if ( key.time > time ) {
+
+				break;
+
+			}
+
+		}
+
+		return retVal;
+
+	}
+
+	function findTimeNdx ( keys, time) {
+
+		var ndx = -1;
+
+		for ( var i = 0, il = keys.length; i < il && ndx === -1; i ++ ) {
+
+			var key = keys[i];
+
+			if ( key.time >= time ) {
+
+				ndx = i;
+
+			}
+
+		}
+
+		return ndx;
+
+	}
+
+	function interpolateKeys ( keys, key, ndx, fullSid ) {
+
+		var prevKey = getPrevKeyWith( keys, fullSid, ndx ? ndx - 1 : 0 ),
+			nextKey = getNextKeyWith( keys, fullSid, ndx + 1 );
+
+		if ( prevKey && nextKey ) {
+
+			var scale = (key.time - prevKey.time) / (nextKey.time - prevKey.time),
+				prevTarget = prevKey.getTarget( fullSid ),
+				nextData = nextKey.getTarget( fullSid ).data,
+				prevData = prevTarget.data,
+				data;
+
+			if ( prevTarget.type === 'matrix' ) {
+
+				data = prevData;
+
+			} else if ( prevData.length ) {
+
+				data = [];
+
+				for ( var i = 0; i < prevData.length; ++ i ) {
+
+					data[ i ] = prevData[ i ] + ( nextData[ i ] - prevData[ i ] ) * scale;
+
+				}
+
+			} else {
+
+				data = prevData + ( nextData - prevData ) * scale;
+
+			}
+
+			key.addTarget( fullSid, prevTarget.transform, prevTarget.member, data );
+
+		}
+
+	}
+
+	// Get next key with given sid
+
+	function getNextKeyWith( keys, fullSid, ndx ) {
+
+		for ( ; ndx < keys.length; ndx ++ ) {
+
+			var key = keys[ ndx ];
+
+			if ( key.hasTarget( fullSid ) ) {
+
+				return key;
+
+			}
+
+		}
+
+		return null;
+
+	}
+
+	// Get previous key with given sid
+
+	function getPrevKeyWith( keys, fullSid, ndx ) {
+
+		ndx = ndx >= 0 ? ndx : ndx + keys.length;
+
+		for ( ; ndx >= 0; ndx -- ) {
+
+			var key = keys[ ndx ];
+
+			if ( key.hasTarget( fullSid ) ) {
+
+				return key;
+
+			}
+
+		}
+
+		return null;
+
+	}
+
+	function _Image() {
+
+		this.id = "";
+		this.init_from = "";
+
+	}
+
+	_Image.prototype.parse = function(element) {
+
+		this.id = element.getAttribute('id');
+
+		for ( var i = 0; i < element.childNodes.length; i ++ ) {
+
+			var child = element.childNodes[ i ];
+
+			if ( child.nodeName === 'init_from' ) {
+
+				this.init_from = child.textContent;
+
+			}
+
+		}
+
+		return this;
+
+	};
+
+	function Controller() {
+
+		this.id = "";
+		this.name = "";
+		this.type = "";
+		this.skin = null;
+		this.morph = null;
+
+	}
+
+	Controller.prototype.parse = function( element ) {
+
+		this.id = element.getAttribute('id');
+		this.name = element.getAttribute('name');
+		this.type = "none";
+
+		for ( var i = 0; i < element.childNodes.length; i ++ ) {
+
+			var child = element.childNodes[ i ];
+
+			switch ( child.nodeName ) {
+
+				case 'skin':
+
+					this.skin = (new Skin()).parse(child);
+					this.type = child.nodeName;
+					break;
+
+				case 'morph':
+
+					this.morph = (new Morph()).parse(child);
+					this.type = child.nodeName;
+					break;
+
+				default:
+					break;
+
+			}
+		}
+
+		return this;
+
+	};
+
+	function Morph() {
+
+		this.method = null;
+		this.source = null;
+		this.targets = null;
+		this.weights = null;
+
+	}
+
+	Morph.prototype.parse = function( element ) {
+
+		var sources = {};
+		var inputs = [];
+		var i;
+
+		this.method = element.getAttribute( 'method' );
+		this.source = element.getAttribute( 'source' ).replace( /^#/, '' );
+
+		for ( i = 0; i < element.childNodes.length; i ++ ) {
+
+			var child = element.childNodes[ i ];
+			if ( child.nodeType != 1 ) continue;
+
+			switch ( child.nodeName ) {
+
+				case 'source':
+
+					var source = ( new Source() ).parse( child );
+					sources[ source.id ] = source;
+					break;
+
+				case 'targets':
+
+					inputs = this.parseInputs( child );
+					break;
+
+				default:
+
+					console.log( child.nodeName );
+					break;
+
+			}
+
+		}
+
+		for ( i = 0; i < inputs.length; i ++ ) {
+
+			var input = inputs[ i ];
+			var source = sources[ input.source ];
+
+			switch ( input.semantic ) {
+
+				case 'MORPH_TARGET':
+
+					this.targets = source.read();
+					break;
+
+				case 'MORPH_WEIGHT':
+
+					this.weights = source.read();
+					break;
+
+				default:
+					break;
+
+			}
+		}
+
+		return this;
+
+	};
+
+	Morph.prototype.parseInputs = function(element) {
+
+		var inputs = [];
+
+		for ( var i = 0; i < element.childNodes.length; i ++ ) {
+
+			var child = element.childNodes[i];
+			if ( child.nodeType != 1) continue;
+
+			switch ( child.nodeName ) {
+
+				case 'input':
+
+					inputs.push( (new Input()).parse(child) );
+					break;
+
+				default:
+					break;
+			}
+		}
+
+		return inputs;
+
+	};
+
+	function Skin() {
+
+		this.source = "";
+		this.bindShapeMatrix = null;
+		this.invBindMatrices = [];
+		this.joints = [];
+		this.weights = [];
+
+	}
+
+	Skin.prototype.parse = function( element ) {
+
+		var sources = {};
+		var joints, weights;
+
+		this.source = element.getAttribute( 'source' ).replace( /^#/, '' );
+		this.invBindMatrices = [];
+		this.joints = [];
+		this.weights = [];
+
+		for ( var i = 0; i < element.childNodes.length; i ++ ) {
+
+			var child = element.childNodes[i];
+			if ( child.nodeType != 1 ) continue;
+
+			switch ( child.nodeName ) {
+
+				case 'bind_shape_matrix':
+
+					var f = _floats(child.textContent);
+					this.bindShapeMatrix = getConvertedMat4( f );
+					break;
+
+				case 'source':
+
+					var src = new Source().parse(child);
+					sources[ src.id ] = src;
+					break;
+
+				case 'joints':
+
+					joints = child;
+					break;
+
+				case 'vertex_weights':
+
+					weights = child;
+					break;
+
+				default:
+
+					console.log( child.nodeName );
+					break;
+
+			}
+		}
+
+		this.parseJoints( joints, sources );
+		this.parseWeights( weights, sources );
+
+		return this;
+
+	};
+
+	Skin.prototype.parseJoints = function ( element, sources ) {
+
+		for ( var i = 0; i < element.childNodes.length; i ++ ) {
+
+			var child = element.childNodes[ i ];
+			if ( child.nodeType != 1 ) continue;
+
+			switch ( child.nodeName ) {
+
+				case 'input':
+
+					var input = ( new Input() ).parse( child );
+					var source = sources[ input.source ];
+
+					if ( input.semantic === 'JOINT' ) {
+
+						this.joints = source.read();
+
+					} else if ( input.semantic === 'INV_BIND_MATRIX' ) {
+
+						this.invBindMatrices = source.read();
+
+					}
+
+					break;
+
+				default:
+					break;
+			}
+
+		}
+
+	};
+
+	Skin.prototype.parseWeights = function ( element, sources ) {
+
+		var v, vcount, inputs = [];
+
+		for ( var i = 0; i < element.childNodes.length; i ++ ) {
+
+			var child = element.childNodes[ i ];
+			if ( child.nodeType != 1 ) continue;
+
+			switch ( child.nodeName ) {
+
+				case 'input':
+
+					inputs.push( ( new Input() ).parse( child ) );
+					break;
+
+				case 'v':
+
+					v = _ints( child.textContent );
+					break;
+
+				case 'vcount':
+
+					vcount = _ints( child.textContent );
+					break;
+
+				default:
+					break;
+
+			}
+
+		}
+
+		var index = 0;
+
+		for ( var i = 0; i < vcount.length; i ++ ) {
+
+			var numBones = vcount[i];
+			var vertex_weights = [];
+
+			for ( var j = 0; j < numBones; j ++ ) {
+
+				var influence = {};
+
+				for ( var k = 0; k < inputs.length; k ++ ) {
+
+					var input = inputs[ k ];
+					var value = v[ index + input.offset ];
+
+					switch ( input.semantic ) {
+
+						case 'JOINT':
+
+							influence.joint = value;//this.joints[value];
+							break;
+
+						case 'WEIGHT':
+
+							influence.weight = sources[ input.source ].data[ value ];
+							break;
+
+						default:
+							break;
+
+					}
+
+				}
+
+				vertex_weights.push( influence );
+				index += inputs.length;
+			}
+
+			for ( var j = 0; j < vertex_weights.length; j ++ ) {
+
+				vertex_weights[ j ].index = i;
+
+			}
+
+			this.weights.push( vertex_weights );
+
+		}
+
+	};
+
+	function VisualScene () {
+
+		this.id = "";
+		this.name = "";
+		this.nodes = [];
+		this.scene = new THREE.Group();
+
+	}
+
+	VisualScene.prototype.getChildById = function( id, recursive ) {
+
+		for ( var i = 0; i < this.nodes.length; i ++ ) {
+
+			var node = this.nodes[ i ].getChildById( id, recursive );
+
+			if ( node ) {
+
+				return node;
+
+			}
+
+		}
+
+		return null;
+
+	};
+
+	VisualScene.prototype.getChildBySid = function( sid, recursive ) {
+
+		for ( var i = 0; i < this.nodes.length; i ++ ) {
+
+			var node = this.nodes[ i ].getChildBySid( sid, recursive );
+
+			if ( node ) {
+
+				return node;
+
+			}
+
+		}
+
+		return null;
+
+	};
+
+	VisualScene.prototype.parse = function( element ) {
+
+		this.id = element.getAttribute( 'id' );
+		this.name = element.getAttribute( 'name' );
+		this.nodes = [];
+
+		for ( var i = 0; i < element.childNodes.length; i ++ ) {
+
+			var child = element.childNodes[ i ];
+			if ( child.nodeType != 1 ) continue;
+
+			switch ( child.nodeName ) {
+
+				case 'node':
+
+					this.nodes.push( ( new Node() ).parse( child ) );
+					break;
+
+				default:
+					break;
+
+			}
+
+		}
+
+		return this;
+
+	};
+
+	function Node() {
+
+		this.id = "";
+		this.name = "";
+		this.sid = "";
+		this.nodes = [];
+		this.controllers = [];
+		this.transforms = [];
+		this.geometries = [];
+		this.channels = [];
+		this.matrix = new THREE.Matrix4();
+
+	}
+
+	Node.prototype.getChannelForTransform = function( transformSid ) {
+
+		for ( var i = 0; i < this.channels.length; i ++ ) {
+
+			var channel = this.channels[i];
+			var parts = channel.target.split('/');
+			var id = parts.shift();
+			var sid = parts.shift();
+			var dotSyntax = (sid.indexOf(".") >= 0);
+			var arrSyntax = (sid.indexOf("(") >= 0);
+			var arrIndices;
+
+			if ( dotSyntax ) {
+
+				parts = sid.split(".");
+				sid = parts.shift();
+
+			} else if ( arrSyntax ) {
+
+				arrIndices = sid.split("(");
+				sid = arrIndices.shift();
+
+				for ( var j = 0; j < arrIndices.length; j ++ ) {
+
+					arrIndices[ j ] = parseInt( arrIndices[ j ].replace( /\)/, '' ) );
+
+				}
+
+			}
+
+			if ( sid === transformSid ) {
+
+				channel.info = { sid: sid, dotSyntax: dotSyntax, arrSyntax: arrSyntax, arrIndices: arrIndices };
+				return channel;
+
+			}
+
+		}
+
+		return null;
+
+	};
+
+	Node.prototype.getChildById = function ( id, recursive ) {
+
+		if ( this.id === id ) {
+
+			return this;
+
+		}
+
+		if ( recursive ) {
+
+			for ( var i = 0; i < this.nodes.length; i ++ ) {
+
+				var n = this.nodes[ i ].getChildById( id, recursive );
+
+				if ( n ) {
+
+					return n;
+
+				}
+
+			}
+
+		}
+
+		return null;
+
+	};
+
+	Node.prototype.getChildBySid = function ( sid, recursive ) {
+
+		if ( this.sid === sid ) {
+
+			return this;
+
+		}
+
+		if ( recursive ) {
+
+			for ( var i = 0; i < this.nodes.length; i ++ ) {
+
+				var n = this.nodes[ i ].getChildBySid( sid, recursive );
+
+				if ( n ) {
+
+					return n;
+
+				}
+
+			}
+		}
+
+		return null;
+
+	};
+
+	Node.prototype.getTransformBySid = function ( sid ) {
+
+		for ( var i = 0; i < this.transforms.length; i ++ ) {
+
+			if ( this.transforms[ i ].sid === sid ) return this.transforms[ i ];
+
+		}
+
+		return null;
+
+	};
+
+	Node.prototype.parse = function( element ) {
+
+		var url;
+
+		this.id = element.getAttribute('id');
+		this.sid = element.getAttribute('sid');
+		this.name = element.getAttribute('name');
+		this.type = element.getAttribute('type');
+		this.layer = element.getAttribute('layer');
+
+		this.type = this.type === 'JOINT' ? this.type : 'NODE';
+
+		this.nodes = [];
+		this.transforms = [];
+		this.geometries = [];
+		this.cameras = [];
+		this.lights = [];
+		this.controllers = [];
+		this.matrix = new THREE.Matrix4();
+
+		for ( var i = 0; i < element.childNodes.length; i ++ ) {
+
+			var child = element.childNodes[ i ];
+			if ( child.nodeType != 1 ) continue;
+
+			switch ( child.nodeName ) {
+
+				case 'node':
+
+					this.nodes.push( ( new Node() ).parse( child ) );
+					break;
+
+				case 'instance_camera':
+
+					this.cameras.push( ( new InstanceCamera() ).parse( child ) );
+					break;
+
+				case 'instance_controller':
+
+					this.controllers.push( ( new InstanceController() ).parse( child ) );
+					break;
+
+				case 'instance_geometry':
+
+					this.geometries.push( ( new InstanceGeometry() ).parse( child ) );
+					break;
+
+				case 'instance_light':
+
+					this.lights.push( ( new InstanceLight() ).parse( child ) );
+					break;
+
+				case 'instance_node':
+
+					url = child.getAttribute( 'url' ).replace( /^#/, '' );
+					var iNode = getLibraryNode( url );
+
+					if ( iNode ) {
+
+						this.nodes.push( ( new Node() ).parse( iNode )) ;
+
+					}
+
+					break;
+
+				case 'rotate':
+				case 'translate':
+				case 'scale':
+				case 'matrix':
+				case 'lookat':
+				case 'skew':
+
+					this.transforms.push( ( new Transform() ).parse( child ) );
+					break;
+
+				case 'extra':
+					break;
+
+				default:
+
+					console.log( child.nodeName );
+					break;
+
+			}
+
+		}
+
+		this.channels = getChannelsForNode( this );
+		bakeAnimations( this );
+
+		this.updateMatrix();
+
+		return this;
+
+	};
+
+	Node.prototype.updateMatrix = function () {
+
+		this.matrix.identity();
+
+		for ( var i = 0; i < this.transforms.length; i ++ ) {
+
+			this.transforms[ i ].apply( this.matrix );
+
+		}
+
+	};
+
+	function Transform () {
+
+		this.sid = "";
+		this.type = "";
+		this.data = [];
+		this.obj = null;
+
+	}
+
+	Transform.prototype.parse = function ( element ) {
+
+		this.sid = element.getAttribute( 'sid' );
+		this.type = element.nodeName;
+		this.data = _floats( element.textContent );
+		this.convert();
+
+		return this;
+
+	};
+
+	Transform.prototype.convert = function () {
+
+		switch ( this.type ) {
+
+			case 'matrix':
+
+				this.obj = getConvertedMat4( this.data );
+				break;
+
+			case 'rotate':
+
+				this.angle = THREE.Math.degToRad( this.data[3] );
+
+			case 'translate':
+
+				fixCoords( this.data, -1 );
+				this.obj = new THREE.Vector3( this.data[ 0 ], this.data[ 1 ], this.data[ 2 ] );
+				break;
+
+			case 'scale':
+
+				fixCoords( this.data, 1 );
+				this.obj = new THREE.Vector3( this.data[ 0 ], this.data[ 1 ], this.data[ 2 ] );
+				break;
+
+			default:
+				console.log( 'Can not convert Transform of type ' + this.type );
+				break;
+
+		}
+
+	};
+
+	Transform.prototype.apply = function () {
+
+		var m1 = new THREE.Matrix4();
+
+		return function ( matrix ) {
+
+			switch ( this.type ) {
+
+				case 'matrix':
+
+					matrix.multiply( this.obj );
+
+					break;
+
+				case 'translate':
+
+					matrix.multiply( m1.makeTranslation( this.obj.x, this.obj.y, this.obj.z ) );
+
+					break;
+
+				case 'rotate':
+
+					matrix.multiply( m1.makeRotationAxis( this.obj, this.angle ) );
+
+					break;
+
+				case 'scale':
+
+					matrix.scale( this.obj );
+
+					break;
+
+			}
+
+		};
+
+	}();
+
+	Transform.prototype.update = function ( data, member ) {
+
+		var members = [ 'X', 'Y', 'Z', 'ANGLE' ];
+
+		switch ( this.type ) {
+
+			case 'matrix':
+
+				if ( ! member ) {
+
+					this.obj.copy( data );
+
+				} else if ( member.length === 1 ) {
+
+					switch ( member[ 0 ] ) {
+
+						case 0:
+
+							this.obj.n11 = data[ 0 ];
+							this.obj.n21 = data[ 1 ];
+							this.obj.n31 = data[ 2 ];
+							this.obj.n41 = data[ 3 ];
+
+							break;
+
+						case 1:
+
+							this.obj.n12 = data[ 0 ];
+							this.obj.n22 = data[ 1 ];
+							this.obj.n32 = data[ 2 ];
+							this.obj.n42 = data[ 3 ];
+
+							break;
+
+						case 2:
+
+							this.obj.n13 = data[ 0 ];
+							this.obj.n23 = data[ 1 ];
+							this.obj.n33 = data[ 2 ];
+							this.obj.n43 = data[ 3 ];
+
+							break;
+
+						case 3:
+
+							this.obj.n14 = data[ 0 ];
+							this.obj.n24 = data[ 1 ];
+							this.obj.n34 = data[ 2 ];
+							this.obj.n44 = data[ 3 ];
+
+							break;
+
+					}
+
+				} else if ( member.length === 2 ) {
+
+					var propName = 'n' + ( member[ 0 ] + 1 ) + ( member[ 1 ] + 1 );
+					this.obj[ propName ] = data;
+
+				} else {
+
+					console.log('Incorrect addressing of matrix in transform.');
+
+				}
+
+				break;
+
+			case 'translate':
+			case 'scale':
+
+				if ( Object.prototype.toString.call( member ) === '[object Array]' ) {
+
+					member = members[ member[ 0 ] ];
+
+				}
+
+				switch ( member ) {
+
+					case 'X':
+
+						this.obj.x = data;
+						break;
+
+					case 'Y':
+
+						this.obj.y = data;
+						break;
+
+					case 'Z':
+
+						this.obj.z = data;
+						break;
+
+					default:
+
+						this.obj.x = data[ 0 ];
+						this.obj.y = data[ 1 ];
+						this.obj.z = data[ 2 ];
+						break;
+
+				}
+
+				break;
+
+			case 'rotate':
+
+				if ( Object.prototype.toString.call( member ) === '[object Array]' ) {
+
+					member = members[ member[ 0 ] ];
+
+				}
+
+				switch ( member ) {
+
+					case 'X':
+
+						this.obj.x = data;
+						break;
+
+					case 'Y':
+
+						this.obj.y = data;
+						break;
+
+					case 'Z':
+
+						this.obj.z = data;
+						break;
+
+					case 'ANGLE':
+
+						this.angle = THREE.Math.degToRad( data );
+						break;
+
+					default:
+
+						this.obj.x = data[ 0 ];
+						this.obj.y = data[ 1 ];
+						this.obj.z = data[ 2 ];
+						this.angle = THREE.Math.degToRad( data[ 3 ] );
+						break;
+
+				}
+				break;
+
+		}
+
+	};
+
+	function InstanceController() {
+
+		this.url = "";
+		this.skeleton = [];
+		this.instance_material = [];
+
+	}
+
+	InstanceController.prototype.parse = function ( element ) {
+
+		this.url = element.getAttribute('url').replace(/^#/, '');
+		this.skeleton = [];
+		this.instance_material = [];
+
+		for ( var i = 0; i < element.childNodes.length; i ++ ) {
+
+			var child = element.childNodes[ i ];
+			if ( child.nodeType !== 1 ) continue;
+
+			switch ( child.nodeName ) {
+
+				case 'skeleton':
+
+					this.skeleton.push( child.textContent.replace(/^#/, '') );
+					break;
+
+				case 'bind_material':
+
+					var instances = child.querySelectorAll('instance_material');
+
+					for ( var j = 0; j < instances.length; j ++ ) {
+
+						var instance = instances[j];
+						this.instance_material.push( (new InstanceMaterial()).parse(instance) );
+
+					}
+
+
+					break;
+
+				case 'extra':
+					break;
+
+				default:
+					break;
+
+			}
+		}
+
+		return this;
+
+	};
+
+	function InstanceMaterial () {
+
+		this.symbol = "";
+		this.target = "";
+
+	}
+
+	InstanceMaterial.prototype.parse = function ( element ) {
+
+		this.symbol = element.getAttribute('symbol');
+		this.target = element.getAttribute('target').replace(/^#/, '');
+		return this;
+
+	};
+
+	function InstanceGeometry() {
+
+		this.url = "";
+		this.instance_material = [];
+
+	}
+
+	InstanceGeometry.prototype.parse = function ( element ) {
+
+		this.url = element.getAttribute('url').replace(/^#/, '');
+		this.instance_material = [];
+
+		for ( var i = 0; i < element.childNodes.length; i ++ ) {
+
+			var child = element.childNodes[i];
+			if ( child.nodeType != 1 ) continue;
+
+			if ( child.nodeName === 'bind_material' ) {
+
+				var instances = child.querySelectorAll('instance_material');
+
+				for ( var j = 0; j < instances.length; j ++ ) {
+
+					var instance = instances[j];
+					this.instance_material.push( (new InstanceMaterial()).parse(instance) );
+
+				}
+
+				break;
+
+			}
+
+		}
+
+		return this;
+
+	};
+
+	function Geometry() {
+
+		this.id = "";
+		this.mesh = null;
+
+	}
+
+	Geometry.prototype.parse = function ( element ) {
+
+		this.id = element.getAttribute('id');
+
+		extractDoubleSided( this, element );
+
+		for ( var i = 0; i < element.childNodes.length; i ++ ) {
+
+			var child = element.childNodes[i];
+
+			switch ( child.nodeName ) {
+
+				case 'mesh':
+
+					this.mesh = (new Mesh(this)).parse(child);
+					break;
+
+				case 'extra':
+
+					// console.log( child );
+					break;
+
+				default:
+					break;
+			}
+		}
+
+		return this;
+
+	};
+
+	function Mesh( geometry ) {
+
+		this.geometry = geometry.id;
+		this.primitives = [];
+		this.vertices = null;
+		this.geometry3js = null;
+
+	}
+
+	Mesh.prototype.parse = function ( element ) {
+
+		this.primitives = [];
+
+		for ( var i = 0; i < element.childNodes.length; i ++ ) {
+
+			var child = element.childNodes[ i ];
+
+			switch ( child.nodeName ) {
+
+				case 'source':
+
+					_source( child );
+					break;
+
+				case 'vertices':
+
+					this.vertices = ( new Vertices() ).parse( child );
+					break;
+
+				case 'linestrips':
+
+					this.primitives.push( ( new LineStrips().parse( child ) ) );
+					break;
+
+				case 'triangles':
+
+					this.primitives.push( ( new Triangles().parse( child ) ) );
+					break;
+
+				case 'polygons':
+
+					this.primitives.push( ( new Polygons().parse( child ) ) );
+					break;
+
+				case 'polylist':
+
+					this.primitives.push( ( new Polylist().parse( child ) ) );
+					break;
+
+				default:
+					break;
+
+			}
+
+		}
+
+		this.geometry3js = new THREE.Geometry();
+
+		if ( this.vertices === null ) {
+
+			// TODO (mrdoob): Study case when this is null (carrier.dae)
+
+			return this;
+
+		}
+
+		var vertexData = sources[ this.vertices.input['POSITION'].source ].data;
+
+		for ( var i = 0; i < vertexData.length; i += 3 ) {
+
+			this.geometry3js.vertices.push( getConvertedVec3( vertexData, i ).clone() );
+
+		}
+
+		for ( var i = 0; i < this.primitives.length; i ++ ) {
+
+			var primitive = this.primitives[ i ];
+			primitive.setVertices( this.vertices );
+			this.handlePrimitive( primitive, this.geometry3js );
+
+		}
+
+		if ( this.geometry3js.calcNormals ) {
+
+			this.geometry3js.computeVertexNormals();
+			delete this.geometry3js.calcNormals;
+
+		}
+
+		return this;
+
+	};
+
+	Mesh.prototype.handlePrimitive = function ( primitive, geom ) {
+
+		if ( primitive instanceof LineStrips ) {
+
+			// TODO: Handle indices. Maybe easier with BufferGeometry?
+
+			geom.isLineStrip = true;
+			return;
+
+		}
+
+		var j, k, pList = primitive.p, inputs = primitive.inputs;
+		var input, index, idx32;
+		var source, numParams;
+		var vcount, vcIndex = 0, maxOffset = 0;
+		var texture_sets = [];
+
+		for ( j = 0; j < inputs.length; j ++ ) {
+
+			input = inputs[ j ];
+
+			var offset = input.offset + 1;
+			maxOffset = (maxOffset < offset) ? offset : maxOffset;
+
+			switch ( input.semantic ) {
+
+				case 'TEXCOORD':
+					texture_sets.push( input.set );
+					break;
+
+			}
+
+		}
+
+		for ( var pCount = 0; pCount < pList.length; ++ pCount ) {
+
+			var p = pList[ pCount ], i = 0;
+
+			while ( i < p.length ) {
+
+				var vs = [];
+				var ns = [];
+				var ts = null;
+				var cs = [];
+
+				if ( primitive.vcount ) {
+
+					vcount = primitive.vcount.length ? primitive.vcount[ vcIndex ++ ] : primitive.vcount;
+
+				} else {
+
+					vcount = p.length / maxOffset;
+
+				}
+
+
+				for ( j = 0; j < vcount; j ++ ) {
+
+					for ( k = 0; k < inputs.length; k ++ ) {
+
+						input = inputs[ k ];
+						source = sources[ input.source ];
+
+						index = p[ i + ( j * maxOffset ) + input.offset ];
+						numParams = source.accessor.params.length;
+						idx32 = index * numParams;
+
+						switch ( input.semantic ) {
+
+							case 'VERTEX':
+
+								vs.push( index );
+
+								break;
+
+							case 'NORMAL':
+
+								ns.push( getConvertedVec3( source.data, idx32 ) );
+
+								break;
+
+							case 'TEXCOORD':
+
+								ts = ts || { };
+								if ( ts[ input.set ] === undefined ) ts[ input.set ] = [];
+								// invert the V
+								ts[ input.set ].push( new THREE.Vector2( source.data[ idx32 ], source.data[ idx32 + 1 ] ) );
+
+								break;
+
+							case 'COLOR':
+
+								cs.push( new THREE.Color().setRGB( source.data[ idx32 ], source.data[ idx32 + 1 ], source.data[ idx32 + 2 ] ) );
+
+								break;
+
+							default:
+
+								break;
+
+						}
+
+					}
+
+				}
+
+				if ( ns.length === 0 ) {
+
+					// check the vertices inputs
+					input = this.vertices.input.NORMAL;
+
+					if ( input ) {
+
+						source = sources[ input.source ];
+						numParams = source.accessor.params.length;
+
+						for ( var ndx = 0, len = vs.length; ndx < len; ndx ++ ) {
+
+							ns.push( getConvertedVec3( source.data, vs[ ndx ] * numParams ) );
+
+						}
+
+					} else {
+
+						geom.calcNormals = true;
+
+					}
+
+				}
+
+				if ( !ts ) {
+
+					ts = { };
+					// check the vertices inputs
+					input = this.vertices.input.TEXCOORD;
+
+					if ( input ) {
+
+						texture_sets.push( input.set );
+						source = sources[ input.source ];
+						numParams = source.accessor.params.length;
+
+						for ( var ndx = 0, len = vs.length; ndx < len; ndx ++ ) {
+
+							idx32 = vs[ ndx ] * numParams;
+							if ( ts[ input.set ] === undefined ) ts[ input.set ] = [ ];
+							// invert the V
+							ts[ input.set ].push( new THREE.Vector2( source.data[ idx32 ], 1.0 - source.data[ idx32 + 1 ] ) );
+
+						}
+
+					}
+
+				}
+
+				if ( cs.length === 0 ) {
+
+					// check the vertices inputs
+					input = this.vertices.input.COLOR;
+
+					if ( input ) {
+
+						source = sources[ input.source ];
+						numParams = source.accessor.params.length;
+
+						for ( var ndx = 0, len = vs.length; ndx < len; ndx ++ ) {
+
+							idx32 = vs[ ndx ] * numParams;
+							cs.push( new THREE.Color().setRGB( source.data[ idx32 ], source.data[ idx32 + 1 ], source.data[ idx32 + 2 ] ) );
+
+						}
+
+					}
+
+				}
+
+				var face = null, faces = [], uv, uvArr;
+
+				if ( vcount === 3 ) {
+
+					faces.push( new THREE.Face3( vs[0], vs[1], vs[2], ns, cs.length ? cs : new THREE.Color() ) );
+
+				} else if ( vcount === 4 ) {
+
+					faces.push( new THREE.Face3( vs[0], vs[1], vs[3], ns.length ? [ ns[0].clone(), ns[1].clone(), ns[3].clone() ] : [], cs.length ? [ cs[0], cs[1], cs[3] ] : new THREE.Color() ) );
+
+					faces.push( new THREE.Face3( vs[1], vs[2], vs[3], ns.length ? [ ns[1].clone(), ns[2].clone(), ns[3].clone() ] : [], cs.length ? [ cs[1], cs[2], cs[3] ] : new THREE.Color() ) );
+
+				} else if ( vcount > 4 && options.subdivideFaces ) {
+
+					var clr = cs.length ? cs : new THREE.Color(),
+						vec1, vec2, vec3, v1, v2, norm;
+
+					// subdivide into multiple Face3s
+
+					for ( k = 1; k < vcount - 1; ) {
+
+						faces.push( new THREE.Face3( vs[0], vs[k], vs[k + 1], ns.length ? [ ns[0].clone(), ns[k ++].clone(), ns[k].clone() ] : [], clr ) );
+
+					}
+
+				}
+
+				if ( faces.length ) {
+
+					for ( var ndx = 0, len = faces.length; ndx < len; ndx ++ ) {
+
+						face = faces[ndx];
+						face.daeMaterial = primitive.material;
+						geom.faces.push( face );
+
+						for ( k = 0; k < texture_sets.length; k ++ ) {
+
+							uv = ts[ texture_sets[k] ];
+
+							if ( vcount > 4 ) {
+
+								// Grab the right UVs for the vertices in this face
+								uvArr = [ uv[0], uv[ndx + 1], uv[ndx + 2] ];
+
+							} else if ( vcount === 4 ) {
+
+								if ( ndx === 0 ) {
+
+									uvArr = [ uv[0], uv[1], uv[3] ];
+
+								} else {
+
+									uvArr = [ uv[1].clone(), uv[2], uv[3].clone() ];
+
+								}
+
+							} else {
+
+								uvArr = [ uv[0], uv[1], uv[2] ];
+
+							}
+
+							if ( geom.faceVertexUvs[k] === undefined ) {
+
+								geom.faceVertexUvs[k] = [];
+
+							}
+
+							geom.faceVertexUvs[k].push( uvArr );
+
+						}
+
+					}
+
+				} else {
+
+					console.log( 'dropped face with vcount ' + vcount + ' for geometry with id: ' + geom.id );
+
+				}
+
+				i += maxOffset * vcount;
+
+			}
+
+		}
+
+	};
+
+	function Polygons () {
+
+		this.material = "";
+		this.count = 0;
+		this.inputs = [];
+		this.vcount = null;
+		this.p = [];
+		this.geometry = new THREE.Geometry();
+
+	}
+
+	Polygons.prototype.setVertices = function ( vertices ) {
+
+		for ( var i = 0; i < this.inputs.length; i ++ ) {
+
+			if ( this.inputs[ i ].source === vertices.id ) {
+
+				this.inputs[ i ].source = vertices.input[ 'POSITION' ].source;
+
+			}
+
+		}
+
+	};
+
+	Polygons.prototype.parse = function ( element ) {
+
+		this.material = element.getAttribute( 'material' );
+		this.count = _attr_as_int( element, 'count', 0 );
+
+		for ( var i = 0; i < element.childNodes.length; i ++ ) {
+
+			var child = element.childNodes[ i ];
+
+			switch ( child.nodeName ) {
+
+				case 'input':
+
+					this.inputs.push( ( new Input() ).parse( element.childNodes[ i ] ) );
+					break;
+
+				case 'vcount':
+
+					this.vcount = _ints( child.textContent );
+					break;
+
+				case 'p':
+
+					this.p.push( _ints( child.textContent ) );
+					break;
+
+				case 'ph':
+
+					console.warn( 'polygon holes not yet supported!' );
+					break;
+
+				default:
+					break;
+
+			}
+
+		}
+
+		return this;
+
+	};
+
+	function Polylist () {
+
+		Polygons.call( this );
+
+		this.vcount = [];
+
+	}
+
+	Polylist.prototype = Object.create( Polygons.prototype );
+	Polylist.prototype.constructor = Polylist;
+
+	function LineStrips() {
+
+		Polygons.call( this );
+
+		this.vcount = 1;
+
+	}
+
+	LineStrips.prototype = Object.create( Polygons.prototype );
+	LineStrips.prototype.constructor = LineStrips;
+
+	function Triangles () {
+
+		Polygons.call( this );
+
+		this.vcount = 3;
+
+	}
+
+	Triangles.prototype = Object.create( Polygons.prototype );
+	Triangles.prototype.constructor = Triangles;
+
+	function Accessor() {
+
+		this.source = "";
+		this.count = 0;
+		this.stride = 0;
+		this.params = [];
+
+	}
+
+	Accessor.prototype.parse = function ( element ) {
+
+		this.params = [];
+		this.source = element.getAttribute( 'source' );
+		this.count = _attr_as_int( element, 'count', 0 );
+		this.stride = _attr_as_int( element, 'stride', 0 );
+
+		for ( var i = 0; i < element.childNodes.length; i ++ ) {
+
+			var child = element.childNodes[ i ];
+
+			if ( child.nodeName === 'param' ) {
+
+				var param = {};
+				param[ 'name' ] = child.getAttribute( 'name' );
+				param[ 'type' ] = child.getAttribute( 'type' );
+				this.params.push( param );
+
+			}
+
+		}
+
+		return this;
+
+	};
+
+	function Vertices() {
+
+		this.input = {};
+
+	}
+
+	Vertices.prototype.parse = function ( element ) {
+
+		this.id = element.getAttribute('id');
+
+		for ( var i = 0; i < element.childNodes.length; i ++ ) {
+
+			if ( element.childNodes[i].nodeName === 'input' ) {
+
+				var input = ( new Input() ).parse( element.childNodes[ i ] );
+				this.input[ input.semantic ] = input;
+
+			}
+
+		}
+
+		return this;
+
+	};
+
+	function Input () {
+
+		this.semantic = "";
+		this.offset = 0;
+		this.source = "";
+		this.set = 0;
+
+	}
+
+	Input.prototype.parse = function ( element ) {
+
+		this.semantic = element.getAttribute('semantic');
+		this.source = element.getAttribute('source').replace(/^#/, '');
+		this.set = _attr_as_int(element, 'set', -1);
+		this.offset = _attr_as_int(element, 'offset', 0);
+
+		if ( this.semantic === 'TEXCOORD' && this.set < 0 ) {
+
+			this.set = 0;
+
+		}
+
+		return this;
+
+	};
+
+	function Source ( id ) {
+
+		this.id = id;
+		this.type = null;
+
+	}
+
+	Source.prototype.parse = function ( element ) {
+
+		this.id = element.getAttribute( 'id' );
+
+		for ( var i = 0; i < element.childNodes.length; i ++ ) {
+
+			var child = element.childNodes[i];
+
+			switch ( child.nodeName ) {
+
+				case 'bool_array':
+
+					this.data = _bools( child.textContent );
+					this.type = child.nodeName;
+					break;
+
+				case 'float_array':
+
+					this.data = _floats( child.textContent );
+					this.type = child.nodeName;
+					break;
+
+				case 'int_array':
+
+					this.data = _ints( child.textContent );
+					this.type = child.nodeName;
+					break;
+
+				case 'IDREF_array':
+				case 'Name_array':
+
+					this.data = _strings( child.textContent );
+					this.type = child.nodeName;
+					break;
+
+				case 'technique_common':
+
+					for ( var j = 0; j < child.childNodes.length; j ++ ) {
+
+						if ( child.childNodes[ j ].nodeName === 'accessor' ) {
+
+							this.accessor = ( new Accessor() ).parse( child.childNodes[ j ] );
+							break;
+
+						}
+					}
+					break;
+
+				default:
+					// console.log(child.nodeName);
+					break;
+
+			}
+
+		}
+
+		return this;
+
+	};
+
+	Source.prototype.read = function () {
+
+		var result = [];
+
+		//for (var i = 0; i < this.accessor.params.length; i++) {
+
+		var param = this.accessor.params[ 0 ];
+
+			//console.log(param.name + " " + param.type);
+
+		switch ( param.type ) {
+
+			case 'IDREF':
+			case 'Name': case 'name':
+			case 'float':
+
+				return this.data;
+
+			case 'float4x4':
+
+				for ( var j = 0; j < this.data.length; j += 16 ) {
+
+					var s = this.data.slice( j, j + 16 );
+					var m = getConvertedMat4( s );
+					result.push( m );
+				}
+
+				break;
+
+			default:
+
+				console.log( 'ColladaLoader: Source: Read dont know how to read ' + param.type + '.' );
+				break;
+
+		}
+
+		//}
+
+		return result;
+
+	};
+
+	function Material () {
+
+		this.id = "";
+		this.name = "";
+		this.instance_effect = null;
+
+	}
+
+	Material.prototype.parse = function ( element ) {
+
+		this.id = element.getAttribute( 'id' );
+		this.name = element.getAttribute( 'name' );
+
+		for ( var i = 0; i < element.childNodes.length; i ++ ) {
+
+			if ( element.childNodes[ i ].nodeName === 'instance_effect' ) {
+
+				this.instance_effect = ( new InstanceEffect() ).parse( element.childNodes[ i ] );
+				break;
+
+			}
+
+		}
+
+		return this;
+
+	};
+
+	function ColorOrTexture () {
+
+		this.color = new THREE.Color();
+		this.color.setRGB( Math.random(), Math.random(), Math.random() );
+		this.color.a = 1.0;
+
+		this.texture = null;
+		this.texcoord = null;
+		this.texOpts = null;
+
+	}
+
+	ColorOrTexture.prototype.isColor = function () {
+
+		return ( this.texture === null );
+
+	};
+
+	ColorOrTexture.prototype.isTexture = function () {
+
+		return ( this.texture != null );
+
+	};
+
+	ColorOrTexture.prototype.parse = function ( element ) {
+
+		if (element.nodeName === 'transparent') {
+
+			this.opaque = element.getAttribute('opaque');
+
+		}
+
+		for ( var i = 0; i < element.childNodes.length; i ++ ) {
+
+			var child = element.childNodes[ i ];
+			if ( child.nodeType != 1 ) continue;
+
+			switch ( child.nodeName ) {
+
+				case 'color':
+
+					var rgba = _floats( child.textContent );
+					this.color = new THREE.Color();
+					this.color.setRGB( rgba[0], rgba[1], rgba[2] );
+					this.color.a = rgba[3];
+					break;
+
+				case 'texture':
+
+					this.texture = child.getAttribute('texture');
+					this.texcoord = child.getAttribute('texcoord');
+					// Defaults from:
+					// https://collada.org/mediawiki/index.php/Maya_texture_placement_MAYA_extension
+					this.texOpts = {
+						offsetU: 0,
+						offsetV: 0,
+						repeatU: 1,
+						repeatV: 1,
+						wrapU: 1,
+						wrapV: 1
+					};
+					this.parseTexture( child );
+					break;
+
+				default:
+					break;
+
+			}
+
+		}
+
+		return this;
+
+	};
+
+	ColorOrTexture.prototype.parseTexture = function ( element ) {
+
+		if ( ! element.childNodes ) return this;
+
+		// This should be supported by Maya, 3dsMax, and MotionBuilder
+
+		if ( element.childNodes[1] && element.childNodes[1].nodeName === 'extra' ) {
+
+			element = element.childNodes[1];
+
+			if ( element.childNodes[1] && element.childNodes[1].nodeName === 'technique' ) {
+
+				element = element.childNodes[1];
+
+			}
+
+		}
+
+		for ( var i = 0; i < element.childNodes.length; i ++ ) {
+
+			var child = element.childNodes[ i ];
+
+			switch ( child.nodeName ) {
+
+				case 'offsetU':
+				case 'offsetV':
+				case 'repeatU':
+				case 'repeatV':
+
+					this.texOpts[ child.nodeName ] = parseFloat( child.textContent );
+
+					break;
+
+				case 'wrapU':
+				case 'wrapV':
+
+					// some dae have a value of true which becomes NaN via parseInt
+
+					if ( child.textContent.toUpperCase() === 'TRUE' ) {
+
+						this.texOpts[ child.nodeName ] = 1;
+
+					} else {
+
+						this.texOpts[ child.nodeName ] = parseInt( child.textContent );
+
+					}
+					break;
+
+				default:
+
+					this.texOpts[ child.nodeName ] = child.textContent;
+
+					break;
+
+			}
+
+		}
+
+		return this;
+
+	};
+
+	function Shader ( type, effect ) {
+
+		this.type = type;
+		this.effect = effect;
+		this.material = null;
+
+	}
+
+	Shader.prototype.parse = function ( element ) {
+
+		for ( var i = 0; i < element.childNodes.length; i ++ ) {
+
+			var child = element.childNodes[ i ];
+			if ( child.nodeType != 1 ) continue;
+
+			switch ( child.nodeName ) {
+
+				case 'emission':
+				case 'diffuse':
+				case 'specular':
+				case 'transparent':
+
+					this[ child.nodeName ] = ( new ColorOrTexture() ).parse( child );
+					break;
+
+				case 'bump':
+
+					// If 'bumptype' is 'heightfield', create a 'bump' property
+					// Else if 'bumptype' is 'normalmap', create a 'normal' property
+					// (Default to 'bump')
+					var bumpType = child.getAttribute( 'bumptype' );
+					if ( bumpType ) {
+						if ( bumpType.toLowerCase() === "heightfield" ) {
+							this[ 'bump' ] = ( new ColorOrTexture() ).parse( child );
+						} else if ( bumpType.toLowerCase() === "normalmap" ) {
+							this[ 'normal' ] = ( new ColorOrTexture() ).parse( child );
+						} else {
+							console.error( "Shader.prototype.parse: Invalid value for attribute 'bumptype' (" + bumpType + ") - valid bumptypes are 'HEIGHTFIELD' and 'NORMALMAP' - defaulting to 'HEIGHTFIELD'" );
+							this[ 'bump' ] = ( new ColorOrTexture() ).parse( child );
+						}
+					} else {
+						console.warn( "Shader.prototype.parse: Attribute 'bumptype' missing from bump node - defaulting to 'HEIGHTFIELD'" );
+						this[ 'bump' ] = ( new ColorOrTexture() ).parse( child );
+					}
+
+					break;
+
+				case 'shininess':
+				case 'reflectivity':
+				case 'index_of_refraction':
+				case 'transparency':
+
+					var f = child.querySelectorAll('float');
+
+					if ( f.length > 0 )
+						this[ child.nodeName ] = parseFloat( f[ 0 ].textContent );
+
+					break;
+
+				default:
+					break;
+
+			}
+
+		}
+
+		this.create();
+		return this;
+
+	};
+
+	Shader.prototype.create = function() {
+
+		var props = {};
+
+		var transparent = false;
+
+		if (this['transparency'] !== undefined && this['transparent'] !== undefined) {
+			// convert transparent color RBG to average value
+			var transparentColor = this['transparent'];
+			var transparencyLevel = (this.transparent.color.r + this.transparent.color.g + this.transparent.color.b) / 3 * this.transparency;
+
+			if (transparencyLevel > 0) {
+				transparent = true;
+				props[ 'transparent' ] = true;
+				props[ 'opacity' ] = 1 - transparencyLevel;
+
+			}
+
+		}
+
+		var keys = {
+			'diffuse':'map',
+			'ambient':'lightMap',
+			'specular':'specularMap',
+			'emission':'emissionMap',
+			'bump':'bumpMap',
+			'normal':'normalMap'
+			};
+
+		for ( var prop in this ) {
+
+			switch ( prop ) {
+
+				case 'ambient':
+				case 'emission':
+				case 'diffuse':
+				case 'specular':
+				case 'bump':
+				case 'normal':
+
+					var cot = this[ prop ];
+
+					if ( cot instanceof ColorOrTexture ) {
+
+						if ( cot.isTexture() ) {
+
+							var samplerId = cot.texture;
+							var sampler = this.effect.sampler[samplerId];
+
+							if ( sampler !== undefined && sampler.source !== undefined ) {
+
+								var surface = this.effect.surface[sampler.source];
+
+								if ( surface !== undefined ) {
+
+									var image = images[ surface.init_from ];
+
+									if ( image ) {
+
+										var url = baseUrl + image.init_from;
+
+										var texture;
+										var loader = THREE.Loader.Handlers.get( url );
+
+										if ( loader !== null ) {
+
+											texture = loader.load( url );
+
+										} else {
+
+											texture = new THREE.Texture();
+
+											loadTextureImage( texture, url );
+
+										}
+
+										if ( sampler.wrap_s === "MIRROR" ) {
+
+											texture.wrapS = THREE.MirroredRepeatWrapping;
+
+										} else if ( sampler.wrap_s === "WRAP" || cot.texOpts.wrapU ) {
+
+											texture.wrapS = THREE.RepeatWrapping;
+
+										} else {
+
+											texture.wrapS = THREE.ClampToEdgeWrapping;
+
+										}
+
+										if ( sampler.wrap_t === "MIRROR" ) {
+
+											texture.wrapT = THREE.MirroredRepeatWrapping;
+
+										} else if ( sampler.wrap_t === "WRAP" || cot.texOpts.wrapV ) {
+
+											texture.wrapT = THREE.RepeatWrapping;
+
+										} else {
+
+											texture.wrapT = THREE.ClampToEdgeWrapping;
+
+										}
+
+										texture.offset.x = cot.texOpts.offsetU;
+										texture.offset.y = cot.texOpts.offsetV;
+										texture.repeat.x = cot.texOpts.repeatU;
+										texture.repeat.y = cot.texOpts.repeatV;
+										props[keys[prop]] = texture;
+
+										// Texture with baked lighting?
+										if (prop === 'emission') props['emissive'] = 0xffffff;
+
+									}
+
+								}
+
+							}
+
+						} else if ( prop === 'diffuse' || !transparent ) {
+
+							if ( prop === 'emission' ) {
+
+								props[ 'emissive' ] = cot.color.getHex();
+
+							} else {
+
+								props[ prop ] = cot.color.getHex();
+
+							}
+
+						}
+
+					}
+
+					break;
+
+				case 'shininess':
+
+					props[ prop ] = this[ prop ];
+					break;
+
+				case 'reflectivity':
+
+					props[ prop ] = this[ prop ];
+					if ( props[ prop ] > 0.0 ) props['envMap'] = options.defaultEnvMap;
+					props['combine'] = THREE.MixOperation;	//mix regular shading with reflective component
+					break;
+
+				case 'index_of_refraction':
+
+					props[ 'refractionRatio' ] = this[ prop ]; //TODO: "index_of_refraction" becomes "refractionRatio" in shader, but I'm not sure if the two are actually comparable
+					if ( this[ prop ] !== 1.0 ) props['envMap'] = options.defaultEnvMap;
+					break;
+
+				case 'transparency':
+					// gets figured out up top
+					break;
+
+				default:
+					break;
+
+			}
+
+		}
+
+		props[ 'side' ] = this.effect.doubleSided ? THREE.DoubleSide : THREE.FrontSide;
+
+		if ( props.diffuse !== undefined ) {
+
+			props.color = props.diffuse;
+			delete props.diffuse;
+
+		}
+
+		switch ( this.type ) {
+
+			case 'constant':
+
+				if (props.emissive != undefined) props.color = props.emissive;
+				this.material = new THREE.MeshBasicMaterial( props );
+				break;
+
+			case 'phong':
+			case 'blinn':
+
+				this.material = new THREE.MeshPhongMaterial( props );
+				break;
+
+			case 'lambert':
+			default:
+
+				this.material = new THREE.MeshLambertMaterial( props );
+				break;
+
+		}
+
+		return this.material;
+
+	};
+
+	function Surface ( effect ) {
+
+		this.effect = effect;
+		this.init_from = null;
+		this.format = null;
+
+	}
+
+	Surface.prototype.parse = function ( element ) {
+
+		for ( var i = 0; i < element.childNodes.length; i ++ ) {
+
+			var child = element.childNodes[ i ];
+			if ( child.nodeType != 1 ) continue;
+
+			switch ( child.nodeName ) {
+
+				case 'init_from':
+
+					this.init_from = child.textContent;
+					break;
+
+				case 'format':
+
+					this.format = child.textContent;
+					break;
+
+				default:
+
+					console.log( "unhandled Surface prop: " + child.nodeName );
+					break;
+
+			}
+
+		}
+
+		return this;
+
+	};
+
+	function Sampler2D ( effect ) {
+
+		this.effect = effect;
+		this.source = null;
+		this.wrap_s = null;
+		this.wrap_t = null;
+		this.minfilter = null;
+		this.magfilter = null;
+		this.mipfilter = null;
+
+	}
+
+	Sampler2D.prototype.parse = function ( element ) {
+
+		for ( var i = 0; i < element.childNodes.length; i ++ ) {
+
+			var child = element.childNodes[ i ];
+			if ( child.nodeType != 1 ) continue;
+
+			switch ( child.nodeName ) {
+
+				case 'source':
+
+					this.source = child.textContent;
+					break;
+
+				case 'minfilter':
+
+					this.minfilter = child.textContent;
+					break;
+
+				case 'magfilter':
+
+					this.magfilter = child.textContent;
+					break;
+
+				case 'mipfilter':
+
+					this.mipfilter = child.textContent;
+					break;
+
+				case 'wrap_s':
+
+					this.wrap_s = child.textContent;
+					break;
+
+				case 'wrap_t':
+
+					this.wrap_t = child.textContent;
+					break;
+
+				default:
+
+					console.log( "unhandled Sampler2D prop: " + child.nodeName );
+					break;
+
+			}
+
+		}
+
+		return this;
+
+	};
+
+	function Effect () {
+
+		this.id = "";
+		this.name = "";
+		this.shader = null;
+		this.surface = {};
+		this.sampler = {};
+
+	}
+
+	Effect.prototype.create = function () {
+
+		if ( this.shader === null ) {
+
+			return null;
+
+		}
+
+	};
+
+	Effect.prototype.parse = function ( element ) {
+
+		this.id = element.getAttribute( 'id' );
+		this.name = element.getAttribute( 'name' );
+
+		extractDoubleSided( this, element );
+
+		this.shader = null;
+
+		for ( var i = 0; i < element.childNodes.length; i ++ ) {
+
+			var child = element.childNodes[ i ];
+			if ( child.nodeType != 1 ) continue;
+
+			switch ( child.nodeName ) {
+
+				case 'profile_COMMON':
+
+					this.parseTechnique( this.parseProfileCOMMON( child ) );
+					break;
+
+				default:
+					break;
+
+			}
+
+		}
+
+		return this;
+
+	};
+
+	Effect.prototype.parseNewparam = function ( element ) {
+
+		var sid = element.getAttribute( 'sid' );
+
+		for ( var i = 0; i < element.childNodes.length; i ++ ) {
+
+			var child = element.childNodes[ i ];
+			if ( child.nodeType != 1 ) continue;
+
+			switch ( child.nodeName ) {
+
+				case 'surface':
+
+					this.surface[sid] = ( new Surface( this ) ).parse( child );
+					break;
+
+				case 'sampler2D':
+
+					this.sampler[sid] = ( new Sampler2D( this ) ).parse( child );
+					break;
+
+				case 'extra':
+
+					break;
+
+				default:
+
+					console.log( child.nodeName );
+					break;
+
+			}
+
+		}
+
+	};
+
+	Effect.prototype.parseProfileCOMMON = function ( element ) {
+
+		var technique;
+
+		for ( var i = 0; i < element.childNodes.length; i ++ ) {
+
+			var child = element.childNodes[ i ];
+
+			if ( child.nodeType != 1 ) continue;
+
+			switch ( child.nodeName ) {
+
+				case 'profile_COMMON':
+
+					this.parseProfileCOMMON( child );
+					break;
+
+				case 'technique':
+
+					technique = child;
+					break;
+
+				case 'newparam':
+
+					this.parseNewparam( child );
+					break;
+
+				case 'image':
+
+					var _image = ( new _Image() ).parse( child );
+					images[ _image.id ] = _image;
+					break;
+
+				case 'extra':
+					break;
+
+				default:
+
+					console.log( child.nodeName );
+					break;
+
+			}
+
+		}
+
+		return technique;
+
+	};
+
+	Effect.prototype.parseTechnique = function ( element ) {
+
+		for ( var i = 0; i < element.childNodes.length; i ++ ) {
+
+			var child = element.childNodes[i];
+			if ( child.nodeType != 1 ) continue;
+
+			switch ( child.nodeName ) {
+
+				case 'constant':
+				case 'lambert':
+				case 'blinn':
+				case 'phong':
+
+					this.shader = ( new Shader( child.nodeName, this ) ).parse( child );
+					break;
+				case 'extra':
+					this.parseExtra(child);
+					break;
+				default:
+					break;
+
+			}
+
+		}
+
+	};
+
+	Effect.prototype.parseExtra = function ( element ) {
+
+		for ( var i = 0; i < element.childNodes.length; i ++ ) {
+
+			var child = element.childNodes[i];
+			if ( child.nodeType != 1 ) continue;
+
+			switch ( child.nodeName ) {
+
+				case 'technique':
+					this.parseExtraTechnique( child );
+					break;
+				default:
+					break;
+
+			}
+
+		}
+
+	};
+
+	Effect.prototype.parseExtraTechnique = function ( element ) {
+
+		for ( var i = 0; i < element.childNodes.length; i ++ ) {
+
+			var child = element.childNodes[i];
+			if ( child.nodeType != 1 ) continue;
+
+			switch ( child.nodeName ) {
+
+				case 'bump':
+					this.shader.parse( element );
+					break;
+				default:
+					break;
+
+			}
+
+		}
+
+	};
+
+	function InstanceEffect () {
+
+		this.url = "";
+
+	}
+
+	InstanceEffect.prototype.parse = function ( element ) {
+
+		this.url = element.getAttribute( 'url' ).replace( /^#/, '' );
+		return this;
+
+	};
+
+	function Animation() {
+
+		this.id = "";
+		this.name = "";
+		this.source = {};
+		this.sampler = [];
+		this.channel = [];
+
+	}
+
+	Animation.prototype.parse = function ( element ) {
+
+		this.id = element.getAttribute( 'id' );
+		this.name = element.getAttribute( 'name' );
+		this.source = {};
+
+		for ( var i = 0; i < element.childNodes.length; i ++ ) {
+
+			var child = element.childNodes[ i ];
+
+			if ( child.nodeType != 1 ) continue;
+
+			switch ( child.nodeName ) {
+
+				case 'animation':
+
+					var anim = ( new Animation() ).parse( child );
+
+					for ( var src in anim.source ) {
+
+						this.source[ src ] = anim.source[ src ];
+
+					}
+
+					for ( var j = 0; j < anim.channel.length; j ++ ) {
+
+						this.channel.push( anim.channel[ j ] );
+						this.sampler.push( anim.sampler[ j ] );
+
+					}
+
+					break;
+
+				case 'source':
+
+					var src = ( new Source() ).parse( child );
+					this.source[ src.id ] = src;
+					break;
+
+				case 'sampler':
+
+					this.sampler.push( ( new Sampler( this ) ).parse( child ) );
+					break;
+
+				case 'channel':
+
+					this.channel.push( ( new Channel( this ) ).parse( child ) );
+					break;
+
+				default:
+					break;
+
+			}
+
+		}
+
+		return this;
+
+	};
+
+	function Channel( animation ) {
+
+		this.animation = animation;
+		this.source = "";
+		this.target = "";
+		this.fullSid = null;
+		this.sid = null;
+		this.dotSyntax = null;
+		this.arrSyntax = null;
+		this.arrIndices = null;
+		this.member = null;
+
+	}
+
+	Channel.prototype.parse = function ( element ) {
+
+		this.source = element.getAttribute( 'source' ).replace( /^#/, '' );
+		this.target = element.getAttribute( 'target' );
+
+		var parts = this.target.split( '/' );
+
+		var id = parts.shift();
+		var sid = parts.shift();
+
+		var dotSyntax = ( sid.indexOf(".") >= 0 );
+		var arrSyntax = ( sid.indexOf("(") >= 0 );
+
+		if ( dotSyntax ) {
+
+			parts = sid.split(".");
+			this.sid = parts.shift();
+			this.member = parts.shift();
+
+		} else if ( arrSyntax ) {
+
+			var arrIndices = sid.split("(");
+			this.sid = arrIndices.shift();
+
+			for (var j = 0; j < arrIndices.length; j ++ ) {
+
+				arrIndices[j] = parseInt( arrIndices[j].replace(/\)/, '') );
+
+			}
+
+			this.arrIndices = arrIndices;
+
+		} else {
+
+			this.sid = sid;
+
+		}
+
+		this.fullSid = sid;
+		this.dotSyntax = dotSyntax;
+		this.arrSyntax = arrSyntax;
+
+		return this;
+
+	};
+
+	function Sampler ( animation ) {
+
+		this.id = "";
+		this.animation = animation;
+		this.inputs = [];
+		this.input = null;
+		this.output = null;
+		this.strideOut = null;
+		this.interpolation = null;
+		this.startTime = null;
+		this.endTime = null;
+		this.duration = 0;
+
+	}
+
+	Sampler.prototype.parse = function ( element ) {
+
+		this.id = element.getAttribute( 'id' );
+		this.inputs = [];
+
+		for ( var i = 0; i < element.childNodes.length; i ++ ) {
+
+			var child = element.childNodes[ i ];
+			if ( child.nodeType != 1 ) continue;
+
+			switch ( child.nodeName ) {
+
+				case 'input':
+
+					this.inputs.push( (new Input()).parse( child ) );
+					break;
+
+				default:
+					break;
+
+			}
+
+		}
+
+		return this;
+
+	};
+
+	Sampler.prototype.create = function () {
+
+		for ( var i = 0; i < this.inputs.length; i ++ ) {
+
+			var input = this.inputs[ i ];
+			var source = this.animation.source[ input.source ];
+
+			switch ( input.semantic ) {
+
+				case 'INPUT':
+
+					this.input = source.read();
+					break;
+
+				case 'OUTPUT':
+
+					this.output = source.read();
+					this.strideOut = source.accessor.stride;
+					break;
+
+				case 'INTERPOLATION':
+
+					this.interpolation = source.read();
+					break;
+
+				case 'IN_TANGENT':
+
+					break;
+
+				case 'OUT_TANGENT':
+
+					break;
+
+				default:
+
+					console.log(input.semantic);
+					break;
+
+			}
+
+		}
+
+		this.startTime = 0;
+		this.endTime = 0;
+		this.duration = 0;
+
+		if ( this.input.length ) {
+
+			this.startTime = 100000000;
+			this.endTime = -100000000;
+
+			for ( var i = 0; i < this.input.length; i ++ ) {
+
+				this.startTime = Math.min( this.startTime, this.input[ i ] );
+				this.endTime = Math.max( this.endTime, this.input[ i ] );
+
+			}
+
+			this.duration = this.endTime - this.startTime;
+
+		}
+
+	};
+
+	Sampler.prototype.getData = function ( type, ndx, member ) {
+
+		var data;
+
+		if ( type === 'matrix' && this.strideOut === 16 ) {
+
+			data = this.output[ ndx ];
+
+		} else if ( this.strideOut > 1 ) {
+
+			data = [];
+			ndx *= this.strideOut;
+
+			for ( var i = 0; i < this.strideOut; ++ i ) {
+
+				data[ i ] = this.output[ ndx + i ];
+
+			}
+
+			if ( this.strideOut === 3 ) {
+
+				switch ( type ) {
+
+					case 'rotate':
+					case 'translate':
+
+						fixCoords( data, -1 );
+						break;
+
+					case 'scale':
+
+						fixCoords( data, 1 );
+						break;
+
+				}
+
+			} else if ( this.strideOut === 4 && type === 'matrix' ) {
+
+				fixCoords( data, -1 );
+
+			}
+
+		} else {
+
+			data = this.output[ ndx ];
+
+			if ( member && type === 'translate' ) {
+				data = getConvertedTranslation( member, data );
+			}
+
+		}
+
+		return data;
+
+	};
+
+	function Key ( time ) {
+
+		this.targets = [];
+		this.time = time;
+
+	}
+
+	Key.prototype.addTarget = function ( fullSid, transform, member, data ) {
+
+		this.targets.push( {
+			sid: fullSid,
+			member: member,
+			transform: transform,
+			data: data
+		} );
+
+	};
+
+	Key.prototype.apply = function ( opt_sid ) {
+
+		for ( var i = 0; i < this.targets.length; ++ i ) {
+
+			var target = this.targets[ i ];
+
+			if ( !opt_sid || target.sid === opt_sid ) {
+
+				target.transform.update( target.data, target.member );
+
+			}
+
+		}
+
+	};
+
+	Key.prototype.getTarget = function ( fullSid ) {
+
+		for ( var i = 0; i < this.targets.length; ++ i ) {
+
+			if ( this.targets[ i ].sid === fullSid ) {
+
+				return this.targets[ i ];
+
+			}
+
+		}
+
+		return null;
+
+	};
+
+	Key.prototype.hasTarget = function ( fullSid ) {
+
+		for ( var i = 0; i < this.targets.length; ++ i ) {
+
+			if ( this.targets[ i ].sid === fullSid ) {
+
+				return true;
+
+			}
+
+		}
+
+		return false;
+
+	};
+
+	// TODO: Currently only doing linear interpolation. Should support full COLLADA spec.
+	Key.prototype.interpolate = function ( nextKey, time ) {
+
+		for ( var i = 0, l = this.targets.length; i < l; i ++ ) {
+
+			var target = this.targets[ i ],
+				nextTarget = nextKey.getTarget( target.sid ),
+				data;
+
+			if ( target.transform.type !== 'matrix' && nextTarget ) {
+
+				var scale = ( time - this.time ) / ( nextKey.time - this.time ),
+					nextData = nextTarget.data,
+					prevData = target.data;
+
+				if ( scale < 0 ) scale = 0;
+				if ( scale > 1 ) scale = 1;
+
+				if ( prevData.length ) {
+
+					data = [];
+
+					for ( var j = 0; j < prevData.length; ++ j ) {
+
+						data[ j ] = prevData[ j ] + ( nextData[ j ] - prevData[ j ] ) * scale;
+
+					}
+
+				} else {
+
+					data = prevData + ( nextData - prevData ) * scale;
+
+				}
+
+			} else {
+
+				data = target.data;
+
+			}
+
+			target.transform.update( data, target.member );
+
+		}
+
+	};
+
+	// Camera
+	function Camera() {
+
+		this.id = "";
+		this.name = "";
+		this.technique = "";
+
+	}
+
+	Camera.prototype.parse = function ( element ) {
+
+		this.id = element.getAttribute( 'id' );
+		this.name = element.getAttribute( 'name' );
+
+		for ( var i = 0; i < element.childNodes.length; i ++ ) {
+
+			var child = element.childNodes[ i ];
+			if ( child.nodeType != 1 ) continue;
+
+			switch ( child.nodeName ) {
+
+				case 'optics':
+
+					this.parseOptics( child );
+					break;
+
+				default:
+					break;
+
+			}
+
+		}
+
+		return this;
+
+	};
+
+	Camera.prototype.parseOptics = function ( element ) {
+
+		for ( var i = 0; i < element.childNodes.length; i ++ ) {
+
+			if ( element.childNodes[ i ].nodeName === 'technique_common' ) {
+
+				var technique = element.childNodes[ i ];
+
+				for ( var j = 0; j < technique.childNodes.length; j ++ ) {
+
+					this.technique = technique.childNodes[ j ].nodeName;
+
+					if ( this.technique === 'perspective' ) {
+
+						var perspective = technique.childNodes[ j ];
+
+						for ( var k = 0; k < perspective.childNodes.length; k ++ ) {
+
+							var param = perspective.childNodes[ k ];
+
+							switch ( param.nodeName ) {
+
+								case 'yfov':
+									this.yfov = param.textContent;
+									break;
+								case 'xfov':
+									this.xfov = param.textContent;
+									break;
+								case 'znear':
+									this.znear = param.textContent;
+									break;
+								case 'zfar':
+									this.zfar = param.textContent;
+									break;
+								case 'aspect_ratio':
+									this.aspect_ratio = param.textContent;
+									break;
+
+							}
+
+						}
+
+					} else if ( this.technique === 'orthographic' ) {
+
+						var orthographic = technique.childNodes[ j ];
+
+						for ( var k = 0; k < orthographic.childNodes.length; k ++ ) {
+
+							var param = orthographic.childNodes[ k ];
+
+							switch ( param.nodeName ) {
+
+								case 'xmag':
+									this.xmag = param.textContent;
+									break;
+								case 'ymag':
+									this.ymag = param.textContent;
+									break;
+								case 'znear':
+									this.znear = param.textContent;
+									break;
+								case 'zfar':
+									this.zfar = param.textContent;
+									break;
+								case 'aspect_ratio':
+									this.aspect_ratio = param.textContent;
+									break;
+
+							}
+
+						}
+
+					}
+
+				}
+
+			}
+
+		}
+
+		return this;
+
+	};
+
+	function InstanceCamera() {
+
+		this.url = "";
+
+	}
+
+	InstanceCamera.prototype.parse = function ( element ) {
+
+		this.url = element.getAttribute('url').replace(/^#/, '');
+
+		return this;
+
+	};
+
+	// Light
+
+	function Light() {
+
+		this.id = "";
+		this.name = "";
+		this.technique = "";
+
+	}
+
+	Light.prototype.parse = function ( element ) {
+
+		this.id = element.getAttribute( 'id' );
+		this.name = element.getAttribute( 'name' );
+
+		for ( var i = 0; i < element.childNodes.length; i ++ ) {
+
+			var child = element.childNodes[ i ];
+			if ( child.nodeType != 1 ) continue;
+
+			switch ( child.nodeName ) {
+
+				case 'technique_common':
+
+					this.parseCommon( child );
+					break;
+
+				case 'technique':
+
+					this.parseTechnique( child );
+					break;
+
+				default:
+					break;
+
+			}
+
+		}
+
+		return this;
+
+	};
+
+	Light.prototype.parseCommon = function ( element ) {
+
+		for ( var i = 0; i < element.childNodes.length; i ++ ) {
+
+			switch ( element.childNodes[ i ].nodeName ) {
+
+				case 'directional':
+				case 'point':
+				case 'spot':
+				case 'ambient':
+
+					this.technique = element.childNodes[ i ].nodeName;
+
+					var light = element.childNodes[ i ];
+
+					for ( var j = 0; j < light.childNodes.length; j ++ ) {
+
+						var child = light.childNodes[j];
+
+						switch ( child.nodeName ) {
+
+							case 'color':
+
+								var rgba = _floats( child.textContent );
+								this.color = new THREE.Color(0);
+								this.color.setRGB( rgba[0], rgba[1], rgba[2] );
+								this.color.a = rgba[3];
+								break;
+
+							case 'falloff_angle':
+
+								this.falloff_angle = parseFloat( child.textContent );
+								break;
+
+							case 'quadratic_attenuation':
+								var f = parseFloat( child.textContent );
+								this.distance = f ? Math.sqrt( 1 / f ) : 0;
+						}
+
+					}
+
+			}
+
+		}
+
+		return this;
+
+	};
+
+	Light.prototype.parseTechnique = function ( element ) {
+
+		this.profile = element.getAttribute( 'profile' );
+
+		for ( var i = 0; i < element.childNodes.length; i ++ ) {
+
+			var child = element.childNodes[ i ];
+
+			switch ( child.nodeName ) {
+
+				case 'intensity':
+
+					this.intensity = parseFloat(child.textContent);
+					break;
+
+			}
+
+		}
+
+		return this;
+
+	};
+
+	function InstanceLight() {
+
+		this.url = "";
+
+	}
+
+	InstanceLight.prototype.parse = function ( element ) {
+
+		this.url = element.getAttribute('url').replace(/^#/, '');
+
+		return this;
+
+	};
+
+	function KinematicsModel( ) {
+
+		this.id = '';
+		this.name = '';
+		this.joints = [];
+		this.links = [];
+
+	}
+
+	KinematicsModel.prototype.parse = function( element ) {
+
+		this.id = element.getAttribute('id');
+		this.name = element.getAttribute('name');
+		this.joints = [];
+		this.links = [];
+
+		for (var i = 0; i < element.childNodes.length; i ++ ) {
+
+			var child = element.childNodes[ i ];
+			if ( child.nodeType != 1 ) continue;
+
+			switch ( child.nodeName ) {
+
+				case 'technique_common':
+
+					this.parseCommon(child);
+					break;
+
+				default:
+					break;
+
+			}
+
+		}
+
+		return this;
+
+	};
+
+	KinematicsModel.prototype.parseCommon = function( element ) {
+
+		for (var i = 0; i < element.childNodes.length; i ++ ) {
+
+			var child = element.childNodes[ i ];
+			if ( child.nodeType != 1 ) continue;
+
+			switch ( element.childNodes[ i ].nodeName ) {
+
+				case 'joint':
+					this.joints.push( (new Joint()).parse(child) );
+					break;
+
+				case 'link':
+					this.links.push( (new Link()).parse(child) );
+					break;
+
+				default:
+					break;
+
+			}
+
+		}
+
+		return this;
+
+	};
+
+	function Joint( ) {
+
+		this.sid = '';
+		this.name = '';
+		this.axis = new THREE.Vector3();
+		this.limits = {
+			min: 0,
+			max: 0
+		};
+		this.type = '';
+		this.static = false;
+		this.zeroPosition = 0.0;
+		this.middlePosition = 0.0;
+
+	}
+
+	Joint.prototype.parse = function( element ) {
+
+		this.sid = element.getAttribute('sid');
+		this.name = element.getAttribute('name');
+		this.axis = new THREE.Vector3();
+		this.limits = {
+			min: 0,
+			max: 0
+		};
+		this.type = '';
+		this.static = false;
+		this.zeroPosition = 0.0;
+		this.middlePosition = 0.0;
+
+		var axisElement = element.querySelector('axis');
+		var _axis = _floats(axisElement.textContent);
+		this.axis = getConvertedVec3(_axis, 0);
+
+		var min = element.querySelector('limits min') ? parseFloat(element.querySelector('limits min').textContent) : -360;
+		var max = element.querySelector('limits max') ? parseFloat(element.querySelector('limits max').textContent) : 360;
+
+		this.limits = {
+			min: min,
+			max: max
+		};
+
+		var jointTypes = [ 'prismatic', 'revolute' ];
+		for (var i = 0; i < jointTypes.length; i ++ ) {
+
+			var type = jointTypes[ i ];
+
+			var jointElement = element.querySelector(type);
+
+			if ( jointElement ) {
+
+				this.type = type;
+
+			}
+
+		}
+
+		// if the min is equal to or somehow greater than the max, consider the joint static
+		if ( this.limits.min >= this.limits.max ) {
+
+			this.static = true;
+
+		}
+
+		this.middlePosition = (this.limits.min + this.limits.max) / 2.0;
+		return this;
+
+	};
+
+	function Link( ) {
+
+		this.sid = '';
+		this.name = '';
+		this.transforms = [];
+		this.attachments = [];
+
+	}
+
+	Link.prototype.parse = function( element ) {
+
+		this.sid = element.getAttribute('sid');
+		this.name = element.getAttribute('name');
+		this.transforms = [];
+		this.attachments = [];
+
+		for (var i = 0; i < element.childNodes.length; i ++ ) {
+
+			var child = element.childNodes[ i ];
+			if ( child.nodeType != 1 ) continue;
+
+			switch ( child.nodeName ) {
+
+				case 'attachment_full':
+					this.attachments.push( (new Attachment()).parse(child) );
+					break;
+
+				case 'rotate':
+				case 'translate':
+				case 'matrix':
+
+					this.transforms.push( (new Transform()).parse(child) );
+					break;
+
+				default:
+
+					break;
+
+			}
+
+		}
+
+		return this;
+
+	};
+
+	function Attachment( ) {
+
+		this.joint = '';
+		this.transforms = [];
+		this.links = [];
+
+	}
+
+	Attachment.prototype.parse = function( element ) {
+
+		this.joint = element.getAttribute('joint').split('/').pop();
+		this.links = [];
+
+		for (var i = 0; i < element.childNodes.length; i ++ ) {
+
+			var child = element.childNodes[ i ];
+			if ( child.nodeType != 1 ) continue;
+
+			switch ( child.nodeName ) {
+
+				case 'link':
+					this.links.push( (new Link()).parse(child) );
+					break;
+
+				case 'rotate':
+				case 'translate':
+				case 'matrix':
+
+					this.transforms.push( (new Transform()).parse(child) );
+					break;
+
+				default:
+
+					break;
+
+			}
+
+		}
+
+		return this;
+
+	};
+
+	function _source( element ) {
+
+		var id = element.getAttribute( 'id' );
+
+		if ( sources[ id ] != undefined ) {
+
+			return sources[ id ];
+
+		}
+
+		sources[ id ] = ( new Source(id )).parse( element );
+		return sources[ id ];
+
+	}
+
+	function _nsResolver( nsPrefix ) {
+
+		if ( nsPrefix === "dae" ) {
+
+			return "http://www.collada.org/2005/11/COLLADASchema";
+
+		}
+
+		return null;
+
+	}
+
+	function _bools( str ) {
+
+		var raw = _strings( str );
+		var data = [];
+
+		for ( var i = 0, l = raw.length; i < l; i ++ ) {
+
+			data.push( (raw[i] === 'true' || raw[i] === '1') ? true : false );
+
+		}
+
+		return data;
+
+	}
+
+	function _floats( str ) {
+
+		var raw = _strings(str);
+		var data = [];
+
+		for ( var i = 0, l = raw.length; i < l; i ++ ) {
+
+			data.push( parseFloat( raw[ i ] ) );
+
+		}
+
+		return data;
+
+	}
+
+	function _ints( str ) {
+
+		var raw = _strings( str );
+		var data = [];
+
+		for ( var i = 0, l = raw.length; i < l; i ++ ) {
+
+			data.push( parseInt( raw[ i ], 10 ) );
+
+		}
+
+		return data;
+
+	}
+
+	function _strings( str ) {
+
+		return ( str.length > 0 ) ? _trimString( str ).split( /\s+/ ) : [];
+
+	}
+
+	function _trimString( str ) {
+
+		return str.replace( /^\s+/, "" ).replace( /\s+$/, "" );
+
+	}
+
+	function _attr_as_float( element, name, defaultValue ) {
+
+		if ( element.hasAttribute( name ) ) {
+
+			return parseFloat( element.getAttribute( name ) );
+
+		} else {
+
+			return defaultValue;
+
+		}
+
+	}
+
+	function _attr_as_int( element, name, defaultValue ) {
+
+		if ( element.hasAttribute( name ) ) {
+
+			return parseInt( element.getAttribute( name ), 10) ;
+
+		} else {
+
+			return defaultValue;
+
+		}
+
+	}
+
+	function _attr_as_string( element, name, defaultValue ) {
+
+		if ( element.hasAttribute( name ) ) {
+
+			return element.getAttribute( name );
+
+		} else {
+
+			return defaultValue;
+
+		}
+
+	}
+
+	function _format_float( f, num ) {
+
+		if ( f === undefined ) {
+
+			var s = '0.';
+
+			while ( s.length < num + 2 ) {
+
+				s += '0';
+
+			}
+
+			return s;
+
+		}
+
+		num = num || 2;
+
+		var parts = f.toString().split( '.' );
+		parts[ 1 ] = parts.length > 1 ? parts[ 1 ].substr( 0, num ) : "0";
+
+		while ( parts[ 1 ].length < num ) {
+
+			parts[ 1 ] += '0';
+
+		}
+
+		return parts.join( '.' );
+
+	}
+
+	function loadTextureImage ( texture, url ) {
+
+		var loader = new THREE.ImageLoader();
+
+		loader.load( url, function ( image ) {
+
+			texture.image = image;
+			texture.needsUpdate = true;
+
+		} );
+
+	}
+
+	function extractDoubleSided( obj, element ) {
+
+		obj.doubleSided = false;
+
+		var node = element.querySelectorAll('extra double_sided')[0];
+
+		if ( node ) {
+
+			if ( node && parseInt( node.textContent, 10 ) === 1 ) {
+
+				obj.doubleSided = true;
+
+			}
+
+		}
+
+	}
+
+	// Up axis conversion
+
+	function setUpConversion() {
+
+		if ( options.convertUpAxis !== true || colladaUp === options.upAxis ) {
+
+			upConversion = null;
+
+		} else {
+
+			switch ( colladaUp ) {
+
+				case 'X':
+
+					upConversion = options.upAxis === 'Y' ? 'XtoY' : 'XtoZ';
+					break;
+
+				case 'Y':
+
+					upConversion = options.upAxis === 'X' ? 'YtoX' : 'YtoZ';
+					break;
+
+				case 'Z':
+
+					upConversion = options.upAxis === 'X' ? 'ZtoX' : 'ZtoY';
+					break;
+
+			}
+
+		}
+
+	}
+
+	function fixCoords( data, sign ) {
+
+		if ( options.convertUpAxis !== true || colladaUp === options.upAxis ) {
+
+			return;
+
+		}
+
+		switch ( upConversion ) {
+
+			case 'XtoY':
+
+				var tmp = data[ 0 ];
+				data[ 0 ] = sign * data[ 1 ];
+				data[ 1 ] = tmp;
+				break;
+
+			case 'XtoZ':
+
+				var tmp = data[ 2 ];
+				data[ 2 ] = data[ 1 ];
+				data[ 1 ] = data[ 0 ];
+				data[ 0 ] = tmp;
+				break;
+
+			case 'YtoX':
+
+				var tmp = data[ 0 ];
+				data[ 0 ] = data[ 1 ];
+				data[ 1 ] = sign * tmp;
+				break;
+
+			case 'YtoZ':
+
+				var tmp = data[ 1 ];
+				data[ 1 ] = sign * data[ 2 ];
+				data[ 2 ] = tmp;
+				break;
+
+			case 'ZtoX':
+
+				var tmp = data[ 0 ];
+				data[ 0 ] = data[ 1 ];
+				data[ 1 ] = data[ 2 ];
+				data[ 2 ] = tmp;
+				break;
+
+			case 'ZtoY':
+
+				var tmp = data[ 1 ];
+				data[ 1 ] = data[ 2 ];
+				data[ 2 ] = sign * tmp;
+				break;
+
+		}
+
+	}
+
+	function getConvertedTranslation( axis, data ) {
+
+		if ( options.convertUpAxis !== true || colladaUp === options.upAxis ) {
+
+			return data;
+
+		}
+
+		switch ( axis ) {
+			case 'X':
+				data = upConversion === 'XtoY' ? data * -1 : data;
+				break;
+			case 'Y':
+				data = upConversion === 'YtoZ' || upConversion === 'YtoX' ? data * -1 : data;
+				break;
+			case 'Z':
+				data = upConversion === 'ZtoY' ? data * -1 : data ;
+				break;
+			default:
+				break;
+		}
+
+		return data;
+	}
+
+	function getConvertedVec3( data, offset ) {
+
+		var arr = [ data[ offset ], data[ offset + 1 ], data[ offset + 2 ] ];
+		fixCoords( arr, -1 );
+		return new THREE.Vector3( arr[ 0 ], arr[ 1 ], arr[ 2 ] );
+
+	}
+
+	function getConvertedMat4( data ) {
+
+		if ( options.convertUpAxis ) {
+
+			// First fix rotation and scale
+
+			// Columns first
+			var arr = [ data[ 0 ], data[ 4 ], data[ 8 ] ];
+			fixCoords( arr, -1 );
+			data[ 0 ] = arr[ 0 ];
+			data[ 4 ] = arr[ 1 ];
+			data[ 8 ] = arr[ 2 ];
+			arr = [ data[ 1 ], data[ 5 ], data[ 9 ] ];
+			fixCoords( arr, -1 );
+			data[ 1 ] = arr[ 0 ];
+			data[ 5 ] = arr[ 1 ];
+			data[ 9 ] = arr[ 2 ];
+			arr = [ data[ 2 ], data[ 6 ], data[ 10 ] ];
+			fixCoords( arr, -1 );
+			data[ 2 ] = arr[ 0 ];
+			data[ 6 ] = arr[ 1 ];
+			data[ 10 ] = arr[ 2 ];
+			// Rows second
+			arr = [ data[ 0 ], data[ 1 ], data[ 2 ] ];
+			fixCoords( arr, -1 );
+			data[ 0 ] = arr[ 0 ];
+			data[ 1 ] = arr[ 1 ];
+			data[ 2 ] = arr[ 2 ];
+			arr = [ data[ 4 ], data[ 5 ], data[ 6 ] ];
+			fixCoords( arr, -1 );
+			data[ 4 ] = arr[ 0 ];
+			data[ 5 ] = arr[ 1 ];
+			data[ 6 ] = arr[ 2 ];
+			arr = [ data[ 8 ], data[ 9 ], data[ 10 ] ];
+			fixCoords( arr, -1 );
+			data[ 8 ] = arr[ 0 ];
+			data[ 9 ] = arr[ 1 ];
+			data[ 10 ] = arr[ 2 ];
+
+			// Now fix translation
+			arr = [ data[ 3 ], data[ 7 ], data[ 11 ] ];
+			fixCoords( arr, -1 );
+			data[ 3 ] = arr[ 0 ];
+			data[ 7 ] = arr[ 1 ];
+			data[ 11 ] = arr[ 2 ];
+
+		}
+
+		return new THREE.Matrix4().set(
+			data[0], data[1], data[2], data[3],
+			data[4], data[5], data[6], data[7],
+			data[8], data[9], data[10], data[11],
+			data[12], data[13], data[14], data[15]
+			);
+
+	}
+
+	function getConvertedIndex( index ) {
+
+		if ( index > -1 && index < 3 ) {
+
+			var members = [ 'X', 'Y', 'Z' ],
+				indices = { X: 0, Y: 1, Z: 2 };
+
+			index = getConvertedMember( members[ index ] );
+			index = indices[ index ];
+
+		}
+
+		return index;
+
+	}
+
+	function getConvertedMember( member ) {
+
+		if ( options.convertUpAxis ) {
+
+			switch ( member ) {
+
+				case 'X':
+
+					switch ( upConversion ) {
+
+						case 'XtoY':
+						case 'XtoZ':
+						case 'YtoX':
+
+							member = 'Y';
+							break;
+
+						case 'ZtoX':
+
+							member = 'Z';
+							break;
+
+					}
+
+					break;
+
+				case 'Y':
+
+					switch ( upConversion ) {
+
+						case 'XtoY':
+						case 'YtoX':
+						case 'ZtoX':
+
+							member = 'X';
+							break;
+
+						case 'XtoZ':
+						case 'YtoZ':
+						case 'ZtoY':
+
+							member = 'Z';
+							break;
+
+					}
+
+					break;
+
+				case 'Z':
+
+					switch ( upConversion ) {
+
+						case 'XtoZ':
+
+							member = 'X';
+							break;
+
+						case 'YtoZ':
+						case 'ZtoX':
+						case 'ZtoY':
+
+							member = 'Y';
+							break;
+
+					}
+
+					break;
+
+			}
+
+		}
+
+		return member;
+
+	}
+
+	return {
+
+		load: load,
+		parse: parse,
+		applySkin: applySkin,
+		geometries : geometries,
+		options: options
+
+	};
+
+};
 
 
 /***/ }),
@@ -47065,12 +55254,10 @@ module.exports = g;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_tslib__ = __webpack_require__("../../../../tslib/tslib.es6.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
 /* unused harmony export NgLocaleLocalization */
 /* unused harmony export NgLocalization */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return parseCookieValue; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return CommonModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return parseCookieValue; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CommonModule; });
 /* unused harmony export NgClass */
 /* unused harmony export NgFor */
 /* unused harmony export NgForOf */
@@ -47116,9 +55303,11 @@ module.exports = g;
 /* unused harmony export Location */
 /* unused harmony export ɵa */
 /* unused harmony export ɵb */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_tslib__ = __webpack_require__("../../../../tslib/tslib.es6.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
 
 /**
- * @license Angular v4.3.4
+ * @license Angular v4.3.5
  * (c) 2010-2017 Google, Inc. https://angular.io/
  * License: MIT
  */
@@ -47220,7 +55409,7 @@ var PlatformLocation = (function () {
  * \@whatItDoes indicates when a location is initialized
  * \@experimental
  */
-var LOCATION_INITIALIZED = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["g" /* InjectionToken */]('Location Initialized');
+var LOCATION_INITIALIZED = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["C" /* InjectionToken */]('Location Initialized');
 /**
  * @license
  * Copyright Google Inc. All Rights Reserved.
@@ -47325,7 +55514,7 @@ var LocationStrategy = (function () {
  *
  * \@stable
  */
-var APP_BASE_HREF = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["g" /* InjectionToken */]('appBaseHref');
+var APP_BASE_HREF = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["C" /* InjectionToken */]('appBaseHref');
 /**
  * @license
  * Copyright Google Inc. All Rights Reserved.
@@ -47363,7 +55552,7 @@ var Location = (function () {
         /**
          * \@internal
          */
-        this._subject = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["F" /* EventEmitter */]();
+        this._subject = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["w" /* EventEmitter */]();
         this._platformStrategy = platformStrategy;
         var browserBaseHref = this._platformStrategy.getBaseHref();
         this._baseHref = Location.stripTrailingSlash(_stripIndexHtml(browserBaseHref));
@@ -47511,7 +55700,7 @@ var Location = (function () {
     return Location;
 }());
 Location.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["c" /* Injectable */] },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["B" /* Injectable */] },
 ];
 /**
  * @nocollapse
@@ -47645,14 +55834,14 @@ var HashLocationStrategy = (function (_super) {
     return HashLocationStrategy;
 }(LocationStrategy));
 HashLocationStrategy.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["c" /* Injectable */] },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["B" /* Injectable */] },
 ];
 /**
  * @nocollapse
  */
 HashLocationStrategy.ctorParameters = function () { return [
     { type: PlatformLocation, },
-    { type: undefined, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["o" /* Optional */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["f" /* Inject */], args: [APP_BASE_HREF,] },] },
+    { type: undefined, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Q" /* Optional */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["A" /* Inject */], args: [APP_BASE_HREF,] },] },
 ]; };
 /**
  * @license
@@ -47768,14 +55957,14 @@ var PathLocationStrategy = (function (_super) {
     return PathLocationStrategy;
 }(LocationStrategy));
 PathLocationStrategy.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["c" /* Injectable */] },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["B" /* Injectable */] },
 ];
 /**
  * @nocollapse
  */
 PathLocationStrategy.ctorParameters = function () { return [
     { type: PlatformLocation, },
-    { type: undefined, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["o" /* Optional */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["f" /* Inject */], args: [APP_BASE_HREF,] },] },
+    { type: undefined, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Q" /* Optional */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["A" /* Inject */], args: [APP_BASE_HREF,] },] },
 ]; };
 /**
  * @license
@@ -47870,13 +56059,13 @@ var NgLocaleLocalization = (function (_super) {
     return NgLocaleLocalization;
 }(NgLocalization));
 NgLocaleLocalization.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["c" /* Injectable */] },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["B" /* Injectable */] },
 ];
 /**
  * @nocollapse
  */
 NgLocaleLocalization.ctorParameters = function () { return [
-    { type: undefined, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["f" /* Inject */], args: [__WEBPACK_IMPORTED_MODULE_1__angular_core__["G" /* LOCALE_ID */],] },] },
+    { type: undefined, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["A" /* Inject */], args: [__WEBPACK_IMPORTED_MODULE_1__angular_core__["H" /* LOCALE_ID */],] },] },
 ]; };
 var Plural = {};
 Plural.Zero = 0;
@@ -48362,7 +56551,7 @@ var NgClass = (function () {
             this._keyValueDiffer = null;
             this._rawClass = typeof v === 'string' ? v.split(/\s+/) : v;
             if (this._rawClass) {
-                if (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["H" /* ɵisListLikeIterable */])(this._rawClass)) {
+                if (Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_51" /* ɵisListLikeIterable */])(this._rawClass)) {
                     this._iterableDiffer = this._iterableDiffers.find(this._rawClass).create();
                 }
                 else {
@@ -48423,7 +56612,7 @@ var NgClass = (function () {
                 _this._toggleClass(record.item, true);
             }
             else {
-                throw new Error("NgClass can only toggle CSS classes expressed as strings, got " + __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["I" /* ɵstringify */])(record.item));
+                throw new Error("NgClass can only toggle CSS classes expressed as strings, got " + Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_66" /* ɵstringify */])(record.item));
             }
         });
         changes.forEachRemovedItem(function (record) { return _this._toggleClass(record.item, false); });
@@ -48470,20 +56659,20 @@ var NgClass = (function () {
     return NgClass;
 }());
 NgClass.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["J" /* Directive */], args: [{ selector: '[ngClass]' },] },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["t" /* Directive */], args: [{ selector: '[ngClass]' },] },
 ];
 /**
  * @nocollapse
  */
 NgClass.ctorParameters = function () { return [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["K" /* IterableDiffers */], },
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["L" /* KeyValueDiffers */], },
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["M" /* ElementRef */], },
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["N" /* Renderer */], },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["F" /* IterableDiffers */], },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["G" /* KeyValueDiffers */], },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["u" /* ElementRef */], },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Z" /* Renderer */], },
 ]; };
 NgClass.propDecorators = {
-    'klass': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["O" /* Input */], args: ['class',] },],
-    'ngClass': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["O" /* Input */] },],
+    'klass': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["E" /* Input */], args: ['class',] },],
+    'ngClass': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["E" /* Input */] },],
 };
 /**
  * @license
@@ -48568,7 +56757,7 @@ var NgComponentOutlet = (function () {
                 if (this._moduleRef)
                     this._moduleRef.destroy();
                 if (this.ngComponentOutletNgModuleFactory) {
-                    var /** @type {?} */ parentModule = elInjector.get(__WEBPACK_IMPORTED_MODULE_1__angular_core__["P" /* NgModuleRef */]);
+                    var /** @type {?} */ parentModule = elInjector.get(__WEBPACK_IMPORTED_MODULE_1__angular_core__["N" /* NgModuleRef */]);
                     this._moduleRef = this.ngComponentOutletNgModuleFactory.create(parentModule.injector);
                 }
                 else {
@@ -48576,7 +56765,7 @@ var NgComponentOutlet = (function () {
                 }
             }
             var /** @type {?} */ componentFactoryResolver = this._moduleRef ? this._moduleRef.componentFactoryResolver :
-                elInjector.get(__WEBPACK_IMPORTED_MODULE_1__angular_core__["Q" /* ComponentFactoryResolver */]);
+                elInjector.get(__WEBPACK_IMPORTED_MODULE_1__angular_core__["p" /* ComponentFactoryResolver */]);
             var /** @type {?} */ componentFactory = componentFactoryResolver.resolveComponentFactory(this.ngComponentOutlet);
             this._componentRef = this._viewContainerRef.createComponent(componentFactory, this._viewContainerRef.length, elInjector, this.ngComponentOutletContent);
         }
@@ -48591,19 +56780,19 @@ var NgComponentOutlet = (function () {
     return NgComponentOutlet;
 }());
 NgComponentOutlet.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["J" /* Directive */], args: [{ selector: '[ngComponentOutlet]' },] },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["t" /* Directive */], args: [{ selector: '[ngComponentOutlet]' },] },
 ];
 /**
  * @nocollapse
  */
 NgComponentOutlet.ctorParameters = function () { return [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["R" /* ViewContainerRef */], },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_15" /* ViewContainerRef */], },
 ]; };
 NgComponentOutlet.propDecorators = {
-    'ngComponentOutlet': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["O" /* Input */] },],
-    'ngComponentOutletInjector': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["O" /* Input */] },],
-    'ngComponentOutletContent': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["O" /* Input */] },],
-    'ngComponentOutletNgModuleFactory': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["O" /* Input */] },],
+    'ngComponentOutlet': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["E" /* Input */] },],
+    'ngComponentOutletInjector': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["E" /* Input */] },],
+    'ngComponentOutletContent': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["E" /* Input */] },],
+    'ngComponentOutletNgModuleFactory': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["E" /* Input */] },],
 };
 /**
  * @license
@@ -48755,7 +56944,7 @@ var NgForOf = (function () {
          * @return {?}
          */
         set: function (fn) {
-            if (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["s" /* isDevMode */])() && fn != null && typeof fn !== 'function') {
+            if (Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_24" /* isDevMode */])() && fn != null && typeof fn !== 'function') {
                 // TODO(vicb): use a log service once there is a public one available
                 if ((console) && (console.warn)) {
                     console.warn("trackBy must be a function, but received " + JSON.stringify(fn) + ". " +
@@ -48858,20 +57047,20 @@ var NgForOf = (function () {
     return NgForOf;
 }());
 NgForOf.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["J" /* Directive */], args: [{ selector: '[ngFor][ngForOf]' },] },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["t" /* Directive */], args: [{ selector: '[ngFor][ngForOf]' },] },
 ];
 /**
  * @nocollapse
  */
 NgForOf.ctorParameters = function () { return [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["R" /* ViewContainerRef */], },
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["S" /* TemplateRef */], },
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["K" /* IterableDiffers */], },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_15" /* ViewContainerRef */], },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_9" /* TemplateRef */], },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["F" /* IterableDiffers */], },
 ]; };
 NgForOf.propDecorators = {
-    'ngForOf': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["O" /* Input */] },],
-    'ngForTrackBy': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["O" /* Input */] },],
-    'ngForTemplate': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["O" /* Input */] },],
+    'ngForOf': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["E" /* Input */] },],
+    'ngForTrackBy': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["E" /* Input */] },],
+    'ngForTemplate': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["E" /* Input */] },],
 };
 var RecordViewTuple = (function () {
     /**
@@ -49072,19 +57261,19 @@ var NgIf = (function () {
     return NgIf;
 }());
 NgIf.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["J" /* Directive */], args: [{ selector: '[ngIf]' },] },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["t" /* Directive */], args: [{ selector: '[ngIf]' },] },
 ];
 /**
  * @nocollapse
  */
 NgIf.ctorParameters = function () { return [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["R" /* ViewContainerRef */], },
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["S" /* TemplateRef */], },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_15" /* ViewContainerRef */], },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_9" /* TemplateRef */], },
 ]; };
 NgIf.propDecorators = {
-    'ngIf': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["O" /* Input */] },],
-    'ngIfThen': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["O" /* Input */] },],
-    'ngIfElse': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["O" /* Input */] },],
+    'ngIf': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["E" /* Input */] },],
+    'ngIfThen': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["E" /* Input */] },],
+    'ngIfElse': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["E" /* Input */] },],
 };
 /**
  * \@stable
@@ -49251,14 +57440,14 @@ var NgSwitch = (function () {
     return NgSwitch;
 }());
 NgSwitch.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["J" /* Directive */], args: [{ selector: '[ngSwitch]' },] },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["t" /* Directive */], args: [{ selector: '[ngSwitch]' },] },
 ];
 /**
  * @nocollapse
  */
 NgSwitch.ctorParameters = function () { return []; };
 NgSwitch.propDecorators = {
-    'ngSwitch': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["O" /* Input */] },],
+    'ngSwitch': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["E" /* Input */] },],
 };
 /**
  * \@ngModule CommonModule
@@ -49302,18 +57491,18 @@ var NgSwitchCase = (function () {
     return NgSwitchCase;
 }());
 NgSwitchCase.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["J" /* Directive */], args: [{ selector: '[ngSwitchCase]' },] },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["t" /* Directive */], args: [{ selector: '[ngSwitchCase]' },] },
 ];
 /**
  * @nocollapse
  */
 NgSwitchCase.ctorParameters = function () { return [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["R" /* ViewContainerRef */], },
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["S" /* TemplateRef */], },
-    { type: NgSwitch, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["T" /* Host */] },] },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_15" /* ViewContainerRef */], },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_9" /* TemplateRef */], },
+    { type: NgSwitch, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["x" /* Host */] },] },
 ]; };
 NgSwitchCase.propDecorators = {
-    'ngSwitchCase': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["O" /* Input */] },],
+    'ngSwitchCase': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["E" /* Input */] },],
 };
 /**
  * \@ngModule CommonModule
@@ -49350,15 +57539,15 @@ var NgSwitchDefault = (function () {
     return NgSwitchDefault;
 }());
 NgSwitchDefault.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["J" /* Directive */], args: [{ selector: '[ngSwitchDefault]' },] },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["t" /* Directive */], args: [{ selector: '[ngSwitchDefault]' },] },
 ];
 /**
  * @nocollapse
  */
 NgSwitchDefault.ctorParameters = function () { return [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["R" /* ViewContainerRef */], },
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["S" /* TemplateRef */], },
-    { type: NgSwitch, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["T" /* Host */] },] },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_15" /* ViewContainerRef */], },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_9" /* TemplateRef */], },
+    { type: NgSwitch, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["x" /* Host */] },] },
 ]; };
 /**
  * @license
@@ -49453,7 +57642,7 @@ var NgPlural = (function () {
     return NgPlural;
 }());
 NgPlural.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["J" /* Directive */], args: [{ selector: '[ngPlural]' },] },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["t" /* Directive */], args: [{ selector: '[ngPlural]' },] },
 ];
 /**
  * @nocollapse
@@ -49462,7 +57651,7 @@ NgPlural.ctorParameters = function () { return [
     { type: NgLocalization, },
 ]; };
 NgPlural.propDecorators = {
-    'ngPlural': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["O" /* Input */] },],
+    'ngPlural': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["E" /* Input */] },],
 };
 /**
  * \@ngModule CommonModule
@@ -49497,16 +57686,16 @@ var NgPluralCase = (function () {
     return NgPluralCase;
 }());
 NgPluralCase.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["J" /* Directive */], args: [{ selector: '[ngPluralCase]' },] },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["t" /* Directive */], args: [{ selector: '[ngPluralCase]' },] },
 ];
 /**
  * @nocollapse
  */
 NgPluralCase.ctorParameters = function () { return [
-    { type: undefined, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["U" /* Attribute */], args: ['ngPluralCase',] },] },
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["S" /* TemplateRef */], },
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["R" /* ViewContainerRef */], },
-    { type: NgPlural, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["T" /* Host */] },] },
+    { type: undefined, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["g" /* Attribute */], args: ['ngPluralCase',] },] },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_9" /* TemplateRef */], },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_15" /* ViewContainerRef */], },
+    { type: NgPlural, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["x" /* Host */] },] },
 ]; };
 /**
  * @license
@@ -49596,18 +57785,18 @@ var NgStyle = (function () {
     return NgStyle;
 }());
 NgStyle.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["J" /* Directive */], args: [{ selector: '[ngStyle]' },] },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["t" /* Directive */], args: [{ selector: '[ngStyle]' },] },
 ];
 /**
  * @nocollapse
  */
 NgStyle.ctorParameters = function () { return [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["L" /* KeyValueDiffers */], },
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["M" /* ElementRef */], },
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["N" /* Renderer */], },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["G" /* KeyValueDiffers */], },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["u" /* ElementRef */], },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Z" /* Renderer */], },
 ]; };
 NgStyle.propDecorators = {
-    'ngStyle': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["O" /* Input */] },],
+    'ngStyle': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["E" /* Input */] },],
 };
 /**
  * @license
@@ -49672,18 +57861,18 @@ var NgTemplateOutlet = (function () {
     return NgTemplateOutlet;
 }());
 NgTemplateOutlet.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["J" /* Directive */], args: [{ selector: '[ngTemplateOutlet]' },] },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["t" /* Directive */], args: [{ selector: '[ngTemplateOutlet]' },] },
 ];
 /**
  * @nocollapse
  */
 NgTemplateOutlet.ctorParameters = function () { return [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["R" /* ViewContainerRef */], },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_15" /* ViewContainerRef */], },
 ]; };
 NgTemplateOutlet.propDecorators = {
-    'ngTemplateOutletContext': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["O" /* Input */] },],
-    'ngTemplateOutlet': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["O" /* Input */] },],
-    'ngOutletContext': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["O" /* Input */] },],
+    'ngTemplateOutletContext': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["E" /* Input */] },],
+    'ngTemplateOutlet': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["E" /* Input */] },],
+    'ngOutletContext': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["E" /* Input */] },],
 };
 /**
  * @license
@@ -49725,7 +57914,7 @@ var COMMON_DIRECTIVES = [
  * @return {?}
  */
 function invalidPipeArgumentError(type, value) {
-    return Error("InvalidPipeArgument: '" + value + "' for pipe '" + __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["I" /* ɵstringify */])(type) + "'");
+    return Error("InvalidPipeArgument: '" + value + "' for pipe '" + Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_66" /* ɵstringify */])(type) + "'");
 }
 /**
  * @license
@@ -49847,7 +58036,7 @@ var AsyncPipe = (function () {
             return this._latestReturnedValue;
         }
         this._latestReturnedValue = this._latestValue;
-        return __WEBPACK_IMPORTED_MODULE_1__angular_core__["V" /* WrappedValue */].wrap(this._latestValue);
+        return __WEBPACK_IMPORTED_MODULE_1__angular_core__["_17" /* WrappedValue */].wrap(this._latestValue);
     };
     /**
      * @param {?} obj
@@ -49864,10 +58053,10 @@ var AsyncPipe = (function () {
      * @return {?}
      */
     AsyncPipe.prototype._selectStrategy = function (obj) {
-        if (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["W" /* ɵisPromise */])(obj)) {
+        if (Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_53" /* ɵisPromise */])(obj)) {
             return _promiseStrategy;
         }
-        if (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["X" /* ɵisObservable */])(obj)) {
+        if (Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_52" /* ɵisObservable */])(obj)) {
             return _observableStrategy;
         }
         throw invalidPipeArgumentError(AsyncPipe, obj);
@@ -49896,13 +58085,13 @@ var AsyncPipe = (function () {
     return AsyncPipe;
 }());
 AsyncPipe.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Y" /* Pipe */], args: [{ name: 'async', pure: false },] },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["V" /* Pipe */], args: [{ name: 'async', pure: false },] },
 ];
 /**
  * @nocollapse
  */
 AsyncPipe.ctorParameters = function () { return [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Z" /* ChangeDetectorRef */], },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["k" /* ChangeDetectorRef */], },
 ]; };
 /**
  * @license
@@ -49936,7 +58125,7 @@ var LowerCasePipe = (function () {
     return LowerCasePipe;
 }());
 LowerCasePipe.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Y" /* Pipe */], args: [{ name: 'lowercase' },] },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["V" /* Pipe */], args: [{ name: 'lowercase' },] },
 ];
 /**
  * @nocollapse
@@ -49977,7 +58166,7 @@ var TitleCasePipe = (function () {
     return TitleCasePipe;
 }());
 TitleCasePipe.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Y" /* Pipe */], args: [{ name: 'titlecase' },] },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["V" /* Pipe */], args: [{ name: 'titlecase' },] },
 ];
 /**
  * @nocollapse
@@ -50006,7 +58195,7 @@ var UpperCasePipe = (function () {
     return UpperCasePipe;
 }());
 UpperCasePipe.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Y" /* Pipe */], args: [{ name: 'uppercase' },] },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["V" /* Pipe */], args: [{ name: 'uppercase' },] },
 ];
 /**
  * @nocollapse
@@ -50370,13 +58559,13 @@ var DecimalPipe = (function () {
     return DecimalPipe;
 }());
 DecimalPipe.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Y" /* Pipe */], args: [{ name: 'number' },] },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["V" /* Pipe */], args: [{ name: 'number' },] },
 ];
 /**
  * @nocollapse
  */
 DecimalPipe.ctorParameters = function () { return [
-    { type: undefined, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["f" /* Inject */], args: [__WEBPACK_IMPORTED_MODULE_1__angular_core__["G" /* LOCALE_ID */],] },] },
+    { type: undefined, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["A" /* Inject */], args: [__WEBPACK_IMPORTED_MODULE_1__angular_core__["H" /* LOCALE_ID */],] },] },
 ]; };
 /**
  * \@ngModule CommonModule
@@ -50416,13 +58605,13 @@ var PercentPipe = (function () {
     return PercentPipe;
 }());
 PercentPipe.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Y" /* Pipe */], args: [{ name: 'percent' },] },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["V" /* Pipe */], args: [{ name: 'percent' },] },
 ];
 /**
  * @nocollapse
  */
 PercentPipe.ctorParameters = function () { return [
-    { type: undefined, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["f" /* Inject */], args: [__WEBPACK_IMPORTED_MODULE_1__angular_core__["G" /* LOCALE_ID */],] },] },
+    { type: undefined, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["A" /* Inject */], args: [__WEBPACK_IMPORTED_MODULE_1__angular_core__["H" /* LOCALE_ID */],] },] },
 ]; };
 /**
  * \@ngModule CommonModule
@@ -50470,13 +58659,13 @@ var CurrencyPipe = (function () {
     return CurrencyPipe;
 }());
 CurrencyPipe.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Y" /* Pipe */], args: [{ name: 'currency' },] },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["V" /* Pipe */], args: [{ name: 'currency' },] },
 ];
 /**
  * @nocollapse
  */
 CurrencyPipe.ctorParameters = function () { return [
-    { type: undefined, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["f" /* Inject */], args: [__WEBPACK_IMPORTED_MODULE_1__angular_core__["G" /* LOCALE_ID */],] },] },
+    { type: undefined, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["A" /* Inject */], args: [__WEBPACK_IMPORTED_MODULE_1__angular_core__["H" /* LOCALE_ID */],] },] },
 ]; };
 /**
  * @param {?} text
@@ -50642,13 +58831,13 @@ DatePipe._ALIASES = {
     'shortTime': 'jm'
 };
 DatePipe.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Y" /* Pipe */], args: [{ name: 'date', pure: true },] },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["V" /* Pipe */], args: [{ name: 'date', pure: true },] },
 ];
 /**
  * @nocollapse
  */
 DatePipe.ctorParameters = function () { return [
-    { type: undefined, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["f" /* Inject */], args: [__WEBPACK_IMPORTED_MODULE_1__angular_core__["G" /* LOCALE_ID */],] },] },
+    { type: undefined, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["A" /* Inject */], args: [__WEBPACK_IMPORTED_MODULE_1__angular_core__["H" /* LOCALE_ID */],] },] },
 ]; };
 /**
  * @param {?} obj
@@ -50742,7 +58931,7 @@ var I18nPluralPipe = (function () {
     return I18nPluralPipe;
 }());
 I18nPluralPipe.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Y" /* Pipe */], args: [{ name: 'i18nPlural', pure: true },] },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["V" /* Pipe */], args: [{ name: 'i18nPlural', pure: true },] },
 ];
 /**
  * @nocollapse
@@ -50799,7 +58988,7 @@ var I18nSelectPipe = (function () {
     return I18nSelectPipe;
 }());
 I18nSelectPipe.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Y" /* Pipe */], args: [{ name: 'i18nSelect', pure: true },] },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["V" /* Pipe */], args: [{ name: 'i18nSelect', pure: true },] },
 ];
 /**
  * @nocollapse
@@ -50836,7 +59025,7 @@ var JsonPipe = (function () {
     return JsonPipe;
 }());
 JsonPipe.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Y" /* Pipe */], args: [{ name: 'json', pure: false },] },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["V" /* Pipe */], args: [{ name: 'json', pure: false },] },
 ];
 /**
  * @nocollapse
@@ -50918,7 +59107,7 @@ var SlicePipe = (function () {
     return SlicePipe;
 }());
 SlicePipe.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Y" /* Pipe */], args: [{ name: 'slice', pure: false },] },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["V" /* Pipe */], args: [{ name: 'slice', pure: false },] },
 ];
 /**
  * @nocollapse
@@ -50971,7 +59160,7 @@ var CommonModule = (function () {
     return CommonModule;
 }());
 CommonModule.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["b" /* NgModule */], args: [{
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["L" /* NgModule */], args: [{
                 declarations: [COMMON_DIRECTIVES, COMMON_PIPES],
                 exports: [COMMON_DIRECTIVES, COMMON_PIPES],
                 providers: [
@@ -50998,7 +59187,7 @@ CommonModule.ctorParameters = function () { return []; };
  *
  * \@stable
  */
-var DOCUMENT = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["g" /* InjectionToken */]('DocumentToken');
+var DOCUMENT = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["C" /* InjectionToken */]('DocumentToken');
 /**
  * @license
  * Copyright Google Inc. All Rights Reserved.
@@ -51061,7 +59250,7 @@ function isPlatformWorkerUi(platformId) {
 /**
  * \@stable
  */
-var VERSION = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["d" /* Version */]('4.3.4');
+var VERSION = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["_12" /* Version */]('4.3.5');
 /**
  * @license
  * Copyright Google Inc. All Rights Reserved.
@@ -51100,8 +59289,6 @@ var VERSION = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["d" /* Version */]
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_tslib__ = __webpack_require__("../../../../tslib/tslib.es6.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
 /* unused harmony export VERSION */
 /* unused harmony export TEMPLATE_TRANSFORMS */
 /* unused harmony export CompilerConfig */
@@ -51328,9 +59515,11 @@ var VERSION = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["d" /* Version */]
 /* unused harmony export splitClasses */
 /* unused harmony export createElementCssSelector */
 /* unused harmony export removeSummaryDuplicates */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_tslib__ = __webpack_require__("../../../../tslib/tslib.es6.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
 
 /**
- * @license Angular v4.3.4
+ * @license Angular v4.3.5
  * (c) 2010-2017 Google, Inc. https://angular.io/
  * License: MIT
  */
@@ -51350,7 +59539,7 @@ var VERSION = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["d" /* Version */]
 /**
  * \@stable
  */
-var VERSION = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["d" /* Version */]('4.3.4');
+var VERSION = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["_12" /* Version */]('4.3.5');
 /**
  * @license
  * Copyright Google Inc. All Rights Reserved.
@@ -53001,14 +61190,14 @@ var ValueTransformer = (function () {
 }());
 var SyncAsync = {
     assertSync: function (value) {
-        if (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["W" /* ɵisPromise */])(value)) {
+        if (Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_53" /* ɵisPromise */])(value)) {
             throw new Error("Illegal state: value cannot be a promise");
         }
         return value;
     },
-    then: function (value, cb) { return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["W" /* ɵisPromise */])(value) ? value.then(cb) : cb(value); },
+    then: function (value, cb) { return Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_53" /* ɵisPromise */])(value) ? value.then(cb) : cb(value); },
     all: function (syncAsyncValues) {
-        return syncAsyncValues.some(__WEBPACK_IMPORTED_MODULE_1__angular_core__["W" /* ɵisPromise */]) ? Promise.all(syncAsyncValues) : (syncAsyncValues);
+        return syncAsyncValues.some(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_53" /* ɵisPromise */]) ? Promise.all(syncAsyncValues) : (syncAsyncValues);
     }
 };
 /**
@@ -53260,7 +61449,7 @@ function identifierName(compileIdentifier) {
     if (ref['__anonymousType']) {
         return ref['__anonymousType'];
     }
-    var /** @type {?} */ identifier = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["I" /* ɵstringify */])(ref);
+    var /** @type {?} */ identifier = Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_66" /* ɵstringify */])(ref);
     if (identifier.indexOf('(') >= 0) {
         // case: anonymous functions!
         identifier = "anonymous_" + _anonymousTypeIndex++;
@@ -53281,7 +61470,7 @@ function identifierModuleUrl(compileIdentifier) {
         return ref.filePath;
     }
     // Runtime type
-    return "./" + __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["I" /* ɵstringify */])(ref);
+    return "./" + Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_66" /* ɵstringify */])(ref);
 }
 /**
  * @param {?} compType
@@ -53524,7 +61713,7 @@ function createHostComponentMeta(hostTypeReference, compMeta, hostViewType) {
         isHost: true,
         type: { reference: hostTypeReference, diDeps: [], lifecycleHooks: [] },
         template: new CompileTemplateMetadata({
-            encapsulation: __WEBPACK_IMPORTED_MODULE_1__angular_core__["q" /* ViewEncapsulation */].None,
+            encapsulation: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_16" /* ViewEncapsulation */].None,
             template: template,
             templateUrl: '',
             styles: [],
@@ -53536,7 +61725,7 @@ function createHostComponentMeta(hostTypeReference, compMeta, hostViewType) {
             interpolation: null
         }),
         exportAs: null,
-        changeDetection: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_9" /* ChangeDetectionStrategy */].Default,
+        changeDetection: __WEBPACK_IMPORTED_MODULE_1__angular_core__["j" /* ChangeDetectionStrategy */].Default,
         inputs: [],
         outputs: [],
         host: {},
@@ -53547,7 +61736,7 @@ function createHostComponentMeta(hostTypeReference, compMeta, hostViewType) {
         queries: [],
         viewQueries: [],
         componentViewType: hostViewType,
-        rendererType: { id: '__Host__', encapsulation: __WEBPACK_IMPORTED_MODULE_1__angular_core__["q" /* ViewEncapsulation */].None, styles: [], data: {} },
+        rendererType: { id: '__Host__', encapsulation: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_16" /* ViewEncapsulation */].None, styles: [], data: {} },
         entryComponents: [],
         componentFactory: null
     });
@@ -53861,7 +62050,7 @@ var CompilerConfig = (function () {
      * @param {?=} __0
      */
     function CompilerConfig(_a) {
-        var _b = _a === void 0 ? {} : _a, _c = _b.defaultEncapsulation, defaultEncapsulation = _c === void 0 ? __WEBPACK_IMPORTED_MODULE_1__angular_core__["q" /* ViewEncapsulation */].Emulated : _c, _d = _b.useJit, useJit = _d === void 0 ? true : _d, missingTranslation = _b.missingTranslation, enableLegacyTemplate = _b.enableLegacyTemplate;
+        var _b = _a === void 0 ? {} : _a, _c = _b.defaultEncapsulation, defaultEncapsulation = _c === void 0 ? __WEBPACK_IMPORTED_MODULE_1__angular_core__["_16" /* ViewEncapsulation */].Emulated : _c, _d = _b.useJit, useJit = _d === void 0 ? true : _d, missingTranslation = _b.missingTranslation, enableLegacyTemplate = _b.enableLegacyTemplate;
         this.defaultEncapsulation = defaultEncapsulation;
         this.useJit = !!useJit;
         this.missingTranslation = missingTranslation || null;
@@ -55239,7 +63428,7 @@ function CompilerInjectable() {
  * @return {?}
  */
 function assertArrayOfStrings(identifier, value) {
-    if (!__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["s" /* isDevMode */])() || value == null) {
+    if (!Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_24" /* isDevMode */])() || value == null) {
         return;
     }
     if (!Array.isArray(value)) {
@@ -55267,7 +63456,7 @@ function assertInterpolationSymbols(identifier, value) {
     if (value != null && !(Array.isArray(value) && value.length == 2)) {
         throw new Error("Expected '" + identifier + "' to be an array, [start, end].");
     }
-    else if (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["s" /* isDevMode */])() && value != null) {
+    else if (Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_24" /* isDevMode */])() && value != null) {
         var /** @type {?} */ start_1 = (value[0]);
         var /** @type {?} */ end_1 = (value[1]);
         // black list checking
@@ -62078,7 +70267,7 @@ var TranslationBundle = (function () {
      */
     function TranslationBundle(_i18nNodesByMsgId, locale, digest, mapperFactory, missingTranslationStrategy, console) {
         if (_i18nNodesByMsgId === void 0) { _i18nNodesByMsgId = {}; }
-        if (missingTranslationStrategy === void 0) { missingTranslationStrategy = __WEBPACK_IMPORTED_MODULE_1__angular_core__["_10" /* MissingTranslationStrategy */].Warning; }
+        if (missingTranslationStrategy === void 0) { missingTranslationStrategy = __WEBPACK_IMPORTED_MODULE_1__angular_core__["I" /* MissingTranslationStrategy */].Warning; }
         this._i18nNodesByMsgId = _i18nNodesByMsgId;
         this.digest = digest;
         this.mapperFactory = mapperFactory;
@@ -62249,12 +70438,12 @@ var I18nToHtmlVisitor = (function () {
             // - report an error / a warning / nothing,
             // - use the nodes from the original message
             // - placeholders are already internal and need no mapper
-            if (this._missingTranslationStrategy === __WEBPACK_IMPORTED_MODULE_1__angular_core__["_10" /* MissingTranslationStrategy */].Error) {
+            if (this._missingTranslationStrategy === __WEBPACK_IMPORTED_MODULE_1__angular_core__["I" /* MissingTranslationStrategy */].Error) {
                 var /** @type {?} */ ctx = this._locale ? " for locale \"" + this._locale + "\"" : '';
                 this._addError(srcMsg.nodes[0], "Missing translation for message \"" + id + "\"" + ctx);
             }
             else if (this._console &&
-                this._missingTranslationStrategy === __WEBPACK_IMPORTED_MODULE_1__angular_core__["_10" /* MissingTranslationStrategy */].Warning) {
+                this._missingTranslationStrategy === __WEBPACK_IMPORTED_MODULE_1__angular_core__["I" /* MissingTranslationStrategy */].Warning) {
                 var /** @type {?} */ ctx = this._locale ? " for locale \"" + this._locale + "\"" : '';
                 this._console.warn("Missing translation for message \"" + id + "\"" + ctx);
             }
@@ -62293,7 +70482,7 @@ var I18NHtmlParser = (function () {
      * @param {?=} console
      */
     function I18NHtmlParser(_htmlParser, translations, translationsFormat, missingTranslation, console) {
-        if (missingTranslation === void 0) { missingTranslation = __WEBPACK_IMPORTED_MODULE_1__angular_core__["_10" /* MissingTranslationStrategy */].Warning; }
+        if (missingTranslation === void 0) { missingTranslation = __WEBPACK_IMPORTED_MODULE_1__angular_core__["I" /* MissingTranslationStrategy */].Warning; }
         this._htmlParser = _htmlParser;
         if (translations) {
             var serializer = createSerializer(translationsFormat);
@@ -62359,97 +70548,97 @@ var Identifiers = (function () {
 Identifiers.ANALYZE_FOR_ENTRY_COMPONENTS = {
     name: 'ANALYZE_FOR_ENTRY_COMPONENTS',
     moduleName: CORE,
-    runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_11" /* ANALYZE_FOR_ENTRY_COMPONENTS */]
+    runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["a" /* ANALYZE_FOR_ENTRY_COMPONENTS */]
 };
-Identifiers.ElementRef = { name: 'ElementRef', moduleName: CORE, runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["M" /* ElementRef */] };
-Identifiers.NgModuleRef = { name: 'NgModuleRef', moduleName: CORE, runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["P" /* NgModuleRef */] };
-Identifiers.ViewContainerRef = { name: 'ViewContainerRef', moduleName: CORE, runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["R" /* ViewContainerRef */] };
+Identifiers.ElementRef = { name: 'ElementRef', moduleName: CORE, runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["u" /* ElementRef */] };
+Identifiers.NgModuleRef = { name: 'NgModuleRef', moduleName: CORE, runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["N" /* NgModuleRef */] };
+Identifiers.ViewContainerRef = { name: 'ViewContainerRef', moduleName: CORE, runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_15" /* ViewContainerRef */] };
 Identifiers.ChangeDetectorRef = {
     name: 'ChangeDetectorRef',
     moduleName: CORE,
-    runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Z" /* ChangeDetectorRef */]
+    runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["k" /* ChangeDetectorRef */]
 };
-Identifiers.QueryList = { name: 'QueryList', moduleName: CORE, runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_12" /* QueryList */] };
-Identifiers.TemplateRef = { name: 'TemplateRef', moduleName: CORE, runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["S" /* TemplateRef */] };
+Identifiers.QueryList = { name: 'QueryList', moduleName: CORE, runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["X" /* QueryList */] };
+Identifiers.TemplateRef = { name: 'TemplateRef', moduleName: CORE, runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_9" /* TemplateRef */] };
 Identifiers.CodegenComponentFactoryResolver = {
     name: 'ɵCodegenComponentFactoryResolver',
     moduleName: CORE,
-    runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_13" /* ɵCodegenComponentFactoryResolver */]
+    runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_34" /* ɵCodegenComponentFactoryResolver */]
 };
 Identifiers.ComponentFactoryResolver = {
     name: 'ComponentFactoryResolver',
     moduleName: CORE,
-    runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Q" /* ComponentFactoryResolver */]
+    runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["p" /* ComponentFactoryResolver */]
 };
-Identifiers.ComponentFactory = { name: 'ComponentFactory', moduleName: CORE, runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_14" /* ComponentFactory */] };
-Identifiers.ComponentRef = { name: 'ComponentRef', moduleName: CORE, runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_15" /* ComponentRef */] };
-Identifiers.NgModuleFactory = { name: 'NgModuleFactory', moduleName: CORE, runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_16" /* NgModuleFactory */] };
+Identifiers.ComponentFactory = { name: 'ComponentFactory', moduleName: CORE, runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["o" /* ComponentFactory */] };
+Identifiers.ComponentRef = { name: 'ComponentRef', moduleName: CORE, runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["q" /* ComponentRef */] };
+Identifiers.NgModuleFactory = { name: 'NgModuleFactory', moduleName: CORE, runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["M" /* NgModuleFactory */] };
 Identifiers.createModuleFactory = {
     name: 'ɵcmf',
     moduleName: CORE,
-    runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_17" /* ɵcmf */],
+    runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_42" /* ɵcmf */],
 };
 Identifiers.moduleDef = {
     name: 'ɵmod',
     moduleName: CORE,
-    runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_18" /* ɵmod */],
+    runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_55" /* ɵmod */],
 };
 Identifiers.moduleProviderDef = {
     name: 'ɵmpd',
     moduleName: CORE,
-    runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_19" /* ɵmpd */],
+    runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_56" /* ɵmpd */],
 };
 Identifiers.RegisterModuleFactoryFn = {
     name: 'ɵregisterModuleFactory',
     moduleName: CORE,
-    runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_20" /* ɵregisterModuleFactory */],
+    runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_65" /* ɵregisterModuleFactory */],
 };
-Identifiers.Injector = { name: 'Injector', moduleName: CORE, runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["j" /* Injector */] };
+Identifiers.Injector = { name: 'Injector', moduleName: CORE, runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["D" /* Injector */] };
 Identifiers.ViewEncapsulation = {
     name: 'ViewEncapsulation',
     moduleName: CORE,
-    runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["q" /* ViewEncapsulation */]
+    runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_16" /* ViewEncapsulation */]
 };
 Identifiers.ChangeDetectionStrategy = {
     name: 'ChangeDetectionStrategy',
     moduleName: CORE,
-    runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_9" /* ChangeDetectionStrategy */]
+    runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["j" /* ChangeDetectionStrategy */]
 };
 Identifiers.SecurityContext = {
     name: 'SecurityContext',
     moduleName: CORE,
-    runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["t" /* SecurityContext */],
+    runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_4" /* SecurityContext */],
 };
-Identifiers.LOCALE_ID = { name: 'LOCALE_ID', moduleName: CORE, runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["G" /* LOCALE_ID */] };
+Identifiers.LOCALE_ID = { name: 'LOCALE_ID', moduleName: CORE, runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["H" /* LOCALE_ID */] };
 Identifiers.TRANSLATIONS_FORMAT = {
     name: 'TRANSLATIONS_FORMAT',
     moduleName: CORE,
-    runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_21" /* TRANSLATIONS_FORMAT */]
+    runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_8" /* TRANSLATIONS_FORMAT */]
 };
 Identifiers.inlineInterpolate = {
     name: 'ɵinlineInterpolate',
     moduleName: CORE,
-    runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_22" /* ɵinlineInterpolate */]
+    runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_49" /* ɵinlineInterpolate */]
 };
-Identifiers.interpolate = { name: 'ɵinterpolate', moduleName: CORE, runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_23" /* ɵinterpolate */] };
-Identifiers.EMPTY_ARRAY = { name: 'ɵEMPTY_ARRAY', moduleName: CORE, runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_24" /* ɵEMPTY_ARRAY */] };
-Identifiers.EMPTY_MAP = { name: 'ɵEMPTY_MAP', moduleName: CORE, runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_25" /* ɵEMPTY_MAP */] };
-Identifiers.Renderer = { name: 'Renderer', moduleName: CORE, runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["N" /* Renderer */] };
-Identifiers.viewDef = { name: 'ɵvid', moduleName: CORE, runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_26" /* ɵvid */] };
-Identifiers.elementDef = { name: 'ɵeld', moduleName: CORE, runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_27" /* ɵeld */] };
-Identifiers.anchorDef = { name: 'ɵand', moduleName: CORE, runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_28" /* ɵand */] };
-Identifiers.textDef = { name: 'ɵted', moduleName: CORE, runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_29" /* ɵted */] };
-Identifiers.directiveDef = { name: 'ɵdid', moduleName: CORE, runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_30" /* ɵdid */] };
-Identifiers.providerDef = { name: 'ɵprd', moduleName: CORE, runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_31" /* ɵprd */] };
-Identifiers.queryDef = { name: 'ɵqud', moduleName: CORE, runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_32" /* ɵqud */] };
-Identifiers.pureArrayDef = { name: 'ɵpad', moduleName: CORE, runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_33" /* ɵpad */] };
-Identifiers.pureObjectDef = { name: 'ɵpod', moduleName: CORE, runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_34" /* ɵpod */] };
-Identifiers.purePipeDef = { name: 'ɵppd', moduleName: CORE, runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_35" /* ɵppd */] };
-Identifiers.pipeDef = { name: 'ɵpid', moduleName: CORE, runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_36" /* ɵpid */] };
-Identifiers.nodeValue = { name: 'ɵnov', moduleName: CORE, runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_37" /* ɵnov */] };
-Identifiers.ngContentDef = { name: 'ɵncd', moduleName: CORE, runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_38" /* ɵncd */] };
-Identifiers.unwrapValue = { name: 'ɵunv', moduleName: CORE, runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_39" /* ɵunv */] };
-Identifiers.createRendererType2 = { name: 'ɵcrt', moduleName: CORE, runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_40" /* ɵcrt */] };
+Identifiers.interpolate = { name: 'ɵinterpolate', moduleName: CORE, runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_50" /* ɵinterpolate */] };
+Identifiers.EMPTY_ARRAY = { name: 'ɵEMPTY_ARRAY', moduleName: CORE, runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_36" /* ɵEMPTY_ARRAY */] };
+Identifiers.EMPTY_MAP = { name: 'ɵEMPTY_MAP', moduleName: CORE, runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_37" /* ɵEMPTY_MAP */] };
+Identifiers.Renderer = { name: 'Renderer', moduleName: CORE, runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Z" /* Renderer */] };
+Identifiers.viewDef = { name: 'ɵvid', moduleName: CORE, runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_69" /* ɵvid */] };
+Identifiers.elementDef = { name: 'ɵeld', moduleName: CORE, runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_45" /* ɵeld */] };
+Identifiers.anchorDef = { name: 'ɵand', moduleName: CORE, runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_40" /* ɵand */] };
+Identifiers.textDef = { name: 'ɵted', moduleName: CORE, runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_67" /* ɵted */] };
+Identifiers.directiveDef = { name: 'ɵdid', moduleName: CORE, runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_44" /* ɵdid */] };
+Identifiers.providerDef = { name: 'ɵprd', moduleName: CORE, runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_63" /* ɵprd */] };
+Identifiers.queryDef = { name: 'ɵqud', moduleName: CORE, runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_64" /* ɵqud */] };
+Identifiers.pureArrayDef = { name: 'ɵpad', moduleName: CORE, runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_59" /* ɵpad */] };
+Identifiers.pureObjectDef = { name: 'ɵpod', moduleName: CORE, runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_61" /* ɵpod */] };
+Identifiers.purePipeDef = { name: 'ɵppd', moduleName: CORE, runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_62" /* ɵppd */] };
+Identifiers.pipeDef = { name: 'ɵpid', moduleName: CORE, runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_60" /* ɵpid */] };
+Identifiers.nodeValue = { name: 'ɵnov', moduleName: CORE, runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_58" /* ɵnov */] };
+Identifiers.ngContentDef = { name: 'ɵncd', moduleName: CORE, runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_57" /* ɵncd */] };
+Identifiers.unwrapValue = { name: 'ɵunv', moduleName: CORE, runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_68" /* ɵunv */] };
+Identifiers.createRendererType2 = { name: 'ɵcrt', moduleName: CORE, runtime: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_43" /* ɵcrt */] };
 Identifiers.RendererType2 = {
     name: 'RendererType2',
     moduleName: CORE,
@@ -63685,7 +71874,7 @@ var BindingParser = (function () {
      */
     BindingParser.prototype.createElementPropertyAst = function (elementSelector, boundProp) {
         if (boundProp.isAnimation) {
-            return new BoundElementPropertyAst(boundProp.name, PropertyBindingType.Animation, __WEBPACK_IMPORTED_MODULE_1__angular_core__["t" /* SecurityContext */].NONE, boundProp.expression, null, boundProp.sourceSpan);
+            return new BoundElementPropertyAst(boundProp.name, PropertyBindingType.Animation, __WEBPACK_IMPORTED_MODULE_1__angular_core__["_4" /* SecurityContext */].NONE, boundProp.expression, null, boundProp.sourceSpan);
         }
         var /** @type {?} */ unit = null;
         var /** @type {?} */ bindingType = ((undefined));
@@ -63709,13 +71898,13 @@ var BindingParser = (function () {
             else if (parts[0] == CLASS_PREFIX) {
                 boundPropertyName = parts[1];
                 bindingType = PropertyBindingType.Class;
-                securityContexts = [__WEBPACK_IMPORTED_MODULE_1__angular_core__["t" /* SecurityContext */].NONE];
+                securityContexts = [__WEBPACK_IMPORTED_MODULE_1__angular_core__["_4" /* SecurityContext */].NONE];
             }
             else if (parts[0] == STYLE_PREFIX) {
                 unit = parts.length > 2 ? parts[2] : null;
                 boundPropertyName = parts[1];
                 bindingType = PropertyBindingType.Style;
-                securityContexts = [__WEBPACK_IMPORTED_MODULE_1__angular_core__["t" /* SecurityContext */].STYLE];
+                securityContexts = [__WEBPACK_IMPORTED_MODULE_1__angular_core__["_4" /* SecurityContext */].STYLE];
             }
         }
         // If not a special case, use the full property name
@@ -63912,7 +72101,7 @@ function calcPossibleSecurityContexts(registry, selector, propName, isAttribute)
         var /** @type {?} */ possibleElementNames = elementNames.filter(function (elementName) { return !notElementNames.has(elementName); });
         ctxs.push.apply(ctxs, possibleElementNames.map(function (elementName) { return registry.securityContext(elementName, propName, isAttribute); }));
     });
-    return ctxs.length === 0 ? [__WEBPACK_IMPORTED_MODULE_1__angular_core__["t" /* SecurityContext */].NONE] : Array.from(new Set(ctxs)).sort();
+    return ctxs.length === 0 ? [__WEBPACK_IMPORTED_MODULE_1__angular_core__["_4" /* SecurityContext */].NONE] : Array.from(new Set(ctxs)).sort();
 }
 /**
  * @license
@@ -64073,7 +72262,7 @@ function warnOnlyOnce(warnings) {
  *
  * This is currently an internal-only feature and not meant for general use.
  */
-var TEMPLATE_TRANSFORMS = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["g" /* InjectionToken */]('TemplateTransforms');
+var TEMPLATE_TRANSFORMS = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["C" /* InjectionToken */]('TemplateTransforms');
 var TemplateParseError = (function (_super) {
     __WEBPACK_IMPORTED_MODULE_0_tslib__["a" /* __extends */](TemplateParseError, _super);
     /**
@@ -64254,8 +72443,8 @@ TemplateParser.ctorParameters = function () { return [
     { type: Parser, },
     { type: ElementSchemaRegistry, },
     { type: I18NHtmlParser, },
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_42" /* ɵConsole */], },
-    { type: Array, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["o" /* Optional */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["f" /* Inject */], args: [TEMPLATE_TRANSFORMS,] },] },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_35" /* ɵConsole */], },
+    { type: Array, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Q" /* Optional */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["A" /* Inject */], args: [TEMPLATE_TRANSFORMS,] },] },
 ]; };
 var TemplateParseVisitor = (function () {
     /**
@@ -65038,7 +73227,7 @@ function createOfflineCompileUrlResolver() {
  * A default provider for {\@link PACKAGE_ROOT_URL} that maps to '/'.
  */
 var DEFAULT_PACKAGE_URL_PROVIDER = {
-    provide: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_43" /* PACKAGE_ROOT_URL */],
+    provide: __WEBPACK_IMPORTED_MODULE_1__angular_core__["S" /* PACKAGE_ROOT_URL */],
     useValue: '/'
 };
 /**
@@ -65101,7 +73290,7 @@ UrlResolver.decorators = [
  * @nocollapse
  */
 UrlResolver.ctorParameters = function () { return [
-    { type: undefined, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["f" /* Inject */], args: [__WEBPACK_IMPORTED_MODULE_1__angular_core__["_43" /* PACKAGE_ROOT_URL */],] },] },
+    { type: undefined, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["A" /* Inject */], args: [__WEBPACK_IMPORTED_MODULE_1__angular_core__["S" /* PACKAGE_ROOT_URL */],] },] },
 ]; };
 /**
  * Extract the scheme of a URL.
@@ -65409,19 +73598,19 @@ var DirectiveNormalizer = (function () {
         var _this = this;
         if (isDefined(prenormData.template)) {
             if (isDefined(prenormData.templateUrl)) {
-                throw syntaxError("'" + __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["I" /* ɵstringify */])(prenormData.componentType) + "' component cannot define both template and templateUrl");
+                throw syntaxError("'" + Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_66" /* ɵstringify */])(prenormData.componentType) + "' component cannot define both template and templateUrl");
             }
             if (typeof prenormData.template !== 'string') {
-                throw syntaxError("The template specified for component " + __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["I" /* ɵstringify */])(prenormData.componentType) + " is not a string");
+                throw syntaxError("The template specified for component " + Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_66" /* ɵstringify */])(prenormData.componentType) + " is not a string");
             }
         }
         else if (isDefined(prenormData.templateUrl)) {
             if (typeof prenormData.templateUrl !== 'string') {
-                throw syntaxError("The templateUrl specified for component " + __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["I" /* ɵstringify */])(prenormData.componentType) + " is not a string");
+                throw syntaxError("The templateUrl specified for component " + Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_66" /* ɵstringify */])(prenormData.componentType) + " is not a string");
             }
         }
         else {
-            throw syntaxError("No template specified for component " + __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["I" /* ɵstringify */])(prenormData.componentType));
+            throw syntaxError("No template specified for component " + Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_66" /* ɵstringify */])(prenormData.componentType));
         }
         return SyncAsync.then(this.normalizeTemplateOnly(prenormData), function (result) { return _this.normalizeExternalStylesheets(result); });
     };
@@ -65471,9 +73660,9 @@ var DirectiveNormalizer = (function () {
         }
         var /** @type {?} */ styles = templateMetadataStyles.styles.concat(templateStyles.styles);
         var /** @type {?} */ styleUrls = templateMetadataStyles.styleUrls.concat(templateStyles.styleUrls);
-        if (encapsulation === __WEBPACK_IMPORTED_MODULE_1__angular_core__["q" /* ViewEncapsulation */].Emulated && styles.length === 0 &&
+        if (encapsulation === __WEBPACK_IMPORTED_MODULE_1__angular_core__["_16" /* ViewEncapsulation */].Emulated && styles.length === 0 &&
             styleUrls.length === 0) {
-            encapsulation = __WEBPACK_IMPORTED_MODULE_1__angular_core__["q" /* ViewEncapsulation */].None;
+            encapsulation = __WEBPACK_IMPORTED_MODULE_1__angular_core__["_16" /* ViewEncapsulation */].None;
         }
         return new CompileTemplateMetadata({
             encapsulation: encapsulation,
@@ -65645,7 +73834,7 @@ var DirectiveResolver = (function () {
      * @return {?}
      */
     DirectiveResolver.prototype.isDirective = function (type) {
-        var /** @type {?} */ typeMetadata = this._reflector.annotations(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_44" /* resolveForwardRef */])(type));
+        var /** @type {?} */ typeMetadata = this._reflector.annotations(Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_27" /* resolveForwardRef */])(type));
         return typeMetadata && typeMetadata.some(isDirectiveMetadata);
     };
     /**
@@ -65655,7 +73844,7 @@ var DirectiveResolver = (function () {
      */
     DirectiveResolver.prototype.resolve = function (type, throwIfNotFound) {
         if (throwIfNotFound === void 0) { throwIfNotFound = true; }
-        var /** @type {?} */ typeMetadata = this._reflector.annotations(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_44" /* resolveForwardRef */])(type));
+        var /** @type {?} */ typeMetadata = this._reflector.annotations(Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_27" /* resolveForwardRef */])(type));
         if (typeMetadata) {
             var /** @type {?} */ metadata = findLast(typeMetadata, isDirectiveMetadata);
             if (metadata) {
@@ -65664,7 +73853,7 @@ var DirectiveResolver = (function () {
             }
         }
         if (throwIfNotFound) {
-            throw new Error("No Directive annotation found on " + __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["I" /* ɵstringify */])(type));
+            throw new Error("No Directive annotation found on " + Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_66" /* ɵstringify */])(type));
         }
         return null;
     };
@@ -65680,7 +73869,7 @@ var DirectiveResolver = (function () {
         var /** @type {?} */ host = {};
         var /** @type {?} */ queries = {};
         Object.keys(propertyMetadata).forEach(function (propName) {
-            var /** @type {?} */ input = findLast(propertyMetadata[propName], function (a) { return a instanceof __WEBPACK_IMPORTED_MODULE_1__angular_core__["O" /* Input */]; });
+            var /** @type {?} */ input = findLast(propertyMetadata[propName], function (a) { return a instanceof __WEBPACK_IMPORTED_MODULE_1__angular_core__["E" /* Input */]; });
             if (input) {
                 if (input.bindingPropertyName) {
                     inputs.push(propName + ": " + input.bindingPropertyName);
@@ -65689,7 +73878,7 @@ var DirectiveResolver = (function () {
                     inputs.push(propName);
                 }
             }
-            var /** @type {?} */ output = findLast(propertyMetadata[propName], function (a) { return a instanceof __WEBPACK_IMPORTED_MODULE_1__angular_core__["_4" /* Output */]; });
+            var /** @type {?} */ output = findLast(propertyMetadata[propName], function (a) { return a instanceof __WEBPACK_IMPORTED_MODULE_1__angular_core__["R" /* Output */]; });
             if (output) {
                 if (output.bindingPropertyName) {
                     outputs.push(propName + ": " + output.bindingPropertyName);
@@ -65698,7 +73887,7 @@ var DirectiveResolver = (function () {
                     outputs.push(propName);
                 }
             }
-            var /** @type {?} */ hostBindings = propertyMetadata[propName].filter(function (a) { return a && a instanceof __WEBPACK_IMPORTED_MODULE_1__angular_core__["_45" /* HostBinding */]; });
+            var /** @type {?} */ hostBindings = propertyMetadata[propName].filter(function (a) { return a && a instanceof __WEBPACK_IMPORTED_MODULE_1__angular_core__["y" /* HostBinding */]; });
             hostBindings.forEach(function (hostBinding) {
                 if (hostBinding.hostPropertyName) {
                     var /** @type {?} */ startWith = hostBinding.hostPropertyName[0];
@@ -65714,12 +73903,12 @@ var DirectiveResolver = (function () {
                     host["[" + propName + "]"] = propName;
                 }
             });
-            var /** @type {?} */ hostListeners = propertyMetadata[propName].filter(function (a) { return a && a instanceof __WEBPACK_IMPORTED_MODULE_1__angular_core__["_6" /* HostListener */]; });
+            var /** @type {?} */ hostListeners = propertyMetadata[propName].filter(function (a) { return a && a instanceof __WEBPACK_IMPORTED_MODULE_1__angular_core__["z" /* HostListener */]; });
             hostListeners.forEach(function (hostListener) {
                 var /** @type {?} */ args = hostListener.args || [];
                 host["(" + hostListener.eventName + ")"] = propName + "(" + args.join(',') + ")";
             });
-            var /** @type {?} */ query = findLast(propertyMetadata[propName], function (a) { return a instanceof __WEBPACK_IMPORTED_MODULE_1__angular_core__["_46" /* Query */]; });
+            var /** @type {?} */ query = findLast(propertyMetadata[propName], function (a) { return a instanceof __WEBPACK_IMPORTED_MODULE_1__angular_core__["W" /* Query */]; });
             if (query) {
                 queries[propName] = query;
             }
@@ -65763,8 +73952,8 @@ var DirectiveResolver = (function () {
         var /** @type {?} */ mergedOutputs = this._dedupeBindings(directive.outputs ? directive.outputs.concat(outputs) : outputs);
         var /** @type {?} */ mergedHost = directive.host ? Object.assign({}, directive.host, host) : host;
         var /** @type {?} */ mergedQueries = directive.queries ? Object.assign({}, directive.queries, queries) : queries;
-        if (directive instanceof __WEBPACK_IMPORTED_MODULE_1__angular_core__["_7" /* Component */]) {
-            return new __WEBPACK_IMPORTED_MODULE_1__angular_core__["_7" /* Component */]({
+        if (directive instanceof __WEBPACK_IMPORTED_MODULE_1__angular_core__["n" /* Component */]) {
+            return new __WEBPACK_IMPORTED_MODULE_1__angular_core__["n" /* Component */]({
                 selector: directive.selector,
                 inputs: mergedInputs,
                 outputs: mergedOutputs,
@@ -65786,7 +73975,7 @@ var DirectiveResolver = (function () {
             });
         }
         else {
-            return new __WEBPACK_IMPORTED_MODULE_1__angular_core__["J" /* Directive */]({
+            return new __WEBPACK_IMPORTED_MODULE_1__angular_core__["t" /* Directive */]({
                 selector: directive.selector,
                 inputs: mergedInputs,
                 outputs: mergedOutputs,
@@ -65813,7 +74002,7 @@ DirectiveResolver.ctorParameters = function () { return [
  * @return {?}
  */
 function isDirectiveMetadata(type) {
-    return type instanceof __WEBPACK_IMPORTED_MODULE_1__angular_core__["J" /* Directive */];
+    return type instanceof __WEBPACK_IMPORTED_MODULE_1__angular_core__["t" /* Directive */];
 }
 /**
  * @template T
@@ -66001,7 +74190,7 @@ function getHookName(hook) {
  * @return {?}
  */
 function _isNgModuleMetadata(obj) {
-    return obj instanceof __WEBPACK_IMPORTED_MODULE_1__angular_core__["b" /* NgModule */];
+    return obj instanceof __WEBPACK_IMPORTED_MODULE_1__angular_core__["L" /* NgModule */];
 }
 /**
  * Resolves types to {\@link NgModule}.
@@ -66031,7 +74220,7 @@ var NgModuleResolver = (function () {
         }
         else {
             if (throwIfNotFound) {
-                throw new Error("No NgModule metadata found for '" + __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["I" /* ɵstringify */])(type) + "'.");
+                throw new Error("No NgModule metadata found for '" + Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_66" /* ɵstringify */])(type) + "'.");
             }
             return null;
         }
@@ -66059,7 +74248,7 @@ NgModuleResolver.ctorParameters = function () { return [
  * @return {?}
  */
 function _isPipeMetadata(type) {
-    return type instanceof __WEBPACK_IMPORTED_MODULE_1__angular_core__["Y" /* Pipe */];
+    return type instanceof __WEBPACK_IMPORTED_MODULE_1__angular_core__["V" /* Pipe */];
 }
 /**
  * Resolve a `Type` for {\@link Pipe}.
@@ -66080,7 +74269,7 @@ var PipeResolver = (function () {
      * @return {?}
      */
     PipeResolver.prototype.isPipe = function (type) {
-        var /** @type {?} */ typeMetadata = this._reflector.annotations(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_44" /* resolveForwardRef */])(type));
+        var /** @type {?} */ typeMetadata = this._reflector.annotations(Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_27" /* resolveForwardRef */])(type));
         return typeMetadata && typeMetadata.some(_isPipeMetadata);
     };
     /**
@@ -66091,7 +74280,7 @@ var PipeResolver = (function () {
      */
     PipeResolver.prototype.resolve = function (type, throwIfNotFound) {
         if (throwIfNotFound === void 0) { throwIfNotFound = true; }
-        var /** @type {?} */ metas = this._reflector.annotations(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_44" /* resolveForwardRef */])(type));
+        var /** @type {?} */ metas = this._reflector.annotations(Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_27" /* resolveForwardRef */])(type));
         if (metas) {
             var /** @type {?} */ annotation = findLast(metas, _isPipeMetadata);
             if (annotation) {
@@ -66099,7 +74288,7 @@ var PipeResolver = (function () {
             }
         }
         if (throwIfNotFound) {
-            throw new Error("No Pipe decorator found on " + __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["I" /* ɵstringify */])(type));
+            throw new Error("No Pipe decorator found on " + Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_66" /* ɵstringify */])(type));
         }
         return null;
     };
@@ -66220,7 +74409,7 @@ JitSummaryResolver.ctorParameters = function () { return []; };
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-var ERROR_COLLECTOR_TOKEN = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["g" /* InjectionToken */]('ErrorCollector');
+var ERROR_COLLECTOR_TOKEN = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["C" /* InjectionToken */]('ErrorCollector');
 var CompileMetadataResolver = (function () {
     /**
      * @param {?} _config
@@ -66296,7 +74485,7 @@ var CompileMetadataResolver = (function () {
         var /** @type {?} */ delegate = null;
         var /** @type {?} */ proxyClass = (function () {
             if (!delegate) {
-                throw new Error("Illegal state: Class " + name + " for type " + __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["I" /* ɵstringify */])(baseType) + " is not compiled yet!");
+                throw new Error("Illegal state: Class " + name + " for type " + Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_66" /* ɵstringify */])(baseType) + " is not compiled yet!");
             }
             return delegate.apply(this, arguments);
         });
@@ -66379,7 +74568,7 @@ var CompileMetadataResolver = (function () {
             var /** @type {?} */ hostView = this.getHostComponentViewClass(dirType);
             // Note: ngContentSelectors will be filled later once the template is
             // loaded.
-            return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_41" /* ɵccf */])(selector, dirType, /** @type {?} */ (hostView), inputs, outputs, []);
+            return Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_41" /* ɵccf */])(selector, dirType, /** @type {?} */ (hostView), inputs, outputs, []);
         }
     };
     /**
@@ -66418,7 +74607,7 @@ var CompileMetadataResolver = (function () {
         if (this._directiveCache.has(directiveType)) {
             return null;
         }
-        directiveType = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_44" /* resolveForwardRef */])(directiveType);
+        directiveType = Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_27" /* resolveForwardRef */])(directiveType);
         var _a = ((this.getNonNormalizedDirectiveMetadata(directiveType))), annotation = _a.annotation, metadata = _a.metadata;
         var /** @type {?} */ createDirectiveMetadata = function (templateMetadata) {
             var /** @type {?} */ normalizedDirMeta = new CompileDirectiveMetadata({
@@ -66464,7 +74653,7 @@ var CompileMetadataResolver = (function () {
                 animations: template.animations,
                 interpolation: template.interpolation
             });
-            if (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["W" /* ɵisPromise */])(templateMeta) && isSync) {
+            if (Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_53" /* ɵisPromise */])(templateMeta) && isSync) {
                 this._reportError(componentStillLoadingError(directiveType), directiveType);
                 return null;
             }
@@ -66482,7 +74671,7 @@ var CompileMetadataResolver = (function () {
      */
     CompileMetadataResolver.prototype.getNonNormalizedDirectiveMetadata = function (directiveType) {
         var _this = this;
-        directiveType = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_44" /* resolveForwardRef */])(directiveType);
+        directiveType = Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_27" /* resolveForwardRef */])(directiveType);
         if (!directiveType) {
             return null;
         }
@@ -66495,7 +74684,7 @@ var CompileMetadataResolver = (function () {
             return null;
         }
         var /** @type {?} */ nonNormalizedTemplateMetadata = ((undefined));
-        if (dirMeta instanceof __WEBPACK_IMPORTED_MODULE_1__angular_core__["_7" /* Component */]) {
+        if (dirMeta instanceof __WEBPACK_IMPORTED_MODULE_1__angular_core__["n" /* Component */]) {
             // component
             assertArrayOfStrings('styles', dirMeta.styles);
             assertArrayOfStrings('styleUrls', dirMeta.styleUrls);
@@ -66518,7 +74707,7 @@ var CompileMetadataResolver = (function () {
         var /** @type {?} */ viewProviders = [];
         var /** @type {?} */ entryComponentMetadata = [];
         var /** @type {?} */ selector = dirMeta.selector;
-        if (dirMeta instanceof __WEBPACK_IMPORTED_MODULE_1__angular_core__["_7" /* Component */]) {
+        if (dirMeta instanceof __WEBPACK_IMPORTED_MODULE_1__angular_core__["n" /* Component */]) {
             // Component
             changeDetectionStrategy = ((dirMeta.changeDetection));
             if (dirMeta.viewProviders) {
@@ -66673,7 +74862,7 @@ var CompileMetadataResolver = (function () {
     CompileMetadataResolver.prototype.getNgModuleMetadata = function (moduleType, throwIfNotFound) {
         var _this = this;
         if (throwIfNotFound === void 0) { throwIfNotFound = true; }
-        moduleType = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_44" /* resolveForwardRef */])(moduleType);
+        moduleType = Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_27" /* resolveForwardRef */])(moduleType);
         var /** @type {?} */ compileMeta = this._ngModuleCache.get(moduleType);
         if (compileMeta) {
             return compileMeta;
@@ -66912,7 +75101,7 @@ var CompileMetadataResolver = (function () {
      * @return {?}
      */
     CompileMetadataResolver.prototype._getIdentifierMetadata = function (type) {
-        type = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_44" /* resolveForwardRef */])(type);
+        type = Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_27" /* resolveForwardRef */])(type);
         return { reference: type };
     };
     /**
@@ -66923,7 +75112,7 @@ var CompileMetadataResolver = (function () {
         var /** @type {?} */ annotations = this._reflector.annotations(type);
         // Note: We need an exact check here as @Component / @Directive / ... inherit
         // from @CompilerInjectable!
-        return annotations.some(function (ann) { return ann.constructor === __WEBPACK_IMPORTED_MODULE_1__angular_core__["c" /* Injectable */]; });
+        return annotations.some(function (ann) { return ann.constructor === __WEBPACK_IMPORTED_MODULE_1__angular_core__["B" /* Injectable */]; });
     };
     /**
      * @param {?} type
@@ -66971,7 +75160,7 @@ var CompileMetadataResolver = (function () {
      */
     CompileMetadataResolver.prototype._getFactoryMetadata = function (factory, dependencies) {
         if (dependencies === void 0) { dependencies = null; }
-        factory = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_44" /* resolveForwardRef */])(factory);
+        factory = Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_27" /* resolveForwardRef */])(factory);
         return { reference: factory, diDeps: this._getDependenciesMetadata(factory, dependencies) };
     };
     /**
@@ -67014,7 +75203,7 @@ var CompileMetadataResolver = (function () {
      * @return {?}
      */
     CompileMetadataResolver.prototype._loadPipeMetadata = function (pipeType) {
-        pipeType = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_44" /* resolveForwardRef */])(pipeType);
+        pipeType = Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_27" /* resolveForwardRef */])(pipeType);
         var /** @type {?} */ pipeAnnotation = ((this._pipeResolver.resolve(pipeType)));
         var /** @type {?} */ pipeMeta = new CompilePipeMetadata({
             type: this._getTypeMetadata(pipeType),
@@ -67045,26 +75234,26 @@ var CompileMetadataResolver = (function () {
             var /** @type {?} */ token = null;
             if (Array.isArray(param)) {
                 param.forEach(function (paramEntry) {
-                    if (paramEntry instanceof __WEBPACK_IMPORTED_MODULE_1__angular_core__["T" /* Host */]) {
+                    if (paramEntry instanceof __WEBPACK_IMPORTED_MODULE_1__angular_core__["x" /* Host */]) {
                         isHost = true;
                     }
-                    else if (paramEntry instanceof __WEBPACK_IMPORTED_MODULE_1__angular_core__["_3" /* Self */]) {
+                    else if (paramEntry instanceof __WEBPACK_IMPORTED_MODULE_1__angular_core__["_5" /* Self */]) {
                         isSelf = true;
                     }
-                    else if (paramEntry instanceof __WEBPACK_IMPORTED_MODULE_1__angular_core__["E" /* SkipSelf */]) {
+                    else if (paramEntry instanceof __WEBPACK_IMPORTED_MODULE_1__angular_core__["_6" /* SkipSelf */]) {
                         isSkipSelf = true;
                     }
-                    else if (paramEntry instanceof __WEBPACK_IMPORTED_MODULE_1__angular_core__["o" /* Optional */]) {
+                    else if (paramEntry instanceof __WEBPACK_IMPORTED_MODULE_1__angular_core__["Q" /* Optional */]) {
                         isOptional = true;
                     }
-                    else if (paramEntry instanceof __WEBPACK_IMPORTED_MODULE_1__angular_core__["U" /* Attribute */]) {
+                    else if (paramEntry instanceof __WEBPACK_IMPORTED_MODULE_1__angular_core__["g" /* Attribute */]) {
                         isAttribute = true;
                         token = paramEntry.attributeName;
                     }
-                    else if (paramEntry instanceof __WEBPACK_IMPORTED_MODULE_1__angular_core__["f" /* Inject */]) {
+                    else if (paramEntry instanceof __WEBPACK_IMPORTED_MODULE_1__angular_core__["A" /* Inject */]) {
                         token = paramEntry.token;
                     }
-                    else if (paramEntry instanceof __WEBPACK_IMPORTED_MODULE_1__angular_core__["g" /* InjectionToken */]) {
+                    else if (paramEntry instanceof __WEBPACK_IMPORTED_MODULE_1__angular_core__["C" /* InjectionToken */]) {
                         token = paramEntry;
                     }
                     else if (isValidType(paramEntry) && token == null) {
@@ -67105,7 +75294,7 @@ var CompileMetadataResolver = (function () {
      * @return {?}
      */
     CompileMetadataResolver.prototype._getTokenMetadata = function (token) {
-        token = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_44" /* resolveForwardRef */])(token);
+        token = Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_27" /* resolveForwardRef */])(token);
         var /** @type {?} */ compileToken;
         if (typeof token === 'string') {
             compileToken = { value: token };
@@ -67131,7 +75320,7 @@ var CompileMetadataResolver = (function () {
                 _this._getProvidersMetadata(provider, targetEntryComponents, debugInfo, compileProviders);
             }
             else {
-                provider = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_44" /* resolveForwardRef */])(provider);
+                provider = Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_27" /* resolveForwardRef */])(provider);
                 var /** @type {?} */ providerMeta = ((undefined));
                 if (provider && typeof provider === 'object' && provider.hasOwnProperty('provide')) {
                     _this._validateProvider(provider);
@@ -67342,10 +75531,10 @@ CompileMetadataResolver.ctorParameters = function () { return [
     { type: SummaryResolver, },
     { type: ElementSchemaRegistry, },
     { type: DirectiveNormalizer, },
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_42" /* ɵConsole */], },
-    { type: StaticSymbolCache, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["o" /* Optional */] },] },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_35" /* ɵConsole */], },
+    { type: StaticSymbolCache, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Q" /* Optional */] },] },
     { type: CompileReflector, },
-    { type: undefined, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["o" /* Optional */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["f" /* Inject */], args: [ERROR_COLLECTOR_TOKEN,] },] },
+    { type: undefined, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Q" /* Optional */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["A" /* Inject */], args: [ERROR_COLLECTOR_TOKEN,] },] },
 ]; };
 /**
  * @param {?} tree
@@ -67356,7 +75545,7 @@ function flattenArray(tree, out) {
     if (out === void 0) { out = []; }
     if (tree) {
         for (var /** @type {?} */ i = 0; i < tree.length; i++) {
-            var /** @type {?} */ item = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_44" /* resolveForwardRef */])(tree[i]);
+            var /** @type {?} */ item = Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_27" /* resolveForwardRef */])(tree[i]);
             if (Array.isArray(item)) {
                 flattenArray(item, out);
             }
@@ -67389,7 +75578,7 @@ function flattenAndDedupeArray(tree) {
  * @return {?}
  */
 function isValidType(value) {
-    return (value instanceof StaticSymbol) || (value instanceof __WEBPACK_IMPORTED_MODULE_1__angular_core__["_47" /* Type */]);
+    return (value instanceof StaticSymbol) || (value instanceof __WEBPACK_IMPORTED_MODULE_1__angular_core__["_11" /* Type */]);
 }
 /**
  * @param {?} value
@@ -67423,7 +75612,7 @@ function stringifyType(type) {
         return type.name + " in " + type.filePath;
     }
     else {
-        return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["I" /* ɵstringify */])(type);
+        return Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_66" /* ɵstringify */])(type);
     }
 }
 /**
@@ -67432,8 +75621,8 @@ function stringifyType(type) {
  * @return {?}
  */
 function componentStillLoadingError(compType) {
-    var /** @type {?} */ error = Error("Can't compile synchronously as " + __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["I" /* ɵstringify */])(compType) + " is still being loaded!");
-    ((error))[__WEBPACK_IMPORTED_MODULE_1__angular_core__["_48" /* ɵERROR_COMPONENT_TYPE */]] = compType;
+    var /** @type {?} */ error = Error("Can't compile synchronously as " + Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_66" /* ɵstringify */])(compType) + " is still being loaded!");
+    ((error))[__WEBPACK_IMPORTED_MODULE_1__angular_core__["_38" /* ɵERROR_COMPONENT_TYPE */]] = compType;
     return error;
 }
 /**
@@ -71372,20 +79561,20 @@ function registerContext(ctx, specs) {
     }
 }
 // Case is insignificant below, all element and attribute names are lower-cased for lookup.
-registerContext(__WEBPACK_IMPORTED_MODULE_1__angular_core__["t" /* SecurityContext */].HTML, [
+registerContext(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_4" /* SecurityContext */].HTML, [
     'iframe|srcdoc',
     '*|innerHTML',
     '*|outerHTML',
 ]);
-registerContext(__WEBPACK_IMPORTED_MODULE_1__angular_core__["t" /* SecurityContext */].STYLE, ['*|style']);
+registerContext(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_4" /* SecurityContext */].STYLE, ['*|style']);
 // NB: no SCRIPT contexts here, they are never allowed due to the parser stripping them.
-registerContext(__WEBPACK_IMPORTED_MODULE_1__angular_core__["t" /* SecurityContext */].URL, [
+registerContext(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_4" /* SecurityContext */].URL, [
     '*|formAction', 'area|href', 'area|ping', 'audio|src', 'a|href',
     'a|ping', 'blockquote|cite', 'body|background', 'del|cite', 'form|action',
     'img|src', 'img|srcset', 'input|src', 'ins|cite', 'q|cite',
     'source|src', 'source|srcset', 'track|src', 'video|poster', 'video|src',
 ]);
-registerContext(__WEBPACK_IMPORTED_MODULE_1__angular_core__["t" /* SecurityContext */].RESOURCE_URL, [
+registerContext(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_4" /* SecurityContext */].RESOURCE_URL, [
     'applet|code',
     'applet|codebase',
     'base|href',
@@ -71677,14 +79866,14 @@ var DomElementSchemaRegistry = (function (_super) {
      * @return {?}
      */
     DomElementSchemaRegistry.prototype.hasProperty = function (tagName, propName, schemaMetas) {
-        if (schemaMetas.some(function (schema) { return schema.name === __WEBPACK_IMPORTED_MODULE_1__angular_core__["_49" /* NO_ERRORS_SCHEMA */].name; })) {
+        if (schemaMetas.some(function (schema) { return schema.name === __WEBPACK_IMPORTED_MODULE_1__angular_core__["K" /* NO_ERRORS_SCHEMA */].name; })) {
             return true;
         }
         if (tagName.indexOf('-') > -1) {
             if (isNgContainer(tagName) || isNgContent(tagName)) {
                 return false;
             }
-            if (schemaMetas.some(function (schema) { return schema.name === __WEBPACK_IMPORTED_MODULE_1__angular_core__["_50" /* CUSTOM_ELEMENTS_SCHEMA */].name; })) {
+            if (schemaMetas.some(function (schema) { return schema.name === __WEBPACK_IMPORTED_MODULE_1__angular_core__["i" /* CUSTOM_ELEMENTS_SCHEMA */].name; })) {
                 // Can't tell now as we don't know which properties a custom element will get
                 // once it is instantiated
                 return true;
@@ -71699,14 +79888,14 @@ var DomElementSchemaRegistry = (function (_super) {
      * @return {?}
      */
     DomElementSchemaRegistry.prototype.hasElement = function (tagName, schemaMetas) {
-        if (schemaMetas.some(function (schema) { return schema.name === __WEBPACK_IMPORTED_MODULE_1__angular_core__["_49" /* NO_ERRORS_SCHEMA */].name; })) {
+        if (schemaMetas.some(function (schema) { return schema.name === __WEBPACK_IMPORTED_MODULE_1__angular_core__["K" /* NO_ERRORS_SCHEMA */].name; })) {
             return true;
         }
         if (tagName.indexOf('-') > -1) {
             if (isNgContainer(tagName) || isNgContent(tagName)) {
                 return true;
             }
-            if (schemaMetas.some(function (schema) { return schema.name === __WEBPACK_IMPORTED_MODULE_1__angular_core__["_50" /* CUSTOM_ELEMENTS_SCHEMA */].name; })) {
+            if (schemaMetas.some(function (schema) { return schema.name === __WEBPACK_IMPORTED_MODULE_1__angular_core__["i" /* CUSTOM_ELEMENTS_SCHEMA */].name; })) {
                 // Allow any custom elements
                 return true;
             }
@@ -71741,7 +79930,7 @@ var DomElementSchemaRegistry = (function (_super) {
             return ctx;
         }
         ctx = SECURITY_SCHEMA['*|' + propName];
-        return ctx ? ctx : __WEBPACK_IMPORTED_MODULE_1__angular_core__["t" /* SecurityContext */].NONE;
+        return ctx ? ctx : __WEBPACK_IMPORTED_MODULE_1__angular_core__["_4" /* SecurityContext */].NONE;
     };
     /**
      * @param {?} propName
@@ -72441,7 +80630,7 @@ var StyleCompiler = (function () {
      * @return {?}
      */
     StyleCompiler.prototype.needsStyleShim = function (comp) {
-        return ((comp.template)).encapsulation === __WEBPACK_IMPORTED_MODULE_1__angular_core__["q" /* ViewEncapsulation */].Emulated;
+        return ((comp.template)).encapsulation === __WEBPACK_IMPORTED_MODULE_1__angular_core__["_16" /* ViewEncapsulation */].Emulated;
     };
     /**
      * @param {?} outputCtx
@@ -73642,7 +81831,7 @@ var ViewBuilder = (function () {
         var /** @type {?} */ updateRendererFn = this._createUpdateFn(updateRendererStmts);
         var /** @type {?} */ updateDirectivesFn = this._createUpdateFn(updateDirectivesStmts);
         var /** @type {?} */ viewFlags = 0;
-        if (!this.parent && this.component.changeDetection === __WEBPACK_IMPORTED_MODULE_1__angular_core__["_9" /* ChangeDetectionStrategy */].OnPush) {
+        if (!this.parent && this.component.changeDetection === __WEBPACK_IMPORTED_MODULE_1__angular_core__["j" /* ChangeDetectionStrategy */].OnPush) {
             viewFlags |= 2 /* OnPush */;
         }
         var /** @type {?} */ viewFactory = new DeclareFunctionStmt(this.viewName, [new FnParam(/** @type {?} */ ((LOG_VAR$1.name)))], [new ReturnStatement(importExpr(Identifiers.viewDef).callFn([
@@ -73850,12 +82039,12 @@ var ViewBuilder = (function () {
         var /** @type {?} */ usedEvents = new Map();
         ast.outputs.forEach(function (event) {
             var _a = elementEventNameAndTarget(event, null), name = _a.name, target = _a.target;
-            usedEvents.set(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_51" /* ɵelementEventFullName */])(target, name), [target, name]);
+            usedEvents.set(Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_46" /* ɵelementEventFullName */])(target, name), [target, name]);
         });
         ast.directives.forEach(function (dirAst) {
             dirAst.hostEvents.forEach(function (event) {
                 var _a = elementEventNameAndTarget(event, dirAst), name = _a.name, target = _a.target;
-                usedEvents.set(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_51" /* ɵelementEventFullName */])(target, name), [target, name]);
+                usedEvents.set(Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_46" /* ɵelementEventFullName */])(target, name), [target, name]);
             });
         });
         var /** @type {?} */ hostBindings = [];
@@ -74300,7 +82489,7 @@ var ViewBuilder = (function () {
                 trueStmts.push(ALLOW_DEFAULT_VAR.set(allowDefault.and(ALLOW_DEFAULT_VAR)).toStmt());
             }
             var _c = elementEventNameAndTarget(eventAst, dirAst), eventTarget = _c.target, eventName = _c.name;
-            var /** @type {?} */ fullEventName = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_51" /* ɵelementEventFullName */])(eventTarget, eventName);
+            var /** @type {?} */ fullEventName = Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_46" /* ɵelementEventFullName */])(eventTarget, eventName);
             handleEventStmts.push(applySourceSpanToStatementIfNeeded(new IfStmt(literal(fullEventName).identical(EVENT_NAME_VAR), trueStmts), eventAst.sourceSpan));
         });
         var /** @type {?} */ handleEventFn;
@@ -75605,15 +83794,15 @@ var StaticReflector = (function () {
         this.initializeConversionMap();
         knownMetadataClasses.forEach(function (kc) { return _this._registerDecoratorOrConstructor(_this.getStaticSymbol(kc.filePath, kc.name), kc.ctor); });
         knownMetadataFunctions.forEach(function (kf) { return _this._registerFunction(_this.getStaticSymbol(kf.filePath, kf.name), kf.fn); });
-        this.annotationForParentClassWithSummaryKind.set(CompileSummaryKind.Directive, [__WEBPACK_IMPORTED_MODULE_1__angular_core__["J" /* Directive */], __WEBPACK_IMPORTED_MODULE_1__angular_core__["_7" /* Component */]]);
-        this.annotationForParentClassWithSummaryKind.set(CompileSummaryKind.Pipe, [__WEBPACK_IMPORTED_MODULE_1__angular_core__["Y" /* Pipe */]]);
-        this.annotationForParentClassWithSummaryKind.set(CompileSummaryKind.NgModule, [__WEBPACK_IMPORTED_MODULE_1__angular_core__["b" /* NgModule */]]);
-        this.annotationForParentClassWithSummaryKind.set(CompileSummaryKind.Injectable, [__WEBPACK_IMPORTED_MODULE_1__angular_core__["c" /* Injectable */], __WEBPACK_IMPORTED_MODULE_1__angular_core__["Y" /* Pipe */], __WEBPACK_IMPORTED_MODULE_1__angular_core__["J" /* Directive */], __WEBPACK_IMPORTED_MODULE_1__angular_core__["_7" /* Component */], __WEBPACK_IMPORTED_MODULE_1__angular_core__["b" /* NgModule */]]);
-        this.annotationNames.set(__WEBPACK_IMPORTED_MODULE_1__angular_core__["J" /* Directive */], 'Directive');
-        this.annotationNames.set(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_7" /* Component */], 'Component');
-        this.annotationNames.set(__WEBPACK_IMPORTED_MODULE_1__angular_core__["Y" /* Pipe */], 'Pipe');
-        this.annotationNames.set(__WEBPACK_IMPORTED_MODULE_1__angular_core__["b" /* NgModule */], 'NgModule');
-        this.annotationNames.set(__WEBPACK_IMPORTED_MODULE_1__angular_core__["c" /* Injectable */], 'Injectable');
+        this.annotationForParentClassWithSummaryKind.set(CompileSummaryKind.Directive, [__WEBPACK_IMPORTED_MODULE_1__angular_core__["t" /* Directive */], __WEBPACK_IMPORTED_MODULE_1__angular_core__["n" /* Component */]]);
+        this.annotationForParentClassWithSummaryKind.set(CompileSummaryKind.Pipe, [__WEBPACK_IMPORTED_MODULE_1__angular_core__["V" /* Pipe */]]);
+        this.annotationForParentClassWithSummaryKind.set(CompileSummaryKind.NgModule, [__WEBPACK_IMPORTED_MODULE_1__angular_core__["L" /* NgModule */]]);
+        this.annotationForParentClassWithSummaryKind.set(CompileSummaryKind.Injectable, [__WEBPACK_IMPORTED_MODULE_1__angular_core__["B" /* Injectable */], __WEBPACK_IMPORTED_MODULE_1__angular_core__["V" /* Pipe */], __WEBPACK_IMPORTED_MODULE_1__angular_core__["t" /* Directive */], __WEBPACK_IMPORTED_MODULE_1__angular_core__["n" /* Component */], __WEBPACK_IMPORTED_MODULE_1__angular_core__["L" /* NgModule */]]);
+        this.annotationNames.set(__WEBPACK_IMPORTED_MODULE_1__angular_core__["t" /* Directive */], 'Directive');
+        this.annotationNames.set(__WEBPACK_IMPORTED_MODULE_1__angular_core__["n" /* Component */], 'Component');
+        this.annotationNames.set(__WEBPACK_IMPORTED_MODULE_1__angular_core__["V" /* Pipe */], 'Pipe');
+        this.annotationNames.set(__WEBPACK_IMPORTED_MODULE_1__angular_core__["L" /* NgModule */], 'NgModule');
+        this.annotationNames.set(__WEBPACK_IMPORTED_MODULE_1__angular_core__["B" /* Injectable */], 'Injectable');
     }
     /**
      * @param {?} typeOrFunc
@@ -75865,38 +84054,38 @@ var StaticReflector = (function () {
         this.ROUTES = this.tryFindDeclaration(ANGULAR_ROUTER, 'ROUTES');
         this.ANALYZE_FOR_ENTRY_COMPONENTS =
             this.findDeclaration(ANGULAR_CORE, 'ANALYZE_FOR_ENTRY_COMPONENTS');
-        this._registerDecoratorOrConstructor(this.findDeclaration(ANGULAR_CORE, 'Host'), __WEBPACK_IMPORTED_MODULE_1__angular_core__["T" /* Host */]);
-        this._registerDecoratorOrConstructor(this.findDeclaration(ANGULAR_CORE, 'Injectable'), __WEBPACK_IMPORTED_MODULE_1__angular_core__["c" /* Injectable */]);
-        this._registerDecoratorOrConstructor(this.findDeclaration(ANGULAR_CORE, 'Self'), __WEBPACK_IMPORTED_MODULE_1__angular_core__["_3" /* Self */]);
-        this._registerDecoratorOrConstructor(this.findDeclaration(ANGULAR_CORE, 'SkipSelf'), __WEBPACK_IMPORTED_MODULE_1__angular_core__["E" /* SkipSelf */]);
-        this._registerDecoratorOrConstructor(this.findDeclaration(ANGULAR_CORE, 'Inject'), __WEBPACK_IMPORTED_MODULE_1__angular_core__["f" /* Inject */]);
-        this._registerDecoratorOrConstructor(this.findDeclaration(ANGULAR_CORE, 'Optional'), __WEBPACK_IMPORTED_MODULE_1__angular_core__["o" /* Optional */]);
-        this._registerDecoratorOrConstructor(this.findDeclaration(ANGULAR_CORE, 'Attribute'), __WEBPACK_IMPORTED_MODULE_1__angular_core__["U" /* Attribute */]);
-        this._registerDecoratorOrConstructor(this.findDeclaration(ANGULAR_CORE, 'ContentChild'), __WEBPACK_IMPORTED_MODULE_1__angular_core__["_52" /* ContentChild */]);
-        this._registerDecoratorOrConstructor(this.findDeclaration(ANGULAR_CORE, 'ContentChildren'), __WEBPACK_IMPORTED_MODULE_1__angular_core__["_53" /* ContentChildren */]);
-        this._registerDecoratorOrConstructor(this.findDeclaration(ANGULAR_CORE, 'ViewChild'), __WEBPACK_IMPORTED_MODULE_1__angular_core__["_5" /* ViewChild */]);
-        this._registerDecoratorOrConstructor(this.findDeclaration(ANGULAR_CORE, 'ViewChildren'), __WEBPACK_IMPORTED_MODULE_1__angular_core__["_54" /* ViewChildren */]);
-        this._registerDecoratorOrConstructor(this.findDeclaration(ANGULAR_CORE, 'Input'), __WEBPACK_IMPORTED_MODULE_1__angular_core__["O" /* Input */]);
-        this._registerDecoratorOrConstructor(this.findDeclaration(ANGULAR_CORE, 'Output'), __WEBPACK_IMPORTED_MODULE_1__angular_core__["_4" /* Output */]);
-        this._registerDecoratorOrConstructor(this.findDeclaration(ANGULAR_CORE, 'Pipe'), __WEBPACK_IMPORTED_MODULE_1__angular_core__["Y" /* Pipe */]);
-        this._registerDecoratorOrConstructor(this.findDeclaration(ANGULAR_CORE, 'HostBinding'), __WEBPACK_IMPORTED_MODULE_1__angular_core__["_45" /* HostBinding */]);
-        this._registerDecoratorOrConstructor(this.findDeclaration(ANGULAR_CORE, 'HostListener'), __WEBPACK_IMPORTED_MODULE_1__angular_core__["_6" /* HostListener */]);
-        this._registerDecoratorOrConstructor(this.findDeclaration(ANGULAR_CORE, 'Directive'), __WEBPACK_IMPORTED_MODULE_1__angular_core__["J" /* Directive */]);
-        this._registerDecoratorOrConstructor(this.findDeclaration(ANGULAR_CORE, 'Component'), __WEBPACK_IMPORTED_MODULE_1__angular_core__["_7" /* Component */]);
-        this._registerDecoratorOrConstructor(this.findDeclaration(ANGULAR_CORE, 'NgModule'), __WEBPACK_IMPORTED_MODULE_1__angular_core__["b" /* NgModule */]);
+        this._registerDecoratorOrConstructor(this.findDeclaration(ANGULAR_CORE, 'Host'), __WEBPACK_IMPORTED_MODULE_1__angular_core__["x" /* Host */]);
+        this._registerDecoratorOrConstructor(this.findDeclaration(ANGULAR_CORE, 'Injectable'), __WEBPACK_IMPORTED_MODULE_1__angular_core__["B" /* Injectable */]);
+        this._registerDecoratorOrConstructor(this.findDeclaration(ANGULAR_CORE, 'Self'), __WEBPACK_IMPORTED_MODULE_1__angular_core__["_5" /* Self */]);
+        this._registerDecoratorOrConstructor(this.findDeclaration(ANGULAR_CORE, 'SkipSelf'), __WEBPACK_IMPORTED_MODULE_1__angular_core__["_6" /* SkipSelf */]);
+        this._registerDecoratorOrConstructor(this.findDeclaration(ANGULAR_CORE, 'Inject'), __WEBPACK_IMPORTED_MODULE_1__angular_core__["A" /* Inject */]);
+        this._registerDecoratorOrConstructor(this.findDeclaration(ANGULAR_CORE, 'Optional'), __WEBPACK_IMPORTED_MODULE_1__angular_core__["Q" /* Optional */]);
+        this._registerDecoratorOrConstructor(this.findDeclaration(ANGULAR_CORE, 'Attribute'), __WEBPACK_IMPORTED_MODULE_1__angular_core__["g" /* Attribute */]);
+        this._registerDecoratorOrConstructor(this.findDeclaration(ANGULAR_CORE, 'ContentChild'), __WEBPACK_IMPORTED_MODULE_1__angular_core__["r" /* ContentChild */]);
+        this._registerDecoratorOrConstructor(this.findDeclaration(ANGULAR_CORE, 'ContentChildren'), __WEBPACK_IMPORTED_MODULE_1__angular_core__["s" /* ContentChildren */]);
+        this._registerDecoratorOrConstructor(this.findDeclaration(ANGULAR_CORE, 'ViewChild'), __WEBPACK_IMPORTED_MODULE_1__angular_core__["_13" /* ViewChild */]);
+        this._registerDecoratorOrConstructor(this.findDeclaration(ANGULAR_CORE, 'ViewChildren'), __WEBPACK_IMPORTED_MODULE_1__angular_core__["_14" /* ViewChildren */]);
+        this._registerDecoratorOrConstructor(this.findDeclaration(ANGULAR_CORE, 'Input'), __WEBPACK_IMPORTED_MODULE_1__angular_core__["E" /* Input */]);
+        this._registerDecoratorOrConstructor(this.findDeclaration(ANGULAR_CORE, 'Output'), __WEBPACK_IMPORTED_MODULE_1__angular_core__["R" /* Output */]);
+        this._registerDecoratorOrConstructor(this.findDeclaration(ANGULAR_CORE, 'Pipe'), __WEBPACK_IMPORTED_MODULE_1__angular_core__["V" /* Pipe */]);
+        this._registerDecoratorOrConstructor(this.findDeclaration(ANGULAR_CORE, 'HostBinding'), __WEBPACK_IMPORTED_MODULE_1__angular_core__["y" /* HostBinding */]);
+        this._registerDecoratorOrConstructor(this.findDeclaration(ANGULAR_CORE, 'HostListener'), __WEBPACK_IMPORTED_MODULE_1__angular_core__["z" /* HostListener */]);
+        this._registerDecoratorOrConstructor(this.findDeclaration(ANGULAR_CORE, 'Directive'), __WEBPACK_IMPORTED_MODULE_1__angular_core__["t" /* Directive */]);
+        this._registerDecoratorOrConstructor(this.findDeclaration(ANGULAR_CORE, 'Component'), __WEBPACK_IMPORTED_MODULE_1__angular_core__["n" /* Component */]);
+        this._registerDecoratorOrConstructor(this.findDeclaration(ANGULAR_CORE, 'NgModule'), __WEBPACK_IMPORTED_MODULE_1__angular_core__["L" /* NgModule */]);
         // Note: Some metadata classes can be used directly with Provider.deps.
-        this._registerDecoratorOrConstructor(this.findDeclaration(ANGULAR_CORE, 'Host'), __WEBPACK_IMPORTED_MODULE_1__angular_core__["T" /* Host */]);
-        this._registerDecoratorOrConstructor(this.findDeclaration(ANGULAR_CORE, 'Self'), __WEBPACK_IMPORTED_MODULE_1__angular_core__["_3" /* Self */]);
-        this._registerDecoratorOrConstructor(this.findDeclaration(ANGULAR_CORE, 'SkipSelf'), __WEBPACK_IMPORTED_MODULE_1__angular_core__["E" /* SkipSelf */]);
-        this._registerDecoratorOrConstructor(this.findDeclaration(ANGULAR_CORE, 'Optional'), __WEBPACK_IMPORTED_MODULE_1__angular_core__["o" /* Optional */]);
-        this._registerFunction(this.findDeclaration(ANGULAR_CORE, 'trigger'), __WEBPACK_IMPORTED_MODULE_1__angular_core__["_55" /* trigger */]);
-        this._registerFunction(this.findDeclaration(ANGULAR_CORE, 'state'), __WEBPACK_IMPORTED_MODULE_1__angular_core__["_56" /* state */]);
-        this._registerFunction(this.findDeclaration(ANGULAR_CORE, 'transition'), __WEBPACK_IMPORTED_MODULE_1__angular_core__["_57" /* transition */]);
-        this._registerFunction(this.findDeclaration(ANGULAR_CORE, 'style'), __WEBPACK_IMPORTED_MODULE_1__angular_core__["_58" /* style */]);
-        this._registerFunction(this.findDeclaration(ANGULAR_CORE, 'animate'), __WEBPACK_IMPORTED_MODULE_1__angular_core__["_59" /* animate */]);
-        this._registerFunction(this.findDeclaration(ANGULAR_CORE, 'keyframes'), __WEBPACK_IMPORTED_MODULE_1__angular_core__["_60" /* keyframes */]);
-        this._registerFunction(this.findDeclaration(ANGULAR_CORE, 'sequence'), __WEBPACK_IMPORTED_MODULE_1__angular_core__["_61" /* sequence */]);
-        this._registerFunction(this.findDeclaration(ANGULAR_CORE, 'group'), __WEBPACK_IMPORTED_MODULE_1__angular_core__["_62" /* group */]);
+        this._registerDecoratorOrConstructor(this.findDeclaration(ANGULAR_CORE, 'Host'), __WEBPACK_IMPORTED_MODULE_1__angular_core__["x" /* Host */]);
+        this._registerDecoratorOrConstructor(this.findDeclaration(ANGULAR_CORE, 'Self'), __WEBPACK_IMPORTED_MODULE_1__angular_core__["_5" /* Self */]);
+        this._registerDecoratorOrConstructor(this.findDeclaration(ANGULAR_CORE, 'SkipSelf'), __WEBPACK_IMPORTED_MODULE_1__angular_core__["_6" /* SkipSelf */]);
+        this._registerDecoratorOrConstructor(this.findDeclaration(ANGULAR_CORE, 'Optional'), __WEBPACK_IMPORTED_MODULE_1__angular_core__["Q" /* Optional */]);
+        this._registerFunction(this.findDeclaration(ANGULAR_CORE, 'trigger'), __WEBPACK_IMPORTED_MODULE_1__angular_core__["_33" /* trigger */]);
+        this._registerFunction(this.findDeclaration(ANGULAR_CORE, 'state'), __WEBPACK_IMPORTED_MODULE_1__angular_core__["_30" /* state */]);
+        this._registerFunction(this.findDeclaration(ANGULAR_CORE, 'transition'), __WEBPACK_IMPORTED_MODULE_1__angular_core__["_32" /* transition */]);
+        this._registerFunction(this.findDeclaration(ANGULAR_CORE, 'style'), __WEBPACK_IMPORTED_MODULE_1__angular_core__["_31" /* style */]);
+        this._registerFunction(this.findDeclaration(ANGULAR_CORE, 'animate'), __WEBPACK_IMPORTED_MODULE_1__angular_core__["_18" /* animate */]);
+        this._registerFunction(this.findDeclaration(ANGULAR_CORE, 'keyframes'), __WEBPACK_IMPORTED_MODULE_1__angular_core__["_25" /* keyframes */]);
+        this._registerFunction(this.findDeclaration(ANGULAR_CORE, 'sequence'), __WEBPACK_IMPORTED_MODULE_1__angular_core__["_28" /* sequence */]);
+        this._registerFunction(this.findDeclaration(ANGULAR_CORE, 'group'), __WEBPACK_IMPORTED_MODULE_1__angular_core__["_23" /* group */]);
     };
     /**
      * getStaticSymbol produces a Type whose metadata is known but whose implementation is not loaded.
@@ -77041,10 +85230,10 @@ function createAotCompiler(compilerHost, options) {
     var /** @type {?} */ summaryResolver = new AotSummaryResolver(compilerHost, symbolCache);
     var /** @type {?} */ symbolResolver = new StaticSymbolResolver(compilerHost, symbolCache, summaryResolver);
     var /** @type {?} */ staticReflector = new StaticReflector(summaryResolver, symbolResolver);
-    var /** @type {?} */ console = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["_42" /* ɵConsole */]();
+    var /** @type {?} */ console = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["_35" /* ɵConsole */]();
     var /** @type {?} */ htmlParser = new I18NHtmlParser(new HtmlParser(), translations, options.i18nFormat, options.missingTranslation, console);
     var /** @type {?} */ config = new CompilerConfig({
-        defaultEncapsulation: __WEBPACK_IMPORTED_MODULE_1__angular_core__["q" /* ViewEncapsulation */].Emulated,
+        defaultEncapsulation: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_16" /* ViewEncapsulation */].Emulated,
         useJit: false,
         enableLegacyTemplate: options.enableLegacyTemplate !== false,
         missingTranslation: options.missingTranslation,
@@ -77855,7 +86044,7 @@ function evalExpression(sourceUrl$$1, ctx, vars) {
         fnArgNames.push(argName);
         fnArgValues.push(vars[argName]);
     }
-    if (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["s" /* isDevMode */])()) {
+    if (Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_24" /* isDevMode */])()) {
         // using `new Function(...)` generates a header, 1 line of no arguments, 2 lines otherwise
         // E.g. ```
         // function anonymous(a,b,c
@@ -78050,7 +86239,7 @@ var JitCompiler = (function () {
         this._console.warn('Compiler.getNgContentSelectors is deprecated. Use ComponentFactory.ngContentSelectors instead!');
         var /** @type {?} */ template = this._compiledTemplateCache.get(component);
         if (!template) {
-            throw new Error("The component " + __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["I" /* ɵstringify */])(component) + " is not yet compiled!");
+            throw new Error("The component " + Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_66" /* ɵstringify */])(component) + " is not yet compiled!");
         }
         return ((template.compMeta.template)).ngContentSelectors;
     };
@@ -78111,7 +86300,7 @@ var JitCompiler = (function () {
         return SyncAsync.then(this._loadModules(moduleType, isSync), function () {
             var /** @type {?} */ componentFactories = [];
             _this._compileComponents(moduleType, componentFactories);
-            return new __WEBPACK_IMPORTED_MODULE_1__angular_core__["_63" /* ModuleWithComponentFactories */](_this._compileModule(moduleType), componentFactories);
+            return new __WEBPACK_IMPORTED_MODULE_1__angular_core__["J" /* ModuleWithComponentFactories */](_this._compileModule(moduleType), componentFactories);
         });
     };
     /**
@@ -78150,7 +86339,7 @@ var JitCompiler = (function () {
         if (!ngModuleFactory) {
             var /** @type {?} */ moduleMeta_1 = ((this._metadataResolver.getNgModuleMetadata(moduleType)));
             // Always provide a bound Compiler
-            var /** @type {?} */ extraProviders = [this._metadataResolver.getProviderMetadata(new ProviderMeta(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_64" /* Compiler */], { useFactory: function () { return new ModuleBoundCompiler(_this, moduleMeta_1.type.reference); } }))];
+            var /** @type {?} */ extraProviders = [this._metadataResolver.getProviderMetadata(new ProviderMeta(__WEBPACK_IMPORTED_MODULE_1__angular_core__["l" /* Compiler */], { useFactory: function () { return new ModuleBoundCompiler(_this, moduleMeta_1.type.reference); } }))];
             var /** @type {?} */ outputCtx = createOutputContext();
             var /** @type {?} */ compileResult = this._ngModuleCompiler.compile(outputCtx, moduleMeta_1, extraProviders);
             if (!this._compilerConfig.useJit) {
@@ -78240,7 +86429,7 @@ var JitCompiler = (function () {
      */
     JitCompiler.prototype._createCompiledHostTemplate = function (compType, ngModule) {
         if (!ngModule) {
-            throw new Error("Component " + __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["I" /* ɵstringify */])(compType) + " is not part of any NgModule or the module has not been imported into your module.");
+            throw new Error("Component " + Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_66" /* ɵstringify */])(compType) + " is not part of any NgModule or the module has not been imported into your module.");
         }
         var /** @type {?} */ compiledTemplate = this._compiledHostTemplateCache.get(compType);
         if (!compiledTemplate) {
@@ -78248,7 +86437,7 @@ var JitCompiler = (function () {
             assertComponent(compMeta);
             var /** @type {?} */ componentFactory = (compMeta.componentFactory);
             var /** @type {?} */ hostClass = this._metadataResolver.getHostComponentType(compType);
-            var /** @type {?} */ hostMeta = createHostComponentMeta(hostClass, compMeta, /** @type {?} */ (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_65" /* ɵgetComponentViewDefinitionFactory */])(componentFactory)));
+            var /** @type {?} */ hostMeta = createHostComponentMeta(hostClass, compMeta, /** @type {?} */ (Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_47" /* ɵgetComponentViewDefinitionFactory */])(componentFactory)));
             compiledTemplate =
                 new CompiledTemplate(true, compMeta.type, hostMeta, ngModule, [compMeta.type]);
             this._compiledHostTemplateCache.set(compType, compiledTemplate);
@@ -78338,7 +86527,7 @@ JitCompiler.decorators = [
  * @nocollapse
  */
 JitCompiler.ctorParameters = function () { return [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["j" /* Injector */], },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["D" /* Injector */], },
     { type: CompileMetadataResolver, },
     { type: TemplateParser, },
     { type: StyleCompiler, },
@@ -78346,7 +86535,7 @@ JitCompiler.ctorParameters = function () { return [
     { type: NgModuleCompiler, },
     { type: SummaryResolver, },
     { type: CompilerConfig, },
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_42" /* ɵConsole */], },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_35" /* ɵConsole */], },
 ]; };
 var CompiledTemplate = (function () {
     /**
@@ -78679,10 +86868,10 @@ var Extractor = (function () {
         var /** @type {?} */ summaryResolver = new AotSummaryResolver(host, symbolCache);
         var /** @type {?} */ staticSymbolResolver = new StaticSymbolResolver(host, symbolCache, summaryResolver);
         var /** @type {?} */ staticReflector = new StaticReflector(summaryResolver, staticSymbolResolver);
-        var /** @type {?} */ config = new CompilerConfig({ defaultEncapsulation: __WEBPACK_IMPORTED_MODULE_1__angular_core__["q" /* ViewEncapsulation */].Emulated, useJit: false });
+        var /** @type {?} */ config = new CompilerConfig({ defaultEncapsulation: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_16" /* ViewEncapsulation */].Emulated, useJit: false });
         var /** @type {?} */ normalizer = new DirectiveNormalizer({ get: function (url) { return host.loadResource(url); } }, urlResolver, htmlParser, config);
         var /** @type {?} */ elementSchemaRegistry = new DomElementSchemaRegistry();
-        var /** @type {?} */ resolver = new CompileMetadataResolver(config, new NgModuleResolver(staticReflector), new DirectiveResolver(staticReflector), new PipeResolver(staticReflector), summaryResolver, elementSchemaRegistry, normalizer, new __WEBPACK_IMPORTED_MODULE_1__angular_core__["_42" /* ɵConsole */](), symbolCache, staticReflector);
+        var /** @type {?} */ resolver = new CompileMetadataResolver(config, new NgModuleResolver(staticReflector), new DirectiveResolver(staticReflector), new PipeResolver(staticReflector), summaryResolver, elementSchemaRegistry, normalizer, new __WEBPACK_IMPORTED_MODULE_1__angular_core__["_35" /* ɵConsole */](), symbolCache, staticReflector);
         // TODO(vicb): implicit tags & attributes
         var /** @type {?} */ messageBundle = new MessageBundle(htmlParser, [], {}, locale);
         var /** @type {?} */ extractor = new Extractor(host, staticSymbolResolver, messageBundle, resolver);
@@ -78706,7 +86895,7 @@ var Extractor = (function () {
  */
 var JitReflector = (function () {
     function JitReflector() {
-        this.reflectionCapabilities = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["_66" /* ɵReflectionCapabilities */]();
+        this.reflectionCapabilities = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["_39" /* ɵReflectionCapabilities */]();
     }
     /**
      * @param {?} type
@@ -78720,10 +86909,10 @@ var JitReflector = (function () {
             return scheme ? moduleId : "package:" + moduleId + MODULE_SUFFIX;
         }
         else if (moduleId !== null && moduleId !== void 0) {
-            throw syntaxError("moduleId should be a string in \"" + __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["I" /* ɵstringify */])(type) + "\". See https://goo.gl/wIDDiL for more information.\n" +
+            throw syntaxError("moduleId should be a string in \"" + Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_66" /* ɵstringify */])(type) + "\". See https://goo.gl/wIDDiL for more information.\n" +
                 "If you're using Webpack you should inline the template and the styles, see https://goo.gl/X2J8zc.");
         }
-        return "./" + __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["I" /* ɵstringify */])(type);
+        return "./" + Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_66" /* ɵstringify */])(type);
     };
     /**
      * @param {?} typeOrFunc
@@ -78777,7 +86966,7 @@ var _NO_RESOURCE_LOADER = {
         throw new Error("No ResourceLoader implementation has been provided. Can't read the url \"" + url + "\"");
     }
 };
-var baseHtmlParser = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["g" /* InjectionToken */]('HtmlParser');
+var baseHtmlParser = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["C" /* InjectionToken */]('HtmlParser');
 /**
  * A set of providers that provide `JitCompiler` and its dependencies to use for
  * template compilation.
@@ -78787,7 +86976,7 @@ var COMPILER_PROVIDERS = [
     { provide: ResourceLoader, useValue: _NO_RESOURCE_LOADER },
     JitSummaryResolver,
     { provide: SummaryResolver, useExisting: JitSummaryResolver },
-    __WEBPACK_IMPORTED_MODULE_1__angular_core__["_42" /* ɵConsole */],
+    __WEBPACK_IMPORTED_MODULE_1__angular_core__["_35" /* ɵConsole */],
     Lexer,
     Parser,
     {
@@ -78798,15 +86987,15 @@ var COMPILER_PROVIDERS = [
         provide: I18NHtmlParser,
         useFactory: function (parser, translations, format, config, console) {
             translations = translations || '';
-            var missingTranslation = translations ? config.missingTranslation : __WEBPACK_IMPORTED_MODULE_1__angular_core__["_10" /* MissingTranslationStrategy */].Ignore;
+            var missingTranslation = translations ? config.missingTranslation : __WEBPACK_IMPORTED_MODULE_1__angular_core__["I" /* MissingTranslationStrategy */].Ignore;
             return new I18NHtmlParser(parser, translations, format, missingTranslation, console);
         },
         deps: [
             baseHtmlParser,
-            [new __WEBPACK_IMPORTED_MODULE_1__angular_core__["o" /* Optional */](), new __WEBPACK_IMPORTED_MODULE_1__angular_core__["f" /* Inject */](__WEBPACK_IMPORTED_MODULE_1__angular_core__["_67" /* TRANSLATIONS */])],
-            [new __WEBPACK_IMPORTED_MODULE_1__angular_core__["o" /* Optional */](), new __WEBPACK_IMPORTED_MODULE_1__angular_core__["f" /* Inject */](__WEBPACK_IMPORTED_MODULE_1__angular_core__["_21" /* TRANSLATIONS_FORMAT */])],
+            [new __WEBPACK_IMPORTED_MODULE_1__angular_core__["Q" /* Optional */](), new __WEBPACK_IMPORTED_MODULE_1__angular_core__["A" /* Inject */](__WEBPACK_IMPORTED_MODULE_1__angular_core__["_7" /* TRANSLATIONS */])],
+            [new __WEBPACK_IMPORTED_MODULE_1__angular_core__["Q" /* Optional */](), new __WEBPACK_IMPORTED_MODULE_1__angular_core__["A" /* Inject */](__WEBPACK_IMPORTED_MODULE_1__angular_core__["_8" /* TRANSLATIONS_FORMAT */])],
             [CompilerConfig],
-            [__WEBPACK_IMPORTED_MODULE_1__angular_core__["_42" /* ɵConsole */]],
+            [__WEBPACK_IMPORTED_MODULE_1__angular_core__["_35" /* ɵConsole */]],
         ]
     },
     {
@@ -78822,7 +87011,7 @@ var COMPILER_PROVIDERS = [
     NgModuleCompiler,
     { provide: CompilerConfig, useValue: new CompilerConfig() },
     JitCompiler,
-    { provide: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_64" /* Compiler */], useExisting: JitCompiler },
+    { provide: __WEBPACK_IMPORTED_MODULE_1__angular_core__["l" /* Compiler */], useExisting: JitCompiler },
     DomElementSchemaRegistry,
     { provide: ElementSchemaRegistry, useExisting: DomElementSchemaRegistry },
     UrlResolver,
@@ -78836,10 +87025,10 @@ var JitCompilerFactory = (function () {
      */
     function JitCompilerFactory(defaultOptions) {
         var compilerOptions = {
-            useDebug: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["s" /* isDevMode */])(),
+            useDebug: Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_24" /* isDevMode */])(),
             useJit: true,
-            defaultEncapsulation: __WEBPACK_IMPORTED_MODULE_1__angular_core__["q" /* ViewEncapsulation */].Emulated,
-            missingTranslation: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_10" /* MissingTranslationStrategy */].Warning,
+            defaultEncapsulation: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_16" /* ViewEncapsulation */].Emulated,
+            missingTranslation: __WEBPACK_IMPORTED_MODULE_1__angular_core__["I" /* MissingTranslationStrategy */].Warning,
             enableLegacyTemplate: true,
         };
         this._defaultOptions = [compilerOptions].concat(defaultOptions);
@@ -78851,7 +87040,7 @@ var JitCompilerFactory = (function () {
     JitCompilerFactory.prototype.createCompiler = function (options) {
         if (options === void 0) { options = []; }
         var /** @type {?} */ opts = _mergeOptions(this._defaultOptions.concat(options));
-        var /** @type {?} */ injector = __WEBPACK_IMPORTED_MODULE_1__angular_core__["_68" /* ReflectiveInjector */].resolveAndCreate([
+        var /** @type {?} */ injector = __WEBPACK_IMPORTED_MODULE_1__angular_core__["Y" /* ReflectiveInjector */].resolveAndCreate([
             COMPILER_PROVIDERS, {
                 provide: CompilerConfig,
                 useFactory: function () {
@@ -78869,7 +87058,7 @@ var JitCompilerFactory = (function () {
                 deps: []
             }, /** @type {?} */ ((opts.providers))
         ]);
-        return injector.get(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_64" /* Compiler */]);
+        return injector.get(__WEBPACK_IMPORTED_MODULE_1__angular_core__["l" /* Compiler */]);
     };
     return JitCompilerFactory;
 }());
@@ -78880,16 +87069,16 @@ JitCompilerFactory.decorators = [
  * @nocollapse
  */
 JitCompilerFactory.ctorParameters = function () { return [
-    { type: Array, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["f" /* Inject */], args: [__WEBPACK_IMPORTED_MODULE_1__angular_core__["_8" /* COMPILER_OPTIONS */],] },] },
+    { type: Array, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["A" /* Inject */], args: [__WEBPACK_IMPORTED_MODULE_1__angular_core__["h" /* COMPILER_OPTIONS */],] },] },
 ]; };
 /**
  * A platform that included corePlatform and the compiler.
  *
  * \@experimental
  */
-var platformCoreDynamic = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["x" /* createPlatformFactory */])(__WEBPACK_IMPORTED_MODULE_1__angular_core__["y" /* platformCore */], 'coreDynamic', [
-    { provide: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_8" /* COMPILER_OPTIONS */], useValue: {}, multi: true },
-    { provide: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_69" /* CompilerFactory */], useClass: JitCompilerFactory },
+var platformCoreDynamic = Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_19" /* createPlatformFactory */])(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_26" /* platformCore */], 'coreDynamic', [
+    { provide: __WEBPACK_IMPORTED_MODULE_1__angular_core__["h" /* COMPILER_OPTIONS */], useValue: {}, multi: true },
+    { provide: __WEBPACK_IMPORTED_MODULE_1__angular_core__["m" /* CompilerFactory */], useClass: JitCompilerFactory },
 ]);
 /**
  * @param {?} optionsArr
@@ -78972,180 +87161,171 @@ function _mergeArrays(parts) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(global) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_tslib__ = __webpack_require__("../../../../tslib/tslib.es6.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_Observable__ = __webpack_require__("../../../../rxjs/Observable.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_Observable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_rxjs_Observable__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_observable_merge__ = __webpack_require__("../../../../rxjs/observable/merge.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_observable_merge___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_observable_merge__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_operator_share__ = __webpack_require__("../../../../rxjs/operator/share.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_operator_share___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_operator_share__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_Subject__ = __webpack_require__("../../../../rxjs/Subject.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_Subject___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_rxjs_Subject__);
-/* unused harmony export Class */
+/* WEBPACK VAR INJECTION */(function(global) {/* unused harmony export Class */
 /* unused harmony export createPlatform */
 /* unused harmony export assertPlatform */
 /* unused harmony export destroyPlatform */
 /* unused harmony export getPlatform */
 /* unused harmony export PlatformRef */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "l", function() { return ApplicationRef; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return enableProdMode; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "s", function() { return isDevMode; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "x", function() { return createPlatformFactory; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "p", function() { return NgProbeToken; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "A", function() { return APP_ID; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_43", function() { return PACKAGE_ROOT_URL; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "v", function() { return PLATFORM_INITIALIZER; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "u", function() { return PLATFORM_ID; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return ApplicationRef; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_20", function() { return enableProdMode; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_24", function() { return isDevMode; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_19", function() { return createPlatformFactory; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "O", function() { return NgProbeToken; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return APP_ID; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "S", function() { return PACKAGE_ROOT_URL; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "U", function() { return PLATFORM_INITIALIZER; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "T", function() { return PLATFORM_ID; });
 /* unused harmony export APP_BOOTSTRAP_LISTENER */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "i", function() { return APP_INITIALIZER; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return ApplicationInitStatus; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return APP_INITIALIZER; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return ApplicationInitStatus; });
 /* unused harmony export DebugElement */
 /* unused harmony export DebugNode */
 /* unused harmony export asNativeElements */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "n", function() { return getDebugNode; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "C", function() { return Testability; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_22", function() { return getDebugNode; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_10", function() { return Testability; });
 /* unused harmony export TestabilityRegistry */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "k", function() { return setTestabilityGetter; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_67", function() { return TRANSLATIONS; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_21", function() { return TRANSLATIONS_FORMAT; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "G", function() { return LOCALE_ID; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_10", function() { return MissingTranslationStrategy; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "D", function() { return ApplicationModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_29", function() { return setTestabilityGetter; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_7", function() { return TRANSLATIONS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_8", function() { return TRANSLATIONS_FORMAT; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "H", function() { return LOCALE_ID; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "I", function() { return MissingTranslationStrategy; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return ApplicationModule; });
 /* unused harmony export wtfCreateScope */
 /* unused harmony export wtfLeave */
 /* unused harmony export wtfStartTimeRange */
 /* unused harmony export wtfEndTimeRange */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_47", function() { return Type; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "F", function() { return EventEmitter; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "z", function() { return ErrorHandler; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "w", function() { return Sanitizer; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "t", function() { return SecurityContext; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_11", function() { return ANALYZE_FOR_ENTRY_COMPONENTS; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "U", function() { return Attribute; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_52", function() { return ContentChild; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_53", function() { return ContentChildren; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_46", function() { return Query; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_5", function() { return ViewChild; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_54", function() { return ViewChildren; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_7", function() { return Component; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "J", function() { return Directive; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_45", function() { return HostBinding; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_6", function() { return HostListener; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "O", function() { return Input; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_4", function() { return Output; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Y", function() { return Pipe; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_50", function() { return CUSTOM_ELEMENTS_SCHEMA; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_49", function() { return NO_ERRORS_SCHEMA; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return NgModule; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "q", function() { return ViewEncapsulation; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return Version; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_11", function() { return Type; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "w", function() { return EventEmitter; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "v", function() { return ErrorHandler; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_3", function() { return Sanitizer; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_4", function() { return SecurityContext; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ANALYZE_FOR_ENTRY_COMPONENTS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return Attribute; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "r", function() { return ContentChild; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "s", function() { return ContentChildren; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "W", function() { return Query; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_13", function() { return ViewChild; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_14", function() { return ViewChildren; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "n", function() { return Component; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "t", function() { return Directive; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "y", function() { return HostBinding; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "z", function() { return HostListener; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "E", function() { return Input; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "R", function() { return Output; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "V", function() { return Pipe; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "i", function() { return CUSTOM_ELEMENTS_SCHEMA; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "K", function() { return NO_ERRORS_SCHEMA; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "L", function() { return NgModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_16", function() { return ViewEncapsulation; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_12", function() { return Version; });
 /* unused harmony export VERSION */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_0", function() { return forwardRef; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_44", function() { return resolveForwardRef; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "j", function() { return Injector; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_68", function() { return ReflectiveInjector; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_21", function() { return forwardRef; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_27", function() { return resolveForwardRef; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "D", function() { return Injector; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Y", function() { return ReflectiveInjector; });
 /* unused harmony export ResolvedReflectiveFactory */
 /* unused harmony export ReflectiveKey */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return InjectionToken; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "C", function() { return InjectionToken; });
 /* unused harmony export OpaqueToken */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return Inject; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "o", function() { return Optional; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return Injectable; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_3", function() { return Self; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "E", function() { return SkipSelf; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "T", function() { return Host; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "m", function() { return NgZone; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "A", function() { return Inject; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Q", function() { return Optional; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "B", function() { return Injectable; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_5", function() { return Self; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_6", function() { return SkipSelf; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "x", function() { return Host; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "P", function() { return NgZone; });
 /* unused harmony export RenderComponentType */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "N", function() { return Renderer; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_1", function() { return Renderer2; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "B", function() { return RendererFactory2; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "r", function() { return RendererStyleFlags2; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Z", function() { return Renderer; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_0", function() { return Renderer2; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_1", function() { return RendererFactory2; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_2", function() { return RendererStyleFlags2; });
 /* unused harmony export RootRenderer */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_8", function() { return COMPILER_OPTIONS; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_64", function() { return Compiler; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_69", function() { return CompilerFactory; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_63", function() { return ModuleWithComponentFactories; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_14", function() { return ComponentFactory; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_15", function() { return ComponentRef; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Q", function() { return ComponentFactoryResolver; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "M", function() { return ElementRef; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_16", function() { return NgModuleFactory; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "P", function() { return NgModuleRef; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return COMPILER_OPTIONS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "l", function() { return Compiler; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "m", function() { return CompilerFactory; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "J", function() { return ModuleWithComponentFactories; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "o", function() { return ComponentFactory; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "q", function() { return ComponentRef; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "p", function() { return ComponentFactoryResolver; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "u", function() { return ElementRef; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "M", function() { return NgModuleFactory; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "N", function() { return NgModuleRef; });
 /* unused harmony export NgModuleFactoryLoader */
 /* unused harmony export getModuleFactory */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_12", function() { return QueryList; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "X", function() { return QueryList; });
 /* unused harmony export SystemJsNgModuleLoader */
 /* unused harmony export SystemJsNgModuleLoaderConfig */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "S", function() { return TemplateRef; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "R", function() { return ViewContainerRef; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_9", function() { return TemplateRef; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_15", function() { return ViewContainerRef; });
 /* unused harmony export EmbeddedViewRef */
 /* unused harmony export ViewRef */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_9", function() { return ChangeDetectionStrategy; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Z", function() { return ChangeDetectorRef; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "j", function() { return ChangeDetectionStrategy; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "k", function() { return ChangeDetectorRef; });
 /* unused harmony export DefaultIterableDiffer */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "K", function() { return IterableDiffers; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "L", function() { return KeyValueDiffers; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "F", function() { return IterableDiffers; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "G", function() { return KeyValueDiffers; });
 /* unused harmony export SimpleChange */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "V", function() { return WrappedValue; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "y", function() { return platformCore; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_17", function() { return WrappedValue; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_26", function() { return platformCore; });
 /* unused harmony export ɵALLOW_MULTIPLE_PLATFORMS */
 /* unused harmony export ɵAPP_ID_RANDOM_PROVIDER */
 /* unused harmony export ɵValueUnwrapper */
 /* unused harmony export ɵdevModeEqual */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "H", function() { return isListLikeIterable; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_51", function() { return isListLikeIterable; });
 /* unused harmony export ɵChangeDetectorStatus */
 /* unused harmony export ɵisDefaultChangeDetectionStrategy */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_42", function() { return Console; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_48", function() { return ERROR_COMPONENT_TYPE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_35", function() { return Console; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_38", function() { return ERROR_COMPONENT_TYPE; });
 /* unused harmony export ɵComponentFactory */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_13", function() { return CodegenComponentFactoryResolver; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_34", function() { return CodegenComponentFactoryResolver; });
 /* unused harmony export ɵViewMetadata */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_66", function() { return ReflectionCapabilities; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_39", function() { return ReflectionCapabilities; });
 /* unused harmony export ɵRenderDebugInfo */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return _global; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_2", function() { return looseIdentical; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "I", function() { return stringify; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_48", function() { return _global; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_54", function() { return looseIdentical; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_66", function() { return stringify; });
 /* unused harmony export ɵmakeDecorator */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "X", function() { return isObservable; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "W", function() { return isPromise; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_52", function() { return isObservable; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_53", function() { return isPromise; });
 /* unused harmony export ɵclearProviderOverrides */
 /* unused harmony export ɵoverrideProvider */
 /* unused harmony export ɵNOT_FOUND_CHECK_ONLY_ELEMENT_INJECTOR */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_20", function() { return registerModuleFactory; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_24", function() { return EMPTY_ARRAY; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_25", function() { return EMPTY_MAP; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_28", function() { return anchorDef; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_65", function() { return registerModuleFactory; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_36", function() { return EMPTY_ARRAY; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_37", function() { return EMPTY_MAP; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_40", function() { return anchorDef; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_41", function() { return createComponentFactory; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_17", function() { return createNgModuleFactory; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_40", function() { return createRendererType2; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_30", function() { return directiveDef; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_27", function() { return elementDef; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_51", function() { return elementEventFullName; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_65", function() { return getComponentViewDefinitionFactory; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_22", function() { return inlineInterpolate; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_23", function() { return interpolate; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_18", function() { return moduleDef; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_19", function() { return moduleProvideDef; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_38", function() { return ngContentDef; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_37", function() { return nodeValue; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_36", function() { return pipeDef; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_31", function() { return providerDef; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_33", function() { return pureArrayDef; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_34", function() { return pureObjectDef; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_35", function() { return purePipeDef; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_32", function() { return queryDef; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_29", function() { return textDef; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_39", function() { return unwrapValue; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_26", function() { return viewDef; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_42", function() { return createNgModuleFactory; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_43", function() { return createRendererType2; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_44", function() { return directiveDef; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_45", function() { return elementDef; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_46", function() { return elementEventFullName; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_47", function() { return getComponentViewDefinitionFactory; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_49", function() { return inlineInterpolate; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_50", function() { return interpolate; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_55", function() { return moduleDef; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_56", function() { return moduleProvideDef; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_57", function() { return ngContentDef; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_58", function() { return nodeValue; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_60", function() { return pipeDef; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_63", function() { return providerDef; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_59", function() { return pureArrayDef; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_61", function() { return pureObjectDef; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_62", function() { return purePipeDef; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_64", function() { return queryDef; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_67", function() { return textDef; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_68", function() { return unwrapValue; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_69", function() { return viewDef; });
 /* unused harmony export AUTO_STYLE */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_55", function() { return trigger$$1; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_59", function() { return animate$$1; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_62", function() { return group$$1; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_61", function() { return sequence$$1; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_58", function() { return style$$1; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_56", function() { return state$$1; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_60", function() { return keyframes$$1; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_57", function() { return transition$$1; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_33", function() { return trigger$$1; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_18", function() { return animate$$1; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_23", function() { return group$$1; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_28", function() { return sequence$$1; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_31", function() { return style$$1; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_30", function() { return state$$1; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_25", function() { return keyframes$$1; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_32", function() { return transition$$1; });
 /* unused harmony export ɵx */
 /* unused harmony export ɵy */
 /* unused harmony export ɵbc */
@@ -79175,9 +87355,18 @@ function _mergeArrays(parts) {
 /* unused harmony export ɵa */
 /* unused harmony export ɵt */
 /* unused harmony export ɵu */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_tslib__ = __webpack_require__("../../../../tslib/tslib.es6.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_Observable__ = __webpack_require__("../../../../rxjs/Observable.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_Observable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_rxjs_Observable__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_observable_merge__ = __webpack_require__("../../../../rxjs/observable/merge.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_observable_merge___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_observable_merge__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_operator_share__ = __webpack_require__("../../../../rxjs/operator/share.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_operator_share___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_operator_share__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_Subject__ = __webpack_require__("../../../../rxjs/Subject.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_Subject___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_rxjs_Subject__);
 
 /**
- * @license Angular v4.3.4
+ * @license Angular v4.3.5
  * (c) 2010-2017 Google, Inc. https://angular.io/
  * License: MIT
  */
@@ -79973,7 +88162,7 @@ var Version = (function () {
 /**
  * \@stable
  */
-var VERSION = new Version('4.3.4');
+var VERSION = new Version('4.3.5');
 /**
  * @license
  * Copyright Google Inc. All Rights Reserved.
@@ -83892,7 +92081,7 @@ var ApplicationRef_ = (function (_super) {
                 unstableSub.unsubscribe();
             };
         });
-        _this._isStable = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_rxjs_observable_merge__["merge"])(isCurrentlyStable, __WEBPACK_IMPORTED_MODULE_3_rxjs_operator_share__["share"].call(isStable));
+        _this._isStable = Object(__WEBPACK_IMPORTED_MODULE_2_rxjs_observable_merge__["merge"])(isCurrentlyStable, __WEBPACK_IMPORTED_MODULE_3_rxjs_operator_share__["share"].call(isStable));
         return _this;
     }
     /**
@@ -84820,7 +93009,7 @@ var SystemJsNgModuleLoader = (function () {
         if (exportName === undefined) {
             exportName = 'default';
         }
-        return __webpack_require__("../../../../../src async recursive")(module)
+        return __webpack_require__("../../../../../src/$$_gendir lazy recursive")(module)
             .then(function (module) { return module[exportName]; })
             .then(function (type) { return checkNotEmpty(type, module, exportName); })
             .then(function (type) { return _this._compiler.compileModuleAsync(type); });
@@ -84836,7 +93025,7 @@ var SystemJsNgModuleLoader = (function () {
             exportName = 'default';
             factoryClassSuffix = '';
         }
-        return __webpack_require__("../../../../../src async recursive")(this._config.factoryPathPrefix + module + this._config.factoryPathSuffix)
+        return __webpack_require__("../../../../../src/$$_gendir lazy recursive")(this._config.factoryPathPrefix + module + this._config.factoryPathSuffix)
             .then(function (module) { return module[exportName + factoryClassSuffix]; })
             .then(function (factory) { return checkNotEmpty(factory, module, exportName); });
     };
@@ -85078,7 +93267,7 @@ var ChangeDetectorRef = (function () {
      *
      *   constructor(private ref: ChangeDetectorRef) {
      *     setInterval(() => {
-     *       this.numberOfTicks ++
+     *       this.numberOfTicks++;
      *       // the following is required, otherwise the view will not be updated
      *       this.ref.markForCheck();
      *     }, 1000);
@@ -85129,11 +93318,11 @@ var ChangeDetectorRef = (function () {
      * \@Component({
      *   selector: 'giant-list',
      *   template: `
-     *     <li *ngFor="let d of dataProvider.data">Data {{d}}</lig>
+     *     <li *ngFor="let d of dataProvider.data">Data {{d}}</li>
      *   `,
      * })
      * class GiantList {
-     *   constructor(private ref: ChangeDetectorRef, private dataProvider:DataProvider) {
+     *   constructor(private ref: ChangeDetectorRef, private dataProvider: DataProvider) {
      *     ref.detach();
      *     setInterval(() => {
      *       this.ref.detectChanges();
@@ -85220,13 +93409,14 @@ var ChangeDetectorRef = (function () {
      *   template: 'Data: {{dataProvider.data}}'
      * })
      * class LiveData {
-     *   constructor(private ref: ChangeDetectorRef, private dataProvider:DataProvider) {}
+     *   constructor(private ref: ChangeDetectorRef, private dataProvider: DataProvider) {}
      *
      *   set live(value) {
-     *     if (value)
+     *     if (value) {
      *       this.ref.reattach();
-     *     else
+     *     } else {
      *       this.ref.detach();
+     *     }
      *   }
      * }
      *
@@ -89244,6 +97434,9 @@ var ViewContainerRef_ = (function () {
      * @return {?}
      */
     ViewContainerRef_.prototype.insert = function (viewRef, index) {
+        if (viewRef.destroyed) {
+            throw new Error('Cannot insert a destroyed View in a ViewContainer!');
+        }
         var /** @type {?} */ viewRef_ = (viewRef);
         var /** @type {?} */ viewData = viewRef_._view;
         attachEmbeddedView(this._view, this._data, index, viewData);
@@ -89256,6 +97449,9 @@ var ViewContainerRef_ = (function () {
      * @return {?}
      */
     ViewContainerRef_.prototype.move = function (viewRef, currentIndex) {
+        if (viewRef.destroyed) {
+            throw new Error('Cannot move a destroyed View in a ViewContainer!');
+        }
         var /** @type {?} */ previousIndex = this._embeddedViews.indexOf(viewRef._view);
         moveEmbeddedView(this._data, previousIndex, currentIndex);
         return viewRef;
@@ -93977,15 +102173,6 @@ function transition$$1(stateChangeExpr, steps) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_tslib__ = __webpack_require__("../../../../tslib/tslib.es6.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_observable_forkJoin__ = __webpack_require__("../../../../rxjs/observable/forkJoin.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_observable_forkJoin___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_observable_forkJoin__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_observable_fromPromise__ = __webpack_require__("../../../../rxjs/observable/fromPromise.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_observable_fromPromise___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_observable_fromPromise__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_operator_map__ = __webpack_require__("../../../../rxjs/operator/map.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_rxjs_operator_map__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__angular_platform_browser__ = __webpack_require__("../../../platform-browser/@angular/platform-browser.es5.js");
 /* unused harmony export AbstractControlDirective */
 /* unused harmony export AbstractFormGroupDirective */
 /* unused harmony export CheckboxControlValueAccessor */
@@ -94057,9 +102244,18 @@ function transition$$1(stateChangeExpr, steps) {
 /* unused harmony export ɵu */
 /* unused harmony export ɵw */
 /* unused harmony export ɵr */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_tslib__ = __webpack_require__("../../../../tslib/tslib.es6.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_observable_forkJoin__ = __webpack_require__("../../../../rxjs/observable/forkJoin.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_observable_forkJoin___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_observable_forkJoin__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_observable_fromPromise__ = __webpack_require__("../../../../rxjs/observable/fromPromise.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_observable_fromPromise___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_observable_fromPromise__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_operator_map__ = __webpack_require__("../../../../rxjs/operator/map.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_rxjs_operator_map__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__angular_platform_browser__ = __webpack_require__("../../../platform-browser/@angular/platform-browser.es5.js");
 
 /**
- * @license Angular v4.3.4
+ * @license Angular v4.3.5
  * (c) 2010-2017 Google, Inc. https://angular.io/
  * License: MIT
  */
@@ -94087,12 +102283,16 @@ var AbstractControlDirective = (function () {
     function AbstractControlDirective() {
     }
     /**
+     * The {\@link FormControl}, {\@link FormGroup}, or {\@link FormArray}
+     * that backs this directive. Most properties fall through to that
+     * instance.
      * @abstract
      * @return {?}
      */
     AbstractControlDirective.prototype.control = function () { };
     Object.defineProperty(AbstractControlDirective.prototype, "value", {
         /**
+         * The value of the control.
          * @return {?}
          */
         get: function () { return this.control ? this.control.value : null; },
@@ -94101,6 +102301,10 @@ var AbstractControlDirective = (function () {
     });
     Object.defineProperty(AbstractControlDirective.prototype, "valid", {
         /**
+         * A control is `valid` when its `status === VALID`.
+         *
+         * In order to have this status, the control must have passed all its
+         * validation checks.
          * @return {?}
          */
         get: function () { return this.control ? this.control.valid : null; },
@@ -94109,6 +102313,10 @@ var AbstractControlDirective = (function () {
     });
     Object.defineProperty(AbstractControlDirective.prototype, "invalid", {
         /**
+         * A control is `invalid` when its `status === INVALID`.
+         *
+         * In order to have this status, the control must have failed
+         * at least one of its validation checks.
          * @return {?}
          */
         get: function () { return this.control ? this.control.invalid : null; },
@@ -94117,54 +102325,23 @@ var AbstractControlDirective = (function () {
     });
     Object.defineProperty(AbstractControlDirective.prototype, "pending", {
         /**
+         * A control is `pending` when its `status === PENDING`.
+         *
+         * In order to have this status, the control must be in the
+         * middle of conducting a validation check.
          * @return {?}
          */
         get: function () { return this.control ? this.control.pending : null; },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(AbstractControlDirective.prototype, "errors", {
-        /**
-         * @return {?}
-         */
-        get: function () { return this.control ? this.control.errors : null; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(AbstractControlDirective.prototype, "pristine", {
-        /**
-         * @return {?}
-         */
-        get: function () { return this.control ? this.control.pristine : null; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(AbstractControlDirective.prototype, "dirty", {
-        /**
-         * @return {?}
-         */
-        get: function () { return this.control ? this.control.dirty : null; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(AbstractControlDirective.prototype, "touched", {
-        /**
-         * @return {?}
-         */
-        get: function () { return this.control ? this.control.touched : null; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(AbstractControlDirective.prototype, "untouched", {
-        /**
-         * @return {?}
-         */
-        get: function () { return this.control ? this.control.untouched : null; },
-        enumerable: true,
-        configurable: true
-    });
     Object.defineProperty(AbstractControlDirective.prototype, "disabled", {
         /**
+         * A control is `disabled` when its `status === DISABLED`.
+         *
+         * Disabled controls are exempt from validation checks and
+         * are not included in the aggregate value of their ancestor
+         * controls.
          * @return {?}
          */
         get: function () { return this.control ? this.control.disabled : null; },
@@ -94173,14 +102350,76 @@ var AbstractControlDirective = (function () {
     });
     Object.defineProperty(AbstractControlDirective.prototype, "enabled", {
         /**
+         * A control is `enabled` as long as its `status !== DISABLED`.
+         *
+         * In other words, it has a status of `VALID`, `INVALID`, or
+         * `PENDING`.
          * @return {?}
          */
         get: function () { return this.control ? this.control.enabled : null; },
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(AbstractControlDirective.prototype, "errors", {
+        /**
+         * Returns any errors generated by failing validation. If there
+         * are no errors, it will return null.
+         * @return {?}
+         */
+        get: function () { return this.control ? this.control.errors : null; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AbstractControlDirective.prototype, "pristine", {
+        /**
+         * A control is `pristine` if the user has not yet changed
+         * the value in the UI.
+         *
+         * Note that programmatic changes to a control's value will
+         * *not* mark it dirty.
+         * @return {?}
+         */
+        get: function () { return this.control ? this.control.pristine : null; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AbstractControlDirective.prototype, "dirty", {
+        /**
+         * A control is `dirty` if the user has changed the value
+         * in the UI.
+         *
+         * Note that programmatic changes to a control's value will
+         * *not* mark it dirty.
+         * @return {?}
+         */
+        get: function () { return this.control ? this.control.dirty : null; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AbstractControlDirective.prototype, "touched", {
+        /**
+         * A control is marked `touched` once the user has triggered
+         * a `blur` event on it.
+         * @return {?}
+         */
+        get: function () { return this.control ? this.control.touched : null; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AbstractControlDirective.prototype, "untouched", {
+        /**
+         * A control is `untouched` if the user has not yet triggered
+         * a `blur` event on it.
+         * @return {?}
+         */
+        get: function () { return this.control ? this.control.untouched : null; },
+        enumerable: true,
+        configurable: true
+    });
     Object.defineProperty(AbstractControlDirective.prototype, "statusChanges", {
         /**
+         * Emits an event every time the validation status of the control
+         * is re-calculated.
          * @return {?}
          */
         get: function () {
@@ -94191,6 +102430,8 @@ var AbstractControlDirective = (function () {
     });
     Object.defineProperty(AbstractControlDirective.prototype, "valueChanges", {
         /**
+         * Emits an event every time the value of the control changes, in
+         * the UI or programmatically.
          * @return {?}
          */
         get: function () {
@@ -94201,6 +102442,9 @@ var AbstractControlDirective = (function () {
     });
     Object.defineProperty(AbstractControlDirective.prototype, "path", {
         /**
+         * Returns an array that represents the path from the top-level form
+         * to this control. Each index is the string name of the control on
+         * that level.
          * @return {?}
          */
         get: function () { return null; },
@@ -94208,6 +102452,13 @@ var AbstractControlDirective = (function () {
         configurable: true
     });
     /**
+     * Resets the form control. This means by default:
+     *
+     * * it is marked as `pristine`
+     * * it is marked as `untouched`
+     * * value is set to null
+     *
+     * For more information, see {\@link AbstractControl}.
      * @param {?=} value
      * @return {?}
      */
@@ -94217,6 +102468,10 @@ var AbstractControlDirective = (function () {
             this.control.reset(value);
     };
     /**
+     * Returns true if the control with the given path has the error specified. Otherwise
+     * returns false.
+     *
+     * If no path is given, it checks for the error on the present control.
      * @param {?} errorCode
      * @param {?=} path
      * @return {?}
@@ -94225,6 +102480,10 @@ var AbstractControlDirective = (function () {
         return this.control ? this.control.hasError(errorCode, path) : false;
     };
     /**
+     * Returns error data if the control with the given path has the error specified. Otherwise
+     * returns null or undefined.
+     *
+     * If no path is given, it checks for the error on the present control.
      * @param {?} errorCode
      * @param {?=} path
      * @return {?}
@@ -94296,7 +102555,7 @@ function isEmptyInputValue(value) {
  *
  * \@stable
  */
-var NG_VALIDATORS = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["g" /* InjectionToken */]('NgValidators');
+var NG_VALIDATORS = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["C" /* InjectionToken */]('NgValidators');
 /**
  * Providers for asynchronous validators to be used for {\@link FormControl}s
  * in a form.
@@ -94307,7 +102566,7 @@ var NG_VALIDATORS = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["g" /* Injec
  *
  * \@stable
  */
-var NG_ASYNC_VALIDATORS = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["g" /* InjectionToken */]('NgAsyncValidators');
+var NG_ASYNC_VALIDATORS = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["C" /* InjectionToken */]('NgAsyncValidators');
 var EMAIL_REGEXP = /^(?=.{1,254}$)(?=.{1,64}@)[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+(\.[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+)*@[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?(\.[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?)*$/;
 /**
  * Provides a set of validators used by form controls.
@@ -94470,7 +102729,7 @@ var Validators = (function () {
             return null;
         return function (control) {
             var /** @type {?} */ observables = _executeAsyncValidators(control, presentValidators).map(toObservable);
-            return __WEBPACK_IMPORTED_MODULE_4_rxjs_operator_map__["map"].call(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_rxjs_observable_forkJoin__["forkJoin"])(observables), _mergeErrors);
+            return __WEBPACK_IMPORTED_MODULE_4_rxjs_operator_map__["map"].call(Object(__WEBPACK_IMPORTED_MODULE_2_rxjs_observable_forkJoin__["forkJoin"])(observables), _mergeErrors);
         };
     };
     return Validators;
@@ -94487,8 +102746,8 @@ function isPresent(o) {
  * @return {?}
  */
 function toObservable(r) {
-    var /** @type {?} */ obs = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["W" /* ɵisPromise */])(r) ? __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3_rxjs_observable_fromPromise__["fromPromise"])(r) : r;
-    if (!(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["X" /* ɵisObservable */])(obs))) {
+    var /** @type {?} */ obs = Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_53" /* ɵisPromise */])(r) ? Object(__WEBPACK_IMPORTED_MODULE_3_rxjs_observable_fromPromise__["fromPromise"])(r) : r;
+    if (!(Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_52" /* ɵisObservable */])(obs))) {
         throw new Error("Expected validator to return Promise or Observable.");
     }
     return obs;
@@ -94532,7 +102791,7 @@ function _mergeErrors(arrayOfErrors) {
  * See {\@link DefaultValueAccessor} for how to implement one.
  * \@stable
  */
-var NG_VALUE_ACCESSOR = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["g" /* InjectionToken */]('NgValueAccessor');
+var NG_VALUE_ACCESSOR = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["C" /* InjectionToken */]('NgValueAccessor');
 /**
  * @license
  * Copyright Google Inc. All Rights Reserved.
@@ -94542,7 +102801,7 @@ var NG_VALUE_ACCESSOR = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["g" /* I
  */
 var CHECKBOX_VALUE_ACCESSOR = {
     provide: NG_VALUE_ACCESSOR,
-    useExisting: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_0" /* forwardRef */])(function () { return CheckboxControlValueAccessor; }),
+    useExisting: Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_21" /* forwardRef */])(function () { return CheckboxControlValueAccessor; }),
     multi: true,
 };
 /**
@@ -94593,7 +102852,7 @@ var CheckboxControlValueAccessor = (function () {
     return CheckboxControlValueAccessor;
 }());
 CheckboxControlValueAccessor.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["J" /* Directive */], args: [{
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["t" /* Directive */], args: [{
                 selector: 'input[type=checkbox][formControlName],input[type=checkbox][formControl],input[type=checkbox][ngModel]',
                 host: { '(change)': 'onChange($event.target.checked)', '(blur)': 'onTouched()' },
                 providers: [CHECKBOX_VALUE_ACCESSOR]
@@ -94603,8 +102862,8 @@ CheckboxControlValueAccessor.decorators = [
  * @nocollapse
  */
 CheckboxControlValueAccessor.ctorParameters = function () { return [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_1" /* Renderer2 */], },
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["M" /* ElementRef */], },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_0" /* Renderer2 */], },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["u" /* ElementRef */], },
 ]; };
 /**
  * @license
@@ -94615,7 +102874,7 @@ CheckboxControlValueAccessor.ctorParameters = function () { return [
  */
 var DEFAULT_VALUE_ACCESSOR = {
     provide: NG_VALUE_ACCESSOR,
-    useExisting: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_0" /* forwardRef */])(function () { return DefaultValueAccessor; }),
+    useExisting: Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_21" /* forwardRef */])(function () { return DefaultValueAccessor; }),
     multi: true
 };
 /**
@@ -94624,14 +102883,14 @@ var DEFAULT_VALUE_ACCESSOR = {
  * @return {?}
  */
 function _isAndroid() {
-    var /** @type {?} */ userAgent = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__angular_platform_browser__["b" /* ɵgetDOM */])() ? __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__angular_platform_browser__["b" /* ɵgetDOM */])().getUserAgent() : '';
+    var /** @type {?} */ userAgent = Object(__WEBPACK_IMPORTED_MODULE_5__angular_platform_browser__["c" /* ɵgetDOM */])() ? Object(__WEBPACK_IMPORTED_MODULE_5__angular_platform_browser__["c" /* ɵgetDOM */])().getUserAgent() : '';
     return /android (\d+)/.test(userAgent.toLowerCase());
 }
 /**
  * Turn this mode on if you want form directives to buffer IME input until compositionend
  * \@experimental
  */
-var COMPOSITION_BUFFER_MODE = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["g" /* InjectionToken */]('CompositionEventMode');
+var COMPOSITION_BUFFER_MODE = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["C" /* InjectionToken */]('CompositionEventMode');
 /**
  * The default accessor for writing a value and listening to changes that is used by the
  * {\@link NgModel}, {\@link FormControlDirective}, and {\@link FormControlName} directives.
@@ -94715,7 +102974,7 @@ var DefaultValueAccessor = (function () {
     return DefaultValueAccessor;
 }());
 DefaultValueAccessor.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["J" /* Directive */], args: [{
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["t" /* Directive */], args: [{
                 selector: 'input:not([type=checkbox])[formControlName],textarea[formControlName],input:not([type=checkbox])[formControl],textarea[formControl],input:not([type=checkbox])[ngModel],textarea[ngModel],[ngDefaultControl]',
                 // TODO: vsavkin replace the above selector with the one below it once
                 // https://github.com/angular/angular/issues/3011 is implemented
@@ -94733,9 +102992,9 @@ DefaultValueAccessor.decorators = [
  * @nocollapse
  */
 DefaultValueAccessor.ctorParameters = function () { return [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_1" /* Renderer2 */], },
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["M" /* ElementRef */], },
-    { type: undefined, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["o" /* Optional */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["f" /* Inject */], args: [COMPOSITION_BUFFER_MODE,] },] },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_0" /* Renderer2 */], },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["u" /* ElementRef */], },
+    { type: undefined, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Q" /* Optional */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["A" /* Inject */], args: [COMPOSITION_BUFFER_MODE,] },] },
 ]; };
 /**
  * @license
@@ -94777,7 +103036,7 @@ function normalizeAsyncValidator(validator) {
  */
 var NUMBER_VALUE_ACCESSOR = {
     provide: NG_VALUE_ACCESSOR,
-    useExisting: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_0" /* forwardRef */])(function () { return NumberValueAccessor; }),
+    useExisting: Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_21" /* forwardRef */])(function () { return NumberValueAccessor; }),
     multi: true
 };
 /**
@@ -94831,7 +103090,7 @@ var NumberValueAccessor = (function () {
     return NumberValueAccessor;
 }());
 NumberValueAccessor.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["J" /* Directive */], args: [{
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["t" /* Directive */], args: [{
                 selector: 'input[type=number][formControlName],input[type=number][formControl],input[type=number][ngModel]',
                 host: {
                     '(change)': 'onChange($event.target.value)',
@@ -94845,8 +103104,8 @@ NumberValueAccessor.decorators = [
  * @nocollapse
  */
 NumberValueAccessor.ctorParameters = function () { return [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_1" /* Renderer2 */], },
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["M" /* ElementRef */], },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_0" /* Renderer2 */], },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["u" /* ElementRef */], },
 ]; };
 /**
  * @license
@@ -94923,7 +103182,7 @@ var NgControl = (function (_super) {
  */
 var RADIO_VALUE_ACCESSOR = {
     provide: NG_VALUE_ACCESSOR,
-    useExisting: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_0" /* forwardRef */])(function () { return RadioControlValueAccessor; }),
+    useExisting: Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_21" /* forwardRef */])(function () { return RadioControlValueAccessor; }),
     multi: true
 };
 /**
@@ -94979,7 +103238,7 @@ var RadioControlRegistry = (function () {
     return RadioControlRegistry;
 }());
 RadioControlRegistry.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["c" /* Injectable */] },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["B" /* Injectable */] },
 ];
 /**
  * @nocollapse
@@ -95097,7 +103356,7 @@ var RadioControlValueAccessor = (function () {
     return RadioControlValueAccessor;
 }());
 RadioControlValueAccessor.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["J" /* Directive */], args: [{
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["t" /* Directive */], args: [{
                 selector: 'input[type=radio][formControlName],input[type=radio][formControl],input[type=radio][ngModel]',
                 host: { '(change)': 'onChange()', '(blur)': 'onTouched()' },
                 providers: [RADIO_VALUE_ACCESSOR]
@@ -95107,15 +103366,15 @@ RadioControlValueAccessor.decorators = [
  * @nocollapse
  */
 RadioControlValueAccessor.ctorParameters = function () { return [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_1" /* Renderer2 */], },
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["M" /* ElementRef */], },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_0" /* Renderer2 */], },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["u" /* ElementRef */], },
     { type: RadioControlRegistry, },
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["j" /* Injector */], },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["D" /* Injector */], },
 ]; };
 RadioControlValueAccessor.propDecorators = {
-    'name': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["O" /* Input */] },],
-    'formControlName': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["O" /* Input */] },],
-    'value': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["O" /* Input */] },],
+    'name': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["E" /* Input */] },],
+    'formControlName': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["E" /* Input */] },],
+    'value': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["E" /* Input */] },],
 };
 /**
  * @license
@@ -95126,7 +103385,7 @@ RadioControlValueAccessor.propDecorators = {
  */
 var RANGE_VALUE_ACCESSOR = {
     provide: NG_VALUE_ACCESSOR,
-    useExisting: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_0" /* forwardRef */])(function () { return RangeValueAccessor; }),
+    useExisting: Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_21" /* forwardRef */])(function () { return RangeValueAccessor; }),
     multi: true
 };
 /**
@@ -95178,7 +103437,7 @@ var RangeValueAccessor = (function () {
     return RangeValueAccessor;
 }());
 RangeValueAccessor.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["J" /* Directive */], args: [{
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["t" /* Directive */], args: [{
                 selector: 'input[type=range][formControlName],input[type=range][formControl],input[type=range][ngModel]',
                 host: {
                     '(change)': 'onChange($event.target.value)',
@@ -95192,8 +103451,8 @@ RangeValueAccessor.decorators = [
  * @nocollapse
  */
 RangeValueAccessor.ctorParameters = function () { return [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_1" /* Renderer2 */], },
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["M" /* ElementRef */], },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_0" /* Renderer2 */], },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["u" /* ElementRef */], },
 ]; };
 /**
  * @license
@@ -95204,7 +103463,7 @@ RangeValueAccessor.ctorParameters = function () { return [
  */
 var SELECT_VALUE_ACCESSOR = {
     provide: NG_VALUE_ACCESSOR,
-    useExisting: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_0" /* forwardRef */])(function () { return SelectControlValueAccessor; }),
+    useExisting: Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_21" /* forwardRef */])(function () { return SelectControlValueAccessor; }),
     multi: true
 };
 /**
@@ -95307,7 +103566,7 @@ var SelectControlValueAccessor = (function () {
         this._idCounter = 0;
         this.onChange = function (_) { };
         this.onTouched = function () { };
-        this._compareWith = __WEBPACK_IMPORTED_MODULE_1__angular_core__["_2" /* ɵlooseIdentical */];
+        this._compareWith = __WEBPACK_IMPORTED_MODULE_1__angular_core__["_54" /* ɵlooseIdentical */];
     }
     Object.defineProperty(SelectControlValueAccessor.prototype, "compareWith", {
         /**
@@ -95343,8 +103602,8 @@ var SelectControlValueAccessor = (function () {
     SelectControlValueAccessor.prototype.registerOnChange = function (fn) {
         var _this = this;
         this.onChange = function (valueString) {
-            _this.value = valueString;
-            fn(_this._getOptionValue(valueString));
+            _this.value = _this._getOptionValue(valueString);
+            fn(_this.value);
         };
     };
     /**
@@ -95389,7 +103648,7 @@ var SelectControlValueAccessor = (function () {
     return SelectControlValueAccessor;
 }());
 SelectControlValueAccessor.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["J" /* Directive */], args: [{
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["t" /* Directive */], args: [{
                 selector: 'select:not([multiple])[formControlName],select:not([multiple])[formControl],select:not([multiple])[ngModel]',
                 host: { '(change)': 'onChange($event.target.value)', '(blur)': 'onTouched()' },
                 providers: [SELECT_VALUE_ACCESSOR]
@@ -95399,11 +103658,11 @@ SelectControlValueAccessor.decorators = [
  * @nocollapse
  */
 SelectControlValueAccessor.ctorParameters = function () { return [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_1" /* Renderer2 */], },
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["M" /* ElementRef */], },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_0" /* Renderer2 */], },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["u" /* ElementRef */], },
 ]; };
 SelectControlValueAccessor.propDecorators = {
-    'compareWith': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["O" /* Input */] },],
+    'compareWith': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["E" /* Input */] },],
 };
 /**
  * \@whatItDoes Marks `<option>` as dynamic, so Angular can be notified when options change.
@@ -95475,19 +103734,19 @@ var NgSelectOption = (function () {
     return NgSelectOption;
 }());
 NgSelectOption.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["J" /* Directive */], args: [{ selector: 'option' },] },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["t" /* Directive */], args: [{ selector: 'option' },] },
 ];
 /**
  * @nocollapse
  */
 NgSelectOption.ctorParameters = function () { return [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["M" /* ElementRef */], },
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_1" /* Renderer2 */], },
-    { type: SelectControlValueAccessor, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["o" /* Optional */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["T" /* Host */] },] },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["u" /* ElementRef */], },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_0" /* Renderer2 */], },
+    { type: SelectControlValueAccessor, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Q" /* Optional */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["x" /* Host */] },] },
 ]; };
 NgSelectOption.propDecorators = {
-    'ngValue': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["O" /* Input */], args: ['ngValue',] },],
-    'value': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["O" /* Input */], args: ['value',] },],
+    'ngValue': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["E" /* Input */], args: ['ngValue',] },],
+    'value': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["E" /* Input */], args: ['value',] },],
 };
 /**
  * @license
@@ -95498,7 +103757,7 @@ NgSelectOption.propDecorators = {
  */
 var SELECT_MULTIPLE_VALUE_ACCESSOR = {
     provide: NG_VALUE_ACCESSOR,
-    useExisting: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_0" /* forwardRef */])(function () { return SelectMultipleControlValueAccessor; }),
+    useExisting: Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_21" /* forwardRef */])(function () { return SelectMultipleControlValueAccessor; }),
     multi: true
 };
 /**
@@ -95570,7 +103829,7 @@ var SelectMultipleControlValueAccessor = (function () {
         this._idCounter = 0;
         this.onChange = function (_) { };
         this.onTouched = function () { };
-        this._compareWith = __WEBPACK_IMPORTED_MODULE_1__angular_core__["_2" /* ɵlooseIdentical */];
+        this._compareWith = __WEBPACK_IMPORTED_MODULE_1__angular_core__["_54" /* ɵlooseIdentical */];
     }
     Object.defineProperty(SelectMultipleControlValueAccessor.prototype, "compareWith", {
         /**
@@ -95681,7 +103940,7 @@ var SelectMultipleControlValueAccessor = (function () {
     return SelectMultipleControlValueAccessor;
 }());
 SelectMultipleControlValueAccessor.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["J" /* Directive */], args: [{
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["t" /* Directive */], args: [{
                 selector: 'select[multiple][formControlName],select[multiple][formControl],select[multiple][ngModel]',
                 host: { '(change)': 'onChange($event.target)', '(blur)': 'onTouched()' },
                 providers: [SELECT_MULTIPLE_VALUE_ACCESSOR]
@@ -95691,11 +103950,11 @@ SelectMultipleControlValueAccessor.decorators = [
  * @nocollapse
  */
 SelectMultipleControlValueAccessor.ctorParameters = function () { return [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_1" /* Renderer2 */], },
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["M" /* ElementRef */], },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_0" /* Renderer2 */], },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["u" /* ElementRef */], },
 ]; };
 SelectMultipleControlValueAccessor.propDecorators = {
-    'compareWith': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["O" /* Input */] },],
+    'compareWith': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["E" /* Input */] },],
 };
 /**
  * Marks `<option>` as dynamic, so Angular can be notified when options change.
@@ -95783,19 +104042,19 @@ var NgSelectMultipleOption = (function () {
     return NgSelectMultipleOption;
 }());
 NgSelectMultipleOption.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["J" /* Directive */], args: [{ selector: 'option' },] },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["t" /* Directive */], args: [{ selector: 'option' },] },
 ];
 /**
  * @nocollapse
  */
 NgSelectMultipleOption.ctorParameters = function () { return [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["M" /* ElementRef */], },
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_1" /* Renderer2 */], },
-    { type: SelectMultipleControlValueAccessor, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["o" /* Optional */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["T" /* Host */] },] },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["u" /* ElementRef */], },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_0" /* Renderer2 */], },
+    { type: SelectMultipleControlValueAccessor, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Q" /* Optional */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["x" /* Host */] },] },
 ]; };
 NgSelectMultipleOption.propDecorators = {
-    'ngValue': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["O" /* Input */], args: ['ngValue',] },],
-    'value': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["O" /* Input */], args: ['value',] },],
+    'ngValue': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["E" /* Input */], args: ['ngValue',] },],
+    'value': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["E" /* Input */], args: ['value',] },],
 };
 /**
  * @license
@@ -95939,7 +104198,7 @@ function isPropertyUpdated(changes, viewModel) {
     var /** @type {?} */ change = changes['model'];
     if (change.isFirstChange())
         return true;
-    return !__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_2" /* ɵlooseIdentical */])(viewModel, change.currentValue);
+    return !Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_54" /* ɵlooseIdentical */])(viewModel, change.currentValue);
 }
 var BUILTIN_ACCESSORS = [
     CheckboxControlValueAccessor,
@@ -96182,13 +104441,13 @@ var NgControlStatus = (function (_super) {
     return NgControlStatus;
 }(AbstractControlStatus));
 NgControlStatus.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["J" /* Directive */], args: [{ selector: '[formControlName],[ngModel],[formControl]', host: ngControlStatusHost },] },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["t" /* Directive */], args: [{ selector: '[formControlName],[ngModel],[formControl]', host: ngControlStatusHost },] },
 ];
 /**
  * @nocollapse
  */
 NgControlStatus.ctorParameters = function () { return [
-    { type: NgControl, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_3" /* Self */] },] },
+    { type: NgControl, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_5" /* Self */] },] },
 ]; };
 /**
  * Directive automatically applied to Angular form groups that sets CSS classes
@@ -96207,7 +104466,7 @@ var NgControlStatusGroup = (function (_super) {
     return NgControlStatusGroup;
 }(AbstractControlStatus));
 NgControlStatusGroup.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["J" /* Directive */], args: [{
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["t" /* Directive */], args: [{
                 selector: '[formGroupName],[formArrayName],[ngModelGroup],[formGroup],form:not([ngNoForm]),[ngForm]',
                 host: ngControlStatusHost
             },] },
@@ -96216,7 +104475,7 @@ NgControlStatusGroup.decorators = [
  * @nocollapse
  */
 NgControlStatusGroup.ctorParameters = function () { return [
-    { type: ControlContainer, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_3" /* Self */] },] },
+    { type: ControlContainer, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_5" /* Self */] },] },
 ]; };
 /**
  * @license
@@ -96784,7 +105043,7 @@ var AbstractControl = (function () {
      */
     AbstractControl.prototype.get = function (path) { return _find(this, path, '.'); };
     /**
-     * Returns true if the control with the given path has the error specified. Otherwise
+     * Returns error data if the control with the given path has the error specified. Otherwise
      * returns null or undefined.
      *
      * If no path is given, it checks for the error on the present control.
@@ -96840,8 +105099,8 @@ var AbstractControl = (function () {
      * @return {?}
      */
     AbstractControl.prototype._initObservables = function () {
-        this._valueChanges = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["F" /* EventEmitter */]();
-        this._statusChanges = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["F" /* EventEmitter */]();
+        this._valueChanges = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["w" /* EventEmitter */]();
+        this._statusChanges = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["w" /* EventEmitter */]();
     };
     /**
      * @return {?}
@@ -97851,7 +106110,7 @@ var FormArray = (function (_super) {
  */
 var formDirectiveProvider = {
     provide: ControlContainer,
-    useExisting: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_0" /* forwardRef */])(function () { return NgForm; })
+    useExisting: Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_21" /* forwardRef */])(function () { return NgForm; })
 };
 var resolvedPromise = Promise.resolve(null);
 /**
@@ -97894,7 +106153,7 @@ var NgForm = (function (_super) {
     function NgForm(validators, asyncValidators) {
         var _this = _super.call(this) || this;
         _this._submitted = false;
-        _this.ngSubmit = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["F" /* EventEmitter */]();
+        _this.ngSubmit = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["w" /* EventEmitter */]();
         _this.form =
             new FormGroup({}, composeValidators(validators), composeAsyncValidators(asyncValidators));
         return _this;
@@ -98053,7 +106312,7 @@ var NgForm = (function (_super) {
     return NgForm;
 }(ControlContainer));
 NgForm.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["J" /* Directive */], args: [{
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["t" /* Directive */], args: [{
                 selector: 'form:not([ngNoForm]):not([formGroup]),ngForm,[ngForm]',
                 providers: [formDirectiveProvider],
                 host: { '(submit)': 'onSubmit($event)', '(reset)': 'onReset()' },
@@ -98065,8 +106324,8 @@ NgForm.decorators = [
  * @nocollapse
  */
 NgForm.ctorParameters = function () { return [
-    { type: Array, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["o" /* Optional */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_3" /* Self */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["f" /* Inject */], args: [NG_VALIDATORS,] },] },
-    { type: Array, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["o" /* Optional */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_3" /* Self */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["f" /* Inject */], args: [NG_ASYNC_VALIDATORS,] },] },
+    { type: Array, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Q" /* Optional */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_5" /* Self */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["A" /* Inject */], args: [NG_VALIDATORS,] },] },
+    { type: Array, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Q" /* Optional */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_5" /* Self */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["A" /* Inject */], args: [NG_ASYNC_VALIDATORS,] },] },
 ]; };
 /**
  * @license
@@ -98127,7 +106386,7 @@ var TemplateDrivenErrors = (function () {
  */
 var modelGroupProvider = {
     provide: ControlContainer,
-    useExisting: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_0" /* forwardRef */])(function () { return NgModelGroup; })
+    useExisting: Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_21" /* forwardRef */])(function () { return NgModelGroup; })
 };
 /**
  * \@whatItDoes Creates and binds a {\@link FormGroup} instance to a DOM element.
@@ -98180,18 +106439,18 @@ var NgModelGroup = (function (_super) {
     return NgModelGroup;
 }(AbstractFormGroupDirective));
 NgModelGroup.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["J" /* Directive */], args: [{ selector: '[ngModelGroup]', providers: [modelGroupProvider], exportAs: 'ngModelGroup' },] },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["t" /* Directive */], args: [{ selector: '[ngModelGroup]', providers: [modelGroupProvider], exportAs: 'ngModelGroup' },] },
 ];
 /**
  * @nocollapse
  */
 NgModelGroup.ctorParameters = function () { return [
-    { type: ControlContainer, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["T" /* Host */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["E" /* SkipSelf */] },] },
-    { type: Array, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["o" /* Optional */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_3" /* Self */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["f" /* Inject */], args: [NG_VALIDATORS,] },] },
-    { type: Array, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["o" /* Optional */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_3" /* Self */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["f" /* Inject */], args: [NG_ASYNC_VALIDATORS,] },] },
+    { type: ControlContainer, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["x" /* Host */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_6" /* SkipSelf */] },] },
+    { type: Array, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Q" /* Optional */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_5" /* Self */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["A" /* Inject */], args: [NG_VALIDATORS,] },] },
+    { type: Array, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Q" /* Optional */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_5" /* Self */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["A" /* Inject */], args: [NG_ASYNC_VALIDATORS,] },] },
 ]; };
 NgModelGroup.propDecorators = {
-    'name': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["O" /* Input */], args: ['ngModelGroup',] },],
+    'name': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["E" /* Input */], args: ['ngModelGroup',] },],
 };
 /**
  * @license
@@ -98202,7 +106461,7 @@ NgModelGroup.propDecorators = {
  */
 var formControlBinding = {
     provide: NgControl,
-    useExisting: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_0" /* forwardRef */])(function () { return NgModel; })
+    useExisting: Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_21" /* forwardRef */])(function () { return NgModel; })
 };
 /**
  * `ngModel` forces an additional change detection run when its inputs change:
@@ -98298,7 +106557,7 @@ var NgModel = (function (_super) {
          * \@internal
          */
         _this._registered = false;
-        _this.update = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["F" /* EventEmitter */]();
+        _this.update = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["w" /* EventEmitter */]();
         _this._parent = parent;
         _this._rawValidators = validators || [];
         _this._rawAsyncValidators = asyncValidators || [];
@@ -98457,7 +106716,7 @@ var NgModel = (function (_super) {
     return NgModel;
 }(NgControl));
 NgModel.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["J" /* Directive */], args: [{
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["t" /* Directive */], args: [{
                 selector: '[ngModel]:not([formControlName]):not([formControl])',
                 providers: [formControlBinding],
                 exportAs: 'ngModel'
@@ -98467,17 +106726,17 @@ NgModel.decorators = [
  * @nocollapse
  */
 NgModel.ctorParameters = function () { return [
-    { type: ControlContainer, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["o" /* Optional */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["T" /* Host */] },] },
-    { type: Array, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["o" /* Optional */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_3" /* Self */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["f" /* Inject */], args: [NG_VALIDATORS,] },] },
-    { type: Array, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["o" /* Optional */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_3" /* Self */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["f" /* Inject */], args: [NG_ASYNC_VALIDATORS,] },] },
-    { type: Array, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["o" /* Optional */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_3" /* Self */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["f" /* Inject */], args: [NG_VALUE_ACCESSOR,] },] },
+    { type: ControlContainer, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Q" /* Optional */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["x" /* Host */] },] },
+    { type: Array, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Q" /* Optional */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_5" /* Self */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["A" /* Inject */], args: [NG_VALIDATORS,] },] },
+    { type: Array, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Q" /* Optional */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_5" /* Self */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["A" /* Inject */], args: [NG_ASYNC_VALIDATORS,] },] },
+    { type: Array, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Q" /* Optional */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_5" /* Self */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["A" /* Inject */], args: [NG_VALUE_ACCESSOR,] },] },
 ]; };
 NgModel.propDecorators = {
-    'name': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["O" /* Input */] },],
-    'isDisabled': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["O" /* Input */], args: ['disabled',] },],
-    'model': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["O" /* Input */], args: ['ngModel',] },],
-    'options': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["O" /* Input */], args: ['ngModelOptions',] },],
-    'update': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_4" /* Output */], args: ['ngModelChange',] },],
+    'name': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["E" /* Input */] },],
+    'isDisabled': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["E" /* Input */], args: ['disabled',] },],
+    'model': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["E" /* Input */], args: ['ngModel',] },],
+    'options': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["E" /* Input */], args: ['ngModelOptions',] },],
+    'update': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["R" /* Output */], args: ['ngModelChange',] },],
 };
 /**
  * @license
@@ -98536,7 +106795,7 @@ var ReactiveErrors = (function () {
  */
 var formControlBinding$1 = {
     provide: NgControl,
-    useExisting: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_0" /* forwardRef */])(function () { return FormControlDirective; })
+    useExisting: Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_21" /* forwardRef */])(function () { return FormControlDirective; })
 };
 /**
  * \@whatItDoes Syncs a standalone {\@link FormControl} instance to a form control element.
@@ -98589,7 +106848,7 @@ var FormControlDirective = (function (_super) {
      */
     function FormControlDirective(validators, asyncValidators, valueAccessors) {
         var _this = _super.call(this) || this;
-        _this.update = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["F" /* EventEmitter */]();
+        _this.update = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["w" /* EventEmitter */]();
         _this._rawValidators = validators || [];
         _this._rawAsyncValidators = asyncValidators || [];
         _this.valueAccessor = selectValueAccessor(_this, valueAccessors);
@@ -98673,21 +106932,21 @@ var FormControlDirective = (function (_super) {
     return FormControlDirective;
 }(NgControl));
 FormControlDirective.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["J" /* Directive */], args: [{ selector: '[formControl]', providers: [formControlBinding$1], exportAs: 'ngForm' },] },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["t" /* Directive */], args: [{ selector: '[formControl]', providers: [formControlBinding$1], exportAs: 'ngForm' },] },
 ];
 /**
  * @nocollapse
  */
 FormControlDirective.ctorParameters = function () { return [
-    { type: Array, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["o" /* Optional */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_3" /* Self */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["f" /* Inject */], args: [NG_VALIDATORS,] },] },
-    { type: Array, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["o" /* Optional */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_3" /* Self */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["f" /* Inject */], args: [NG_ASYNC_VALIDATORS,] },] },
-    { type: Array, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["o" /* Optional */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_3" /* Self */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["f" /* Inject */], args: [NG_VALUE_ACCESSOR,] },] },
+    { type: Array, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Q" /* Optional */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_5" /* Self */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["A" /* Inject */], args: [NG_VALIDATORS,] },] },
+    { type: Array, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Q" /* Optional */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_5" /* Self */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["A" /* Inject */], args: [NG_ASYNC_VALIDATORS,] },] },
+    { type: Array, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Q" /* Optional */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_5" /* Self */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["A" /* Inject */], args: [NG_VALUE_ACCESSOR,] },] },
 ]; };
 FormControlDirective.propDecorators = {
-    'form': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["O" /* Input */], args: ['formControl',] },],
-    'model': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["O" /* Input */], args: ['ngModel',] },],
-    'update': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_4" /* Output */], args: ['ngModelChange',] },],
-    'isDisabled': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["O" /* Input */], args: ['disabled',] },],
+    'form': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["E" /* Input */], args: ['formControl',] },],
+    'model': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["E" /* Input */], args: ['ngModel',] },],
+    'update': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["R" /* Output */], args: ['ngModelChange',] },],
+    'isDisabled': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["E" /* Input */], args: ['disabled',] },],
 };
 /**
  * @license
@@ -98698,7 +106957,7 @@ FormControlDirective.propDecorators = {
  */
 var formDirectiveProvider$1 = {
     provide: ControlContainer,
-    useExisting: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_0" /* forwardRef */])(function () { return FormGroupDirective; })
+    useExisting: Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_21" /* forwardRef */])(function () { return FormGroupDirective; })
 };
 /**
  * \@whatItDoes Binds an existing {\@link FormGroup} to a DOM element.
@@ -98748,7 +107007,7 @@ var FormGroupDirective = (function (_super) {
         _this._submitted = false;
         _this.directives = [];
         _this.form = ((null));
-        _this.ngSubmit = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["F" /* EventEmitter */]();
+        _this.ngSubmit = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["w" /* EventEmitter */]();
         return _this;
     }
     /**
@@ -98932,7 +107191,7 @@ var FormGroupDirective = (function (_super) {
     return FormGroupDirective;
 }(ControlContainer));
 FormGroupDirective.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["J" /* Directive */], args: [{
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["t" /* Directive */], args: [{
                 selector: '[formGroup]',
                 providers: [formDirectiveProvider$1],
                 host: { '(submit)': 'onSubmit($event)', '(reset)': 'onReset()' },
@@ -98943,12 +107202,12 @@ FormGroupDirective.decorators = [
  * @nocollapse
  */
 FormGroupDirective.ctorParameters = function () { return [
-    { type: Array, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["o" /* Optional */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_3" /* Self */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["f" /* Inject */], args: [NG_VALIDATORS,] },] },
-    { type: Array, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["o" /* Optional */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_3" /* Self */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["f" /* Inject */], args: [NG_ASYNC_VALIDATORS,] },] },
+    { type: Array, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Q" /* Optional */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_5" /* Self */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["A" /* Inject */], args: [NG_VALIDATORS,] },] },
+    { type: Array, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Q" /* Optional */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_5" /* Self */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["A" /* Inject */], args: [NG_ASYNC_VALIDATORS,] },] },
 ]; };
 FormGroupDirective.propDecorators = {
-    'form': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["O" /* Input */], args: ['formGroup',] },],
-    'ngSubmit': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_4" /* Output */] },],
+    'form': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["E" /* Input */], args: ['formGroup',] },],
+    'ngSubmit': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["R" /* Output */] },],
 };
 /**
  * @template T
@@ -98971,7 +107230,7 @@ function remove(list, el) {
  */
 var formGroupNameProvider = {
     provide: ControlContainer,
-    useExisting: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_0" /* forwardRef */])(function () { return FormGroupName; })
+    useExisting: Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_21" /* forwardRef */])(function () { return FormGroupName; })
 };
 /**
  * \@whatItDoes Syncs a nested {\@link FormGroup} to a DOM element.
@@ -99043,22 +107302,22 @@ var FormGroupName = (function (_super) {
     return FormGroupName;
 }(AbstractFormGroupDirective));
 FormGroupName.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["J" /* Directive */], args: [{ selector: '[formGroupName]', providers: [formGroupNameProvider] },] },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["t" /* Directive */], args: [{ selector: '[formGroupName]', providers: [formGroupNameProvider] },] },
 ];
 /**
  * @nocollapse
  */
 FormGroupName.ctorParameters = function () { return [
-    { type: ControlContainer, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["o" /* Optional */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["T" /* Host */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["E" /* SkipSelf */] },] },
-    { type: Array, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["o" /* Optional */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_3" /* Self */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["f" /* Inject */], args: [NG_VALIDATORS,] },] },
-    { type: Array, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["o" /* Optional */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_3" /* Self */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["f" /* Inject */], args: [NG_ASYNC_VALIDATORS,] },] },
+    { type: ControlContainer, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Q" /* Optional */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["x" /* Host */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_6" /* SkipSelf */] },] },
+    { type: Array, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Q" /* Optional */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_5" /* Self */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["A" /* Inject */], args: [NG_VALIDATORS,] },] },
+    { type: Array, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Q" /* Optional */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_5" /* Self */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["A" /* Inject */], args: [NG_ASYNC_VALIDATORS,] },] },
 ]; };
 FormGroupName.propDecorators = {
-    'name': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["O" /* Input */], args: ['formGroupName',] },],
+    'name': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["E" /* Input */], args: ['formGroupName',] },],
 };
 var formArrayNameProvider = {
     provide: ControlContainer,
-    useExisting: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_0" /* forwardRef */])(function () { return FormArrayName; })
+    useExisting: Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_21" /* forwardRef */])(function () { return FormArrayName; })
 };
 /**
  * \@whatItDoes Syncs a nested {\@link FormArray} to a DOM element.
@@ -99191,18 +107450,18 @@ var FormArrayName = (function (_super) {
     return FormArrayName;
 }(ControlContainer));
 FormArrayName.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["J" /* Directive */], args: [{ selector: '[formArrayName]', providers: [formArrayNameProvider] },] },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["t" /* Directive */], args: [{ selector: '[formArrayName]', providers: [formArrayNameProvider] },] },
 ];
 /**
  * @nocollapse
  */
 FormArrayName.ctorParameters = function () { return [
-    { type: ControlContainer, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["o" /* Optional */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["T" /* Host */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["E" /* SkipSelf */] },] },
-    { type: Array, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["o" /* Optional */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_3" /* Self */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["f" /* Inject */], args: [NG_VALIDATORS,] },] },
-    { type: Array, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["o" /* Optional */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_3" /* Self */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["f" /* Inject */], args: [NG_ASYNC_VALIDATORS,] },] },
+    { type: ControlContainer, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Q" /* Optional */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["x" /* Host */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_6" /* SkipSelf */] },] },
+    { type: Array, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Q" /* Optional */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_5" /* Self */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["A" /* Inject */], args: [NG_VALIDATORS,] },] },
+    { type: Array, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Q" /* Optional */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_5" /* Self */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["A" /* Inject */], args: [NG_ASYNC_VALIDATORS,] },] },
 ]; };
 FormArrayName.propDecorators = {
-    'name': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["O" /* Input */], args: ['formArrayName',] },],
+    'name': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["E" /* Input */], args: ['formArrayName',] },],
 };
 /**
  * @param {?} parent
@@ -99221,7 +107480,7 @@ function _hasInvalidParent(parent) {
  */
 var controlNameBinding = {
     provide: NgControl,
-    useExisting: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_0" /* forwardRef */])(function () { return FormControlName; })
+    useExisting: Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_21" /* forwardRef */])(function () { return FormControlName; })
 };
 /**
  * \@whatItDoes Syncs a {\@link FormControl} in an existing {\@link FormGroup} to a form control
@@ -99285,7 +107544,7 @@ var FormControlName = (function (_super) {
     function FormControlName(parent, validators, asyncValidators, valueAccessors) {
         var _this = _super.call(this) || this;
         _this._added = false;
-        _this.update = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["F" /* EventEmitter */]();
+        _this.update = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["w" /* EventEmitter */]();
         _this._parent = parent;
         _this._rawValidators = validators || [];
         _this._rawAsyncValidators = asyncValidators || [];
@@ -99398,22 +107657,22 @@ var FormControlName = (function (_super) {
     return FormControlName;
 }(NgControl));
 FormControlName.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["J" /* Directive */], args: [{ selector: '[formControlName]', providers: [controlNameBinding] },] },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["t" /* Directive */], args: [{ selector: '[formControlName]', providers: [controlNameBinding] },] },
 ];
 /**
  * @nocollapse
  */
 FormControlName.ctorParameters = function () { return [
-    { type: ControlContainer, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["o" /* Optional */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["T" /* Host */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["E" /* SkipSelf */] },] },
-    { type: Array, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["o" /* Optional */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_3" /* Self */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["f" /* Inject */], args: [NG_VALIDATORS,] },] },
-    { type: Array, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["o" /* Optional */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_3" /* Self */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["f" /* Inject */], args: [NG_ASYNC_VALIDATORS,] },] },
-    { type: Array, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["o" /* Optional */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_3" /* Self */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["f" /* Inject */], args: [NG_VALUE_ACCESSOR,] },] },
+    { type: ControlContainer, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Q" /* Optional */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["x" /* Host */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_6" /* SkipSelf */] },] },
+    { type: Array, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Q" /* Optional */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_5" /* Self */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["A" /* Inject */], args: [NG_VALIDATORS,] },] },
+    { type: Array, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Q" /* Optional */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_5" /* Self */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["A" /* Inject */], args: [NG_ASYNC_VALIDATORS,] },] },
+    { type: Array, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Q" /* Optional */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_5" /* Self */] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["A" /* Inject */], args: [NG_VALUE_ACCESSOR,] },] },
 ]; };
 FormControlName.propDecorators = {
-    'name': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["O" /* Input */], args: ['formControlName',] },],
-    'model': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["O" /* Input */], args: ['ngModel',] },],
-    'update': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["_4" /* Output */], args: ['ngModelChange',] },],
-    'isDisabled': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["O" /* Input */], args: ['disabled',] },],
+    'name': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["E" /* Input */], args: ['formControlName',] },],
+    'model': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["E" /* Input */], args: ['ngModel',] },],
+    'update': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["R" /* Output */], args: ['ngModelChange',] },],
+    'isDisabled': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["E" /* Input */], args: ['disabled',] },],
 };
 /**
  * @license
@@ -99424,12 +107683,12 @@ FormControlName.propDecorators = {
  */
 var REQUIRED_VALIDATOR = {
     provide: NG_VALIDATORS,
-    useExisting: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_0" /* forwardRef */])(function () { return RequiredValidator; }),
+    useExisting: Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_21" /* forwardRef */])(function () { return RequiredValidator; }),
     multi: true
 };
 var CHECKBOX_REQUIRED_VALIDATOR = {
     provide: NG_VALIDATORS,
-    useExisting: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_0" /* forwardRef */])(function () { return CheckboxRequiredValidator; }),
+    useExisting: Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_21" /* forwardRef */])(function () { return CheckboxRequiredValidator; }),
     multi: true
 };
 /**
@@ -99479,7 +107738,7 @@ var RequiredValidator = (function () {
     return RequiredValidator;
 }());
 RequiredValidator.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["J" /* Directive */], args: [{
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["t" /* Directive */], args: [{
                 selector: ':not([type=checkbox])[required][formControlName],:not([type=checkbox])[required][formControl],:not([type=checkbox])[required][ngModel]',
                 providers: [REQUIRED_VALIDATOR],
                 host: { '[attr.required]': 'required ? "" : null' }
@@ -99490,7 +107749,7 @@ RequiredValidator.decorators = [
  */
 RequiredValidator.ctorParameters = function () { return []; };
 RequiredValidator.propDecorators = {
-    'required': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["O" /* Input */] },],
+    'required': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["E" /* Input */] },],
 };
 /**
  * A Directive that adds the `required` validator to checkbox controls marked with the
@@ -99519,7 +107778,7 @@ var CheckboxRequiredValidator = (function (_super) {
     return CheckboxRequiredValidator;
 }(RequiredValidator));
 CheckboxRequiredValidator.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["J" /* Directive */], args: [{
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["t" /* Directive */], args: [{
                 selector: 'input[type=checkbox][required][formControlName],input[type=checkbox][required][formControl],input[type=checkbox][required][ngModel]',
                 providers: [CHECKBOX_REQUIRED_VALIDATOR],
                 host: { '[attr.required]': 'required ? "" : null' }
@@ -99534,7 +107793,7 @@ CheckboxRequiredValidator.ctorParameters = function () { return []; };
  */
 var EMAIL_VALIDATOR = {
     provide: NG_VALIDATORS,
-    useExisting: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_0" /* forwardRef */])(function () { return EmailValidator; }),
+    useExisting: Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_21" /* forwardRef */])(function () { return EmailValidator; }),
     multi: true
 };
 /**
@@ -99582,7 +107841,7 @@ var EmailValidator = (function () {
     return EmailValidator;
 }());
 EmailValidator.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["J" /* Directive */], args: [{
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["t" /* Directive */], args: [{
                 selector: '[email][formControlName],[email][formControl],[email][ngModel]',
                 providers: [EMAIL_VALIDATOR]
             },] },
@@ -99592,7 +107851,7 @@ EmailValidator.decorators = [
  */
 EmailValidator.ctorParameters = function () { return []; };
 EmailValidator.propDecorators = {
-    'email': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["O" /* Input */] },],
+    'email': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["E" /* Input */] },],
 };
 /**
  * Provider which adds {\@link MinLengthValidator} to {\@link NG_VALIDATORS}.
@@ -99603,7 +107862,7 @@ EmailValidator.propDecorators = {
  */
 var MIN_LENGTH_VALIDATOR = {
     provide: NG_VALIDATORS,
-    useExisting: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_0" /* forwardRef */])(function () { return MinLengthValidator; }),
+    useExisting: Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_21" /* forwardRef */])(function () { return MinLengthValidator; }),
     multi: true
 };
 /**
@@ -99647,7 +107906,7 @@ var MinLengthValidator = (function () {
     return MinLengthValidator;
 }());
 MinLengthValidator.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["J" /* Directive */], args: [{
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["t" /* Directive */], args: [{
                 selector: '[minlength][formControlName],[minlength][formControl],[minlength][ngModel]',
                 providers: [MIN_LENGTH_VALIDATOR],
                 host: { '[attr.minlength]': 'minlength ? minlength : null' }
@@ -99658,7 +107917,7 @@ MinLengthValidator.decorators = [
  */
 MinLengthValidator.ctorParameters = function () { return []; };
 MinLengthValidator.propDecorators = {
-    'minlength': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["O" /* Input */] },],
+    'minlength': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["E" /* Input */] },],
 };
 /**
  * Provider which adds {\@link MaxLengthValidator} to {\@link NG_VALIDATORS}.
@@ -99669,7 +107928,7 @@ MinLengthValidator.propDecorators = {
  */
 var MAX_LENGTH_VALIDATOR = {
     provide: NG_VALIDATORS,
-    useExisting: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_0" /* forwardRef */])(function () { return MaxLengthValidator; }),
+    useExisting: Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_21" /* forwardRef */])(function () { return MaxLengthValidator; }),
     multi: true
 };
 /**
@@ -99714,7 +107973,7 @@ var MaxLengthValidator = (function () {
     return MaxLengthValidator;
 }());
 MaxLengthValidator.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["J" /* Directive */], args: [{
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["t" /* Directive */], args: [{
                 selector: '[maxlength][formControlName],[maxlength][formControl],[maxlength][ngModel]',
                 providers: [MAX_LENGTH_VALIDATOR],
                 host: { '[attr.maxlength]': 'maxlength ? maxlength : null' }
@@ -99725,11 +107984,11 @@ MaxLengthValidator.decorators = [
  */
 MaxLengthValidator.ctorParameters = function () { return []; };
 MaxLengthValidator.propDecorators = {
-    'maxlength': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["O" /* Input */] },],
+    'maxlength': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["E" /* Input */] },],
 };
 var PATTERN_VALIDATOR = {
     provide: NG_VALIDATORS,
-    useExisting: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_0" /* forwardRef */])(function () { return PatternValidator; }),
+    useExisting: Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_21" /* forwardRef */])(function () { return PatternValidator; }),
     multi: true
 };
 /**
@@ -99776,7 +108035,7 @@ var PatternValidator = (function () {
     return PatternValidator;
 }());
 PatternValidator.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["J" /* Directive */], args: [{
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["t" /* Directive */], args: [{
                 selector: '[pattern][formControlName],[pattern][formControl],[pattern][ngModel]',
                 providers: [PATTERN_VALIDATOR],
                 host: { '[attr.pattern]': 'pattern ? pattern : null' }
@@ -99787,7 +108046,7 @@ PatternValidator.decorators = [
  */
 PatternValidator.ctorParameters = function () { return []; };
 PatternValidator.propDecorators = {
-    'pattern': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["O" /* Input */] },],
+    'pattern': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["E" /* Input */] },],
 };
 /**
  * @license
@@ -99899,7 +108158,7 @@ var FormBuilder = (function () {
     return FormBuilder;
 }());
 FormBuilder.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["c" /* Injectable */] },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["B" /* Injectable */] },
 ];
 /**
  * @nocollapse
@@ -99920,7 +108179,7 @@ FormBuilder.ctorParameters = function () { return []; };
 /**
  * \@stable
  */
-var VERSION = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["d" /* Version */]('4.3.4');
+var VERSION = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["_12" /* Version */]('4.3.5');
 /**
  * @license
  * Copyright Google Inc. All Rights Reserved.
@@ -99947,7 +108206,7 @@ var NgNoValidate = (function () {
     return NgNoValidate;
 }());
 NgNoValidate.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["J" /* Directive */], args: [{
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["t" /* Directive */], args: [{
                 selector: 'form:not([ngNoForm]):not([ngNativeValidate])',
                 host: { 'novalidate': '' },
             },] },
@@ -99994,7 +108253,7 @@ var InternalFormsSharedModule = (function () {
     return InternalFormsSharedModule;
 }());
 InternalFormsSharedModule.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["b" /* NgModule */], args: [{
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["L" /* NgModule */], args: [{
                 declarations: SHARED_FORM_DIRECTIVES,
                 exports: SHARED_FORM_DIRECTIVES,
             },] },
@@ -100020,7 +108279,7 @@ var FormsModule = (function () {
     return FormsModule;
 }());
 FormsModule.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["b" /* NgModule */], args: [{
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["L" /* NgModule */], args: [{
                 declarations: TEMPLATE_DRIVEN_DIRECTIVES,
                 providers: [RadioControlRegistry],
                 exports: [InternalFormsSharedModule, TEMPLATE_DRIVEN_DIRECTIVES]
@@ -100040,7 +108299,7 @@ var ReactiveFormsModule = (function () {
     return ReactiveFormsModule;
 }());
 ReactiveFormsModule.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["b" /* NgModule */], args: [{
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["L" /* NgModule */], args: [{
                 declarations: [REACTIVE_DRIVEN_DIRECTIVES],
                 providers: [FormBuilder, RadioControlRegistry],
                 exports: [InternalFormsSharedModule, REACTIVE_DRIVEN_DIRECTIVES]
@@ -100093,11 +108352,6 @@ ReactiveFormsModule.ctorParameters = function () { return []; };
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_tslib__ = __webpack_require__("../../../../tslib/tslib.es6.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_Observable__ = __webpack_require__("../../../../rxjs/Observable.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_Observable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_Observable__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_platform_browser__ = __webpack_require__("../../../platform-browser/@angular/platform-browser.es5.js");
 /* unused harmony export BrowserXhr */
 /* unused harmony export JSONPBackend */
 /* unused harmony export JSONPConnection */
@@ -100131,9 +108385,14 @@ ReactiveFormsModule.ctorParameters = function () { return []; };
 /* unused harmony export ɵb */
 /* unused harmony export ɵc */
 /* unused harmony export ɵd */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_tslib__ = __webpack_require__("../../../../tslib/tslib.es6.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_Observable__ = __webpack_require__("../../../../rxjs/Observable.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_Observable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_Observable__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_platform_browser__ = __webpack_require__("../../../platform-browser/@angular/platform-browser.es5.js");
 
 /**
- * @license Angular v4.3.4
+ * @license Angular v4.3.5
  * (c) 2010-2017 Google, Inc. https://angular.io/
  * License: MIT
  */
@@ -100164,7 +108423,7 @@ var BrowserXhr = (function () {
     return BrowserXhr;
 }());
 BrowserXhr.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["c" /* Injectable */] },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["B" /* Injectable */] },
 ];
 /**
  * @nocollapse
@@ -100565,7 +108824,7 @@ var BaseResponseOptions = (function (_super) {
     return BaseResponseOptions;
 }(ResponseOptions));
 BaseResponseOptions.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["c" /* Injectable */] },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["B" /* Injectable */] },
 ];
 /**
  * @nocollapse
@@ -101124,7 +109383,7 @@ var BrowserJsonp = (function () {
     return BrowserJsonp;
 }());
 BrowserJsonp.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["c" /* Injectable */] },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["B" /* Injectable */] },
 ];
 /**
  * @nocollapse
@@ -101281,7 +109540,7 @@ var JSONPBackend_ = (function (_super) {
     return JSONPBackend_;
 }(JSONPBackend));
 JSONPBackend_.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["c" /* Injectable */] },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["B" /* Injectable */] },
 ];
 /**
  * @nocollapse
@@ -101473,7 +109732,7 @@ var CookieXSRFStrategy = (function () {
      * @return {?}
      */
     CookieXSRFStrategy.prototype.configureRequest = function (req) {
-        var /** @type {?} */ xsrfToken = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__angular_platform_browser__["b" /* ɵgetDOM */])().getCookie(this._cookieName);
+        var /** @type {?} */ xsrfToken = Object(__WEBPACK_IMPORTED_MODULE_3__angular_platform_browser__["c" /* ɵgetDOM */])().getCookie(this._cookieName);
         if (xsrfToken) {
             req.headers.set(this._headerName, xsrfToken);
         }
@@ -101528,7 +109787,7 @@ var XHRBackend = (function () {
     return XHRBackend;
 }());
 XHRBackend.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["c" /* Injectable */] },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["B" /* Injectable */] },
 ];
 /**
  * @nocollapse
@@ -101732,7 +109991,7 @@ var BaseRequestOptions = (function (_super) {
     return BaseRequestOptions;
 }(RequestOptions));
 BaseRequestOptions.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["c" /* Injectable */] },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["B" /* Injectable */] },
 ];
 /**
  * @nocollapse
@@ -102116,7 +110375,7 @@ var Http = (function () {
     return Http;
 }());
 Http.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["c" /* Injectable */] },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["B" /* Injectable */] },
 ];
 /**
  * @nocollapse
@@ -102174,7 +110433,7 @@ var Jsonp = (function (_super) {
     return Jsonp;
 }(Http));
 Jsonp.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["c" /* Injectable */] },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["B" /* Injectable */] },
 ];
 /**
  * @nocollapse
@@ -102229,7 +110488,7 @@ var HttpModule = (function () {
     return HttpModule;
 }());
 HttpModule.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["b" /* NgModule */], args: [{
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["L" /* NgModule */], args: [{
                 providers: [
                     // TODO(pascal): use factory type annotations once supported in DI
                     // issue: https://github.com/angular/angular/issues/3183
@@ -102257,7 +110516,7 @@ var JsonpModule = (function () {
     return JsonpModule;
 }());
 JsonpModule.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["b" /* NgModule */], args: [{
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["L" /* NgModule */], args: [{
                 providers: [
                     // TODO(pascal): use factory type annotations once supported in DI
                     // issue: https://github.com/angular/angular/issues/3183
@@ -102288,7 +110547,7 @@ JsonpModule.ctorParameters = function () { return []; };
 /**
  * \@stable
  */
-var VERSION = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["d" /* Version */]('4.3.4');
+var VERSION = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["_12" /* Version */]('4.3.5');
 /**
  * @license
  * Copyright Google Inc. All Rights Reserved.
@@ -102322,19 +110581,19 @@ var VERSION = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["d" /* Version */]
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_tslib__ = __webpack_require__("../../../../tslib/tslib.es6.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_compiler__ = __webpack_require__("../../../compiler/@angular/compiler.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_common__ = __webpack_require__("../../../common/@angular/common.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_platform_browser__ = __webpack_require__("../../../platform-browser/@angular/platform-browser.es5.js");
 /* unused harmony export RESOURCE_CACHE_PROVIDER */
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return platformBrowserDynamic; });
 /* unused harmony export VERSION */
 /* unused harmony export ɵINTERNAL_BROWSER_DYNAMIC_PLATFORM_PROVIDERS */
 /* unused harmony export ɵResourceLoaderImpl */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_tslib__ = __webpack_require__("../../../../tslib/tslib.es6.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_compiler__ = __webpack_require__("../../../compiler/@angular/compiler.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_common__ = __webpack_require__("../../../common/@angular/common.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_platform_browser__ = __webpack_require__("../../../platform-browser/@angular/platform-browser.es5.js");
 
 /**
- * @license Angular v4.3.4
+ * @license Angular v4.3.5
  * (c) 2010-2017 Google, Inc. https://angular.io/
  * License: MIT
  */
@@ -102391,7 +110650,7 @@ var ResourceLoaderImpl = (function (_super) {
     return ResourceLoaderImpl;
 }(__WEBPACK_IMPORTED_MODULE_1__angular_compiler__["a" /* ResourceLoader */]));
 ResourceLoaderImpl.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_2__angular_core__["c" /* Injectable */] },
+    { type: __WEBPACK_IMPORTED_MODULE_2__angular_core__["B" /* Injectable */] },
 ];
 /** @nocollapse */
 ResourceLoaderImpl.ctorParameters = function () { return []; };
@@ -102403,13 +110662,13 @@ ResourceLoaderImpl.ctorParameters = function () { return []; };
  * found in the LICENSE file at https://angular.io/license
  */
 var INTERNAL_BROWSER_DYNAMIC_PLATFORM_PROVIDERS = [
-    __WEBPACK_IMPORTED_MODULE_4__angular_platform_browser__["c" /* ɵINTERNAL_BROWSER_PLATFORM_PROVIDERS */],
+    __WEBPACK_IMPORTED_MODULE_4__angular_platform_browser__["b" /* ɵINTERNAL_BROWSER_PLATFORM_PROVIDERS */],
     {
-        provide: __WEBPACK_IMPORTED_MODULE_2__angular_core__["_8" /* COMPILER_OPTIONS */],
+        provide: __WEBPACK_IMPORTED_MODULE_2__angular_core__["h" /* COMPILER_OPTIONS */],
         useValue: { providers: [{ provide: __WEBPACK_IMPORTED_MODULE_1__angular_compiler__["a" /* ResourceLoader */], useClass: ResourceLoaderImpl }] },
         multi: true
     },
-    { provide: __WEBPACK_IMPORTED_MODULE_2__angular_core__["u" /* PLATFORM_ID */], useValue: __WEBPACK_IMPORTED_MODULE_3__angular_common__["d" /* ɵPLATFORM_BROWSER_ID */] },
+    { provide: __WEBPACK_IMPORTED_MODULE_2__angular_core__["T" /* PLATFORM_ID */], useValue: __WEBPACK_IMPORTED_MODULE_3__angular_common__["d" /* ɵPLATFORM_BROWSER_ID */] },
 ];
 /**
  * @license
@@ -102429,7 +110688,7 @@ var CachedResourceLoader = (function (_super) {
     __WEBPACK_IMPORTED_MODULE_0_tslib__["a" /* __extends */](CachedResourceLoader, _super);
     function CachedResourceLoader() {
         var _this = _super.call(this) || this;
-        _this._cache = __WEBPACK_IMPORTED_MODULE_2__angular_core__["e" /* ɵglobal */].$templateCache;
+        _this._cache = __WEBPACK_IMPORTED_MODULE_2__angular_core__["_48" /* ɵglobal */].$templateCache;
         if (_this._cache == null) {
             throw new Error('CachedResourceLoader: Template cache was not found in $templateCache.');
         }
@@ -102467,7 +110726,7 @@ var CachedResourceLoader = (function (_super) {
 /**
  * @stable
  */
-var VERSION = new __WEBPACK_IMPORTED_MODULE_2__angular_core__["d" /* Version */]('4.3.4');
+var VERSION = new __WEBPACK_IMPORTED_MODULE_2__angular_core__["_12" /* Version */]('4.3.5');
 /**
  * @license
  * Copyright Google Inc. All Rights Reserved.
@@ -102482,7 +110741,7 @@ var RESOURCE_CACHE_PROVIDER = [{ provide: __WEBPACK_IMPORTED_MODULE_1__angular_c
 /**
  * @stable
  */
-var platformBrowserDynamic = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__angular_core__["x" /* createPlatformFactory */])(__WEBPACK_IMPORTED_MODULE_1__angular_compiler__["b" /* platformCoreDynamic */], 'browserDynamic', INTERNAL_BROWSER_DYNAMIC_PLATFORM_PROVIDERS);
+var platformBrowserDynamic = Object(__WEBPACK_IMPORTED_MODULE_2__angular_core__["_19" /* createPlatformFactory */])(__WEBPACK_IMPORTED_MODULE_1__angular_compiler__["b" /* platformCoreDynamic */], 'browserDynamic', INTERNAL_BROWSER_DYNAMIC_PLATFORM_PROVIDERS);
 /**
  * @license
  * Copyright Google Inc. All Rights Reserved.
@@ -102506,9 +110765,6 @@ var platformBrowserDynamic = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_tslib__ = __webpack_require__("../../../../tslib/tslib.es6.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("../../../common/@angular/common.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BrowserModule; });
 /* unused harmony export platformBrowser */
 /* unused harmony export Meta */
@@ -102525,7 +110781,7 @@ var platformBrowserDynamic = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__
 /* unused harmony export DomSanitizer */
 /* unused harmony export VERSION */
 /* unused harmony export ɵBROWSER_SANITIZATION_PROVIDERS */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return INTERNAL_BROWSER_PLATFORM_PROVIDERS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return INTERNAL_BROWSER_PLATFORM_PROVIDERS; });
 /* unused harmony export ɵinitDomAdapter */
 /* unused harmony export ɵBrowserDomAdapter */
 /* unused harmony export ɵBrowserPlatformLocation */
@@ -102533,7 +110789,7 @@ var platformBrowserDynamic = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__
 /* unused harmony export ɵBrowserGetTestability */
 /* unused harmony export ɵELEMENT_PROBE_PROVIDERS */
 /* unused harmony export ɵDomAdapter */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return getDOM; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return getDOM; });
 /* unused harmony export ɵsetRootDomAdapter */
 /* unused harmony export ɵDomRendererFactory2 */
 /* unused harmony export ɵNAMESPACE_URIS */
@@ -102553,9 +110809,12 @@ var platformBrowserDynamic = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__
 /* unused harmony export ɵc */
 /* unused harmony export ɵd */
 /* unused harmony export ɵe */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_tslib__ = __webpack_require__("../../../../tslib/tslib.es6.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("../../../common/@angular/common.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
 
 /**
- * @license Angular v4.3.4
+ * @license Angular v4.3.5
  * (c) 2010-2017 Google, Inc. https://angular.io/
  * License: MIT
  */
@@ -103504,8 +111763,8 @@ var _chromeNumKeyPadMap = {
     '\x90': 'NumLock'
 };
 var nodeContains;
-if (__WEBPACK_IMPORTED_MODULE_2__angular_core__["e" /* ɵglobal */]['Node']) {
-    nodeContains = __WEBPACK_IMPORTED_MODULE_2__angular_core__["e" /* ɵglobal */]['Node'].prototype.contains || function (node) {
+if (__WEBPACK_IMPORTED_MODULE_2__angular_core__["_48" /* ɵglobal */]['Node']) {
+    nodeContains = __WEBPACK_IMPORTED_MODULE_2__angular_core__["_48" /* ɵglobal */]['Node'].prototype.contains || function (node) {
         return !!(this.compareDocumentPosition(node) & 16);
     };
 }
@@ -104302,7 +112561,7 @@ var BrowserDomAdapter = (function (_super) {
      * @param {?} name
      * @return {?}
      */
-    BrowserDomAdapter.prototype.getCookie = function (name) { return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_common__["a" /* ɵparseCookieValue */])(document.cookie, name); };
+    BrowserDomAdapter.prototype.getCookie = function (name) { return Object(__WEBPACK_IMPORTED_MODULE_1__angular_common__["e" /* ɵparseCookieValue */])(document.cookie, name); };
     /**
      * @param {?} name
      * @param {?} value
@@ -104494,13 +112753,13 @@ var BrowserPlatformLocation = (function (_super) {
     return BrowserPlatformLocation;
 }(__WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* PlatformLocation */]));
 BrowserPlatformLocation.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_2__angular_core__["c" /* Injectable */] },
+    { type: __WEBPACK_IMPORTED_MODULE_2__angular_core__["B" /* Injectable */] },
 ];
 /**
  * @nocollapse
  */
 BrowserPlatformLocation.ctorParameters = function () { return [
-    { type: undefined, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_2__angular_core__["f" /* Inject */], args: [DOCUMENT$1,] },] },
+    { type: undefined, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_2__angular_core__["A" /* Inject */], args: [DOCUMENT$1,] },] },
 ]; };
 /**
  * @license
@@ -104650,13 +112909,13 @@ var Meta = (function () {
     return Meta;
 }());
 Meta.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_2__angular_core__["c" /* Injectable */] },
+    { type: __WEBPACK_IMPORTED_MODULE_2__angular_core__["B" /* Injectable */] },
 ];
 /**
  * @nocollapse
  */
 Meta.ctorParameters = function () { return [
-    { type: undefined, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_2__angular_core__["f" /* Inject */], args: [DOCUMENT$1,] },] },
+    { type: undefined, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_2__angular_core__["A" /* Inject */], args: [DOCUMENT$1,] },] },
 ]; };
 /**
  * @license
@@ -104669,7 +112928,7 @@ Meta.ctorParameters = function () { return [
  * An id that identifies a particular application being bootstrapped, that should
  * match across the client/server boundary.
  */
-var TRANSITION_ID = new __WEBPACK_IMPORTED_MODULE_2__angular_core__["g" /* InjectionToken */]('TRANSITION_ID');
+var TRANSITION_ID = new __WEBPACK_IMPORTED_MODULE_2__angular_core__["C" /* InjectionToken */]('TRANSITION_ID');
 /**
  * @param {?} transitionId
  * @param {?} document
@@ -104680,7 +112939,7 @@ function appInitializerFactory(transitionId, document, injector) {
     return function () {
         // Wait for all application initializers to be completed before removing the styles set by
         // the server.
-        injector.get(__WEBPACK_IMPORTED_MODULE_2__angular_core__["h" /* ApplicationInitStatus */]).donePromise.then(function () {
+        injector.get(__WEBPACK_IMPORTED_MODULE_2__angular_core__["d" /* ApplicationInitStatus */]).donePromise.then(function () {
             var /** @type {?} */ dom = getDOM();
             var /** @type {?} */ styles = Array.prototype.slice.apply(dom.querySelectorAll(document, "style[ng-transition]"));
             styles.filter(function (el) { return dom.getAttribute(el, 'ng-transition') === transitionId; })
@@ -104690,9 +112949,9 @@ function appInitializerFactory(transitionId, document, injector) {
 }
 var SERVER_TRANSITION_PROVIDERS = [
     {
-        provide: __WEBPACK_IMPORTED_MODULE_2__angular_core__["i" /* APP_INITIALIZER */],
+        provide: __WEBPACK_IMPORTED_MODULE_2__angular_core__["c" /* APP_INITIALIZER */],
         useFactory: appInitializerFactory,
-        deps: [TRANSITION_ID, DOCUMENT$1, __WEBPACK_IMPORTED_MODULE_2__angular_core__["j" /* Injector */]],
+        deps: [TRANSITION_ID, DOCUMENT$1, __WEBPACK_IMPORTED_MODULE_2__angular_core__["D" /* Injector */]],
         multi: true
     },
 ];
@@ -104709,13 +112968,13 @@ var BrowserGetTestability = (function () {
     /**
      * @return {?}
      */
-    BrowserGetTestability.init = function () { __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__angular_core__["k" /* setTestabilityGetter */])(new BrowserGetTestability()); };
+    BrowserGetTestability.init = function () { Object(__WEBPACK_IMPORTED_MODULE_2__angular_core__["_29" /* setTestabilityGetter */])(new BrowserGetTestability()); };
     /**
      * @param {?} registry
      * @return {?}
      */
     BrowserGetTestability.prototype.addToWindow = function (registry) {
-        __WEBPACK_IMPORTED_MODULE_2__angular_core__["e" /* ɵglobal */]['getAngularTestability'] = function (elem, findInAncestors) {
+        __WEBPACK_IMPORTED_MODULE_2__angular_core__["_48" /* ɵglobal */]['getAngularTestability'] = function (elem, findInAncestors) {
             if (findInAncestors === void 0) { findInAncestors = true; }
             var /** @type {?} */ testability = registry.findTestabilityInTree(elem, findInAncestors);
             if (testability == null) {
@@ -104723,10 +112982,10 @@ var BrowserGetTestability = (function () {
             }
             return testability;
         };
-        __WEBPACK_IMPORTED_MODULE_2__angular_core__["e" /* ɵglobal */]['getAllAngularTestabilities'] = function () { return registry.getAllTestabilities(); };
-        __WEBPACK_IMPORTED_MODULE_2__angular_core__["e" /* ɵglobal */]['getAllAngularRootElements'] = function () { return registry.getAllRootElements(); };
+        __WEBPACK_IMPORTED_MODULE_2__angular_core__["_48" /* ɵglobal */]['getAllAngularTestabilities'] = function () { return registry.getAllTestabilities(); };
+        __WEBPACK_IMPORTED_MODULE_2__angular_core__["_48" /* ɵglobal */]['getAllAngularRootElements'] = function () { return registry.getAllRootElements(); };
         var /** @type {?} */ whenAllStable = function (callback /** TODO #9100 */) {
-            var /** @type {?} */ testabilities = __WEBPACK_IMPORTED_MODULE_2__angular_core__["e" /* ɵglobal */]['getAllAngularTestabilities']();
+            var /** @type {?} */ testabilities = __WEBPACK_IMPORTED_MODULE_2__angular_core__["_48" /* ɵglobal */]['getAllAngularTestabilities']();
             var /** @type {?} */ count = testabilities.length;
             var /** @type {?} */ didWork = false;
             var /** @type {?} */ decrement = function (didWork_ /** TODO #9100 */) {
@@ -104740,10 +112999,10 @@ var BrowserGetTestability = (function () {
                 testability.whenStable(decrement);
             });
         };
-        if (!__WEBPACK_IMPORTED_MODULE_2__angular_core__["e" /* ɵglobal */]['frameworkStabilizers']) {
-            __WEBPACK_IMPORTED_MODULE_2__angular_core__["e" /* ɵglobal */]['frameworkStabilizers'] = [];
+        if (!__WEBPACK_IMPORTED_MODULE_2__angular_core__["_48" /* ɵglobal */]['frameworkStabilizers']) {
+            __WEBPACK_IMPORTED_MODULE_2__angular_core__["_48" /* ɵglobal */]['frameworkStabilizers'] = [];
         }
-        __WEBPACK_IMPORTED_MODULE_2__angular_core__["e" /* ɵglobal */]['frameworkStabilizers'].push(whenAllStable);
+        __WEBPACK_IMPORTED_MODULE_2__angular_core__["_48" /* ɵglobal */]['frameworkStabilizers'].push(whenAllStable);
     };
     /**
      * @param {?} registry
@@ -104807,13 +113066,13 @@ var Title = (function () {
     return Title;
 }());
 Title.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_2__angular_core__["c" /* Injectable */] },
+    { type: __WEBPACK_IMPORTED_MODULE_2__angular_core__["B" /* Injectable */] },
 ];
 /**
  * @nocollapse
  */
 Title.ctorParameters = function () { return [
-    { type: undefined, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_2__angular_core__["f" /* Inject */], args: [DOCUMENT$1,] },] },
+    { type: undefined, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_2__angular_core__["A" /* Inject */], args: [DOCUMENT$1,] },] },
 ]; };
 /**
  * @license
@@ -104840,7 +113099,7 @@ Title.ctorParameters = function () { return [
  */
 function exportNgVar(name, value) {
     if (!ng) {
-        __WEBPACK_IMPORTED_MODULE_2__angular_core__["e" /* ɵglobal */]['ng'] = ng = ((__WEBPACK_IMPORTED_MODULE_2__angular_core__["e" /* ɵglobal */]['ng'])) || {};
+        __WEBPACK_IMPORTED_MODULE_2__angular_core__["_48" /* ɵglobal */]['ng'] = ng = ((__WEBPACK_IMPORTED_MODULE_2__angular_core__["_48" /* ɵglobal */]['ng'])) || {};
     }
     ng[name] = value;
 }
@@ -104853,8 +113112,8 @@ var ng;
  * found in the LICENSE file at https://angular.io/license
  */
 var CORE_TOKENS = {
-    'ApplicationRef': __WEBPACK_IMPORTED_MODULE_2__angular_core__["l" /* ApplicationRef */],
-    'NgZone': __WEBPACK_IMPORTED_MODULE_2__angular_core__["m" /* NgZone */],
+    'ApplicationRef': __WEBPACK_IMPORTED_MODULE_2__angular_core__["f" /* ApplicationRef */],
+    'NgZone': __WEBPACK_IMPORTED_MODULE_2__angular_core__["P" /* NgZone */],
 };
 var INSPECT_GLOBAL_NAME = 'probe';
 var CORE_TOKENS_GLOBAL_NAME = 'coreTokens';
@@ -104866,7 +113125,7 @@ var CORE_TOKENS_GLOBAL_NAME = 'coreTokens';
  * @return {?}
  */
 function inspectNativeElement(element) {
-    return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__angular_core__["n" /* getDebugNode */])(element);
+    return Object(__WEBPACK_IMPORTED_MODULE_2__angular_core__["_22" /* getDebugNode */])(element);
 }
 /**
  * Deprecated. Use the one from '\@angular/core'.
@@ -104906,11 +113165,11 @@ function _ngProbeTokensToMap(tokens) {
  */
 var ELEMENT_PROBE_PROVIDERS = [
     {
-        provide: __WEBPACK_IMPORTED_MODULE_2__angular_core__["i" /* APP_INITIALIZER */],
+        provide: __WEBPACK_IMPORTED_MODULE_2__angular_core__["c" /* APP_INITIALIZER */],
         useFactory: _createNgProbe,
         deps: [
-            [NgProbeToken$1, new __WEBPACK_IMPORTED_MODULE_2__angular_core__["o" /* Optional */]()],
-            [__WEBPACK_IMPORTED_MODULE_2__angular_core__["p" /* NgProbeToken */], new __WEBPACK_IMPORTED_MODULE_2__angular_core__["o" /* Optional */]()],
+            [NgProbeToken$1, new __WEBPACK_IMPORTED_MODULE_2__angular_core__["Q" /* Optional */]()],
+            [__WEBPACK_IMPORTED_MODULE_2__angular_core__["O" /* NgProbeToken */], new __WEBPACK_IMPORTED_MODULE_2__angular_core__["Q" /* Optional */]()],
         ],
         multi: true,
     },
@@ -104925,7 +113184,7 @@ var ELEMENT_PROBE_PROVIDERS = [
 /**
  * \@stable
  */
-var EVENT_MANAGER_PLUGINS = new __WEBPACK_IMPORTED_MODULE_2__angular_core__["g" /* InjectionToken */]('EventManagerPlugins');
+var EVENT_MANAGER_PLUGINS = new __WEBPACK_IMPORTED_MODULE_2__angular_core__["C" /* InjectionToken */]('EventManagerPlugins');
 /**
  * \@stable
  */
@@ -104988,14 +113247,14 @@ var EventManager = (function () {
     return EventManager;
 }());
 EventManager.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_2__angular_core__["c" /* Injectable */] },
+    { type: __WEBPACK_IMPORTED_MODULE_2__angular_core__["B" /* Injectable */] },
 ];
 /**
  * @nocollapse
  */
 EventManager.ctorParameters = function () { return [
-    { type: Array, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_2__angular_core__["f" /* Inject */], args: [EVENT_MANAGER_PLUGINS,] },] },
-    { type: __WEBPACK_IMPORTED_MODULE_2__angular_core__["m" /* NgZone */], },
+    { type: Array, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_2__angular_core__["A" /* Inject */], args: [EVENT_MANAGER_PLUGINS,] },] },
+    { type: __WEBPACK_IMPORTED_MODULE_2__angular_core__["P" /* NgZone */], },
 ]; };
 /**
  * @abstract
@@ -105078,7 +113337,7 @@ var SharedStylesHost = (function () {
     return SharedStylesHost;
 }());
 SharedStylesHost.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_2__angular_core__["c" /* Injectable */] },
+    { type: __WEBPACK_IMPORTED_MODULE_2__angular_core__["B" /* Injectable */] },
 ];
 /**
  * @nocollapse
@@ -105138,13 +113397,13 @@ var DomSharedStylesHost = (function (_super) {
     return DomSharedStylesHost;
 }(SharedStylesHost));
 DomSharedStylesHost.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_2__angular_core__["c" /* Injectable */] },
+    { type: __WEBPACK_IMPORTED_MODULE_2__angular_core__["B" /* Injectable */] },
 ];
 /**
  * @nocollapse
  */
 DomSharedStylesHost.ctorParameters = function () { return [
-    { type: undefined, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_2__angular_core__["f" /* Inject */], args: [DOCUMENT$1,] },] },
+    { type: undefined, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_2__angular_core__["A" /* Inject */], args: [DOCUMENT$1,] },] },
 ]; };
 /**
  * @license
@@ -105233,7 +113492,7 @@ var DomRendererFactory2 = (function () {
             return this.defaultRenderer;
         }
         switch (type.encapsulation) {
-            case __WEBPACK_IMPORTED_MODULE_2__angular_core__["q" /* ViewEncapsulation */].Emulated: {
+            case __WEBPACK_IMPORTED_MODULE_2__angular_core__["_16" /* ViewEncapsulation */].Emulated: {
                 var /** @type {?} */ renderer = this.rendererByCompId.get(type.id);
                 if (!renderer) {
                     renderer =
@@ -105243,7 +113502,7 @@ var DomRendererFactory2 = (function () {
                 ((renderer)).applyToHost(element);
                 return renderer;
             }
-            case __WEBPACK_IMPORTED_MODULE_2__angular_core__["q" /* ViewEncapsulation */].Native:
+            case __WEBPACK_IMPORTED_MODULE_2__angular_core__["_16" /* ViewEncapsulation */].Native:
                 return new ShadowDomRenderer(this.eventManager, this.sharedStylesHost, element, type);
             default: {
                 if (!this.rendererByCompId.has(type.id)) {
@@ -105266,7 +113525,7 @@ var DomRendererFactory2 = (function () {
     return DomRendererFactory2;
 }());
 DomRendererFactory2.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_2__angular_core__["c" /* Injectable */] },
+    { type: __WEBPACK_IMPORTED_MODULE_2__angular_core__["B" /* Injectable */] },
 ];
 /**
  * @nocollapse
@@ -105420,8 +113679,8 @@ var DefaultDomRenderer2 = (function () {
      * @return {?}
      */
     DefaultDomRenderer2.prototype.setStyle = function (el, style, value, flags) {
-        if (flags & __WEBPACK_IMPORTED_MODULE_2__angular_core__["r" /* RendererStyleFlags2 */].DashCase) {
-            el.style.setProperty(style, value, !!(flags & __WEBPACK_IMPORTED_MODULE_2__angular_core__["r" /* RendererStyleFlags2 */].Important) ? 'important' : '');
+        if (flags & __WEBPACK_IMPORTED_MODULE_2__angular_core__["_2" /* RendererStyleFlags2 */].DashCase) {
+            el.style.setProperty(style, value, !!(flags & __WEBPACK_IMPORTED_MODULE_2__angular_core__["_2" /* RendererStyleFlags2 */].Important) ? 'important' : '');
         }
         else {
             el.style[style] = value;
@@ -105434,7 +113693,7 @@ var DefaultDomRenderer2 = (function () {
      * @return {?}
      */
     DefaultDomRenderer2.prototype.removeStyle = function (el, style, flags) {
-        if (flags & __WEBPACK_IMPORTED_MODULE_2__angular_core__["r" /* RendererStyleFlags2 */].DashCase) {
+        if (flags & __WEBPACK_IMPORTED_MODULE_2__angular_core__["_2" /* RendererStyleFlags2 */].DashCase) {
             el.style.removeProperty(style);
         }
         else {
@@ -105617,13 +113876,13 @@ var DomEventsPlugin = (function (_super) {
     return DomEventsPlugin;
 }(EventManagerPlugin));
 DomEventsPlugin.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_2__angular_core__["c" /* Injectable */] },
+    { type: __WEBPACK_IMPORTED_MODULE_2__angular_core__["B" /* Injectable */] },
 ];
 /**
  * @nocollapse
  */
 DomEventsPlugin.ctorParameters = function () { return [
-    { type: undefined, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_2__angular_core__["f" /* Inject */], args: [DOCUMENT$1,] },] },
+    { type: undefined, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_2__angular_core__["A" /* Inject */], args: [DOCUMENT$1,] },] },
 ]; };
 /**
  * @license
@@ -105675,7 +113934,7 @@ var EVENT_NAMES = {
  *
  * \@experimental
  */
-var HAMMER_GESTURE_CONFIG = new __WEBPACK_IMPORTED_MODULE_2__angular_core__["g" /* InjectionToken */]('HammerGestureConfig');
+var HAMMER_GESTURE_CONFIG = new __WEBPACK_IMPORTED_MODULE_2__angular_core__["C" /* InjectionToken */]('HammerGestureConfig');
 /**
  * \@experimental
  */
@@ -105700,7 +113959,7 @@ var HammerGestureConfig = (function () {
     return HammerGestureConfig;
 }());
 HammerGestureConfig.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_2__angular_core__["c" /* Injectable */] },
+    { type: __WEBPACK_IMPORTED_MODULE_2__angular_core__["B" /* Injectable */] },
 ];
 /**
  * @nocollapse
@@ -105758,14 +114017,14 @@ var HammerGesturesPlugin = (function (_super) {
     return HammerGesturesPlugin;
 }(EventManagerPlugin));
 HammerGesturesPlugin.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_2__angular_core__["c" /* Injectable */] },
+    { type: __WEBPACK_IMPORTED_MODULE_2__angular_core__["B" /* Injectable */] },
 ];
 /**
  * @nocollapse
  */
 HammerGesturesPlugin.ctorParameters = function () { return [
-    { type: undefined, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_2__angular_core__["f" /* Inject */], args: [DOCUMENT$1,] },] },
-    { type: HammerGestureConfig, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_2__angular_core__["f" /* Inject */], args: [HAMMER_GESTURE_CONFIG,] },] },
+    { type: undefined, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_2__angular_core__["A" /* Inject */], args: [DOCUMENT$1,] },] },
+    { type: HammerGestureConfig, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_2__angular_core__["A" /* Inject */], args: [HAMMER_GESTURE_CONFIG,] },] },
 ]; };
 /**
  * @license
@@ -105894,13 +114153,13 @@ var KeyEventsPlugin = (function (_super) {
     return KeyEventsPlugin;
 }(EventManagerPlugin));
 KeyEventsPlugin.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_2__angular_core__["c" /* Injectable */] },
+    { type: __WEBPACK_IMPORTED_MODULE_2__angular_core__["B" /* Injectable */] },
 ];
 /**
  * @nocollapse
  */
 KeyEventsPlugin.ctorParameters = function () { return [
-    { type: undefined, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_2__angular_core__["f" /* Inject */], args: [DOCUMENT$1,] },] },
+    { type: undefined, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_2__angular_core__["A" /* Inject */], args: [DOCUMENT$1,] },] },
 ]; };
 /**
  * @license
@@ -105948,7 +114207,7 @@ function sanitizeUrl(url) {
     url = String(url);
     if (url.match(SAFE_URL_PATTERN) || url.match(DATA_URL_PATTERN))
         return url;
-    if (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__angular_core__["s" /* isDevMode */])()) {
+    if (Object(__WEBPACK_IMPORTED_MODULE_2__angular_core__["_24" /* isDevMode */])()) {
         getDOM().log("WARNING: sanitizing unsafe URL value " + url + " (see http://g.co/ng/security#xss)");
     }
     return 'unsafe:' + url;
@@ -106257,7 +114516,7 @@ function sanitizeHtml(defaultDoc, unsafeHtmlInput) {
             var child = _a[_i];
             DOM.removeChild(parent, child);
         }
-        if (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__angular_core__["s" /* isDevMode */])() && sanitizer.sanitizedSomething) {
+        if (Object(__WEBPACK_IMPORTED_MODULE_2__angular_core__["_24" /* isDevMode */])() && sanitizer.sanitizedSomething) {
             DOM.log('WARNING: sanitizing HTML stripped some content (see http://g.co/ng/security#xss).');
         }
         return safeHtml;
@@ -106358,7 +114617,7 @@ function sanitizeStyle(value) {
         value.match(SAFE_STYLE_VALUE) && hasBalancedQuotes(value)) {
         return value; // Safe style values.
     }
-    if (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__angular_core__["s" /* isDevMode */])()) {
+    if (Object(__WEBPACK_IMPORTED_MODULE_2__angular_core__["_24" /* isDevMode */])()) {
         getDOM().log("WARNING: sanitizing unsafe style value " + value + " (see http://g.co/ng/security#xss).");
     }
     return 'unsafe';
@@ -106493,31 +114752,31 @@ var DomSanitizerImpl = (function (_super) {
         if (value == null)
             return null;
         switch (ctx) {
-            case __WEBPACK_IMPORTED_MODULE_2__angular_core__["t" /* SecurityContext */].NONE:
+            case __WEBPACK_IMPORTED_MODULE_2__angular_core__["_4" /* SecurityContext */].NONE:
                 return (value);
-            case __WEBPACK_IMPORTED_MODULE_2__angular_core__["t" /* SecurityContext */].HTML:
+            case __WEBPACK_IMPORTED_MODULE_2__angular_core__["_4" /* SecurityContext */].HTML:
                 if (value instanceof SafeHtmlImpl)
                     return value.changingThisBreaksApplicationSecurity;
                 this.checkNotSafeValue(value, 'HTML');
                 return sanitizeHtml(this._doc, String(value));
-            case __WEBPACK_IMPORTED_MODULE_2__angular_core__["t" /* SecurityContext */].STYLE:
+            case __WEBPACK_IMPORTED_MODULE_2__angular_core__["_4" /* SecurityContext */].STYLE:
                 if (value instanceof SafeStyleImpl)
                     return value.changingThisBreaksApplicationSecurity;
                 this.checkNotSafeValue(value, 'Style');
                 return sanitizeStyle(/** @type {?} */ (value));
-            case __WEBPACK_IMPORTED_MODULE_2__angular_core__["t" /* SecurityContext */].SCRIPT:
+            case __WEBPACK_IMPORTED_MODULE_2__angular_core__["_4" /* SecurityContext */].SCRIPT:
                 if (value instanceof SafeScriptImpl)
                     return value.changingThisBreaksApplicationSecurity;
                 this.checkNotSafeValue(value, 'Script');
                 throw new Error('unsafe value used in a script context');
-            case __WEBPACK_IMPORTED_MODULE_2__angular_core__["t" /* SecurityContext */].URL:
+            case __WEBPACK_IMPORTED_MODULE_2__angular_core__["_4" /* SecurityContext */].URL:
                 if (value instanceof SafeResourceUrlImpl || value instanceof SafeUrlImpl) {
                     // Allow resource URLs in URL contexts, they are strictly more trusted.
                     return value.changingThisBreaksApplicationSecurity;
                 }
                 this.checkNotSafeValue(value, 'URL');
                 return sanitizeUrl(String(value));
-            case __WEBPACK_IMPORTED_MODULE_2__angular_core__["t" /* SecurityContext */].RESOURCE_URL:
+            case __WEBPACK_IMPORTED_MODULE_2__angular_core__["_4" /* SecurityContext */].RESOURCE_URL:
                 if (value instanceof SafeResourceUrlImpl) {
                     return value.changingThisBreaksApplicationSecurity;
                 }
@@ -106568,13 +114827,13 @@ var DomSanitizerImpl = (function (_super) {
     return DomSanitizerImpl;
 }(DomSanitizer));
 DomSanitizerImpl.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_2__angular_core__["c" /* Injectable */] },
+    { type: __WEBPACK_IMPORTED_MODULE_2__angular_core__["B" /* Injectable */] },
 ];
 /**
  * @nocollapse
  */
 DomSanitizerImpl.ctorParameters = function () { return [
-    { type: undefined, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_2__angular_core__["f" /* Inject */], args: [DOCUMENT$1,] },] },
+    { type: undefined, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_2__angular_core__["A" /* Inject */], args: [DOCUMENT$1,] },] },
 ]; };
 /**
  * @abstract
@@ -106664,8 +114923,8 @@ var SafeResourceUrlImpl = (function (_super) {
  * found in the LICENSE file at https://angular.io/license
  */
 var INTERNAL_BROWSER_PLATFORM_PROVIDERS = [
-    { provide: __WEBPACK_IMPORTED_MODULE_2__angular_core__["u" /* PLATFORM_ID */], useValue: __WEBPACK_IMPORTED_MODULE_1__angular_common__["d" /* ɵPLATFORM_BROWSER_ID */] },
-    { provide: __WEBPACK_IMPORTED_MODULE_2__angular_core__["v" /* PLATFORM_INITIALIZER */], useValue: initDomAdapter, multi: true },
+    { provide: __WEBPACK_IMPORTED_MODULE_2__angular_core__["T" /* PLATFORM_ID */], useValue: __WEBPACK_IMPORTED_MODULE_1__angular_common__["d" /* ɵPLATFORM_BROWSER_ID */] },
+    { provide: __WEBPACK_IMPORTED_MODULE_2__angular_core__["U" /* PLATFORM_INITIALIZER */], useValue: initDomAdapter, multi: true },
     { provide: __WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* PlatformLocation */], useClass: BrowserPlatformLocation },
     { provide: DOCUMENT$1, useFactory: _document, deps: [] },
 ];
@@ -106676,13 +114935,13 @@ var INTERNAL_BROWSER_PLATFORM_PROVIDERS = [
  * \@experimental
  */
 var BROWSER_SANITIZATION_PROVIDERS = [
-    { provide: __WEBPACK_IMPORTED_MODULE_2__angular_core__["w" /* Sanitizer */], useExisting: DomSanitizer },
+    { provide: __WEBPACK_IMPORTED_MODULE_2__angular_core__["_3" /* Sanitizer */], useExisting: DomSanitizer },
     { provide: DomSanitizer, useClass: DomSanitizerImpl },
 ];
 /**
  * \@stable
  */
-var platformBrowser = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__angular_core__["x" /* createPlatformFactory */])(__WEBPACK_IMPORTED_MODULE_2__angular_core__["y" /* platformCore */], 'browser', INTERNAL_BROWSER_PLATFORM_PROVIDERS);
+var platformBrowser = Object(__WEBPACK_IMPORTED_MODULE_2__angular_core__["_19" /* createPlatformFactory */])(__WEBPACK_IMPORTED_MODULE_2__angular_core__["_26" /* platformCore */], 'browser', INTERNAL_BROWSER_PLATFORM_PROVIDERS);
 /**
  * @return {?}
  */
@@ -106694,7 +114953,7 @@ function initDomAdapter() {
  * @return {?}
  */
 function errorHandler() {
-    return new __WEBPACK_IMPORTED_MODULE_2__angular_core__["z" /* ErrorHandler */]();
+    return new __WEBPACK_IMPORTED_MODULE_2__angular_core__["v" /* ErrorHandler */]();
 }
 /**
  * @return {?}
@@ -106729,8 +114988,8 @@ var BrowserModule = (function () {
         return {
             ngModule: BrowserModule,
             providers: [
-                { provide: __WEBPACK_IMPORTED_MODULE_2__angular_core__["A" /* APP_ID */], useValue: params.appId },
-                { provide: TRANSITION_ID, useExisting: __WEBPACK_IMPORTED_MODULE_2__angular_core__["A" /* APP_ID */] },
+                { provide: __WEBPACK_IMPORTED_MODULE_2__angular_core__["b" /* APP_ID */], useValue: params.appId },
+                { provide: TRANSITION_ID, useExisting: __WEBPACK_IMPORTED_MODULE_2__angular_core__["b" /* APP_ID */] },
                 SERVER_TRANSITION_PROVIDERS,
             ],
         };
@@ -106738,32 +114997,32 @@ var BrowserModule = (function () {
     return BrowserModule;
 }());
 BrowserModule.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_2__angular_core__["b" /* NgModule */], args: [{
+    { type: __WEBPACK_IMPORTED_MODULE_2__angular_core__["L" /* NgModule */], args: [{
                 providers: [
                     BROWSER_SANITIZATION_PROVIDERS,
-                    { provide: __WEBPACK_IMPORTED_MODULE_2__angular_core__["z" /* ErrorHandler */], useFactory: errorHandler, deps: [] },
+                    { provide: __WEBPACK_IMPORTED_MODULE_2__angular_core__["v" /* ErrorHandler */], useFactory: errorHandler, deps: [] },
                     { provide: EVENT_MANAGER_PLUGINS, useClass: DomEventsPlugin, multi: true },
                     { provide: EVENT_MANAGER_PLUGINS, useClass: KeyEventsPlugin, multi: true },
                     { provide: EVENT_MANAGER_PLUGINS, useClass: HammerGesturesPlugin, multi: true },
                     { provide: HAMMER_GESTURE_CONFIG, useClass: HammerGestureConfig },
                     DomRendererFactory2,
-                    { provide: __WEBPACK_IMPORTED_MODULE_2__angular_core__["B" /* RendererFactory2 */], useExisting: DomRendererFactory2 },
+                    { provide: __WEBPACK_IMPORTED_MODULE_2__angular_core__["_1" /* RendererFactory2 */], useExisting: DomRendererFactory2 },
                     { provide: SharedStylesHost, useExisting: DomSharedStylesHost },
                     DomSharedStylesHost,
-                    __WEBPACK_IMPORTED_MODULE_2__angular_core__["C" /* Testability */],
+                    __WEBPACK_IMPORTED_MODULE_2__angular_core__["_10" /* Testability */],
                     EventManager,
                     ELEMENT_PROBE_PROVIDERS,
                     Meta,
                     Title,
                 ],
-                exports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["e" /* CommonModule */], __WEBPACK_IMPORTED_MODULE_2__angular_core__["D" /* ApplicationModule */]]
+                exports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["a" /* CommonModule */], __WEBPACK_IMPORTED_MODULE_2__angular_core__["e" /* ApplicationModule */]]
             },] },
 ];
 /**
  * @nocollapse
  */
 BrowserModule.ctorParameters = function () { return [
-    { type: BrowserModule, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_2__angular_core__["o" /* Optional */] }, { type: __WEBPACK_IMPORTED_MODULE_2__angular_core__["E" /* SkipSelf */] },] },
+    { type: BrowserModule, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_2__angular_core__["Q" /* Optional */] }, { type: __WEBPACK_IMPORTED_MODULE_2__angular_core__["_6" /* SkipSelf */] },] },
 ]; };
 /**
  * @license
@@ -106800,7 +115059,7 @@ var AngularProfiler = (function () {
      * @param {?} ref
      */
     function AngularProfiler(ref) {
-        this.appRef = ref.injector.get(__WEBPACK_IMPORTED_MODULE_2__angular_core__["l" /* ApplicationRef */]);
+        this.appRef = ref.injector.get(__WEBPACK_IMPORTED_MODULE_2__angular_core__["f" /* ApplicationRef */]);
     }
     /**
      * Exercises change detection in a loop and then prints the average amount of
@@ -106962,7 +115221,7 @@ var By = (function () {
 /**
  * \@stable
  */
-var VERSION = new __WEBPACK_IMPORTED_MODULE_2__angular_core__["d" /* Version */]('4.3.4');
+var VERSION = new __WEBPACK_IMPORTED_MODULE_2__angular_core__["_12" /* Version */]('4.3.5');
 /**
  * @license
  * Copyright Google Inc. All Rights Reserved.
