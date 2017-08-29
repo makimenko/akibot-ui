@@ -4,8 +4,8 @@ AkiBot Web-based User Interface project was generated with [Angular CLI](https:/
 
 Server part: [akibot-server](https://github.com/makimenko/akibot-server)
 
-## Demo
-https://makimenko.github.io/akibot-ui
+## Sample
+![UI Example](https://raw.githubusercontent.com/makimenko/akibot-doc/master/img/UI_Sample1.png "UI Example")
 
 ## Pre-Installation
 1. Install [Git](https://git-scm.com)
@@ -23,3 +23,4 @@ cd akibot-ui
 npm install
 ng serve
 ```
+

@@ -33,6 +33,14 @@ export class GridHandler {
 
     constructor(private worldHandler: WorldHandler) {
         this.logger.debug("constructor");
+
+        this.onGridUpdateEvent = this.onGridUpdateEvent.bind(this);
+        this.worldHandler.sceneComponent.webSocketService.events.on(common.GridUpdateEvent.name, this.onGridUpdateEvent);
+    }
+
+    private onGridUpdateEvent(gridUpdateEvent: common.GridUpdateEvent) {
+        this.logger.trace("onGridUpdateEvent");
+        this.updateMatrix(gridUpdateEvent.data);
     }
 
     public addGrid(gridNode: common.GridNode) {
@@ -53,9 +61,14 @@ export class GridHandler {
         this.gridObject3d = new THREE.Object3D;
         this.gridObject3d.scale.set(this.globalScale, this.globalScale, this.globalScale);
         this.worldHandler.worldObject3d.add(this.gridObject3d);
-        
+
     }
 
+    private updateMatrix(data: number[][]): void {
+        this.logger.trace("Removing grid data");
+        this.gridObject3d.remove(this.gridObject3d.children[0]);
+        this.addMatrix(data);
+    }
 
     private addMatrix(data: number[][]): void {
         this.logger.trace("addMatrix");
@@ -64,74 +77,73 @@ export class GridHandler {
 
         var dataGeometry = new THREE.BufferGeometry();
         var arraySize = cellsCount * this.xyzCoordinatesCount * this.cellPointCount;
-        var positions = new Float32Array(arraySize);
-        var colors = new Float32Array(arraySize);
+        var matrixPositions = new Float32Array(arraySize);
+        var matrixColors = new Float32Array(arraySize);
         var color: THREE.Color;
 
         var ip = 0;
         var ic = 0;
         var z = 0;
-        var r, g, b;
 
         this.logger.trace("Loop - Number of cells: " + cellsCount);
         for (var x = 0; x < data.length; x++) {
             for (var y = 0; y < data[x].length; y++) {
                 // Square has 2 triangles:
                 // Triangle 1:
-                positions[ip++] = x
+                matrixPositions[ip++] = x
                     * this.gridConfiguration.cellSizeMm
                     + this.gap;
-                positions[ip++] = y
+                matrixPositions[ip++] = y
                     * this.gridConfiguration.cellSizeMm
                     + this.gap;
-                positions[ip++] = z;
+                matrixPositions[ip++] = z;
 
-                positions[ip++] = x
+                matrixPositions[ip++] = x
                     * this.gridConfiguration.cellSizeMm
                     + this.gap;
-                positions[ip++] = y
+                matrixPositions[ip++] = y
                     * this.gridConfiguration.cellSizeMm
                     + this.gridConfiguration.cellSizeMm
                     - this.gap;
-                positions[ip++] = z;
+                matrixPositions[ip++] = z;
 
-                positions[ip++] = x
+                matrixPositions[ip++] = x
                     * this.gridConfiguration.cellSizeMm
                     + this.gridConfiguration.cellSizeMm
                     - this.gap;
-                positions[ip++] = y
+                matrixPositions[ip++] = y
                     * this.gridConfiguration.cellSizeMm
                     + this.gridConfiguration.cellSizeMm
                     - this.gap;
-                positions[ip++] = z;
+                matrixPositions[ip++] = z;
 
                 // Triangle 2:
-                positions[ip++] = x
+                matrixPositions[ip++] = x
                     * this.gridConfiguration.cellSizeMm
                     + this.gridConfiguration.cellSizeMm
                     - this.gap;
-                positions[ip++] = y
+                matrixPositions[ip++] = y
                     * this.gridConfiguration.cellSizeMm
                     + (this.gridConfiguration.cellSizeMm)
                     - this.gap;
-                positions[ip++] = z;
+                matrixPositions[ip++] = z;
 
-                positions[ip++] = x
+                matrixPositions[ip++] = x
                     * this.gridConfiguration.cellSizeMm
                     + this.gridConfiguration.cellSizeMm
                     - this.gap;
-                positions[ip++] = y
+                matrixPositions[ip++] = y
                     * this.gridConfiguration.cellSizeMm
                     + this.gap;
-                positions[ip++] = z;
+                matrixPositions[ip++] = z;
 
-                positions[ip++] = x
+                matrixPositions[ip++] = x
                     * this.gridConfiguration.cellSizeMm
                     + this.gap;
-                positions[ip++] = y
+                matrixPositions[ip++] = y
                     * this.gridConfiguration.cellSizeMm
                     + this.gap;
-                positions[ip++] = z;
+                matrixPositions[ip++] = z;
 
                 // Set color
                 if (data[x][y] > 0) {
@@ -143,16 +155,16 @@ export class GridHandler {
                 }
 
                 for (var d = 0; d < this.cellPointCount; d++) {
-                    colors[ic++] = color.r;
-                    colors[ic++] = color.g;
-                    colors[ic++] = color.b;
+                    matrixColors[ic++] = color.r;
+                    matrixColors[ic++] = color.g;
+                    matrixColors[ic++] = color.b;
                 }
             }
         }
 
         this.logger.trace("Setting attributes");
-        dataGeometry.addAttribute('position', new THREE.BufferAttribute(positions, 3));
-        dataGeometry.addAttribute('color', new THREE.BufferAttribute(colors, 3));
+        dataGeometry.addAttribute('position', new THREE.BufferAttribute(matrixPositions, 3));
+        dataGeometry.addAttribute('color', new THREE.BufferAttribute(matrixColors, 3));
 
         // Creating Mesh and adding to Scene:
         var dataGroup = new THREE.Mesh(dataGeometry, this.material);
