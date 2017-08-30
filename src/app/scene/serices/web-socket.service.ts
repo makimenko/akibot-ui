@@ -12,7 +12,7 @@ export class WebSocketService {
     public events: EventEmitter;
 
     // TODO: Mage connectionString configurable
-    private connectionString: string = "ws://localhost:3000";
+    private connectionString: string = "ws://raspberrypi:3000";
 
     constructor() {
         this.logger.info("constructor");
@@ -42,7 +42,7 @@ export class WebSocketService {
     }
 
     public onMessage(msg: MessageEvent) {
-        this.logger.debug("onMessage: " + msg.data);
+        this.logger.trace("onMessage: " + msg.data);
         var message: common.Message = common.SerializationUtils.deserialize(common.SerializationUtils.jsonParse(msg.data), common);
         this.events.emit(message.$name, message);
     }
