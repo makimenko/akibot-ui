@@ -12,7 +12,7 @@ export class WebSocketService {
     public events: EventEmitter;
 
     // TODO: Mage connectionString configurable
-    private connectionString: string = "ws://raspberrypi:3000";
+    private connectionString: string = "ws://localhost:3000";
 
     constructor() {
         this.logger.info("constructor");

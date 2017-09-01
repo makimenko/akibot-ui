@@ -23,6 +23,9 @@ export class GridHandler {
     private emptyColor = new THREE.Color(0 / 255, 200 / 255, 0 / 255);
     private unknownColor = new THREE.Color(250 / 255, 250 / 255, 250 / 255);
 
+    private matrixColors: Float32Array;
+    private dataGeometry: THREE.BufferGeometry;
+
     private material = new THREE.MeshBasicMaterial({
         side: THREE.DoubleSide,
         vertexColors: THREE.VertexColors,
@@ -64,10 +67,40 @@ export class GridHandler {
 
     }
 
-    private updateMatrix(data: number[][]): void {
+    private updateMatrix(newData: number[][]): void {
         this.logger.trace("Removing grid data");
-        this.gridObject3d.remove(this.gridObject3d.children[0]);
-        this.addMatrix(data);
+        //this.gridObject3d.remove(this.gridObject3d.children[0]);
+        //this.addMatrix(data);
+        var color: THREE.Color;
+        var ic = 0;
+        var totalUpdates = 0;
+        for (var x = 0; x < newData.length; x++) {
+            for (var y = 0; y < newData[x].length; y++) {
+                if (newData[x][y] != this.gridNode.data[x][y]) {
+                    if (newData[x][y] > 0) {
+                        color = this.obstacleColor;
+                    } else if (newData[x][y] == 0) {
+                        color = this.emptyColor;
+                    } else {
+                        color = this.unknownColor;
+                    }
+                    for (var d = 0; d < this.cellPointCount; d++) {
+                        this.matrixColors[ic+0] = color.r;
+                        this.matrixColors[ic+1] = color.g;
+                        this.matrixColors[ic+2] = color.b;
+                        ic += 3;
+                    }
+                    totalUpdates ++;
+                } else {
+                    ic +=  this.cellPointCount*3;
+                }
+            }
+        }
+        this.gridNode.data = newData;
+        this.dataGeometry.attributes['color'].needsUpdate = true;
+        this.worldHandler.sceneComponent.render();
+        this.logger.trace("totalUpdates="+totalUpdates);
+
     }
 
     private addMatrix(data: number[][]): void {
@@ -75,10 +108,10 @@ export class GridHandler {
 
         var cellsCount = this.gridNode.data.length * data[0].length;
 
-        var dataGeometry = new THREE.BufferGeometry();
+        this.dataGeometry = new THREE.BufferGeometry();
         var arraySize = cellsCount * this.xyzCoordinatesCount * this.cellPointCount;
         var matrixPositions = new Float32Array(arraySize);
-        var matrixColors = new Float32Array(arraySize);
+        this.matrixColors = new Float32Array(arraySize);
         var color: THREE.Color;
 
         var ip = 0;
@@ -155,22 +188,22 @@ export class GridHandler {
                 }
 
                 for (var d = 0; d < this.cellPointCount; d++) {
-                    matrixColors[ic++] = color.r;
-                    matrixColors[ic++] = color.g;
-                    matrixColors[ic++] = color.b;
+                    this.matrixColors[ic++] = color.r;
+                    this.matrixColors[ic++] = color.g;
+                    this.matrixColors[ic++] = color.b;
                 }
             }
         }
 
         this.logger.trace("Setting attributes");
-        dataGeometry.addAttribute('position', new THREE.BufferAttribute(matrixPositions, 3));
-        dataGeometry.addAttribute('color', new THREE.BufferAttribute(matrixColors, 3));
+        this.dataGeometry.addAttribute('position', new THREE.BufferAttribute(matrixPositions, 3));
+        this.dataGeometry.addAttribute('color', new THREE.BufferAttribute(this.matrixColors, 3));
 
         // Creating Mesh and adding to Scene:
-        var dataGroup = new THREE.Mesh(dataGeometry, this.material);
+        var dataGroup = new THREE.Mesh(this.dataGeometry, this.material);
 
-        dataGeometry.computeBoundingBox();
-        dataGeometry.computeVertexNormals();
+        this.dataGeometry.computeBoundingBox();
+        this.dataGeometry.computeVertexNormals();
 
         var offsetVector = this.gridConfiguration.offsetVector;
         dataGroup.position.set(
