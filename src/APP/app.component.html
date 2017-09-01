@@ -1,1 +1,26 @@
-<scene></scene>
+<md-toolbar color="primary">
+    <button md-icon-button [mdMenuTriggerFor]="menu">
+        <md-icon class="fa fa-clock-o" aria-hidden="true"></md-icon>
+    </button>
+    <md-menu #menu="mdMenu">
+        <button md-menu-item>
+            <md-icon class="fa fa-clock-o"></md-icon>
+            <span>Redial</span>
+        </button>
+        <button md-menu-item disabled>
+            <md-icon class="fa fa-clock-o"></md-icon>
+            <span>Check voicemail</span>
+        </button>
+        <button md-menu-item>
+            <md-icon class="fa fa-clock-o"></md-icon>
+            <span>Disable alerts</span>
+        </button>
+    </md-menu>
+</md-toolbar>
+
+<md-sidenav-container>
+    <md-sidenav mode="side" opened="true">Drawer content</md-sidenav>
+    <div class="my-content">
+        <scene></scene>
+    </div>
+</md-sidenav-container>
