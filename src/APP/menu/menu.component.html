@@ -1,0 +1,30 @@
+<md-toolbar color="primary">
+    <button md-button (click)="onSideNavToggle()">
+        <span class="{{getChosenSideNavIcon()}}"></span>
+    </button>
+    <button md-button [mdMenuTriggerFor]="menu">
+        <span>Request</span>        
+    </button>
+    <md-menu #menu="mdMenu">
+        <button md-menu-item>
+            <span>World Content Request</span>
+        </button>
+    </md-menu>
+
+    <span class="example-spacer"></span>
+    ok
+
+</md-toolbar>
+
+<md-sidenav-container>
+    <md-sidenav mode="over" opened="{{sideNavOpened}}" (close)="onCloseSideNav()">
+        <md-button-toggle-group [(ngModel)]="chosenSideNav" vertical>
+            <md-button-toggle *ngFor="let item of sideNavItems" value="{{item.value}}">
+                <span class="{{item.icon}}"></span>
+            </md-button-toggle>
+        </md-button-toggle-group>
+    </md-sidenav>
+    <div class="my-content">
+        <scene></scene>
+    </div>
+</md-sidenav-container>

@@ -8,13 +8,15 @@ import { AppComponent } from './app.component';
 import { SceneComponent } from "./scene/scene.component";
 import { WebSocketService } from "./scene/serices/web-socket.service";
 import { Material2Module } from "./material2.module";
+import { MenuComponent } from "./menu/menu.component";
 
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    SceneComponent
+    SceneComponent,
+    MenuComponent
   ],
   imports: [
     BrowserModule,

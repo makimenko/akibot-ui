@@ -43,7 +43,8 @@ export class GridHandler {
 
     private onGridUpdateEvent(gridUpdateEvent: common.GridUpdateEvent) {
         this.logger.trace("onGridUpdateEvent");
-        this.updateMatrix(gridUpdateEvent.data);
+        if (this.worldHandler.worldNode.gridNode.data != undefined)
+            this.updateMatrix(gridUpdateEvent.data);
     }
 
     public addGrid(gridNode: common.GridNode) {
@@ -85,21 +86,21 @@ export class GridHandler {
                         color = this.unknownColor;
                     }
                     for (var d = 0; d < this.cellPointCount; d++) {
-                        this.matrixColors[ic+0] = color.r;
-                        this.matrixColors[ic+1] = color.g;
-                        this.matrixColors[ic+2] = color.b;
+                        this.matrixColors[ic + 0] = color.r;
+                        this.matrixColors[ic + 1] = color.g;
+                        this.matrixColors[ic + 2] = color.b;
                         ic += 3;
                     }
-                    totalUpdates ++;
+                    totalUpdates++;
                 } else {
-                    ic +=  this.cellPointCount*3;
+                    ic += this.cellPointCount * 3;
                 }
             }
         }
         this.gridNode.data = newData;
         this.dataGeometry.attributes['color'].needsUpdate = true;
         this.worldHandler.sceneComponent.render();
-        this.logger.trace("totalUpdates="+totalUpdates);
+        this.logger.trace("totalUpdates=" + totalUpdates);
 
     }
 
