@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { WebSocketService } from "../scene/serices/web-socket.service";
+import { logFactory } from "../log-config";
+import * as common from 'akibot-common/dist';
 
 export interface ISideNavItem {
     value: string;
@@ -11,6 +14,7 @@ export interface ISideNavItem {
 })
 export class MenuComponent implements OnInit {
 
+    private logger = logFactory.getLogger(this.constructor.name);
     public sideNavOpened: boolean = false;
     public chosenSideNav: string = "orientation";
 
@@ -25,7 +29,9 @@ export class MenuComponent implements OnInit {
         }
     ];
 
-    constructor() { }
+    constructor(public webSocketService: WebSocketService) {
+        this.logger.debug("constructor");
+    }
 
     public ngOnInit() { }
 
@@ -45,6 +51,12 @@ export class MenuComponent implements OnInit {
             }
         });
         return res;
+    }
+
+    public onGyroscopeCalibrationRequest() {
+        this.logger.debug("onGyroscopeCalibrationRequest");
+        var gyroscopeCalibrationRequest = new common.GyroscopeCalibrationRequest(60000, 100);
+        this.webSocketService.send(gyroscopeCalibrationRequest);
     }
 
 }

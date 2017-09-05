@@ -43,7 +43,7 @@ export class GridHandler {
 
     private onGridUpdateEvent(gridUpdateEvent: common.GridUpdateEvent) {
         this.logger.trace("onGridUpdateEvent");
-        if (this.worldHandler.worldNode.gridNode.data != undefined)
+        if (this.worldHandler.worldNode != undefined)
             this.updateMatrix(gridUpdateEvent.data);
     }
 
