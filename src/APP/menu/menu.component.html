@@ -1,6 +1,8 @@
 <md-toolbar color="primary">
     <button md-button (click)="onSideNavToggle()">
-        <span class="{{getChosenSideNavIcon()}}"></span>
+        <md-icon>
+            <span class="{{getChosenSideNavIcon()}}"></span>
+        </md-icon>
     </button>
     <button md-button [mdMenuTriggerFor]="menu">
         <span>Request</span>        
@@ -14,16 +16,18 @@
         </button>
     </md-menu>
 
-    <span class="example-spacer"></span>
-    ?
+    <span class="example-spacer"></span> ?
 
 </md-toolbar>
 
 <md-sidenav-container>
     <md-sidenav mode="over" opened="{{sideNavOpened}}" (close)="onCloseSideNav()">
+        Action:
         <md-button-toggle-group [(ngModel)]="chosenSideNav" vertical>
             <md-button-toggle *ngFor="let item of sideNavItems" value="{{item.value}}">
+                <md-icon>
                 <span class="{{item.icon}}"></span>
+                </md-icon>
             </md-button-toggle>
         </md-button-toggle-group>
     </md-sidenav>
