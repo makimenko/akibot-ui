@@ -11,7 +11,7 @@ export class WebSocketService {
     private ws: WebSocket;
     public events: EventEmitter;
 
-    // TODO: Mage connectionString configurable
+    // TODO: Mage connectionString configurable: raspberrypi/localhost
     private connectionString: string = "ws://localhost:3000";
 
     constructor() {
