@@ -1,6 +1,6 @@
 <md-sidenav-container>
   <md-sidenav mode="over" opened="{{sideNavigationService.sideNavOpened}}" (close)="onCloseSideNav()">
-    Action:
+    <br/>
     <md-button-toggle-group [(ngModel)]="sideNavigationService.chosenSideNav" vertical>
       <md-button-toggle *ngFor="let item of sideNavigationService.sideNavItems" value="{{item.value}}">
         <md-icon>

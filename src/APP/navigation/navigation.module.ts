@@ -12,6 +12,7 @@ import { SceneModule } from "../scene/scene.module";
 import { SceneComponent } from "../scene/scene.component";
 import { FormsModule } from "@angular/forms";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { GyroscopeCalibrationRequestDialog } from "./dialog/gyroscope-calibration-request-dialog";
 
 @NgModule({
   imports: [
@@ -24,12 +25,16 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
     MenuComponent,
     PageComponent,
     SideNavComponent,
-    ToolbarComponent
+    ToolbarComponent,
+    GyroscopeCalibrationRequestDialog
   ],
   providers: [
     WebSocketService,
     MenuActionsService,
     SideNavigationService
+  ],
+  entryComponents: [
+    GyroscopeCalibrationRequestDialog
   ],
   exports: [
     PageComponent

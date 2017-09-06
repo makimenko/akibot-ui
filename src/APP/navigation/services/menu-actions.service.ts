@@ -9,16 +9,10 @@ export class MenuActionsService {
 
   private logger = logFactory.getLogger(this.constructor.name);
 
-  constructor(public webSocketService: WebSocketService) {
+  constructor() {
     this.logger.debug("constructor");
   }
 
-  public onGyroscopeCalibrationRequest() {
-    this.logger.debug("onGyroscopeCalibrationRequest");
-    
-    // TODO: Show dialog
-    var gyroscopeCalibrationRequest = new common.GyroscopeCalibrationRequest(10000, 100);
-    this.webSocketService.send(gyroscopeCalibrationRequest);
-  }
+
 
 }

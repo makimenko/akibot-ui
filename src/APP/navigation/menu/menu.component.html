@@ -5,13 +5,14 @@
 </button>
 
 <button md-button [mdMenuTriggerFor]="menu">
-   <span>Request</span>        
+  <span> Request</span>
 </button>
+
 <md-menu #menu="mdMenu">
   <button md-menu-item>
     <span>WorldContentRequest</span>
   </button>
-  <button md-menu-item (click)="menuActionsService.onGyroscopeCalibrationRequest()">
+  <button md-menu-item (click)="menuGyroscopeCalibrationRequest()">
     <span>GyroscopeCalibrationRequest</span>
   </button>
 </md-menu>
