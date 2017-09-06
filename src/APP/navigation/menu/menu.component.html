@@ -1,18 +1,39 @@
-<button md-button (click)="onSideNavToggle()">
+<button md-raised-button color="accent" (click)="onSideNavToggle()">
   <md-icon>
-    <span class="{{sideNavigationService.getChosenSideNavIcon()}}"></span>
+    <span class="{{sideNavigationService.getChosenToggleCommand()}}"></span>
   </md-icon>
 </button>
 
-<button md-button [mdMenuTriggerFor]="menu">
-  <span> Request</span>
+<button md-raised-button color="primary" [mdMenuTriggerFor]="menuRequest">
+  <span>Request</span>
 </button>
 
-<md-menu #menu="mdMenu">
+<md-menu #menuRequest="mdMenu">
   <button md-menu-item>
+    <md-icon><span class="fa fa-globe"></span></md-icon>
     <span>WorldContentRequest</span>
   </button>
   <button md-menu-item (click)="menuGyroscopeCalibrationRequest()">
+    <md-icon><span class="fa fa-compass"></span></md-icon>
     <span>GyroscopeCalibrationRequest</span>
   </button>
+</md-menu>
+
+
+<button md-raised-button color="primary" [mdMenuTriggerFor]="menuView">
+  <span>View</span>
+</button>
+
+<md-menu #menuView="mdMenu">
+
+  <button md-menu-item>
+    <md-icon><span class="fa fa-video-camera"></span></md-icon>
+    <span>Reset Camera</span>
+  </button>
+
+  <button md-menu-item (click)="menuConfigureView()">
+   <md-icon><span class="fa fa-sliders"></span></md-icon>
+    <span>Configure View</span>
+  </button>
+
 </md-menu>

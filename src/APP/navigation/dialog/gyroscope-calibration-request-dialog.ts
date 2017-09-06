@@ -2,7 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { MdDialog, MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
 
 
-export interface IGyroscopeCalibrationRequest {
+export interface IDialogGyroscopeCalibrationRequest {
   maxTimeMs: 10000,
   intervalMs: 100
 }
@@ -16,7 +16,7 @@ export interface IGyroscopeCalibrationRequest {
       <input mdInput tabindex="1" [(ngModel)]="data.maxTimeMs" placeholder="Calibration time (ms)">
     </md-form-field>
     <md-form-field>
-      <input mdInput tabindex="2" [(ngModel)]="data.intervalMs" placeholder="Gyroscope value retrieval interval (ms)">
+      <input mdInput tabindex="2" [(ngModel)]="data.intervalMs" placeholder="Interval (ms)">
     </md-form-field>
     </div>
     <div md-dialog-actions>
@@ -29,7 +29,7 @@ export class GyroscopeCalibrationRequestDialog {
 
   constructor(
     public dialogRef: MdDialogRef<GyroscopeCalibrationRequestDialog>,
-    @Inject(MD_DIALOG_DATA) public data: any) { }
+    @Inject(MD_DIALOG_DATA) public data: IDialogGyroscopeCalibrationRequest) { }
 
 
 }

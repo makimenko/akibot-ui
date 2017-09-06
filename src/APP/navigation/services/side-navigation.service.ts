@@ -12,9 +12,9 @@ export class SideNavigationService {
   private logger = logFactory.getLogger(this.constructor.name);
 
   public sideNavOpened: boolean = false;
-  public chosenSideNav: string = "orientation";
+  public chosenToggleCommand: string = "orientation";
 
-  public sideNavItems: ISideNavItem[] = [
+  public toggleCommandList: ISideNavItem[] = [
     {
       value: "orientation",
       icon: "fa fa-eye"
@@ -29,10 +29,10 @@ export class SideNavigationService {
     this.logger.debug("constructor");
   }
 
-  public getChosenSideNavIcon(): string {
+  public getChosenToggleCommand(): string {
     var res: string;
-    this.sideNavItems.forEach(element => {
-      if (element.value == this.chosenSideNav) {
+    this.toggleCommandList.forEach(element => {
+      if (element.value == this.chosenToggleCommand) {
         res = element.icon;
       }
     });

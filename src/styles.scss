@@ -4,10 +4,15 @@
     font-size: $size;
     height: $size;
     width: $size;
-    transform: translate(0%,-10%);
-  }
-  
+}
+
 .material-icons.mat-icon {
-    @include md-icon-size(30px);
+    @include md-icon-size(24px);
+    transform: translate(0%,-30%);
+}
+
+button > .material-icons.mat-icon {
+    @include md-icon-size(18px);
+    transform: translate(0%,-90%);
 }
 

@@ -166,7 +166,7 @@ export class SceneComponent implements AfterViewInit {
         this.render();
     }
 
-    @HostListener('document:keypress', ['$event'])
+    
     public onKeyPress(event: KeyboardEvent) {
         this.logger.debug("onKeyPress: " + event.key);
         switch (event.key) {
