@@ -2,7 +2,7 @@ import { AfterViewInit, Component, ElementRef, Input, ViewChild, HostListener } 
 import { logFactory } from "../log-config";
 import * as HELPERS from './helpers';
 import * as THREE from 'three';
-import { WebSocketService } from "./serices/web-socket.service";
+import { WebSocketService } from "./services/web-socket.service";
 import "three/examples/js/controls/OrbitControls";
 import { WorldHandler } from "./handlers/world-handler";
 

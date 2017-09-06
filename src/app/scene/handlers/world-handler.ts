@@ -2,7 +2,7 @@ import { EventEmitter } from "events";
 import * as THREE from 'three';
 import { logFactory } from "../../log-config";
 import * as common from "akibot-common/dist";
-import { WebSocketService } from "../serices/web-socket.service";
+import { WebSocketService } from "../services/web-socket.service";
 import { SceneComponent } from "../scene.component";
 import { RobotHandler } from "./robot-handler";
 import { GridHandler } from "./grid-handler";

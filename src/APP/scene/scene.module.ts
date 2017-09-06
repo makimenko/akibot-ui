@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SceneComponent } from "./scene.component";
+import { WebSocketService } from "./services/web-socket.service";
 
 
 @NgModule({
@@ -11,7 +12,7 @@ import { SceneComponent } from "./scene.component";
     SceneComponent
   ],
   providers: [
-
+    WebSocketService
   ],
   exports: [
     SceneComponent

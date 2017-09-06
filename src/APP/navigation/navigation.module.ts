@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { WebSocketService } from "../scene/serices/web-socket.service";
+import { WebSocketService } from "../scene/services/web-socket.service";
 import { MenuComponent } from "./menu/menu.component";
 import { PageComponent } from "./page/page.component";
 import { SideNavComponent } from "./sidenav/sidenav.component";
