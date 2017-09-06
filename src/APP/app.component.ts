@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import "./js/ActivateThree";
+import "./scene/js/ActivateThree";
 
 @Component({
   selector: 'app-root',

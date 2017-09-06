@@ -6,8 +6,9 @@ import { WebSocketService } from "./serices/web-socket.service";
 import "three/examples/js/controls/OrbitControls";
 import { WorldHandler } from "./handlers/world-handler";
 
+
 @Component({
-    selector: 'scene',
+    selector: 'app-scene',
     templateUrl: './scene.component.html',
     styleUrls: ['./scene.component.scss']
 })

@@ -1,0 +1,17 @@
+<button md-button (click)="onSideNavToggle()">
+  <md-icon>
+    <span class="{{sideNavigationService.getChosenSideNavIcon()}}"></span>
+  </md-icon>
+</button>
+
+<button md-button [mdMenuTriggerFor]="menu">
+   <span>Request</span>        
+</button>
+<md-menu #menu="mdMenu">
+  <button md-menu-item>
+    <span>WorldContentRequest</span>
+  </button>
+  <button md-menu-item (click)="menuActionsService.onGyroscopeCalibrationRequest()">
+    <span>GyroscopeCalibrationRequest</span>
+  </button>
+</md-menu>

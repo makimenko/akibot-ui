@@ -33,6 +33,7 @@ import {
   MdToolbarModule,
   MdTooltipModule,
 } from '@angular/material';
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
 
 
@@ -69,7 +70,7 @@ import {
     MdTableModule,
     MdTabsModule,
     MdToolbarModule,
-    MdTooltipModule,
+    MdTooltipModule
   ]
 })
 export class Material2Module {}

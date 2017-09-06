@@ -2,30 +2,27 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppComponent } from './app.component';
-import { SceneComponent } from "./scene/scene.component";
-import { WebSocketService } from "./scene/serices/web-socket.service";
-import { Material2Module } from "./material2.module";
-import { MenuComponent } from "./menu/menu.component";
 
-
+import { Material2Module } from "./design/material2.module";
+import { NavigationModule } from "./navigation/navigation.module";
+import { SceneModule } from "./scene/scene.module";
 
 @NgModule({
   declarations: [
-    AppComponent,
-    SceneComponent,
-    MenuComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,
-    FormsModule,
     HttpModule,
     BrowserAnimationsModule,
-    Material2Module
+    Material2Module,
+    SceneModule,
+    NavigationModule
   ],
-  providers: [WebSocketService],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
