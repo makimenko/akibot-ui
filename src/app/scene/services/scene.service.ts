@@ -21,8 +21,8 @@ export class SceneService {
   private nearClippingPane: number = 1;
   private farClippingPane: number = 2000;
 
-  private gridHelper: HELPERS.GridHelperObject;
-  private axisHelper: HELPERS.AxisHelperObject;
+  public gridHelper: HELPERS.GridHelperObject;
+  public axisHelper: HELPERS.AxisHelperObject;
   private controls: THREE.OrbitControls;
 
   constructor() {
