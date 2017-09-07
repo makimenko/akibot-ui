@@ -256,7 +256,7 @@ var ConfigureViewDialog = (function () {
 /***/ "../../../../../src/app/navigation/dialog/gyroscope-calibration-request-dialog.html":
 /***/ (function(module, exports) {
 
-module.exports = "<h1 md-dialog-title>Gyroscope Calibration</h1>\r\n<div md-dialog-content>\r\n    <p>Please define request parameters</p>\r\n    <md-form-field>\r\n        <input mdInput tabindex=\"1\" [(ngModel)]=\"data.maxTimeMs\" placeholder=\"Calibration time (ms)\">\r\n    </md-form-field>\r\n    <md-form-field>\r\n        <input mdInput tabindex=\"2\" [(ngModel)]=\"data.intervalMs\" placeholder=\"Interval (ms)\">\r\n    </md-form-field>\r\n</div>\r\n<div md-dialog-actions>\r\n    <button md-button [md-dialog-close]=\"data\" tabindex=\"3\">Send</button>\r\n    <button md-button (click)=\"this.dialogRef.close()\" tabindex=\"-1\">Cancel</button>\r\n</div>"
+module.exports = "<h1 md-dialog-title>Gyroscope Calibration</h1>\r\n<div md-dialog-content>\r\n    <p>Please define request parameters</p>\r\n    <md-form-field>\r\n        <input mdInput tabindex=\"1\" required [(ngModel)]=\"data.maxTimeMs\" placeholder=\"Calibration time (ms)\">\r\n    </md-form-field>\r\n    <md-form-field>\r\n        <input mdInput tabindex=\"2\" required [(ngModel)]=\"data.intervalMs\" placeholder=\"Interval (ms)\">\r\n    </md-form-field>\r\n</div>\r\n<div md-dialog-actions>\r\n    <button md-button [md-dialog-close]=\"data\" tabindex=\"3\">Send</button>\r\n    <button md-button (click)=\"this.dialogRef.close()\" tabindex=\"-1\">Cancel</button>\r\n</div>"
 
 /***/ }),
 
@@ -305,7 +305,7 @@ var GyroscopeCalibrationRequestDialog = (function () {
 /***/ "../../../../../src/app/navigation/menu/menu.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<button md-raised-button color=\"accent\" (click)=\"onSideNavToggle()\">\n  <md-icon>\n    <span class=\"{{sideNavigationService.getChosenToggleCommand()}}\"></span>\n  </md-icon>\n</button>\n\n<button md-raised-button color=\"primary\" [mdMenuTriggerFor]=\"menuRequest\">\n  <span>Request</span>\n</button>\n\n<md-menu #menuRequest=\"mdMenu\">\n  <button md-menu-item (click)=\"menuWorldContentRequest()\">\n    <md-icon><span class=\"fa fa-globe\"></span></md-icon>\n    <span>WorldContentRequest</span>\n  </button>\n  <button md-menu-item (click)=\"menuGyroscopeCalibrationRequest()\">\n    <md-icon><span class=\"fa fa-compass\"></span></md-icon>\n    <span>GyroscopeCalibrationRequest</span>\n  </button>\n</md-menu>\n\n\n<button md-raised-button color=\"primary\" [mdMenuTriggerFor]=\"menuView\">\n  <span>View</span>\n</button>\n\n<md-menu #menuView=\"mdMenu\">\n\n  <button md-menu-item>\n    <md-icon><span class=\"fa fa-video-camera\"></span></md-icon>\n    <span>Reset Camera</span>\n  </button>\n\n  <button md-menu-item (click)=\"menuConfigureView()\">\n   <md-icon><span class=\"fa fa-sliders\"></span></md-icon>\n    <span>Configure View</span>\n  </button>\n\n</md-menu>"
+module.exports = "<button md-raised-button color=\"accent\" (click)=\"onSideNavToggle()\">\n  <md-icon>\n    <span class=\"{{sideNavigationService.getChosenToggleCommand()}}\"></span>\n  </md-icon>\n</button>\n\n<button md-raised-button color=\"primary\" [mdMenuTriggerFor]=\"menuRequest\">\n  <span>Request</span>\n</button>\n\n<md-menu #menuRequest=\"mdMenu\">\n  <button md-menu-item (click)=\"menuWorldContentRequest()\">\n    <md-icon><span class=\"fa fa-globe\"></span></md-icon>\n    <span>WorldContentRequest</span>\n  </button>\n  <button md-menu-item (click)=\"menuGyroscopeCalibrationRequest()\">\n    <md-icon><span class=\"fa fa-compass\"></span></md-icon>\n    <span>GyroscopeCalibrationRequest</span>\n  </button>\n</md-menu>\n\n\n<button md-raised-button color=\"primary\" [mdMenuTriggerFor]=\"menuView\">\n  <span>View</span>\n</button>\n\n<md-menu #menuView=\"mdMenu\">\n\n  <button md-menu-item  (click)=\"cameraService.defaultPosition()\">\n    <md-icon><span class=\"fa fa-video-camera\"></span></md-icon>\n    <span>Reset Camera</span>\n  </button>\n\n  <button md-menu-item (click)=\"menuConfigureView()\">\n   <md-icon><span class=\"fa fa-sliders\"></span></md-icon>\n    <span>Configure View</span>\n  </button>\n\n</md-menu>"
 
 /***/ }),
 
@@ -341,6 +341,7 @@ module.exports = module.exports.toString();
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_akibot_common_dist__ = __webpack_require__("../../../../akibot-common/dist/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_akibot_common_dist___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_akibot_common_dist__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__dialog_configure_view_dialog__ = __webpack_require__("../../../../../src/app/navigation/dialog/configure-view-dialog.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__scene_services_camera_service__ = __webpack_require__("../../../../../src/app/scene/services/camera.service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -358,12 +359,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var MenuComponent = (function () {
-    function MenuComponent(menuActionsService, sideNavigationService, dialog, webSocketService) {
+    function MenuComponent(dialog, menuActionsService, sideNavigationService, webSocketService, cameraService) {
+        this.dialog = dialog;
         this.menuActionsService = menuActionsService;
         this.sideNavigationService = sideNavigationService;
-        this.dialog = dialog;
         this.webSocketService = webSocketService;
+        this.cameraService = cameraService;
     }
     MenuComponent.prototype.onSideNavToggle = function () {
         this.sideNavigationService.sideNavOpened = !this.sideNavigationService.sideNavOpened;
@@ -400,10 +403,10 @@ var MenuComponent = (function () {
             template: __webpack_require__("../../../../../src/app/navigation/menu/menu.component.html"),
             styles: [__webpack_require__("../../../../../src/app/navigation/menu/menu.component.scss")]
         }),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__services_menu_actions_service__["a" /* MenuActionsService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__services_menu_actions_service__["a" /* MenuActionsService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__services_side_navigation_service__["a" /* SideNavigationService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_side_navigation_service__["a" /* SideNavigationService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__angular_material__["j" /* MdDialog */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__angular_material__["j" /* MdDialog */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_5__scene_services_web_socket_service__["a" /* WebSocketService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__scene_services_web_socket_service__["a" /* WebSocketService */]) === "function" && _d || Object])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_3__angular_material__["j" /* MdDialog */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__angular_material__["j" /* MdDialog */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__services_menu_actions_service__["a" /* MenuActionsService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__services_menu_actions_service__["a" /* MenuActionsService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__services_side_navigation_service__["a" /* SideNavigationService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_side_navigation_service__["a" /* SideNavigationService */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_5__scene_services_web_socket_service__["a" /* WebSocketService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__scene_services_web_socket_service__["a" /* WebSocketService */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_8__scene_services_camera_service__["a" /* CameraService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_8__scene_services_camera_service__["a" /* CameraService */]) === "function" && _e || Object])
     ], MenuComponent);
     return MenuComponent;
-    var _a, _b, _c, _d;
+    var _a, _b, _c, _d, _e;
 }());
 
 //# sourceMappingURL=menu.component.js.map
@@ -1008,12 +1011,14 @@ var SceneComponent = (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__services_grid_handler_service__ = __webpack_require__("../../../../../src/app/scene/services/grid-handler.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__services_response_handler_service__ = __webpack_require__("../../../../../src/app/scene/services/response-handler.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__services_connection_status_service__ = __webpack_require__("../../../../../src/app/scene/services/connection-status.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__services_camera_service__ = __webpack_require__("../../../../../src/app/scene/services/camera.service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -1044,7 +1049,8 @@ var SceneModule = (function () {
                 __WEBPACK_IMPORTED_MODULE_7__services_robot_handler_service__["a" /* RobotHandlerService */],
                 __WEBPACK_IMPORTED_MODULE_6__services_world_handler_service__["a" /* WorldHandlerService */],
                 __WEBPACK_IMPORTED_MODULE_9__services_response_handler_service__["a" /* ResponseHandlerService */],
-                __WEBPACK_IMPORTED_MODULE_10__services_connection_status_service__["a" /* ConnectionStatusService */]
+                __WEBPACK_IMPORTED_MODULE_10__services_connection_status_service__["a" /* ConnectionStatusService */],
+                __WEBPACK_IMPORTED_MODULE_11__services_camera_service__["a" /* CameraService */]
             ],
             exports: [
                 __WEBPACK_IMPORTED_MODULE_2__scene_component__["a" /* SceneComponent */]
@@ -1055,6 +1061,69 @@ var SceneModule = (function () {
 }());
 
 //# sourceMappingURL=scene.module.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/scene/services/camera.service.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CameraService; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_three__ = __webpack_require__("../../../../three/build/three.module.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__log_config__ = __webpack_require__("../../../../../src/app/log-config.ts");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var CameraService = (function () {
+    function CameraService() {
+        this.logger = __WEBPACK_IMPORTED_MODULE_2__log_config__["a" /* logFactory */].getLogger(this.constructor.name);
+        this.fieldOfView = 60;
+        this.nearClippingPane = 1;
+        this.farClippingPane = 2000;
+        this.logger.debug("constructor");
+    }
+    CameraService.prototype.createCamera = function (aspectRatio) {
+        this.logger.debug("Create camera");
+        this.camera = new __WEBPACK_IMPORTED_MODULE_1_three__["PerspectiveCamera"](this.fieldOfView, aspectRatio, this.nearClippingPane, this.farClippingPane);
+        this.camera.up = new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"](0, 0, 1);
+        this.cameraTarget = new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"](0, 0, 0);
+        this.camera.lookAt(this.cameraTarget);
+        this.defaultPosition();
+    };
+    CameraService.prototype.defaultPosition = function () {
+        this.logger.debug("Move camera to default position");
+        // Set position
+        this.camera.position.x = -50;
+        this.camera.position.y = -200;
+        this.camera.position.z = 200;
+        this.cameraTarget.set(0, 0, 0);
+        if (this.controls != undefined) {
+            this.controls.update();
+            // actually reset()  is enough... but will keep code above for future
+            this.controls.reset();
+        }
+    };
+    CameraService.prototype.bindControls = function (controls) {
+        this.controls = controls;
+    };
+    CameraService = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["B" /* Injectable */])(),
+        __metadata("design:paramtypes", [])
+    ], CameraService);
+    return CameraService;
+}());
+
+//# sourceMappingURL=camera.service.js.map
 
 /***/ }),
 
@@ -1536,6 +1605,7 @@ var SceneConfigurationService = (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__helpers__ = __webpack_require__("../../../../../src/app/scene/helpers/index.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_three__ = __webpack_require__("../../../../three/build/three.module.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__log_config__ = __webpack_require__("../../../../../src/app/log-config.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__camera_service__ = __webpack_require__("../../../../../src/app/scene/services/camera.service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1549,12 +1619,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var SceneService = (function () {
-    function SceneService() {
+    function SceneService(cameraService) {
+        this.cameraService = cameraService;
         this.logger = __WEBPACK_IMPORTED_MODULE_3__log_config__["a" /* logFactory */].getLogger(this.constructor.name);
-        this.fieldOfView = 60;
-        this.nearClippingPane = 1;
-        this.farClippingPane = 2000;
+        this.logger.debug("constructor");
         this.render = this.render.bind(this);
     }
     SceneService.prototype.createScene = function () {
@@ -1576,24 +1646,13 @@ var SceneService = (function () {
         light.position.set(0, 0, -100);
         this.scene.add(light);
     };
-    SceneService.prototype.createCamera = function () {
-        this.logger.debug("Create camera");
-        var aspectRatio = this.sceneComponent.getAspectRatio();
-        this.camera = new __WEBPACK_IMPORTED_MODULE_2_three__["PerspectiveCamera"](this.fieldOfView, aspectRatio, this.nearClippingPane, this.farClippingPane);
-        // Set position and look at
-        this.camera.position.x = -50;
-        this.camera.position.y = -200;
-        this.camera.position.z = 200;
-        this.camera.up = new __WEBPACK_IMPORTED_MODULE_2_three__["Vector3"](0, 0, 1);
-        this.cameraTarget = new __WEBPACK_IMPORTED_MODULE_2_three__["Vector3"](0, 0, 0);
-        this.camera.lookAt(this.cameraTarget);
-    };
     SceneService.prototype.createControls = function () {
         this.logger.debug("Create controls");
-        this.controls = new __WEBPACK_IMPORTED_MODULE_2_three__["OrbitControls"](this.camera);
+        this.controls = new __WEBPACK_IMPORTED_MODULE_2_three__["OrbitControls"](this.cameraService.camera);
         this.controls.rotateSpeed = 1.0;
         this.controls.zoomSpeed = 1.2;
         this.controls.addEventListener('change', this.render);
+        this.cameraService.bindControls(this.controls);
     };
     SceneService.prototype.createRenderer = function () {
         this.logger.debug("Create and start renderer");
@@ -1617,24 +1676,25 @@ var SceneService = (function () {
         this.sceneComponent = sceneComponent;
         this.createScene();
         this.createLight();
-        this.createCamera();
+        this.cameraService.createCamera(this.sceneComponent.getAspectRatio());
         this.createControls();
         this.createRenderer();
     };
     SceneService.prototype.render = function () {
-        this.renderer.render(this.scene, this.camera);
+        this.renderer.render(this.scene, this.cameraService.camera);
     };
     SceneService.prototype.onResize = function () {
-        this.camera.aspect = this.sceneComponent.getAspectRatio();
-        this.camera.updateProjectionMatrix();
+        this.cameraService.camera.aspect = this.sceneComponent.getAspectRatio();
+        this.cameraService.camera.updateProjectionMatrix();
         this.renderer.setSize(this.sceneComponent.canvas.clientWidth, this.sceneComponent.canvas.clientHeight);
         this.render();
     };
     SceneService = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["B" /* Injectable */])(),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_4__camera_service__["a" /* CameraService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__camera_service__["a" /* CameraService */]) === "function" && _a || Object])
     ], SceneService);
     return SceneService;
+    var _a;
 }());
 
 //# sourceMappingURL=scene.service.js.map
