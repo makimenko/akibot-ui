@@ -57,6 +57,11 @@ export class WebSocketService {
         this.ws.close();        
     }
 
+    public onOpen(event: Event): any {
+        this.logger.debug("onOpen");
+        this.events.emit("onopen", event);
+        this.connectionStatusService.connected = true;
+    }
 
     public onClose(event: CloseEvent): any {
         this.logger.warn("WebSocket closed");
@@ -72,12 +77,6 @@ export class WebSocketService {
             this.events.emit("onerror", event);
             this.connectionStatusService.connected = false;
         }
-    }
-
-    public onOpen(event: Event): any {
-        this.logger.debug("onOpen");
-        this.events.emit("onopen", event);
-        this.connectionStatusService.connected = true;
     }
 
     public onMessage(msg: MessageEvent) {

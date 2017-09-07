@@ -32,7 +32,10 @@ export class WorldHandlerService {
     public addWorldNode(worldNode: common.WorldNode) {
         this.logger.debug("addWorldNode");
         if (this.worldNode != undefined) {
-            this.logger.error("TODO: scene clean");
+            this.logger.debug("Cleanup schene");
+            // remove world node and all childs from WebGL scene
+            this.sceneService.scene.remove(this.worldObject3d);
+            this.sceneService.render();
         }
         this.worldNode = worldNode;
 
@@ -40,5 +43,6 @@ export class WorldHandlerService {
         this.worldObject3d = new THREE.Object3D();
         this.sceneService.scene.add(this.worldObject3d);
     }
+
 
 }

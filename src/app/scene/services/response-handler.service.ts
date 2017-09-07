@@ -37,27 +37,23 @@ export class ResponseHandlerService {
   }
 
   private onOpen(event: Event): any {
-    this.logger.debug("onOpen");
+    this.logger.debug("onOpen: Requesting world content");
     this.worldHandlerService.requestWorldContent();
   }
 
   private onWorldContentResponse(worldContentResponse: common.WorldContentResponse) {
     this.logger.debug("onWorldContentResponse");
 
-    if (this.worldHandlerService.worldNode != undefined) {
-      this.logger.warn("skipping WorldContentResponse because already exists");
-      // TODO: reload
-    } else {
-      this.worldHandlerService.addWorldNode(worldContentResponse.worldNode);
-      this.gridHandlerService.addGrid(worldContentResponse.worldNode.gridNode);
-      this.robotHandlerService.addRobot(worldContentResponse.worldNode.robotNode);
-    }
+    //if (this.worldHandlerService.worldNode != undefined) {
+    this.worldHandlerService.addWorldNode(worldContentResponse.worldNode);
+    this.gridHandlerService.addGrid(worldContentResponse.worldNode.gridNode);
+    this.robotHandlerService.addRobot(worldContentResponse.worldNode.robotNode);
 
     this.sceneService.render();
   }
 
-  private onGyroscopeCalibrationResponse(gyroscopeCalibrationResponse : common.GyroscopeCalibrationResponse) {
-    this.logger.debug("onGyroscopeCalibrationResponse: "+JSON.stringify(gyroscopeCalibrationResponse));
+  private onGyroscopeCalibrationResponse(gyroscopeCalibrationResponse: common.GyroscopeCalibrationResponse) {
+    this.logger.debug("onGyroscopeCalibrationResponse: " + JSON.stringify(gyroscopeCalibrationResponse));
 
   }
 

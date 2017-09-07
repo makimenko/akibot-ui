@@ -14,17 +14,15 @@ export class ToolbarComponent implements OnInit {
     public connectionStatusService: ConnectionStatusService,
     private webSocketService: WebSocketService) { }
 
-  ngOnInit() {
+  public ngOnInit() {
   }
 
-  onConnectionChange(event: MdSlideToggleChange) {
-    console.log("onConnectionChange: " + event.checked);
+  public onConnectionChange(event: MdSlideToggleChange) {
     if (event.checked) {
       this.webSocketService.connect();
     } else {
       this.webSocketService.disconnect();
     }
-
   }
 
 }
