@@ -1,7 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MdDialog, MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
 
-
 export interface IDialogGyroscopeCalibrationRequest {
   maxTimeMs: 10000,
   intervalMs: 100

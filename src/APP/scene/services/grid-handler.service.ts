@@ -1,11 +1,14 @@
+import { Injectable } from "@angular/core";
 import { logFactory } from "../../log-config";
-import { SceneComponent } from "../scene.component";
 import * as common from "akibot-common/dist";
 import * as THREE from 'three';
-import { WorldHandler } from "./world-handler";
+import { WorldHandlerService } from "./world-handler.service";
+import { WebSocketService } from "./web-socket.service";
+import { SceneService } from "./scene.service";
 
 
-export class GridHandler {
+@Injectable()
+export class GridHandlerService {
 
     private logger = logFactory.getLogger(this.constructor.name);
 
@@ -34,16 +37,20 @@ export class GridHandler {
         shading: THREE.FlatShading
     });
 
-    constructor(private worldHandler: WorldHandler) {
+    constructor(
+        private webSocketService : WebSocketService,
+        private worldHandlerService: WorldHandlerService,
+        private sceneService :SceneService
+        ) {
         this.logger.debug("constructor");
 
         this.onGridUpdateEvent = this.onGridUpdateEvent.bind(this);
-        this.worldHandler.sceneComponent.webSocketService.events.on(common.GridUpdateEvent.name, this.onGridUpdateEvent);
+        this.webSocketService.events.on(common.GridUpdateEvent.name, this.onGridUpdateEvent);
     }
 
     private onGridUpdateEvent(gridUpdateEvent: common.GridUpdateEvent) {
         this.logger.trace("onGridUpdateEvent");
-        if (this.worldHandler.worldNode != undefined)
+        if (this.worldHandlerService.worldNode != undefined)
             this.updateMatrix(gridUpdateEvent.data);
     }
 
@@ -64,7 +71,7 @@ export class GridHandler {
         this.gridConfiguration = gridConfiguration;
         this.gridObject3d = new THREE.Object3D;
         this.gridObject3d.scale.set(this.globalScale, this.globalScale, this.globalScale);
-        this.worldHandler.worldObject3d.add(this.gridObject3d);
+        this.worldHandlerService.worldObject3d.add(this.gridObject3d);
 
     }
 
@@ -99,7 +106,7 @@ export class GridHandler {
         }
         this.gridNode.data = newData;
         this.dataGeometry.attributes['color'].needsUpdate = true;
-        this.worldHandler.sceneComponent.render();
+        this.sceneService.render();
         this.logger.trace("totalUpdates=" + totalUpdates);
 
     }
@@ -215,7 +222,7 @@ export class GridHandler {
 
         this.logger.trace("Adding to scene");
         this.gridObject3d.add(dataGroup);
-        this.worldHandler.sceneComponent.render();
+        this.sceneService.render();
     }
 
 }

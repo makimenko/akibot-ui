@@ -14,7 +14,11 @@ import { IDialogConfigureView, ConfigureViewDialog } from "../dialog/configure-v
 })
 export class MenuComponent implements OnInit {
 
-  constructor(public menuActionsService: MenuActionsService, public sideNavigationService: SideNavigationService, public dialog: MdDialog, public webSocketService: WebSocketService) {
+  constructor(
+    public menuActionsService: MenuActionsService, 
+    public sideNavigationService: SideNavigationService, 
+    public dialog: MdDialog, 
+    public webSocketService: WebSocketService) {
 
   }
 
@@ -43,18 +47,9 @@ export class MenuComponent implements OnInit {
 
   
   public menuConfigureView() {
-    //TODO: replace
-    var input: IDialogConfigureView = {
-      gridHelperVisible: true,
-      axisHelperVisible: false      
-    }
-    let dialogRef = this.dialog.open(ConfigureViewDialog, {
-      data: input
-    });
-    dialogRef.afterClosed().subscribe((result: IDialogConfigureView) => {
-      if (result != undefined) {
-        console.log(result);
-      }
+    let dialogRef = this.dialog.open(ConfigureViewDialog);
+    dialogRef.afterClosed().subscribe(() => {
+      
     });
   }
 

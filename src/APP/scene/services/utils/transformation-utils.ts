@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import * as common from "akibot-common/dist";
 
-export module CommonUtils {
+export module TransformationUtils {
 
     export function applyTransformation(object: THREE.Object3D, transformation: common.NodeTransformation3D) {
         if (object != undefined && transformation != undefined) {

@@ -14,6 +14,7 @@ import { FormsModule } from "@angular/forms";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { GyroscopeCalibrationRequestDialog } from "./dialog/gyroscope-calibration-request-dialog";
 import { ConfigureViewDialog } from "./dialog/configure-view-dialog";
+import { SceneConfigurationService } from "../scene/services/scene-configuration.service";
 
 @NgModule({
   imports: [
@@ -33,7 +34,8 @@ import { ConfigureViewDialog } from "./dialog/configure-view-dialog";
   providers: [
     WebSocketService,
     MenuActionsService,
-    SideNavigationService
+    SideNavigationService,
+    SceneConfigurationService
   ],
   entryComponents: [
     GyroscopeCalibrationRequestDialog,
