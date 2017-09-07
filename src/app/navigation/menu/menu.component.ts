@@ -30,6 +30,12 @@ export class MenuComponent implements OnInit {
   ngOnInit() {
   }
 
+  public menuWorldContentRequest() {
+    var worldContentRequest = new common.WorldContentRequest();
+    this.webSocketService.send(worldContentRequest);
+  }
+
+
   public menuGyroscopeCalibrationRequest() {
     var input: IDialogGyroscopeCalibrationRequest = {
       maxTimeMs: 10000, intervalMs: 100

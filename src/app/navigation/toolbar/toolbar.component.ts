@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { ConnectionStatusService } from "../../scene/services/connection-status.service";
+import { MdSlideToggleChange } from "@angular/material";
+import { WebSocketService } from "../../scene/services/web-socket.service";
 
 @Component({
   selector: 'app-toolbar',
@@ -7,9 +10,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ToolbarComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    public connectionStatusService: ConnectionStatusService,
+    private webSocketService: WebSocketService) { }
 
   ngOnInit() {
+  }
+
+  onConnectionChange(event: MdSlideToggleChange) {
+    console.log("onConnectionChange: " + event.checked);
+    if (event.checked) {
+      this.webSocketService.connect();
+    } else {
+      this.webSocketService.disconnect();
+    }
+
   }
 
 }

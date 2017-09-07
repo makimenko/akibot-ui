@@ -23,11 +23,13 @@ export class ResponseHandlerService {
     this.onOpen = this.onOpen.bind(this);
     this.onError = this.onError.bind(this);
     this.onWorldContentResponse = this.onWorldContentResponse.bind(this);
+    this.onGyroscopeCalibrationResponse = this.onGyroscopeCalibrationResponse.bind(this);
 
     this.webSocketService.events.addListener("onopen", this.onOpen);
     this.webSocketService.events.addListener("onerror", this.onError);
 
-    this.webSocketService.events.once(common.WorldContentResponse.name, this.onWorldContentResponse);
+    this.webSocketService.events.on(common.WorldContentResponse.name, this.onWorldContentResponse);
+    this.webSocketService.events.on(common.GyroscopeCalibrationResponse.name, this.onGyroscopeCalibrationResponse);
   }
 
   private onError(event: Event): any {
@@ -42,11 +44,21 @@ export class ResponseHandlerService {
   private onWorldContentResponse(worldContentResponse: common.WorldContentResponse) {
     this.logger.debug("onWorldContentResponse");
 
-    this.worldHandlerService.addWorldNode(worldContentResponse.worldNode);
-    this.gridHandlerService.addGrid(worldContentResponse.worldNode.gridNode);
-    this.robotHandlerService.addRobot(worldContentResponse.worldNode.robotNode);
+    if (this.worldHandlerService.worldNode != undefined) {
+      this.logger.warn("skipping WorldContentResponse because already exists");
+      // TODO: reload
+    } else {
+      this.worldHandlerService.addWorldNode(worldContentResponse.worldNode);
+      this.gridHandlerService.addGrid(worldContentResponse.worldNode.gridNode);
+      this.robotHandlerService.addRobot(worldContentResponse.worldNode.robotNode);
+    }
 
     this.sceneService.render();
+  }
+
+  private onGyroscopeCalibrationResponse(gyroscopeCalibrationResponse : common.GyroscopeCalibrationResponse) {
+    this.logger.debug("onGyroscopeCalibrationResponse: "+JSON.stringify(gyroscopeCalibrationResponse));
+
   }
 
 }

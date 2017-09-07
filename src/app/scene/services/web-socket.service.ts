@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import * as common from 'akibot-common/dist';
 import { EventEmitter } from "events";
 import { logFactory } from "../../log-config";
+import { ConnectionStatusService } from "./connection-status.service";
 
 @Injectable()
 export class WebSocketService {
@@ -16,10 +17,9 @@ export class WebSocketService {
         "ws://localhost:3000",
         "ws://raspberrypi:3000"
     ];
-    private connected: boolean = false;
-    private connectIndex: number = -1;
+    private connectIndex: number;
 
-    constructor() {
+    constructor(private connectionStatusService: ConnectionStatusService) {
         this.logger.info("constructor");
 
         this.events = new EventEmitter();
@@ -27,8 +27,9 @@ export class WebSocketService {
         this.onOpen = this.onOpen.bind(this);
         this.onMessage = this.onMessage.bind(this);
         this.onError = this.onError.bind(this);
+        this.onClose = this.onClose.bind(this);
 
-        this.connectNext();
+        this.connect();
     }
 
     private connectNext() {
@@ -41,26 +42,42 @@ export class WebSocketService {
             this.ws.onopen = this.onOpen;
             this.ws.onmessage = this.onMessage;
             this.ws.onerror = this.onError;
+            this.ws.onclose = this.onClose;
         } else {
             throw new Error("Failed to connect");
         }
     }
 
+    public connect() {
+        this.connectIndex = -1;
+        this.connectNext();
+    }
+
+    public disconnect() {
+        this.ws.close();        
+    }
+
+
+    public onClose(event: CloseEvent): any {
+        this.logger.warn("WebSocket closed");
+        this.connectionStatusService.connected = false;
+    }
+
     public onError(event: Event): any {
-        if (!this.connected) {
+        if (!this.connectionStatusService.connected) {
             this.logger.warn("Trying to reconnect to alternative server");
             this.connectNext();
         } else {
             this.logger.error("onError: " + JSON.stringify(event));
             this.events.emit("onerror", event);
+            this.connectionStatusService.connected = false;
         }
-
     }
 
     public onOpen(event: Event): any {
         this.logger.debug("onOpen");
-        this.connected = true;
         this.events.emit("onopen", event);
+        this.connectionStatusService.connected = true;
     }
 
     public onMessage(msg: MessageEvent) {
