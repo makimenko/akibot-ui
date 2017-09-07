@@ -26,7 +26,7 @@
 
 <md-menu #menuView="mdMenu">
 
-  <button md-menu-item>
+  <button md-menu-item  (click)="cameraService.defaultPosition()">
     <md-icon><span class="fa fa-video-camera"></span></md-icon>
     <span>Reset Camera</span>
   </button>

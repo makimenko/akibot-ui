@@ -2,10 +2,10 @@
 <div md-dialog-content>
     <p>Please define request parameters</p>
     <md-form-field>
-        <input mdInput tabindex="1" [(ngModel)]="data.maxTimeMs" placeholder="Calibration time (ms)">
+        <input mdInput tabindex="1" required [(ngModel)]="data.maxTimeMs" placeholder="Calibration time (ms)">
     </md-form-field>
     <md-form-field>
-        <input mdInput tabindex="2" [(ngModel)]="data.intervalMs" placeholder="Interval (ms)">
+        <input mdInput tabindex="2" required [(ngModel)]="data.intervalMs" placeholder="Interval (ms)">
     </md-form-field>
 </div>
 <div md-dialog-actions>

@@ -3,29 +3,23 @@ import * as HELPERS from '../helpers';
 import * as THREE from 'three';
 import { logFactory } from "../../log-config";
 import { SceneComponent } from "../scene.component";
+import { CameraService } from "./camera.service";
 
 @Injectable()
 export class SceneService {
 
   private logger = logFactory.getLogger(this.constructor.name);
-
   private sceneComponent: SceneComponent;
-  
-  private renderer: THREE.WebGLRenderer;
-  private camera: THREE.PerspectiveCamera;
-  private cameraTarget: THREE.Vector3;
-
   public scene: THREE.Scene;
+  private renderer: THREE.WebGLRenderer;
 
-  private fieldOfView: number = 60;
-  private nearClippingPane: number = 1;
-  private farClippingPane: number = 2000;
 
   public gridHelper: HELPERS.GridHelperObject;
   public axisHelper: HELPERS.AxisHelperObject;
   private controls: THREE.OrbitControls;
 
-  constructor() {
+  constructor(private cameraService: CameraService) {
+    this.logger.debug("constructor");
     this.render = this.render.bind(this);
   }
 
@@ -55,34 +49,15 @@ export class SceneService {
     this.scene.add(light);
   }
 
-  private createCamera() {
-    this.logger.debug("Create camera");
-
-    let aspectRatio = this.sceneComponent.getAspectRatio();
-    this.camera = new THREE.PerspectiveCamera(
-      this.fieldOfView,
-      aspectRatio,
-      this.nearClippingPane,
-      this.farClippingPane
-    );
-
-    // Set position and look at
-    this.camera.position.x = -50;
-    this.camera.position.y = -200;
-    this.camera.position.z = 200;
-    this.camera.up = new THREE.Vector3(0, 0, 1);
-
-    this.cameraTarget = new THREE.Vector3(0, 0, 0);
-    this.camera.lookAt(this.cameraTarget);
-  }
 
 
   private createControls() {
     this.logger.debug("Create controls");
-    this.controls = new THREE.OrbitControls(this.camera);
+    this.controls = new THREE.OrbitControls(this.cameraService.camera);
     this.controls.rotateSpeed = 1.0;
     this.controls.zoomSpeed = 1.2;
     this.controls.addEventListener('change', this.render);
+    this.cameraService.bindControls(this.controls)
   }
 
   private createRenderer() {
@@ -110,18 +85,18 @@ export class SceneService {
     this.sceneComponent = sceneComponent;
     this.createScene();
     this.createLight();
-    this.createCamera();
+    this.cameraService.createCamera(this.sceneComponent.getAspectRatio());
     this.createControls();
     this.createRenderer();
   }
 
   public render() {
-    this.renderer.render(this.scene, this.camera);
+    this.renderer.render(this.scene, this.cameraService.camera);
   }
 
   public onResize() {
-    this.camera.aspect = this.sceneComponent.getAspectRatio();
-    this.camera.updateProjectionMatrix();
+    this.cameraService.camera.aspect = this.sceneComponent.getAspectRatio();
+    this.cameraService.camera.updateProjectionMatrix();
     this.renderer.setSize(this.sceneComponent.canvas.clientWidth, this.sceneComponent.canvas.clientHeight);
     this.render();
   }

@@ -9,6 +9,7 @@ import { RobotHandlerService } from "./services/robot-handler.service";
 import { GridHandlerService } from "./services/grid-handler.service";
 import { ResponseHandlerService } from './services/response-handler.service';
 import { ConnectionStatusService } from './services/connection-status.service';
+import { CameraService } from './services/camera.service';
 
 
 @NgModule({
@@ -26,7 +27,8 @@ import { ConnectionStatusService } from './services/connection-status.service';
     RobotHandlerService,
     WorldHandlerService,
     ResponseHandlerService,
-    ConnectionStatusService
+    ConnectionStatusService,
+    CameraService
   ],
   exports: [
     SceneComponent

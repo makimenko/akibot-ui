@@ -6,6 +6,7 @@ import { GyroscopeCalibrationRequestDialog, IDialogGyroscopeCalibrationRequest }
 import { WebSocketService } from "../../scene/services/web-socket.service";
 import * as common from 'akibot-common/dist';
 import { IDialogConfigureView, ConfigureViewDialog } from "../dialog/configure-view-dialog";
+import { CameraService } from "../../scene/services/camera.service";
 
 @Component({
   selector: 'app-menu',
@@ -15,12 +16,12 @@ import { IDialogConfigureView, ConfigureViewDialog } from "../dialog/configure-v
 export class MenuComponent implements OnInit {
 
   constructor(
-    public menuActionsService: MenuActionsService, 
-    public sideNavigationService: SideNavigationService, 
-    public dialog: MdDialog, 
-    public webSocketService: WebSocketService) {
-
-  }
+    public dialog: MdDialog,
+    public menuActionsService: MenuActionsService,
+    public sideNavigationService: SideNavigationService,
+    public webSocketService: WebSocketService,
+    public cameraService : CameraService
+  ) {  }
 
   public onSideNavToggle() {
     this.sideNavigationService.sideNavOpened = !this.sideNavigationService.sideNavOpened;
@@ -51,11 +52,11 @@ export class MenuComponent implements OnInit {
     });
   }
 
-  
+
   public menuConfigureView() {
     let dialogRef = this.dialog.open(ConfigureViewDialog);
     dialogRef.afterClosed().subscribe(() => {
-      
+
     });
   }
 
