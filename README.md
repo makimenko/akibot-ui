@@ -24,3 +24,5 @@ npm install
 ng serve
 ```
 
+## Sample Demo
+![Demo](https://raw.githubusercontent.com/makimenko/akibot-doc/master/img/Demo.gif "Demo")
