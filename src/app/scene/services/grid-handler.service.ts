@@ -50,7 +50,7 @@ export class GridHandlerService {
 
     private onGridUpdateEvent(gridUpdateEvent: common.GridUpdateEvent) {
         this.logger.trace("onGridUpdateEvent");
-        if (this.worldHandlerService.worldNode != undefined)
+        if (this.gridNode != undefined && this.worldHandlerService.worldNode != undefined)
             this.updateMatrix(gridUpdateEvent.data);
     }
 
@@ -59,7 +59,7 @@ export class GridHandlerService {
 
         this.gridNode = gridNode;
         this.addLocationAreaGrid(gridNode.gridConfiguration);
-        if (this.gridNode.data != undefined) {
+        if (this.gridNode != undefined && this.gridNode.data != undefined) {
             this.addMatrix(gridNode.data);
         }
 

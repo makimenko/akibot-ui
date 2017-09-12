@@ -15,31 +15,29 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { GyroscopeCalibrationRequestDialog } from "./dialog/gyroscope-calibration-request-dialog";
 import { ConfigureViewDialog } from "./dialog/configure-view-dialog";
 import { SceneConfigurationService } from "../scene/services/scene-configuration.service";
+import { NavigationDialogModule } from './dialog/navigation-dialog.module';
+import { KeyboardService } from './services/keyboard.service';
 
 @NgModule({
   imports: [
     CommonModule,
     Material2Module,
     SceneModule,
-    FormsModule
+    FormsModule,
+    NavigationDialogModule
   ],
   declarations: [
     MenuComponent,
     PageComponent,
     SideNavComponent,
-    ToolbarComponent,
-    GyroscopeCalibrationRequestDialog,
-    ConfigureViewDialog
+    ToolbarComponent
   ],
   providers: [
     WebSocketService,
     MenuActionsService,
     SideNavigationService,
-    SceneConfigurationService
-  ],
-  entryComponents: [
-    GyroscopeCalibrationRequestDialog,
-    ConfigureViewDialog
+    SceneConfigurationService,
+    KeyboardService
   ],
   exports: [
     PageComponent

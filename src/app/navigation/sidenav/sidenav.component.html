@@ -1,5 +1,5 @@
 <md-sidenav-container>
-  <md-sidenav mode="over" opened="{{sideNavigationService.sideNavOpened}}" (close)="onCloseSideNav()">
+  <md-sidenav mode="side" opened="{{sideNavigationService.sideNavOpened}}" (open)="onOpenSideNav()" (close)="onCloseSideNav()">
     <br/>
     <md-button-toggle-group [(ngModel)]="sideNavigationService.chosenToggleCommand" vertical>
       <md-button-toggle *ngFor="let item of sideNavigationService.toggleCommandList" value="{{item.value}}">
@@ -8,6 +8,17 @@
         </md-icon>
       </md-button-toggle>
     </md-button-toggle-group>
+
+    <span class="sidenav-spacer"></span>
+
+
+    <md-slide-toggle [(ngModel)]="sideNavigationService.keyboardEnabled">
+      <md-icon>
+        <span class="fa fa-keyboard-o"></span>
+      </md-icon>
+    </md-slide-toggle>
+
+
   </md-sidenav>
   <div>
     <app-scene></app-scene>

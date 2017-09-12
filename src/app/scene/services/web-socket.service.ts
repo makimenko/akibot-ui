@@ -54,7 +54,7 @@ export class WebSocketService {
     }
 
     public disconnect() {
-        this.ws.close();        
+        this.ws.close();
     }
 
     public onOpen(event: Event): any {
@@ -69,7 +69,7 @@ export class WebSocketService {
     }
 
     public onError(event: Event): any {
-        if (!this.connectionStatusService.connected) {
+        if (this.ws.readyState != this.ws.OPEN) {
             this.logger.warn("Trying to reconnect to alternative server");
             this.connectNext();
         } else {

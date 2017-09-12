@@ -7,6 +7,8 @@ import { WebSocketService } from "../../scene/services/web-socket.service";
 import * as common from 'akibot-common/dist';
 import { IDialogConfigureView, ConfigureViewDialog } from "../dialog/configure-view-dialog";
 import { CameraService } from "../../scene/services/camera.service";
+import { GyroscopeAutoIntervalCommandDialog, IDialogGyroscopeAutoIntervalCommand } from '../dialog/gyroscope-auto-interval-command-dialog';
+import { IDialogDistanceAutoIntervalCommand, DistanceAutoIntervalCommandDialog } from '../dialog/distance-auto-interval-command-dialog';
 
 @Component({
   selector: 'app-menu',
@@ -56,9 +58,40 @@ export class MenuComponent implements OnInit {
   public menuConfigureView() {
     let dialogRef = this.dialog.open(ConfigureViewDialog);
     dialogRef.afterClosed().subscribe(() => {
-
     });
   }
+
+  
+  public menuGyroscopeAutoIntervalCommand() {
+    var input: IDialogGyroscopeAutoIntervalCommand = {
+       intervalMs: 1000
+    }
+    let dialogRef = this.dialog.open(GyroscopeAutoIntervalCommandDialog, {
+      data: input
+    });
+    dialogRef.afterClosed().subscribe((result: IDialogGyroscopeAutoIntervalCommand) => {
+      if (result != undefined) {
+        var gyroscopeAutoIntervalCommand = new common.GyroscopeAutoIntervalCommand(result.intervalMs);
+        this.webSocketService.send(gyroscopeAutoIntervalCommand);
+      }
+    });
+  }
+
+  public menuDistanceAutoIntervalCommand() {
+    var input: IDialogDistanceAutoIntervalCommand = {
+       intervalMs: 1000
+    }
+    let dialogRef = this.dialog.open(DistanceAutoIntervalCommandDialog, {
+      data: input
+    });
+    dialogRef.afterClosed().subscribe((result: IDialogDistanceAutoIntervalCommand) => {
+      if (result != undefined) {
+        var gyroscopeAutoIntervalCommand = new common.DistanceAutoIntervalCommand(result.intervalMs);
+        this.webSocketService.send(gyroscopeAutoIntervalCommand);
+      }
+    });
+  }
+
 
 
 }

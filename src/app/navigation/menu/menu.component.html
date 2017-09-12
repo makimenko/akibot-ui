@@ -16,22 +16,17 @@
 
   <button md-menu-item (click)="menuGyroscopeCalibrationRequest()">
     <md-icon><span class="fa fa-compass"></span></md-icon>
-    <span>GyroscopeCalibrationRequest</span>
+    <span>Calibrate Gyroscope</span>
   </button>
 
-  <button md-menu-item >
-    <md-icon><span class="fa fa-arrow-right"></span></md-icon>
-    <span>WheelSetCommand</span>
-  </button>
-
-  <button md-menu-item >
+  <button md-menu-item (click)="menuGyroscopeAutoIntervalCommand()">
     <md-icon><span class="fa fa-clock-o"></span></md-icon>
-    <span>GyroscopeAutoIntervalCommand</span>
+    <span>Auto Gyroscope</span>
   </button>
 
-  <button md-menu-item >
+  <button md-menu-item (click)="menuDistanceAutoIntervalCommand()">
     <md-icon><span class="fa fa-clock-o"></span></md-icon>
-    <span>DistanceAutoIntervalCommand</span>
+    <span>Auto Distance</span>
   </button>
 
 </md-menu>

@@ -33,7 +33,7 @@ export class ResponseHandlerService {
   }
 
   private onError(event: Event): any {
-    this.logger.error("onError: " + event);
+    this.logger.error("onError: " + JSON.stringify(event));
   }
 
   private onOpen(event: Event): any {

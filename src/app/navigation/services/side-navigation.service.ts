@@ -11,8 +11,9 @@ export class SideNavigationService {
 
   private logger = logFactory.getLogger(this.constructor.name);
 
-  public sideNavOpened: boolean = false;
+  public sideNavOpened: boolean = true;
   public chosenToggleCommand: string = "orientation";
+  public keyboardEnabled: boolean = true;
 
   public toggleCommandList: ISideNavItem[] = [
     {

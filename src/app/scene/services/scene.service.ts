@@ -95,6 +95,9 @@ export class SceneService {
   }
 
   public onResize() {
+    // fit to free space and do resizing
+    this.sceneComponent.canvas.style.width = "100%";
+    this.sceneComponent.canvas.style.height = "100%";
     this.cameraService.camera.aspect = this.sceneComponent.getAspectRatio();
     this.cameraService.camera.updateProjectionMatrix();
     this.renderer.setSize(this.sceneComponent.canvas.clientWidth, this.sceneComponent.canvas.clientHeight);
